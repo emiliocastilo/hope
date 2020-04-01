@@ -1,10 +1,12 @@
-Para arrancar se necesita el postgresql, los datos de conexión están en el application.properties
+Para arrancar se necesita el postgresql, los datos de conexión están en el application.properties,
+hay que crear el esquema!!
 
-mvn clean package  -- te creará la estructura de base de datos, solo falta lanzar el script import.sql para poder realizar las pruebas con postman
+mvn clean package  -- te creará la estructura de base de datos con una carga inicial de datos
 
-run del main que se encuentra en HopesBackApplication, o el jar del target: java -jar ...
+arrancar la aplicación con el run de springboot con java 1.8
 
 solo se permite el acceso a los endpoints de actuator, del swagger y el post de /login para realizar la autentificación
 jwt. 
+
 Hay unos ejemplos en la carpeta de postman
 
