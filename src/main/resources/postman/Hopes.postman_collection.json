@@ -1,0 +1,74 @@
+{
+	"info": {
+		"_postman_id": "c6de3e29-4afb-4756-865c-521aa8850e76",
+		"name": "Hopes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"admin\", \"password\": \"password\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1ODU1ODM1NDgsImlzcyI6ImhvcGVzIiwic3ViIjoiYWRtaW4iLCJleHAiOjE1ODY0NDc1NDh9.ax8H3rTRFKCj0mrVghDlEXNWEiKn4d1mgrn-LqgQDgpc9Gfu0ivkl2MXABy2mQ_0LTlgAao57xp8kuB-MS3Ueg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
