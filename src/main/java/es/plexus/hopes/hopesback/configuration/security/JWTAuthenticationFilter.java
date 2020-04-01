@@ -35,10 +35,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 				throws AuthenticationException {
 			try {
-				es.plexus.hopes.hopesback.repository.model.User credenciales = new ObjectMapper().readValue(request.getInputStream(), es.plexus.hopes.hopesback.repository.model.User.class);
+				es.plexus.hopes.hopesback.repository.model.User credentials = new ObjectMapper().readValue(request.getInputStream(), es.plexus.hopes.hopesback.repository.model.User.class);
 	
 				return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-						credenciales.getUsername(), credenciales.getPassword(), new ArrayList<>()));
+						credentials.getUsername(), credentials.getPassword(), new ArrayList<>()));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}

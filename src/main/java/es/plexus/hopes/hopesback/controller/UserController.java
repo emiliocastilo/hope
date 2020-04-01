@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 	
 @RestController
 public class UserController {
+
+	private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
 	private UserRepository userRepository;
 
@@ -31,6 +35,9 @@ public class UserController {
 
 	@GetMapping("/user/")
 	public List<User> getAllUsers() {
+
+		LOGGER.info("Get all users");
+
 		return userRepository.findAll();
 	}
 

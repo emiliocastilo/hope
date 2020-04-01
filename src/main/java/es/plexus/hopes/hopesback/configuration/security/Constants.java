@@ -11,6 +11,6 @@ public class Constants {
 	// JWT
 	public static final String ISSUER_INFO = "hopes";
 	public static final String SUPER_SECRET_KEY = "1234";
-	public static final long TOKEN_EXPIRATION_TIME = 864_000_000; // 10 day
+	public static final long TOKEN_EXPIRATION_TIME = 864000; // 10 day
 
 }
