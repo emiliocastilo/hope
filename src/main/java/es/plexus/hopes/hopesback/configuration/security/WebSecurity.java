@@ -1,8 +1,10 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,13 +24,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	private UserDetailsService userDetailsService;
 
-	public WebSecurity(UserDetailsService userDetailsService) {
+	public WebSecurity(@Qualifier("usuarioDetailsServiceImpl") UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
 	}
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 
 	@Override
@@ -42,7 +50,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers("/actuator/**","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
 				.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
 			.anyRequest().authenticated().and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+				.addFilter(new JWTAuthenticationFilter(authenticationManager(), userDetailsService))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager()));
 	}
 

@@ -40,6 +40,40 @@
 			"response": []
 		},
 		{
+			"name": "login user with 2 roles",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"doctor\", \"password\": \"password\", \"role\":\"ROLE_DOCTOR\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "get users",
 			"request": {
 				"auth": {
@@ -47,7 +81,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1ODU1ODM1NDgsImlzcyI6ImhvcGVzIiwic3ViIjoiYWRtaW4iLCJleHAiOjE1ODY0NDc1NDh9.ax8H3rTRFKCj0mrVghDlEXNWEiKn4d1mgrn-LqgQDgpc9Gfu0ivkl2MXABy2mQ_0LTlgAao57xp8kuB-MS3Ueg",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1ODYxNjcyODcsImlzcyI6ImhvcGVzIiwic3ViIjoiZG9jdG9yIiwiZXhwIjoxNTg2MTY4MTUxfQ.1hgX5kyMCEDR0tk0n8l6e1jQhUvcgt4bJJcN28gRoTSRjm2H-bhJpe1ERY6LLFoaYnxT1uu2rk3ewxW2EpwMFg",
 							"type": "string"
 						}
 					]
