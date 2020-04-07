@@ -1,13 +1,12 @@
 ----------------------------------------------------------------- ROLES -------------------------------------------------------------------------------
-INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'Administrador', 'Rol administrador. Tiene le máximo nivel de acceso a la aplicación');
-INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'Gestor CAU', 'Rol gestor del CAU. Permite la gestión de las credenciales de acceso de los diferentes usuarios de la aplicación, recuperación y asignación de perfiles');
-INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'Gestor', 'Rol gestor. Personaliza las características de los formularios, encuestas, tramtamientos, medicamentos, etc a la aplicación');
-INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'Médico', 'Rol médico. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalizacion de formularios relativos a su alcance');
-INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'Farmacéutico', 'Rol farmacéutico. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
-INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'Enfermero', 'Rol enfermero. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
-INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'Paciente', 'Rol gestor. Posee acceso a la información que los roles de seguimiento le concedan, ademas de a encuestas, recordatorios de consulta');
+INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'ROLE_ADMIN', 'Rol administrador. Tiene le máximo nivel de acceso a la aplicación');
+INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'ROLE_MANAGER_CAU', 'Rol gestor del CAU. Permite la gestión de las credenciales de acceso de los diferentes usuarios de la aplicación, recuperación y asignación de perfiles');
+INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'ROLE_MANAGER', 'Rol gestor. Personaliza las características de los formularios, encuestas, tramtamientos, medicamentos, etc a la aplicación');
+INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'ROLE_DOCTOR', 'Rol médico. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalizacion de formularios relativos a su alcance');
+INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'ROLE_PHARMACIST', 'Rol farmacéutico. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
+INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'ROLE_NURSING', 'Rol enfermero. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
+INSERT INTO "public"."ROLES" VALUES (nextval('"public"."ROLES_rol_id_seq"'),'ROLE_PATIENT', 'Rol gestor. Posee acceso a la información que los roles de seguimiento le concedan, ademas de a encuestas, recordatorios de consulta');
 ----------------------------------------------------------------- ROLES -------------------------------------------------------------------------------
-
 
 ----------------------------------------------------------------- SEXOS -------------------------------------------------------------------------------
 INSERT INTO "public"."SEXOS" VALUES ('M', 'Masculino');
