@@ -1,1 +1,10 @@
 databaseChangeLog:
+- include:
+    file: yaml/db.changelog-schema.yaml
+    relativeToChangelogFile: true
+- include:
+    file: yaml/db.changelog-data.yaml
+    relativeToChangelogFile: true
+- include:
+    file: yaml/db.changelog-data-test.yaml
+    relativeToChangelogFile: true
