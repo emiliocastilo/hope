@@ -1,9 +1,9 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.configuration.security.UserDetailsMapper;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import org.hibernate.service.spi.ServiceException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,26 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
-
 @Service
-public class UsuarioDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private UserRepository userRepository;
 
-	public UsuarioDetailsServiceImpl(UserRepository usuarioRepository) {
-		this.userRepository = usuarioRepository;
+	public UserDetailsServiceImpl(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		es.plexus.hopes.hopesback.repository.model.User user = userRepository.findByUsername(username).orElse(null);
-
-		if (user == null) {
-			throw new UsernameNotFoundException(username);
+		final es.plexus.hopes.hopesback.repository.model.User retrievedUser = userRepository.findByUsername(userName).orElse(null);
+		if (retrievedUser == null) {
+			throw new UsernameNotFoundException("Invalid username or password");
 		}
-		return new User(user.getUsername(), user.getPassword(), emptyList());
+		return UserDetailsMapper.build(retrievedUser);
 	}
 
 	public List<String> findRolesByUsername(String username) {
