@@ -1,6 +1,5 @@
 package es.plexus.hopes.hopesback.controller.model;
 
-import es.plexus.hopes.hopesback.repository.model.ERole;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

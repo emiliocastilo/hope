@@ -1,54 +1,45 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
-import io.jsonwebtoken.Jwts;
-import org.springframework.security.authentication.AuthenticationManager;
+import es.plexus.hopes.hopesback.service.UserDetailsServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import static es.plexus.hopes.hopesback.configuration.security.Constants.HEADER_AUTHORIZACION_KEY;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.SUPER_SECRET_KEY;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_BEARER_PREFIX;
+public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-	
-		public JWTAuthorizationFilter(AuthenticationManager authManager) {
-			super(authManager);
-		}
-	
-		@Override
-		protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
-				throws IOException, ServletException {
-			String header = req.getHeader(HEADER_AUTHORIZACION_KEY);
-			if (header == null || !header.startsWith(TOKEN_BEARER_PREFIX)) {
-				chain.doFilter(req, res);
-			}
-			UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-			chain.doFilter(req, res);
-		}
-	
-		private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-			String token = request.getHeader(HEADER_AUTHORIZACION_KEY);
-			if (token != null) {
-				String user = Jwts.parser()
-							.setSigningKey(SUPER_SECRET_KEY)
-							.parseClaimsJws(token.replace(TOKEN_BEARER_PREFIX, ""))
-							.getBody()
-							.getSubject();
-	
-				if (user != null) {
-					return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-				}
-				return null;
-			}
-			return null;
-		}
+	private UserDetailsServiceImpl userDetailsService;
+
+	public JWTAuthorizationFilter(UserDetailsService userDetailsService) {
+		this.userDetailsService = (UserDetailsServiceImpl) userDetailsService;
 	}
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+									FilterChain filterChain) throws ServletException, IOException {
+
+		String authorizationHeader = httpServletRequest.getHeader(Constants.HEADER_AUTHORIZACION_KEY);
+
+		if (StringUtils.isEmpty(authorizationHeader) || !authorizationHeader
+				.startsWith(Constants.TOKEN_BEARER_PREFIX)) {
+			filterChain.doFilter(httpServletRequest, httpServletResponse);
+			return;
+		}
+		final String token = authorizationHeader.replace(Constants.TOKEN_BEARER_PREFIX, "");
+
+		String userName = TokenProvider.getUserName(token);
+		UserDetails user = userDetailsService.loadUserByUsername(userName);
+
+		UsernamePasswordAuthenticationToken authenticationToken = TokenProvider.getAuthentication(token, user);
+		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+		filterChain.doFilter(httpServletRequest, httpServletResponse);
+	}
+}
