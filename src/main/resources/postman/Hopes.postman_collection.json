@@ -40,8 +40,18 @@
 			"response": []
 		},
 		{
-			"name": "login user with 2 roles",
+			"name": "choose profile",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NjM0ODI4MSwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODYzNDg1ODF9.JVXCfsYzUZPqnsfa4QcICLHNjH48KN5NUUYG2xqvjTs",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [
 					{
@@ -52,7 +62,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"username\": \"doctor\", \"password\": \"password\", \"role\":\"ROLE_DOCTOR\"}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -60,14 +70,21 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/user/choose_profile?role=ROLE_ADMIN",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"login"
+						"user",
+						"choose_profile"
+					],
+					"query": [
+						{
+							"key": "role",
+							"value": "ROLE_ADMIN"
+						}
 					]
 				}
 			},
@@ -81,7 +98,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1ODYxNjcyODcsImlzcyI6ImhvcGVzIiwic3ViIjoiZG9jdG9yIiwiZXhwIjoxNTg2MTY4MTUxfQ.1hgX5kyMCEDR0tk0n8l6e1jQhUvcgt4bJJcN28gRoTSRjm2H-bhJpe1ERY6LLFoaYnxT1uu2rk3ewxW2EpwMFg",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NjM0ODMyNSwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODYzNzcxMjV9.ACOlhjIB57EPBonY_rLmbxG4aIqCJkaUU1Aw3dQTmqQ",
 							"type": "string"
 						}
 					]
@@ -98,6 +115,66 @@
 					"path": [
 						"user",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get for admin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NjM0ODMyNSwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODYzNzcxMjV9.ACOlhjIB57EPBonY_rLmbxG4aIqCJkaUU1Aw3dQTmqQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/user/admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get for doctor",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NjM0ODMyNSwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODYzNzcxMjV9.ACOlhjIB57EPBonY_rLmbxG4aIqCJkaUU1Aw3dQTmqQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/user/doctor",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"doctor"
 					]
 				}
 			},
