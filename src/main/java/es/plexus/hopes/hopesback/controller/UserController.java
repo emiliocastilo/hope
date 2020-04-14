@@ -77,7 +77,7 @@ public class UserController {
 	}
 
 	@PostMapping("/user/choose_profile")
-	public void chooseProfile(@RequestParam String role, Authentication authentication, HttpServletResponse response) {
+	public void chooseProfile(@RequestBody String role, Authentication authentication, HttpServletResponse response) {
 		String token = TokenProvider.generateToken(authentication.getName(), ERole.valueOf(role), SECOND_TOKEN_EXPIRATION_TIME);
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
 	}
