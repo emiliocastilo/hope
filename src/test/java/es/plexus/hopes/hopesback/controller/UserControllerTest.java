@@ -3,7 +3,6 @@ package es.plexus.hopes.hopesback.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.plexus.hopes.hopesback.HopesBackApplication;
 import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
-import es.plexus.hopes.hopesback.configuration.security.WebSecurity;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.ERole;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
@@ -12,16 +11,12 @@ import es.plexus.hopes.hopesback.repository.model.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -33,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,28 +42,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = UserController.class)
-@ContextConfiguration(classes = {UserController.class, WebSecurity.class, HopesBackApplication.class})
+@SpringBootTest(classes = HopesBackApplication.class)
 public class UserControllerTest {
 
+	private static final String URL_TEMPLATE = "/user/";
+
+	// Componente de Spring para pruebas IT
 	private MockMvc mockMvc;
+
+	// Dependencias del controlador
+	@MockBean
+	private UserRepository userRepository;
+	@MockBean
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	// Contexto web de la aplicacion
+	@Autowired
+	private WebApplicationContext webApplicationContext;
 
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Autowired
-	private WebApplicationContext context;
-
-	@Spy
-	@Qualifier("userDetailsServiceImpl")
-	private UserDetailsService userDetailsService;
-
-	@MockBean
-	private UserRepository userRepository;
-
 	@Before
 	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(context)
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
 				.apply(springSecurity())
 				.build();
 	}
@@ -78,12 +74,11 @@ public class UserControllerTest {
 	public void callSaveUserShouldWorkCorrectlyWithStatus200() throws Exception {
 		// given
 		User user = mockFullUser();
-
 		final String request = objectMapper.writeValueAsString(user);
 		final String token = mockTokenAccess();
 
 		// when
-		mockMvc.perform(post("/user/")
+		mockMvc.perform(post(URL_TEMPLATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("Authorization", "Bearer " + token)
 				.content(request))
@@ -101,7 +96,7 @@ public class UserControllerTest {
 		final String request = objectMapper.writeValueAsString(user);
 
 		// when
-		mockMvc.perform(post("/user/")
+		mockMvc.perform(post(URL_TEMPLATE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(request))
 				.andExpect(status().isForbidden());
@@ -113,7 +108,7 @@ public class UserControllerTest {
 		final String token = mockTokenAccess();
 
 		// when
-		String response = mockMvc.perform(get("/user/")
+		String response = mockMvc.perform(get(URL_TEMPLATE)
 				.header("Authorization", "Bearer " + token)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -131,7 +126,7 @@ public class UserControllerTest {
 		final String token = mockTokenAccess();
 
 		// when
-		mockMvc.perform(get("/user/")
+		mockMvc.perform(get(URL_TEMPLATE)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isForbidden());
 	}
@@ -144,7 +139,7 @@ public class UserControllerTest {
 		given(userRepository.findByUsername("test")).willReturn(Optional.of(mockFullUser()));
 
 		// when
-		String response = mockMvc.perform(get("/user/{username}", "test")
+		String response = mockMvc.perform(get(URL_TEMPLATE + "{username}", "test")
 				.header("Authorization", "Bearer " + token)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -162,7 +157,7 @@ public class UserControllerTest {
 		given(userRepository.findByUsername("test")).willReturn(Optional.of(mockFullUser()));
 
 		// when
-		mockMvc.perform(get("/user/{username}", "test")
+		mockMvc.perform(get(URL_TEMPLATE + "{username}", "test")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isForbidden());
 	}
@@ -173,7 +168,7 @@ public class UserControllerTest {
 		final String token = mockTokenAccess();
 
 		// when
-		ResultActions result = mockMvc.perform(post("/user/choose_profile")
+		ResultActions result = mockMvc.perform(post(URL_TEMPLATE + "choose_profile")
 				.header("Authorization", "Bearer " + token)
 				.content("ROLE_ADMIN")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -190,7 +185,7 @@ public class UserControllerTest {
 	@Test
 	public void callChooseProfileShouldWorkFailWhenNoToken() throws Exception {
 		// when
-		mockMvc.perform(post("/user/choose_profile")
+		mockMvc.perform(post(URL_TEMPLATE + "choose_profile")
 				.content("ROLE_ADMIN")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isForbidden());
@@ -198,16 +193,9 @@ public class UserControllerTest {
 
 	//Mocks
 	private String mockTokenAccess() {
-		final String token = TokenProvider.generateToken("admin", ERole.ROLE_ADMIN, 5000);
-		final Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		final org.springframework.security.core.userdetails.User userSecurity =
-				new org.springframework.security.core.userdetails
-						.User("admin", "password", authorities);
-
 		given(userRepository.findByUsername(anyString())).willReturn(Optional.of(mockFullUser()));
-		given(userDetailsService.loadUserByUsername(anyString())).willReturn(userSecurity);
-		return token;
+
+		return TokenProvider.generateToken("admin", ERole.ROLE_ADMIN, 5000);
 	}
 
 	private User mockFullUser() {

@@ -1,9 +1,7 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,12 +23,10 @@ import static es.plexus.hopes.hopesback.configuration.security.Constants.LOGIN_U
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@ComponentScan("es.plexus.hopes.hopesback.service")
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	private UserDetailsService userDetailsService;
 
-	@Autowired
 	public WebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
 	}
