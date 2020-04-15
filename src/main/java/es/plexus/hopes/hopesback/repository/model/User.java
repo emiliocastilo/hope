@@ -65,4 +65,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "uro_rol_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @Column(name="usr_active")
+    private boolean active;
+
 }
