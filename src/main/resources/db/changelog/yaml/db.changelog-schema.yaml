@@ -5,3 +5,6 @@ databaseChangeLog:
 - include:
       file: ../sql/schema/002-schema.sql
       relativeToChangelogFile: true
+- include:
+    file: ../sql/schema/003-schema.sql
+    relativeToChangelogFile: true
