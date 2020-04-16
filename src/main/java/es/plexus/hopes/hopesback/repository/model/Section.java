@@ -5,8 +5,15 @@ import lombok.Data;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -60,4 +67,5 @@ public class Section {
             joinColumns = @JoinColumn(name = "scr_section_id"),
             inverseJoinColumns = {@JoinColumn(name = "scr_role_id")})
     private Set<Role> roles = new HashSet<>();
+
 }
