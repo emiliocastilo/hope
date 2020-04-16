@@ -31,5 +31,33 @@ public class Section {
 
     @Basic
     @Column(name = "sec_order", nullable = false)
-    private short order;
+    private Short order;
+
+    @Basic
+    @Column(name = "sec_icon", nullable = true, length = 100)
+    private String icon;
+
+    @Basic
+    @Column(name = "sec_url", nullable = true, length = 100)
+    private String url;
+
+    @ManyToOne
+    @JoinColumn(name = "sec_pth_id", referencedColumnName = "pth_id", nullable = false)
+    private Pathology pathology;
+
+    @ManyToOne
+    @JoinColumn(name = "sec_section_root", referencedColumnName = "sec_id")
+    private Section fatherSection;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "sections_forms",
+            joinColumns = @JoinColumn(name = "scf_section_id"),
+            inverseJoinColumns = {@JoinColumn(name = "scf_form_id")})
+    private Set<Form> forms = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "sections_roles",
+            joinColumns = @JoinColumn(name = "scr_section_id"),
+            inverseJoinColumns = {@JoinColumn(name = "scr_role_id")})
+    private Set<Role> roles = new HashSet<>();
 }
