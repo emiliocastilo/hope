@@ -26,7 +26,7 @@ public class MenuController {
     @GetMapping
     public MenuDTO getMenuByRole(@RequestParam ERole role) {
 
-        MenuDTO menu = menuService.findMenuByRole(role); //TODO filtrar por patologia tambien
+        MenuDTO menu = menuService.findMenuByRole(role); //TODO filtrar por patologia tambien  
 
         return menu;
     }
