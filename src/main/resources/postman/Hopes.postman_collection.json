@@ -12,8 +12,8 @@
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
@@ -26,13 +26,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/v1/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"v1",
 						"login"
 					]
 				}
@@ -47,7 +48,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NjM0ODI4MSwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODYzNDg1ODF9.JVXCfsYzUZPqnsfa4QcICLHNjH48KN5NUUYG2xqvjTs",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NzEwNjIyMCwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODcxMDY1MjB9.MxuVoFw_shbbTa7B7L7f0G_qGcm0MFE9lcPLIrVNZ1s",
 							"type": "string"
 						}
 					]
@@ -62,29 +63,24 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "ROLE_ADMIN",
 					"options": {
 						"raw": {
-							"language": "json"
+							"language": "text"
 						}
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/user/choose_profile?role=ROLE_ADMIN",
+					"raw": "http://localhost:8080/v1/user/choose_profile",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"v1",
 						"user",
 						"choose_profile"
-					],
-					"query": [
-						{
-							"key": "role",
-							"value": "ROLE_ADMIN"
-						}
 					]
 				}
 			},
@@ -98,7 +94,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NjM0ODMyNSwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODYzNzcxMjV9.ACOlhjIB57EPBonY_rLmbxG4aIqCJkaUU1Aw3dQTmqQ",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4Njk0Mjk4MCwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODY5NzE3ODB9.UzqnJzCWCdP0B7q8hcfj_X9XHXN5qcrEizlaRhsBT6c",
 							"type": "string"
 						}
 					]
@@ -106,15 +102,52 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/user/",
+					"raw": "http://localhost:8080/v1/user/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"v1",
 						"user",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get menu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4NzEwNjIzMiwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODcxMzUwMzJ9.pdLH2xMlYyynTJSmom0m54ZvjAPG6xd6K-hEo31kqkU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/menu?role=ROLE_ADMIN",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"menu"
+					],
+					"query": [
+						{
+							"key": "role",
+							"value": "ROLE_ADMIN"
+						}
 					]
 				}
 			},
@@ -136,13 +169,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/user/admin",
+					"raw": "http://localhost:8080/v1/user/admin",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"v1",
 						"user",
 						"admin"
 					]
@@ -166,13 +200,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/user/doctor",
+					"raw": "http://localhost:8080/v1/user/doctor",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"v1",
 						"user",
 						"doctor"
 					]

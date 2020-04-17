@@ -214,7 +214,7 @@ public class UserControllerTest {
 
 	private Hospital mockFullHospital() {
 		final Hospital hospital = new Hospital();
-		hospital.setId(1L);
+		hospital.setId(1);
 		hospital.setName("Hospital Name");
 
 		return hospital;
