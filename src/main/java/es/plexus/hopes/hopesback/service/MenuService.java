@@ -48,8 +48,14 @@ public class MenuService {
 
             // Root
             if (section.getFatherSection() == null) {
+
                 parent.setId(section.getId());
+                parent.setTitle(section.getTitle());
+                parent.setIcon(section.getIcon());
+                parent.setUrl(section.getUrl());
+                parent.setOrder(section.getOrder().intValue());
                 parent.setChildren(new ArrayList<>());
+
                 remainingSections.remove(section);
                 buildTree(remainingSections, parent);
                 break;
@@ -60,8 +66,7 @@ public class MenuService {
                 List<MenuDTO> childrens = parent.getChildren();
 
                 // New child
-                MenuDTO children = new MenuDTO();
-                children.setId(section.getId());
+                MenuDTO children = MenuMapper.INSTANCE.entityToDto(section);
                 children.setChildren(new ArrayList<>());
 
                 // Assign child to parent
