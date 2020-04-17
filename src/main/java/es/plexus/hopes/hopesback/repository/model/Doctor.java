@@ -3,9 +3,7 @@ package es.plexus.hopes.hopesback.repository.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -55,5 +53,4 @@ public class Doctor {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dct_service_id", referencedColumnName = "srv_id")
     private Service service;
-
 }
