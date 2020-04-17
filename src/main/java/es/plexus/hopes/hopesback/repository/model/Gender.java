@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "genders")

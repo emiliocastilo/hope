@@ -1,4 +1,5 @@
 image: maven:latest
 
 build:
-  script: "mvn clean package"
+  script:
+    - 'mvn clean package'

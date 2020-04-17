@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -13,7 +12,7 @@ import java.util.Set;
 public class Hospital {
     @Id
     @Column(name = "hos_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Basic
     @Column(name = "hos_name", nullable = false, length = 100)

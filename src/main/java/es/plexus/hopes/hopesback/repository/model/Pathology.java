@@ -3,9 +3,6 @@ package es.plexus.hopes.hopesback.repository.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 @Data
 @Entity
@@ -13,7 +10,7 @@ import java.util.Set;
 public class Pathology {
     @Id
     @Column(name = "pth_id", nullable = false)
-    private Integer id;
+    private Long id;
 
     @Basic
     @Column(name = "pth_name", nullable = false, length = 100)
