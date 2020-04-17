@@ -6,5 +6,5 @@ arrancar la aplicación con el run de springboot con java 1.8
 solo se permite el acceso a los endpoints de actuator, del swagger y el post de /login para realizar la autentificación
 jwt. 
 
-Hay unos ejemplos en la carpeta de postman.
+Hay unos ejemplos en la carpeta de postman
 
