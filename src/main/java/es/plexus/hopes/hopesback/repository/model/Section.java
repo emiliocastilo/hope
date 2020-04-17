@@ -56,13 +56,13 @@ public class Section {
     @JoinColumn(name = "sec_section_root", referencedColumnName = "sec_id")
     private Section fatherSection;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sections_forms",
             joinColumns = @JoinColumn(name = "scf_section_id"),
             inverseJoinColumns = {@JoinColumn(name = "scf_form_id")})
     private Set<Form> forms = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sections_roles",
             joinColumns = @JoinColumn(name = "scr_section_id"),
             inverseJoinColumns = {@JoinColumn(name = "scr_role_id")})

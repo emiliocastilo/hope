@@ -24,9 +24,9 @@ public class MenuController {
     }
 
     @GetMapping
-    public List<MenuDTO> getMenuByRole(@RequestParam ERole role) {
+    public MenuDTO getMenuByRole(@RequestParam ERole role) {
 
-        List<MenuDTO> menu = menuService.findMenuByRole(role);
+        MenuDTO menu = menuService.findMenuByRole(role);
 
         return menu;
     }
