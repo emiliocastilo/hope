@@ -30,7 +30,7 @@ public class MenuService {
 
         MenuDTO tree = new MenuDTO();
 
-        List<Section> sections = sectionRepository.findByMenuTrue();
+        List<Section> sections = sectionRepository.findByMenuTrue(); //TODO filtrar por role
 
         if (!sections.isEmpty()) {
             buildTree(sections, tree);
