@@ -40,7 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		if (byUsername.isPresent()) {
 			for (Role role : byUsername.get().getRoles()) {
-				roles.add(role.getName().name());
+				roles.add(role.getName());
 			}
 		} else {
 			throw new ServiceException("Not found username");

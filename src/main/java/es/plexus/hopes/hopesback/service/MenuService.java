@@ -2,20 +2,12 @@ package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.repository.SectionRepository;
-import es.plexus.hopes.hopesback.repository.model.ERole;
 import es.plexus.hopes.hopesback.repository.model.Section;
 import es.plexus.hopes.hopesback.service.mapper.MenuMapper;
-import liquibase.pro.packaged.A;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
@@ -26,10 +18,11 @@ public class MenuService {
         this.sectionRepository = sectionRepository;
     }
 
-    public MenuDTO findMenuByRole(ERole role) {
+    public MenuDTO findMenuByRole(String roles) {
 
         MenuDTO tree = new MenuDTO();
 
+        //ME HE QUEDADO AQUI, HACER EL JOIN Y FILTRAR POR LOS ROLES, tabla sections_roles
         List<Section> sections = sectionRepository.findByMenuTrue(); //TODO filtrar por role
 
         if (!sections.isEmpty()) {

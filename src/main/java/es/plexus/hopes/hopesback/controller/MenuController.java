@@ -1,16 +1,16 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
-import es.plexus.hopes.hopesback.repository.model.ERole;
 import es.plexus.hopes.hopesback.service.MenuService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/menu")
@@ -24,9 +24,13 @@ public class MenuController {
     }
 
     @GetMapping
-    public MenuDTO getMenuByRole(@RequestParam ERole role) {
+    public MenuDTO getMenu(Authentication authentication) {
 
-        MenuDTO menu = menuService.findMenuByRole(role); //TODO filtrar por patologia tambien  
+        final String roles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        MenuDTO menu = menuService.findMenuByRole(roles);
 
         return menu;
     }

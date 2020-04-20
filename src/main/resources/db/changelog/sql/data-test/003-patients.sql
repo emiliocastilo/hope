@@ -1,7 +1,8 @@
 -- INITIALIZE A DATABASE --
 
 INSERT INTO public.hospitals (hos_id, hos_name) VALUES (nextval('public.hospitals_hos_id_seq'), 'Hospital De la casa');
-INSERT INTO public.pathologies (pth_id, pth_name, pth_description) VALUES (nextval('public.pathologies_pth_id_seq'), 'Dermatología', 'Patologia Dermatología');
+INSERT INTO public.pathologies (pth_id, pth_name, pth_description) VALUES (1, 'Dermatología', 'Patologia Dermatología');
+INSERT INTO public.pathologies (pth_id, pth_name, pth_description) VALUES (2, 'VIH', 'Patologia VIH');
 
 INSERT INTO public.patients(
 	pac_id, pac_hos_id, pac_name, pac_first_surname, pac_last_surname, pac_nhc, pac_health_card, pac_dni, pac_address, pac_phone, pac_email, pac_gender_code, pac_birth_date)

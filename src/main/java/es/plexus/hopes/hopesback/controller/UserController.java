@@ -2,11 +2,9 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.ERole;
 import es.plexus.hopes.hopesback.repository.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,25 +52,9 @@ public class UserController {
 		return userRepository.findByUsername(username).orElse(null);
 	}
 
-	//TODO pruebas borrar
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/user/admin")
-	public String pruebaSoyAdmin() {
-		LOGGER.info("Entra el admin");
-		return "preautorizado para el admin";
-	}
-
-	//TODO pruebas borrar
-	@PreAuthorize("hasRole('ROLE_DOCTOR')")
-	@GetMapping("/user/doctor")
-	public String pruebaSoyDoctor() {
-		LOGGER.info("Entra el doctor");
-		return "preautorizado para el doctor";
-	}
-
 	@PostMapping("/user/choose_profile")
 	public void chooseProfile(@RequestBody String role, Authentication authentication, HttpServletResponse response) {
-		String token = TokenProvider.generateToken(authentication.getName(), ERole.valueOf(role), SECOND_TOKEN_EXPIRATION_TIME);
+		String token = TokenProvider.generateToken(authentication.getName(), role, SECOND_TOKEN_EXPIRATION_TIME);
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
 	}
 
