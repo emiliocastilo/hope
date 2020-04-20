@@ -1,474 +1,151 @@
 {
 	"info": {
-		"_postman_id": "660852d4-ab78-424a-9115-41a7cbfc0602",
+		"_postman_id": "c6de3e29-4afb-4756-865c-521aa8850e76",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Patients",
-			"item": [
-				{
-					"name": "Create",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"patient\",\n    \"firstSurname\": \"numero\",\n    \"lastSurname\": \"45\",\n    \"nhc\": \"MDMD210604237712\",\n    \"healthCard\": \"2112375698\",\n    \"dni\": \"94736562J\",\n    \"address\": \"Calle 21, 24, Segovia, Segovia, España CP: 28080\",\n    \"phone\":\"+34668795263\",\n    \"email\":\"patient.numero.cinco@hopes.com\",\n    \"birthDate\": \"1981-01-01T00:00:00Z\",\n    \"hospital\":{\n    \t\"id\":\"1\"\n    },\n    \"genderCode\":\"F\",\n    \"pathologies\":[\n    \t{\"id\":\"1\"}\n    ]\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/patient",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient"
-							],
-							"query": [
-								{
-									"key": "Content-Type",
-									"value": "application/json",
-									"disabled": true
-								}
-							]
-						},
-						"description": "Create Method"
-					},
-					"response": []
-				},
-				{
-					"name": "findAll",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "fb64fb0e-0992-43d2-b6db-39547265b331",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"username\": \"doctor\", \"password\": \"password\"}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
 					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patient?pth=1",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient"
-							],
-							"query": [
-								{
-									"key": "pth",
-									"value": "1"
-								}
-							]
-						},
-						"description": "find All Patients"
-					},
-					"response": []
-				},
-				{
-					"name": "findById",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patient/3",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient",
-								"3"
-							]
-						},
-						"description": "findById patient"
-					},
-					"response": []
-				},
-				{
-					"name": "delete",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patient/9",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient",
-								"9"
-							]
-						},
-						"description": "delet"
-					},
-					"response": []
-				},
-				{
-					"name": "Put",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "    {\r\n        \"id\": 17,\r\n        \"name\": \"patient\",\r\n        \"firstSurname\": \"asdf\",\r\n        \"lastSurname\": \"45\",\r\n        \"nhc\": \"MDMD210604237712\",\r\n        \"healthCard\": \"2112375698\",\r\n        \"dni\": \"94736562J\",\r\n        \"address\": \"Calle 21, 24, Segovia, Segovia, EspaÃ±a CP: 28080\",\r\n        \"phone\": \"+34668795263\",\r\n        \"email\": \"patient.numero.cinco@hopes.com\",\r\n        \"birthDate\": \"1981-01-01\",\r\n        \"hospital\": {\r\n            \"id\": 1,\r\n            \"name\": \"Hospital Perpetuo Confinamiento\",\r\n            \"pathologies\": []\r\n        },\r\n        \"genderCode\": \"F\",\r\n        \"pathologies\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"ReumatologÃ­a\",\r\n                \"description\": \"Patologia ReumatologÃ­a\"\r\n            }\r\n        ]\r\n    }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/patient",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "findAllByPageable",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"pageable\":{\n\t\"pageNumber\":\"0\",\n\t\"pageSize\":\"2\",\n\t\"sort\":{\n\t\t\t\"sorted\":\"true\",\n\t\t\t\"properties\":[{\"name\"}]\n\t\t}\n\t}\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/patient/sort",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient",
-								"sort"
-							]
-						}
-					},
-					"response": []
+					"port": "8080",
+					"path": [
+						"v1",
+						"login"
+					]
 				}
-			],
-			"description": "Rest API of patients",
-			"protocolProfileBehavior": {}
+			},
+			"response": []
 		},
 		{
-			"name": "Menu",
-			"item": [
-				{
-					"name": "get menu",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/menu?role=ROLE_ADMIN",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"menu"
-							],
-							"query": [
-								{
-									"key": "role",
-									"value": "ROLE_ADMIN"
-								}
-							]
+			"name": "choose profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2N0b3IiLCJDTEFJTV9UT0tFTiI6IlJPTEVfQURNSU4sUk9MRV9ET0NUT1JfREVSTUFUT0xPR1kiLCJpYXQiOjE1ODczODYzNjUsImlzcyI6ImhvcGVzIiwiZXhwIjoxNTg3Mzg2NjY1fQ.cnEW82S7IDbelK_DCzO_hjoQDZvsjcZEp39xUBMRRJE",
+							"type": "string"
 						}
-					},
-					"response": []
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "ROLE_DOCTOR_DERMATOLOGY",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user/choose_profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user",
+						"choose_profile"
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			},
+			"response": []
 		},
 		{
-			"name": "Login",
-			"item": [
-				{
-					"name": "login",
-					"event": [
+			"name": "get users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
 						{
-							"listen": "test",
-							"script": {
-								"id": "9ab53404-7985-45e3-a65c-cf5050f92fff",
-								"exec": [
-									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
-								],
-								"type": "text/javascript"
-							}
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU4Njk0Mjk4MCwiaXNzIjoiaG9wZXMiLCJleHAiOjE1ODY5NzE3ODB9.UzqnJzCWCdP0B7q8hcfj_X9XHXN5qcrEizlaRhsBT6c",
+							"type": "string"
 						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/user/",
+					"protocol": "http",
+					"host": [
+						"localhost"
 					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{ \"username\": \"admin\", \"password\": \"password\"}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/login",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "choose profile",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "ROLE_ADMIN",
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/user/choose_profile",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"user",
-								"choose_profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get users",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/user/",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"user",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get for admin",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/user/admin",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"user",
-								"admin"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get for doctor",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/user/doctor",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"user",
-								"doctor"
-							]
-						}
-					},
-					"response": []
+					"port": "8080",
+					"path": [
+						"v1",
+						"user",
+						""
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			},
+			"response": []
+		},
+		{
+			"name": "get menu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkb2N0b3IiLCJDTEFJTV9UT0tFTiI6IlJPTEVfRE9DVE9SX0RFUk1BVE9MT0dZIiwiaWF0IjoxNTg3Mzg2NDAwLCJpc3MiOiJob3BlcyIsImV4cCI6MTU4NzQxNTIwMH0.B5BfrG_WAEBNXs4cjIMTS7GG4SfrP27CH7uQ_Uqs1NY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/menu",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"menu"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

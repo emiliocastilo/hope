@@ -58,7 +58,7 @@ public class Section {
             inverseJoinColumns = {@JoinColumn(name = "scf_form_id")})
     private Set<Form> forms = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "sections_roles",
             joinColumns = @JoinColumn(name = "scr_section_id"),
             inverseJoinColumns = {@JoinColumn(name = "scr_role_id")})

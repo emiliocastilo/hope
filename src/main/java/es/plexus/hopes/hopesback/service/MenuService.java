@@ -18,12 +18,11 @@ public class MenuService {
         this.sectionRepository = sectionRepository;
     }
 
-    public MenuDTO findMenuByRole(String roles) {
+    public MenuDTO findMenuByRole(List<String> roles) {
 
         MenuDTO tree = new MenuDTO();
 
-        //ME HE QUEDADO AQUI, HACER EL JOIN Y FILTRAR POR LOS ROLES, tabla sections_roles
-        List<Section> sections = sectionRepository.findByMenuTrue(); //TODO filtrar por role
+        List<Section> sections = sectionRepository.findByMenuTrueAndRoles(roles);
 
         if (!sections.isEmpty()) {
             buildTree(sections, tree);
@@ -32,6 +31,12 @@ public class MenuService {
         return tree;
     }
 
+    /**
+     * Build tree menu with recursive iterations
+     *
+     * @param sections
+     * @param parent
+     */
     private void buildTree(List<Section> sections, MenuDTO parent) {
 
         // Copy list

@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
+
 	@Query("select pac from Patient pac join pac.pathologies pat WHERE pat.id = :id")
 	List<Patient> findByPathologies(@Param("id")Long id);
 

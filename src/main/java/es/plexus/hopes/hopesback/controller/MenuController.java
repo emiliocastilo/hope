@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,9 +27,9 @@ public class MenuController {
     @GetMapping
     public MenuDTO getMenu(Authentication authentication) {
 
-        final String roles = authentication.getAuthorities().stream()
+        final List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+                .collect(Collectors.toList());
 
         MenuDTO menu = menuService.findMenuByRole(roles);
 
