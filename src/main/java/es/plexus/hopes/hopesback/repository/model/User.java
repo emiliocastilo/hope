@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -24,48 +25,51 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "usr_name"),
-        @UniqueConstraint(columnNames = "usr_email")})
+		@UniqueConstraint(columnNames = "usr_name"),
+		@UniqueConstraint(columnNames = "usr_email")})
 public class User {
 
-    @Id
-    @Column(name="usr_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Column(name = "usr_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @NotBlank
-    @Size(max=500)
-    @Column(name ="usr_name")
-    private String username;
+	@NotBlank
+	@Size(max = 500)
+	@Column(name = "usr_name")
+	private String username;
 
-    @NotBlank
-    @Size(max=200)
-    @Column(name ="usr_password")
-    private String password;
+	@NotBlank
+	@Size(max = 200)
+	@Column(name = "usr_password")
+	private String password;
 
-    @NotBlank
-    @Size(max=50)
-    @Column(name ="usr_email")
-    @Email
-    private String email;
+	@NotBlank
+	@Size(max = 50)
+	@Column(name = "usr_email")
+	@Email
+	private String email;
 
-    @Column(name = "usr_date_crea", columnDefinition = "TIMESTAMP")
-    private LocalDate dateCreation;
+	@Column(name = "usr_date_crea", columnDefinition = "TIMESTAMP")
+	private LocalDate dateCreation;
 
-    @Column(name="usr_date_mod", columnDefinition = "TIMESTAMP")
-    private LocalDate dateModification;
+	@Column(name = "usr_date_mod", columnDefinition = "TIMESTAMP")
+	private LocalDate dateModification;
 
-    @ManyToOne
-    @JoinColumn(name="usr_hos_id")
-    private Hospital hospital;
+	@ManyToOne
+	@JoinColumn(name = "usr_hos_id")
+	private Hospital hospital;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "uro_user_id"),
-            inverseJoinColumns = @JoinColumn(name = "uro_rol_id"))
-    private Set<Role> roles = new HashSet<>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "users_roles",
+			joinColumns = @JoinColumn(name = "uro_user_id"),
+			inverseJoinColumns = @JoinColumn(name = "uro_rol_id"))
+	private Set<Role> roles = new HashSet<>();
 
-    @Column(name="usr_active")
-    private boolean active;
+	@Column(name = "usr_active")
+	private boolean active;
+
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+	private Doctor doctor;
 
 }

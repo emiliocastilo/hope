@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,8 +43,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = HopesBackApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerTest {
+
+	@LocalServerPort
+	int randomServerPort;
 
 	private static final String URL_TEMPLATE = "/user/";
 
@@ -222,7 +226,7 @@ public class UserControllerTest {
 
 	private Role mockFullRole() {
 		final Role role = new Role();
-		role.setId(1);
+		role.setId(1L);
 		role.setName(ERole.ROLE_ADMIN);
 		role.setDescription("Rol Description");
 
