@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.ERole;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -107,7 +106,7 @@ public class UserDetailsServiceImplTest {
 	private Role mockFullRole() {
 		final Role role = new Role();
 		role.setId(1L);
-		role.setName(ERole.ROLE_ADMIN);
+		role.setName("ROLE_ADMIN");
 		role.setDescription("Rol Description");
 
 		return role;

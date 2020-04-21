@@ -58,17 +58,17 @@ DROP TABLE IF EXISTS public.sections_roles CASCADE;
 CREATE TABLE public.sections_roles (
 	scr_id serial,
 	scr_section_id smallint NOT NULL,
-	scr_form_id smallint NOT NULL,
+	scr_role_id smallint NOT NULL,
 	CONSTRAINT scr_id_pk PRIMARY KEY (scr_id),
 	CONSTRAINT scr_section_id_fk FOREIGN KEY (scr_section_id) REFERENCES public.sections(sec_id),
-	CONSTRAINT scr_form_id_fk FOREIGN KEY (scr_form_id) REFERENCES public.roles(rol_id)
+	CONSTRAINT scr_role_id_fk FOREIGN KEY (scr_role_id) REFERENCES public.roles(rol_id)
 );
 -- COMENTARIOS
 COMMENT ON TABLE public.sections_roles IS 'Tabla intermedia que representa la relación entre las entidades SECTIONS y FORMS';
 COMMENT ON COLUMN public.sections_roles.scr_id IS 'Columna con el identificador entre un formulario y un apartado';
 COMMENT ON COLUMN public.sections_roles.scr_section_id IS 'Columna que contiene el identificador del apartado de la patologia';
-COMMENT ON COLUMN public.sections_roles.scr_form_id IS 'Columna que contiene el identificador del formulario dentro del apartado';
+COMMENT ON COLUMN public.sections_roles.scr_role_id IS 'Columna que contiene el identificador del formulario dentro del apartado';
 COMMENT ON CONSTRAINT scr_id_pk ON public.sections_roles IS 'pk de la tabla SECTIONS_FORMS';
 COMMENT ON CONSTRAINT scr_section_id_fk ON public.sections_roles IS 'fk Relacion con la tabla SECTIONS';
-COMMENT ON CONSTRAINT scr_form_id_fk ON public.sections_roles IS 'fk Relacion con la tabla ROLES';
+COMMENT ON CONSTRAINT scr_role_id_fk ON public.sections_roles IS 'fk Relacion con la tabla ROLES';
 -- ddl-end --

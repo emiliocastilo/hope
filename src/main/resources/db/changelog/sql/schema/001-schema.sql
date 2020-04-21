@@ -126,19 +126,19 @@ DROP TABLE IF EXISTS public.patients_pathologies CASCADE;
 CREATE TABLE public.patients_pathologies (
 	pcp_id serial,
 	pcp_pac_id bigint NOT NULL,
-	PCP_pth_id smallint NOT NULL,
+	pcp_pth_id smallint NOT NULL,
 	CONSTRAINT pcp_id_pk PRIMARY KEY (pcp_id),
 	CONSTRAINT pcp_pac_id_fk FOREIGN KEY (pcp_pac_id) REFERENCES public.patients(pac_id),
-	CONSTRAINT PCP_pth_id_fk FOREIGN KEY (PCP_pth_id) REFERENCES public.pathologies(pth_id)
+	CONSTRAINT pcp_pth_id_fk FOREIGN KEY (pcp_pth_id) REFERENCES public.pathologies(pth_id)
 );
 -- COMENTARIOS
 COMMENT ON TABLE public.patients_pathologies IS 'Tabla intermedia que representa la relación entre las entidades PATIENTS y PATHOLOGIES';
 COMMENT ON COLUMN public.patients_pathologies.pcp_id IS 'Columna con el id de base de datos de la relación entre las tablas pacientes y patologias(pk)';
 COMMENT ON COLUMN public.patients_pathologies.pcp_pac_id IS 'Columna con el id del paciente';
-COMMENT ON COLUMN public.patients_pathologies.PCP_pth_id IS 'Columna con el id de la patologia';
+COMMENT ON COLUMN public.patients_pathologies.pcp_pth_id IS 'Columna con el id de la patologia';
 COMMENT ON CONSTRAINT pcp_id_pk ON public.patients_pathologies IS 'pk de la tabla PATIENTS_PATHOLOGIES';
 COMMENT ON CONSTRAINT pcp_pac_id_fk ON public.patients_pathologies IS 'fk Relacion con la tabla PATIENTS';
-COMMENT ON CONSTRAINT PCP_pth_id_fk ON public.patients_pathologies IS 'fk Relacion con la tabla PATHOLOGIES';
+COMMENT ON CONSTRAINT pcp_pth_id_fk ON public.patients_pathologies IS 'fk Relacion con la tabla PATHOLOGIES';
 -- ddl-end --
 
 -- object: public.hospitals_pathologies | type: TABLE --
@@ -165,27 +165,23 @@ COMMENT ON CONSTRAINT hsp_pth_id_fk ON public.hospitals_pathologies IS 'fk Relac
 DROP TABLE IF EXISTS public.sections CASCADE;
 CREATE TABLE public.sections (
 	sec_id serial,
-	sec_pth_id smallint NOT NULL,
 	sec_title varchar(50) NOT NULL,
 	sec_description varchar(500),
 	sec_menu boolean,
 	sec_order smallint NOT NULL,
 	sec_section_root smallint,
 	CONSTRAINT sec_id_pk PRIMARY KEY (sec_id),
-	CONSTRAINT sec_pth_id_fk FOREIGN KEY (sec_pth_id) REFERENCES public.pathologies(pth_id),
 	CONSTRAINT sec_section_root_fk FOREIGN KEY (sec_section_root) REFERENCES public.sections(sec_id)
 );
 -- COMENTARIOS
 COMMENT ON TABLE public.sections IS 'Tabla que representa la entidad SECTIONS. Se consideran apartados tanto las opciones de menu como cualquier elemento hijo que cuelgue de él';
 COMMENT ON COLUMN public.sections.sec_id IS 'Columna con el id de base de datos del patologia(pk)';
-COMMENT ON COLUMN public.sections.sec_pth_id IS 'Columna que contiene el identificador de la patologia a la que el apartado hace referencia';
 COMMENT ON COLUMN public.sections.sec_title IS 'Columna que contiene el titulo del apartado del menu de la patologia';
 COMMENT ON COLUMN public.sections.sec_description IS 'Columna que contiene la descripcion detallada del apartado del menu de la patologia';
 COMMENT ON COLUMN public.sections.sec_menu IS 'Columna que indica sí este apartado forma parte del menu de la patologia';
 COMMENT ON COLUMN public.sections.sec_order IS 'Columna que indica el orden del apartado dentro del menu/listado de apartados de la patologia';
 COMMENT ON COLUMN public.sections.sec_section_root IS 'Columna que contiene el identificador del apartado padre en el que estaría incluido creando un arbol de apartados dentro del menú de la patologia';
 COMMENT ON CONSTRAINT sec_id_pk ON public.sections IS 'pk de la tabla SECTIONS';
-COMMENT ON CONSTRAINT sec_pth_id_fk ON public.sections IS 'fk Relacion con la tabla PATHOLOGIES';
 COMMENT ON CONSTRAINT sec_section_root_fk ON public.sections IS 'fk Relacion con la tabla SECTIONS';
 -- ddl-end --
 

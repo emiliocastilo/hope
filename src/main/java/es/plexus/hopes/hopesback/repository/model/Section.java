@@ -49,10 +49,6 @@ public class Section {
 	private String url;
 
 	@ManyToOne
-	@JoinColumn(name = "sec_pth_id", referencedColumnName = "pth_id", nullable = false)
-	private Pathology pathology;
-
-	@ManyToOne
 	@JoinColumn(name = "sec_section_root", referencedColumnName = "sec_id")
 	private Section fatherSection;
 
@@ -62,7 +58,7 @@ public class Section {
 			inverseJoinColumns = {@JoinColumn(name = "scf_form_id")})
 	private Set<Form> forms = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "sections_roles",
 			joinColumns = @JoinColumn(name = "scr_section_id"),
 			inverseJoinColumns = {@JoinColumn(name = "scr_role_id")})

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import es.plexus.hopes.hopesback.HopesBackApplication;
 import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.ERole;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -199,7 +198,7 @@ public class UserControllerTest {
 	private String mockTokenAccess() {
 		given(userRepository.findByUsername(anyString())).willReturn(Optional.of(mockFullUser()));
 
-		return TokenProvider.generateToken("admin", ERole.ROLE_ADMIN, 5000);
+		return TokenProvider.generateToken("admin", "ROLE_ADMIN", 5000);
 	}
 
 	private User mockFullUser() {
@@ -227,7 +226,7 @@ public class UserControllerTest {
 	private Role mockFullRole() {
 		final Role role = new Role();
 		role.setId(1L);
-		role.setName(ERole.ROLE_ADMIN);
+		role.setName("ROLE_ADMIN");
 		role.setDescription("Rol Description");
 
 		return role;

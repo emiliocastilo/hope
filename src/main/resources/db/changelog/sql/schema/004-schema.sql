@@ -1,11 +1,10 @@
 ALTER TABLE public.patients ALTER COLUMN pac_hos_id TYPE bigint;
 
-ALTER TABLE public.patients_pathologies ALTER COLUMN PCP_pth_id TYPE bigint;
+ALTER TABLE public.patients_pathologies ALTER COLUMN pcp_pth_id TYPE bigint;
 
 ALTER TABLE public.hospitals_pathologies ALTER COLUMN hsp_hos_id TYPE bigint;
 ALTER TABLE public.hospitals_pathologies ALTER COLUMN hsp_pth_id TYPE bigint;
 
-ALTER TABLE public.sections ALTER COLUMN sec_pth_id TYPE bigint;
 ALTER TABLE public.sections ALTER COLUMN sec_order TYPE bigint;
 ALTER TABLE public.sections ALTER COLUMN sec_section_root TYPE bigint;
 

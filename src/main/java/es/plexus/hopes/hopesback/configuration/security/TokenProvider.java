@@ -1,6 +1,5 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
-import es.plexus.hopes.hopesback.repository.model.ERole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
@@ -41,11 +40,11 @@ public class TokenProvider {
 				.compact();
 	}
 
-	public static String generateToken(String username, ERole role, long expirationTime) {
+	public static String generateToken(String username, String role, long expirationTime) {
 
 		return Jwts.builder()
 				.setSubject(username)
-				.claim(AUTHORITIES_KEY, role.name())
+				.claim(AUTHORITIES_KEY, role)
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setIssuer(ISSUER_INFO)
