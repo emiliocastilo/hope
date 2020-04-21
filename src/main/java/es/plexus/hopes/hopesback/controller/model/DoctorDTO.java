@@ -4,13 +4,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @ApiModel
 public class DoctorDTO {
 
-	@ApiModelProperty(position = 10, example = "1L", value = "Identificador en la BD")
+	@ApiModelProperty(position = 10, example = "1", value = "Identificador en la BD")
 	private Long id;
 
 	@ApiModelProperty(position = 20, example = "Francisco", value = "Nombre del médico")
@@ -28,19 +28,22 @@ public class DoctorDTO {
 	@ApiModelProperty(position = 60, example = "12345678", value = "Número de colegiado médico")
 	private Long collegeNumber;
 
-	@ApiModelProperty(position = 70, example = "true", value = "¿Está en activo?")
-	private Boolean active;
+	@ApiModelProperty(position = 70, example = "Francisco", value = "Nombre de usuario relacionado al médico")
+	private String username;
 
-	@ApiModelProperty(position = 80, example = "2020-02-20", value = "Fecha de creación")
-	private LocalDate dateCreate;
+	@ApiModelProperty(position = 80, example = "ContraseñaFrancisco", value = "Contraseña del usuario")
+	private String password;
 
-	@ApiModelProperty(position = 90, example = "2020-02-20", value = "Fecha de modificación")
-	private LocalDate dateModify;
+	@ApiModelProperty(position = 90, example = "francisco@gmail.com", value = "Correo del usuario")
+	private String email;
 
-	@ApiModelProperty(position = 100, example = "1L", value = "Usuario relacionado al médico")
-	private UserDTO user;
+	@ApiModelProperty(position = 100, example = "1", value = "Identificador del hospital al que pertenece el médico")
+	private Long hospitalId;
 
-	@ApiModelProperty(position = 110, example = "1L", value = "Servicio relacionado al médico")
+	@ApiModelProperty(position = 110, example = "[1]", value = "Listado de roles del usuario")
+	private List<Long> roleList;
+
+	@ApiModelProperty(position = 120, example = "1", value = "Servicio relacionado al médico")
 	private Long serviceId;
 
 }

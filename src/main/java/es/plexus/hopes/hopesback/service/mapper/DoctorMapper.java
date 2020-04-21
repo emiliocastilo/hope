@@ -2,12 +2,10 @@ package es.plexus.hopes.hopesback.service.mapper;
 
 import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
-import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.repository.model.Doctor;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.Service;
-import es.plexus.hopes.hopesback.repository.model.User;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,21 +21,16 @@ import java.util.stream.Collectors;
 public interface DoctorMapper {
 
 	@Mappings({
-			@Mapping(source = "service", target = "serviceId", qualifiedByName = "serviceToLongIdConverter")
+			@Mapping(source = "service", target = "serviceId", qualifiedByName = "serviceToLongIdConverter"),
+			@Mapping(source = "user.username", target = "username"),
+			@Mapping(source = "user.password", target = "password"),
+			@Mapping(source = "user.email", target = "email"),
+			@Mapping(source = "user.hospital", target = "hospitalId", qualifiedByName = "userToLongIdConverter"),
+			@Mapping(source = "user.roles", target = "roleList", qualifiedByName = "rolesToLongIdListConverter")
 	})
 	DoctorDTO doctorToDoctorDTOConverter(final Doctor doctor);
 
-	List<DoctorDTO> doctorListToDoctorDTOListConverter(final List<Doctor> doctorList);
-
 	Doctor doctorDTOToDoctorConverter(final DoctorDTO doctorDTO);
-
-	@Mappings({
-			@Mapping(source = "hospital", target = "hospitalId", qualifiedByName = "userToLongIdConverter"),
-			@Mapping(source = "roles", target = "roleList", qualifiedByName = "rolesToLongIdListConverter")
-	})
-	UserDTO userDTOToUserConverter(final User user);
-
-	User userToUserDTOConverter(final UserDTO userDTO);
 
 	RoleDTO roleDTOToRoleConverter(final Role user);
 
