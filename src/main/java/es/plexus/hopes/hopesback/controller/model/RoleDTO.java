@@ -5,8 +5,10 @@ import lombok.Data;
 
 @ApiModel
 @Data
-public class PathologyDTO {
-    private Long id;
-    private String name;
-    private String description;
+public class RoleDTO {
+
+	private Long id;
+	private String name;
+	private String description;
+
 }

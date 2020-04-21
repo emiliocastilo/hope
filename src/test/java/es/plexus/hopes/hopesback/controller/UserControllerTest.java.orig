@@ -225,8 +225,13 @@ public class UserControllerTest {
 
 	private Role mockFullRole() {
 		final Role role = new Role();
-		role.setId(1L);
+<<<<<<< HEAD
+		role.setId(1);
 		role.setName("ROLE_ADMIN");
+=======
+		role.setId(1L);
+		role.setName(ERole.ROLE_ADMIN);
+>>>>>>> dev
 		role.setDescription("Rol Description");
 
 		return role;

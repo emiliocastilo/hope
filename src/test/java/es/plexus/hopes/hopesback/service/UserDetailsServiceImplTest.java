@@ -105,7 +105,7 @@ public class UserDetailsServiceImplTest {
 
 	private Role mockFullRole() {
 		final Role role = new Role();
-		role.setId(1);
+		role.setId(1L);
 		role.setName("ROLE_ADMIN");
 		role.setDescription("Rol Description");
 
