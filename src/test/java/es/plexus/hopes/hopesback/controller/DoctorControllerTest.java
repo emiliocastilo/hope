@@ -2,23 +2,23 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
 import es.plexus.hopes.hopesback.service.DoctorService;
-import org.hibernate.service.spi.ServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.time.LocalDate;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -41,10 +41,13 @@ public class DoctorControllerTest {
 	@Test
 	public void getAllDoctorsShouldBeStatusOk() {
 		// given
-		given(doctorService.getAllDoctors()).willReturn(Collections.singletonList(mockDoctorDTO()));
+		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
+		given(doctorService.getAllDoctors(any(Pageable.class)))
+				.willReturn(getPageableDoctor(pageRequest));
 
 		// when
-		ResponseEntity<List<DoctorDTO>> response = doctorController.getAllDoctors();
+		ResponseEntity<Page<DoctorDTO>> response = doctorController
+				.getAllDoctors(pageRequest);
 
 		// then
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
@@ -96,27 +99,31 @@ public class DoctorControllerTest {
 	@Test
 	public void updateDoctorShouldBeStatusOk() {
 		// given
+		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
 		given(doctorService.updateDoctor(any(DoctorDTO.class))).willReturn(mockDoctorDTO());
 
 		// when
-		ResponseEntity<DoctorDTO> response = doctorController.updateDoctor(1L, mockDoctorDTO());
+		ResponseEntity<DoctorDTO> response = doctorController.updateDoctor(mockDoctorDTO());
 
 		// then
 		assertEquals(response.getStatusCode(), HttpStatus.OK);
 		assertNotNull(response.getBody());
 	}
 
-	@Test(expected = ServiceException.class)
-	public void updateDoctorShouldBeServiceExceptionWhenNotFound() {
-		// given
-		given(doctorService.updateDoctor(any(DoctorDTO.class))).willThrow(ServiceException.class);
-
+	@Test
+	public void updateDoctorShouldBeBadRequestWhenNotFound() {
 		// when
-		doctorController.updateDoctor(1L, mockDoctorDTO());
+		ResponseEntity<DoctorDTO> response = doctorController.updateDoctor(mockDoctorDTO());
+
+		// then
+		assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
 	public void deleteDoctorShouldBeOk() {
+		// given
+		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
+
 		// when
 		doctorController.deleteDoctor(1L);
 
@@ -126,17 +133,18 @@ public class DoctorControllerTest {
 
 	private DoctorDTO mockDoctorDTO() {
 		DoctorDTO doctorDTO = new DoctorDTO();
+		doctorDTO.setId(1L);
 		doctorDTO.setName("Paco");
 		doctorDTO.setSurname("Gonzales");
 		doctorDTO.setPhone("123456789");
 		doctorDTO.setDni("12345678Z");
 		doctorDTO.setCollegeNumber(123456L);
-		doctorDTO.setActive(true);
-		doctorDTO.setDateCreate(LocalDate.now());
-		doctorDTO.setDateModify(LocalDate.now());
-		doctorDTO.setUser(null);
 		doctorDTO.setServiceId(1L);
 
 		return doctorDTO;
+	}
+
+	private PageImpl<DoctorDTO> getPageableDoctor(PageRequest pageRequest) {
+		return new PageImpl<>(Collections.singletonList(mockDoctorDTO()), pageRequest, 1);
 	}
 }
