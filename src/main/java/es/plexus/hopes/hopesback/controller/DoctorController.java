@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.Objects;
 
@@ -48,8 +47,9 @@ public class DoctorController {
 		return ResponseEntity.ok(doctorService.getOneDoctor(id));
 	}
 
+	//todo añadir los @valid en el post y put cuando tengamos en el front los servicios cargados
 	@PostMapping
-	public ResponseEntity<DoctorDTO> addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
+	public ResponseEntity<DoctorDTO> addDoctor(@RequestBody final DoctorDTO doctorDTO) {
 		LOGGER.debug(CALLING_SERVICE);
 		final DoctorDTO doctor = doctorService.addDoctor(doctorDTO);
 		final URI location = ServletUriComponentsBuilder
@@ -62,7 +62,7 @@ public class DoctorController {
 	}
 
 	@PutMapping
-	public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
+	public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody final DoctorDTO doctorDTO) {
 		final Long id = doctorDTO.getId();
 		if (checkDoctorExistence(id)) return ResponseEntity.badRequest().build();
 
@@ -70,8 +70,8 @@ public class DoctorController {
 		return ResponseEntity.ok(doctorService.updateDoctor(doctorDTO));
 	}
 
-	@DeleteMapping
-	public ResponseEntity<Object> deleteDoctor(@RequestBody Long id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> deleteDoctor(@PathVariable final Long id) {
 		if (checkDoctorExistence(id)) return ResponseEntity.badRequest().build();
 		LOGGER.debug(CALLING_SERVICE);
 		doctorService.deleteDoctor(id);

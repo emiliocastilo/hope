@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -53,27 +52,15 @@ public class DoctorService {
 
 	public DoctorDTO addDoctor(DoctorDTO doctorDTO) {
 		Doctor doctor = doctorMapper.doctorDTOToDoctorConverter(doctorDTO);
-		doctor.setDateCreate(LocalDate.now());
-		doctor.setDateModify(LocalDate.now());
-		doctor.setActive(true);
-
 		LOGGER.debug("Calling DB...");
-
 		doctor = doctorRepository.save(doctor);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
 	}
 
 	public DoctorDTO updateDoctor(DoctorDTO doctorDTO) {
-		Doctor storedDoctor = doctorRepository.getOne(doctorDTO.getId());
-
 		Doctor doctor = doctorMapper.doctorDTOToDoctorConverter(doctorDTO);
-		doctor.setDateCreate(storedDoctor.getDateCreate());
-		doctor.setDateModify(LocalDate.now());
-		doctor.setActive(storedDoctor.getActive());
-
 		LOGGER.debug("Calling DB...");
-
 		doctor = doctorRepository.save(doctor);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);

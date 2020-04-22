@@ -13,13 +13,17 @@ import es.plexus.hopes.hopesback.repository.model.Service;
 import es.plexus.hopes.hopesback.repository.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class DoctorEntitiesMappingResolver implements DoctorMapper {
+
+	private static final LocalDate NOW = LocalDate.now();
 
 	@Autowired
 	private DoctorRepository doctorRepository;
@@ -37,31 +41,63 @@ public abstract class DoctorEntitiesMappingResolver implements DoctorMapper {
 	private UserRepository userRepository;
 
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
 	@Qualifier("delegate")
 	private DoctorMapper delegate;
 
 	public Doctor doctorDTOToDoctorConverter(final DoctorDTO doctorDTO) {
-		final Service service = serviceRepository.getOne(doctorDTO.getServiceId());
+		final Doctor storedDoctor = searchStoredRecord(doctorDTO);
+		final Service service = resolveDoctorServices(doctorDTO);
 
 		final Doctor doctor = delegate.doctorDTOToDoctorConverter(doctorDTO);
 		doctor.setService(service);
+		doctor.setDateModify(NOW);
 
-		createUser(doctor, doctorDTO);
+		if (isExistingRecord(storedDoctor)) {
+			doctor.setDateCreate(storedDoctor.getDateCreate());
+			doctor.setActive(storedDoctor.getActive());
+		} else {
+			doctor.setDateCreate(NOW);
+			doctor.setActive(true);
+		}
+
+		createUser(doctor, doctorDTO, storedDoctor);
 
 		return doctor;
 	}
 
-	private void createUser(Doctor doctor, DoctorDTO doctorDTO) {
-		final Hospital hospital = hospitalRepository.getOne(doctorDTO.getHospitalId());
-		final Set<Role> roles = findRoles(doctorDTO.getRoleList());
+	private Doctor searchStoredRecord(DoctorDTO doctorDTO) {
+		Doctor storedDoctor = null;
+		if (doctorDTO.getId() != null) {
+			storedDoctor = doctorRepository.getOne(doctorDTO.getId());
+		}
+		return storedDoctor;
+	}
 
-		Long userId = checkUserExistence(doctorDTO);
+	private Service resolveDoctorServices(DoctorDTO doctorDTO) {
+		Service service = null;
+		//todo Implementar el crud de servicios para evitar que pete en el front y eliminar el id
+		if (doctorDTO.getServiceId() != null) {
+			service = serviceRepository.getOne(1L);
+		}
+		return serviceRepository.getOne(1L);
+	}
+
+	//todo Implementar el crud de hospitales y roles para evitar que pete en el front y eliminar el id
+	private void createUser(Doctor doctor, DoctorDTO doctorDTO, Doctor storedDoctor) {
+		//todo controlar que los valores no vengan a null cuando tengamos los crud
+		final Hospital hospital = hospitalRepository.getOne(1L);
+		final Set<Role> roles = findRoles(Arrays.asList(1L, 2L));
+
+		final Long userId = getIdOfExistingUser(storedDoctor);
 
 		User doctorUser;
 
 		if (userId == null) {
 			final User user = new User();
-			user.setDateCreation(LocalDate.now());
+			user.setDateCreation(NOW);
 			setUserAttributes(doctorDTO, hospital, roles, user);
 			doctorUser = user;
 		} else {
@@ -74,29 +110,26 @@ public abstract class DoctorEntitiesMappingResolver implements DoctorMapper {
 		doctor.setUser(doctorUser);
 	}
 
-	private Long checkUserExistence(DoctorDTO doctorDTO) {
-		Long userId = null;
-		if (doctorDTO.getId() != null) {
-			Doctor storedDoctor = doctorRepository.getOne(doctorDTO.getId());
-			if (storedDoctor.getUser() != null) {
-				userId = storedDoctor.getUser().getId();
-			}
-		}
-		return userId;
+	private Set<Role> findRoles(List<Long> longs) {
+		return longs.stream().map(aLong -> roleRepository.getOne(aLong)).collect(Collectors.toSet());
+	}
+
+	private Long getIdOfExistingUser(Doctor storedDoctor) {
+		return (isExistingRecord(storedDoctor) && storedDoctor.getUser() != null) ? storedDoctor.getUser().getId() : null;
 	}
 
 	private void setUserAttributes(DoctorDTO doctorDTO, Hospital hospital, Set<Role> roles, User user) {
-		user.setDateModification(LocalDate.now());
+		user.setDateModification(NOW);
 		user.setActive(true);
 		user.setHospital(hospital);
 		user.setRoles(roles);
 
 		user.setUsername(doctorDTO.getUsername());
-		user.setPassword(doctorDTO.getPassword());
+		user.setPassword(bCryptPasswordEncoder.encode(doctorDTO.getPassword()));
 		user.setEmail(doctorDTO.getEmail());
 	}
 
-	private Set<Role> findRoles(List<Long> longs) {
-		return longs.stream().map(aLong -> roleRepository.getOne(aLong)).collect(Collectors.toSet());
+	private boolean isExistingRecord(Doctor storedDoctor) {
+		return storedDoctor != null;
 	}
 }

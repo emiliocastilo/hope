@@ -18,6 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import static es.plexus.hopes.hopesback.configuration.security.Constants.LOGIN_URL;
 
 @Configuration
@@ -64,10 +67,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
-		
+
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
 		CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+		corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
 		corsConfiguration.addExposedHeader("Authorization");
 
 		source.registerCorsConfiguration("/**", corsConfiguration);
