@@ -1,7 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
-import es.plexus.hopes.hopesback.service.DoctorService;
+import java.net.URI;
+import java.util.Objects;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.Objects;
+import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
+import es.plexus.hopes.hopesback.service.DoctorService;
 
 @RestController
 @RequestMapping("/doctor")
@@ -47,6 +49,13 @@ public class DoctorController {
 		return ResponseEntity.ok(doctorService.getOneDoctor(id));
 	}
 
+	@GetMapping("/findDoctorsBySearch")
+	public Page<DoctorDTO> findDoctorsBySearch(@RequestParam(value = "search", required = false, defaultValue = "")String search, @PageableDefault(size = 5) Pageable pageable) {
+		LOGGER.debug(CALLING_SERVICE);
+		return doctorService.findDoctorsBySearch(search, pageable);
+	  
+    }
+	
 	//todo añadir los @valid en el post y put cuando tengamos en el front los servicios cargados
 	@PostMapping
 	public ResponseEntity<DoctorDTO> addDoctor(@RequestBody final DoctorDTO doctorDTO) {
@@ -86,4 +95,10 @@ public class DoctorController {
 		}
 		return false;
 	}
+	
+	@GetMapping("/filterDoctors")
+	public Page<DoctorDTO> filterDoctors(@RequestParam(value = "doctor", required = false, defaultValue = "{}") String doctor, @PageableDefault(size = 5) Pageable pageable) {
+		LOGGER.debug(CALLING_SERVICE);
+		return doctorService.filterDoctors(doctor, pageable);
+    }
 }
