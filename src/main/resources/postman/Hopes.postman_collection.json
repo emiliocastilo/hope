@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ef69215c-eaff-44ec-8ff7-f0dfcac5d29c",
+		"_postman_id": "8cf1f845-fd68-4b70-b5fc-f05e46b75dde",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -541,6 +541,95 @@
 								{
 									"key": "sort",
 									"value": "name,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindDoctorsBySearch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/doctor?page=0&size=5&sort=name,asc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"doctor"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FilterDoctors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/doctor/filterDoctors?page=0&size=5&sort=name,asc&doctor={\"name\":\"Juan\", \"surname\":\"Perez\"}",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"doctor",
+								"filterDoctors"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								},
+								{
+									"key": "doctor",
+									"value": "{\"name\":\"Juan\", \"surname\":\"Perez\"}"
 								}
 							]
 						}
