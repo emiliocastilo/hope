@@ -36,6 +36,8 @@ public interface DoctorMapper {
 
 	Role roleToRoleDTOConverter(final RoleDTO userDTO);
 
+	Doctor doctorDTOToDoctorConverterSearch(DoctorDTO doctorDTO);
+	
 	@Named("serviceToLongIdConverter")
 	default Long serviceToLongIdConverter(Service service) {
 		return service.getId();
@@ -50,4 +52,5 @@ public interface DoctorMapper {
 	default List<Long> rolesToLongIdListConverter(Set<Role> roles) {
 		return roles.stream().map(Role::getId).collect(Collectors.toList());
 	}
+
 }

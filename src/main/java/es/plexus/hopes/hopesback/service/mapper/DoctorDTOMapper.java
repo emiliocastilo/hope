@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.service.mapper;
 
 import org.hibernate.service.spi.ServiceException;
-import org.json.JSONObject;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
@@ -30,10 +29,5 @@ public interface DoctorDTOMapper {
 
         return doctorDTO;
     }
-
-    @Named("doctorDTOToJsonConverter")
-    default String doctorDTOToJsonConverter(DoctorDTO doctorDTO){
-        return new JSONObject(doctorDTO).toString();
-    }
-    
+ 
 }
