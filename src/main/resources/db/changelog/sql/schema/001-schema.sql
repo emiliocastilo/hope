@@ -273,8 +273,8 @@ CREATE TABLE public.users (
 	usr_password varchar(200) NOT NULL,
 	usr_email varchar(50),
 	usr_hos_id smallint NOT NULL,
-	usr_date_crea timestamp NOT NULL,
-	usr_date_mod timestamp NOT NULL,
+    date_created timestamp NOT NULL,
+    date_updated timestamp NOT NULL,
 	CONSTRAINT usr_id_pk PRIMARY KEY (usr_id),
 	CONSTRAINT usr_name_unique UNIQUE (usr_name),
 	CONSTRAINT usr_email_unique UNIQUE (usr_email),
@@ -288,8 +288,8 @@ COMMENT ON COLUMN public.users.usr_name IS 'Columna que contiene el nombre de ac
 COMMENT ON COLUMN public.users.usr_password IS 'Columna que contiene la contraseña de acceso del usuario';
 COMMENT ON COLUMN public.users.usr_email IS 'Columna que contiene el email del usuario al que enviar información desde el sistema';
 COMMENT ON COLUMN public.users.usr_hos_id IS 'Columna que contiene el identificador del hospital al que pertenece el usuario';
-COMMENT ON COLUMN public.users.usr_date_crea IS 'Columna que contiene la fecha de creación del usuario';
-COMMENT ON COLUMN public.users.usr_date_mod IS 'Columna que contiene la fecha de la última modificación sufrida en el usuario';
+COMMENT ON COLUMN public.users.date_created IS 'Columna que contiene la fecha de creación del usuario';
+COMMENT ON COLUMN public.users.date_updated IS 'Columna que contiene la fecha de la última modificación sufrida en el usuario';
 COMMENT ON CONSTRAINT usr_id_pk ON public.users IS 'pk de la tabla USERS';
 COMMENT ON CONSTRAINT usr_hos_id_fk ON public.users IS 'fk Relacion con la tabla HOSPITALS';
 -- ddl-end --

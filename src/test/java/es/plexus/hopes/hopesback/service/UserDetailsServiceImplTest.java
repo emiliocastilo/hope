@@ -87,8 +87,6 @@ public class UserDetailsServiceImplTest {
 		user.setUsername("User Name");
 		user.setPassword("User password");
 		user.setEmail("User email");
-		user.setDateCreation(LocalDate.now());
-		user.setDateModification(LocalDate.now());
 		user.setHospital(mockFullHospital());
 		user.setRoles(new HashSet<>(Collections.singletonList(mockFullRole())));
 

@@ -139,7 +139,6 @@ public class DoctorControllerTest {
 		doctorDTO.setPhone("123456789");
 		doctorDTO.setDni("12345678Z");
 		doctorDTO.setCollegeNumber(123456L);
-		doctorDTO.setServiceId(1L);
 
 		return doctorDTO;
 	}
