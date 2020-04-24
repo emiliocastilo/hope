@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -46,6 +47,19 @@ public class DoctorController {
 	@GetMapping("/{id}")
 	public ResponseEntity<DoctorDTO> getOneDoctor(@PathVariable Long id) {
 		return ResponseEntity.ok(doctorService.getOneDoctor(id));
+	}
+
+	@GetMapping("/findDoctorsBySearch")
+	public Page<DoctorDTO> findDoctorsBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
+		LOGGER.debug(CALLING_SERVICE);
+		return doctorService.findDoctorsBySearch(search, pageable);
+
+	}
+
+	@GetMapping("/filterDoctors")
+	public Page<DoctorDTO> filterDoctors(@RequestParam(value = "doctor", required = false, defaultValue = "{}") String doctor, @PageableDefault(size = 5) Pageable pageable) {
+		LOGGER.debug(CALLING_SERVICE);
+		return doctorService.filterDoctors(doctor, pageable);
 	}
 
 	@PostMapping

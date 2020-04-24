@@ -47,17 +47,17 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public UserDTO getUser(@PathVariable Long id) {
+	public UserDTO getOneUserById(@PathVariable Long id) {
 		return userService.getOneUserById(id);
 	}
 
 	@GetMapping("/{username}")
-	public UserDTO getUser(@PathVariable String username) {
+	public UserDTO getOneUserByName(@PathVariable String username) {
 		return userService.getOneUserByName(username);
 	}
 
 	@PostMapping
-	public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO user) {
+	public ResponseEntity<UserDTO> saveUser(@RequestBody @Valid UserDTO user) {
 		final UserDTO userDTO = userService.addUser(user);
 
 		final URI location = ServletUriComponentsBuilder
@@ -66,7 +66,7 @@ public class UserController {
 				.buildAndExpand(userDTO.getId())
 				.toUri();
 
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(userDTO);
 	}
 
 	@PostMapping("/choose_profile")
