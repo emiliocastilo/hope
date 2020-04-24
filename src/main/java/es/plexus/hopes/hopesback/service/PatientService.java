@@ -29,9 +29,9 @@ public class PatientService {
     }
 
     public Page<PatientDTO> findPatientBySearch(String search, final Pageable pageable) {
-		Page<Patient> doctorList = patientRepository.findPatientBySearch(search, pageable);
+		Page<Patient> patientList = patientRepository.findPatientBySearch(search, pageable);
 
-		return doctorList.map(PatientMapper.INSTANCE::entityToDto);
+		return patientList.map(PatientMapper.INSTANCE::entityToDto);
 	}
     
     public Optional<PatientDTO> findById(Long id) {

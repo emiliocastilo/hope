@@ -1,5 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -208,6 +209,26 @@ public class PatientControllerTest {
 	
 	private PageImpl<PatientDTO> getPageablePatient(PageRequest pageRequest) {
 		return new PageImpl<>(Collections.singletonList(mockPatientDTO()), pageRequest, 1);
+	}
+	
+	@Test
+	public void filterPatientsShouldBeStatusOk() {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
+		given(patientService.filterPatiens(any(String.class), any(Pageable.class)))
+				.willReturn(getPageablePatient(pageRequest));
+
+		// when
+		Page<PatientDTO> response = patientController
+				.filterPatiens(mockJSONPatien(), pageRequest);
+
+		// then
+		assertNotNull(response);
+	}
+	
+	private String mockJSONPatien() {
+		String jsonPatient = "{\"name\":\"" + mockPatientDTO().getName() + "\"}";
+		return jsonPatient;
 	}
 
 }
