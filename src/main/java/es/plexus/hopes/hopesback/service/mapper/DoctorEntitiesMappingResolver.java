@@ -67,6 +67,16 @@ public abstract class DoctorEntitiesMappingResolver implements DoctorMapper {
 
 		return doctor;
 	}
+	
+	public Doctor doctorDTOToDoctorConverterSearch(final DoctorDTO doctorDTO) {
+		final Doctor storedDoctor = searchStoredRecord(doctorDTO);
+
+		final Doctor doctor = delegate.doctorDTOToDoctorConverter(doctorDTO);
+		
+		createUserSearch(doctor, doctorDTO, storedDoctor);
+
+		return doctor;
+	}
 
 	private Doctor searchStoredRecord(DoctorDTO doctorDTO) {
 		Doctor storedDoctor = null;
@@ -110,6 +120,18 @@ public abstract class DoctorEntitiesMappingResolver implements DoctorMapper {
 		doctor.setUser(doctorUser);
 	}
 
+	private void createUserSearch(Doctor doctor, DoctorDTO doctorDTO, Doctor storedDoctor) {
+
+		User doctorUser;
+
+		final User user = new User();
+		if(null != doctorDTO.getEmail()) user.setEmail(doctorDTO.getEmail());
+		user.setActive(true);
+		doctorUser = user;
+		
+		doctor.setUser(doctorUser);
+	}
+	
 	private Set<Role> findRoles(List<Long> longs) {
 		return longs.stream().map(aLong -> roleRepository.getOne(aLong)).collect(Collectors.toSet());
 	}
