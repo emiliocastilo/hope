@@ -107,6 +107,48 @@
 					"response": []
 				},
 				{
+					"name": "FindPatienBySearch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/doctor?page=0&size=5&sort=name,asc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"doctor"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "findById",
 					"request": {
 						"auth": {
@@ -198,6 +240,53 @@
 							"path": [
 								"v1",
 								"patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FilterPatients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/doctor/filterDoctors?page=0&size=5&sort=name,asc&doctor={\"name\":\"Juan\", \"surname\":\"Perez\"}",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"doctor",
+								"filterDoctors"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								},
+								{
+									"key": "doctor",
+									"value": "{\"name\":\"Juan\", \"surname\":\"Perez\"}"
+								}
 							]
 						}
 					},

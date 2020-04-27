@@ -86,7 +86,7 @@ public class UserService {
 	}
 
 	private void validateUsername(UserDTO userDTO) {
-		if (userDTO.getId() == null && getOneUserByName(userDTO.getUsername()) != null) {
+		if (userDTO != null && userDTO.getId() == null && getOneUserByName(userDTO.getUsername()) != null) {
 			throw new ServiceException(String.format("User with name %s already exists", userDTO.getUsername()));
 		}
 	}

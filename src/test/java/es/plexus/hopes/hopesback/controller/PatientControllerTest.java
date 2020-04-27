@@ -1,9 +1,18 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.service.PatientService;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,13 +21,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDate;
-import java.util.*;
-
-import static org.mockito.BDDMockito.given;
+import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDTO;
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.service.PatientService;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientControllerTest {
@@ -31,25 +45,28 @@ public class PatientControllerTest {
 
 	@Test
 	public void callFindAllShouldBeStatusOk() {
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("id"));
 		// given
-		given(patientService.findPatientsByPathology(1L)).willReturn(mockPatientList());
+		given(patientService.findPatientsByPathology(anyLong(), any(Pageable.class)))
+			.willReturn(getPageablePatient(pageRequest));
 
 		// when
-		ResponseEntity<List<PatientDTO>> response = patientController.findAll(1L);
+		Page<PatientDTO> response = patientController.findAll(1L, pageRequest);
 
-		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertNotNull(response.getBody());
-		Assert.assertTrue(!response.getBody().isEmpty());
+		// then		
+		Assert.assertNotNull(response);
+		Assert.assertTrue(!response.isEmpty());
 	}
 
 	@Test(expected = ServiceException.class)
 	public void callFindAllShouldThrowException() throws Exception {
+		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
 		// given
-		given(patientService.findPatientsByPathology(0L)).willThrow(new ServiceException("Error: Too much pathologies"));
+		given(patientService.findPatientsByPathology(anyLong(), any(Pageable.class)))
+			.willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		ResponseEntity<List<PatientDTO>> response = patientController.findAll(0L);
+		Page<PatientDTO> response = patientController.findAll(0L, pageRequest);
 
 	}
 
@@ -188,6 +205,30 @@ public class PatientControllerTest {
 		pathologies.add(pathology);
 		patientDto.setPathologies(pathologies);
 		return patientDto;
+	}
+	
+	private PageImpl<PatientDTO> getPageablePatient(PageRequest pageRequest) {
+		return new PageImpl<>(Collections.singletonList(mockPatientDTO()), pageRequest, 1);
+	}
+	
+	@Test
+	public void filterPatientsShouldBeStatusOk() {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
+		given(patientService.filterPatiens(any(String.class), any(Pageable.class)))
+				.willReturn(getPageablePatient(pageRequest));
+
+		// when
+		Page<PatientDTO> response = patientController
+				.filterPatiens(mockJSONPatien(), pageRequest);
+
+		// then
+		assertNotNull(response);
+	}
+	
+	private String mockJSONPatien() {
+		String jsonPatient = "{\"name\":\"" + mockPatientDTO().getName() + "\"}";
+		return jsonPatient;
 	}
 
 }

@@ -13,4 +13,6 @@ public interface DoctorMapper {
 	@Mapping(target = "service", ignore = true)
 	@Mapping(target = "user", ignore = true)
 	Doctor doctorDTOToDoctorConverter(final DoctorDTO doctorDTO);
+
+	Doctor doctorDTOToDoctorConverterSearch(DoctorDTO doctorDTO);
 }
