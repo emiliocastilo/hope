@@ -1,18 +1,9 @@
 package es.plexus.hopes.hopesback.controller;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
+import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDTO;
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.service.PatientService;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,10 +20,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.service.PatientService;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientControllerTest {

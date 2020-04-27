@@ -1,8 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
-import java.net.URI;
-import java.util.Objects;
-
+import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
+import es.plexus.hopes.hopesback.service.DoctorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
-import es.plexus.hopes.hopesback.service.DoctorService;
+import java.net.URI;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/doctor")

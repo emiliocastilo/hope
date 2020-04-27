@@ -1,13 +1,12 @@
 package es.plexus.hopes.hopesback.repository;
 
+import es.plexus.hopes.hopesback.repository.model.Doctor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import es.plexus.hopes.hopesback.repository.model.Doctor;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {

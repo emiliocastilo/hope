@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.plexus.hopes.hopesback.HopesBackApplication;
 import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;

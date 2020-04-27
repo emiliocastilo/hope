@@ -1,7 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
-import java.util.Optional;
-
+import es.plexus.hopes.hopesback.controller.model.PatientDTO;
+import es.plexus.hopes.hopesback.service.PatientService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -18,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.service.PatientService;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

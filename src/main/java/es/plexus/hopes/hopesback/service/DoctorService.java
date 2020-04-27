@@ -1,7 +1,10 @@
 package es.plexus.hopes.hopesback.service;
 
-import java.util.Optional;
-
+import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
+import es.plexus.hopes.hopesback.repository.DoctorRepository;
+import es.plexus.hopes.hopesback.repository.model.Doctor;
+import es.plexus.hopes.hopesback.service.mapper.DoctorDTOMapper;
+import es.plexus.hopes.hopesback.service.mapper.DoctorMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
-import es.plexus.hopes.hopesback.repository.DoctorRepository;
-import es.plexus.hopes.hopesback.repository.model.Doctor;
-import es.plexus.hopes.hopesback.service.mapper.DoctorDTOMapper;
-import es.plexus.hopes.hopesback.service.mapper.DoctorMapper;
+import java.util.Optional;
 
 @Service
 public class DoctorService {
