@@ -9,9 +9,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,7 +22,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -72,18 +69,6 @@ public class UserControllerTest {
 	}
 
 	@Test
-	public void getOneUserByNameShouldBeStatusOk() {
-		// given
-		given(userService.getOneUserByName(anyString())).willReturn(mockFullUser());
-
-		// when
-		UserDTO response = userController.getOneUserByName("Paco");
-
-		// then
-		assertNotNull(response);
-	}
-
-	@Test
 	public void saveUserShouldBeStatusCreated() {
 		// given
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -92,11 +77,10 @@ public class UserControllerTest {
 		given(userService.addUser(any(UserDTO.class))).willReturn(mockFullUser());
 
 		// when
-		ResponseEntity<UserDTO> response = userController.saveUser(mockFullUser());
+		UserDTO response = userController.saveUser(mockFullUser());
 
 		// then
-		assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-		assertNotNull(response.getBody());
+		assertNotNull(response);
 	}
 
 	@Test

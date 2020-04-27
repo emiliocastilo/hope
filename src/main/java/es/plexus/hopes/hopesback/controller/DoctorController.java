@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.Objects;
 
 @RestController
@@ -63,16 +61,9 @@ public class DoctorController {
 	}
 
 	@PostMapping
-	public ResponseEntity<DoctorDTO> addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
+	public DoctorDTO addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
 		LOGGER.debug(CALLING_SERVICE);
-		final DoctorDTO doctor = doctorService.addDoctor(doctorDTO);
-		final URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(doctorDTO.getId())
-				.toUri();
-
-		return ResponseEntity.created(location).body(doctor);
+		return doctorService.addDoctor(doctorDTO);
 	}
 
 	@PutMapping
