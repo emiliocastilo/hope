@@ -1,7 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
-import java.util.Optional;
-
+import es.plexus.hopes.hopesback.controller.model.PatientDTO;
+import es.plexus.hopes.hopesback.service.PatientService;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -18,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.service.PatientService;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class PatientController {
 	private static final Logger LOGGER = LogManager.getLogger(PatientController.class);
 	private static final String CALLING_SERVICE = "Calling service...";
-	
+
 	private final PatientService patientService;
 
 	@GetMapping
@@ -48,12 +47,12 @@ public class PatientController {
 	}
 
 	@GetMapping("/findPatientBySearch")
-	public Page<PatientDTO> findPatientBySearch(@RequestParam(value = "search", required = false, defaultValue = "")String search, @PageableDefault(size = 5) Pageable pageable) {
+	public Page<PatientDTO> findPatientBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
 		LOGGER.debug(CALLING_SERVICE);
 		return patientService.findPatientBySearch(search, pageable);
-	  
-    }
-	
+
+	}
+
 	//todo añadir los @valid cuando tengamos el crud de hospitales
 	@PostMapping
 	public ResponseEntity create(@RequestBody PatientDTO patient) {
@@ -86,7 +85,7 @@ public class PatientController {
 	public Page<PatientDTO> filterPatiens(@RequestParam(value = "patient", required = false, defaultValue = "{}") String patient, @PageableDefault(size = 5) Pageable pageable) {
 		LOGGER.debug(CALLING_SERVICE);
 		return patientService.filterPatiens(patient, pageable);
-    }
-	
-	
+	}
+
+
 }

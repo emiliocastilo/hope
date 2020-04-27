@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8cf1f845-fd68-4b70-b5fc-f05e46b75dde",
+		"_postman_id": "86de73a8-f556-45f8-997f-2d57f909ed58",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -573,7 +573,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Juan\",\n    \"surname\": \"Juan\",\n    \"phone\": 123456789,\n    \"dni\": \"12345678Z\",\n    \"collegeNumber\": 12345678,\n    \"email\": \"juan1@plexus.es\",\n    \"hospitalId\": 1,\n    \"password\": \"string\",\n    \"roleList\": [\n        2\n    ],\n    \"username\": \"Juan1\",\n    \"serviceId\": 1\n}",
+							"raw": "{\n    \"name\": \"Antoine\",\n    \"surname\": \"Griezmann\",\n    \"phone\": 123456789,\n    \"dni\": \"12345678Z\",\n    \"collegeNumber\": 12345678,\n    \"user\": {\n        \"username\": \"antoine.griezmann\",\n        \"password\": \"password\",\n        \"email\": \"antoine.griezmann@plexus.es\",\n        \"roles\": [\n            2\n        ],\n        \"hospitalId\": 4\n    },\n    \"service\": {\n    \t\"id\" : 1,\n    \t\"name\" : \"Servicio algo\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -771,7 +771,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 13,\r\n    \"name\": \"Juan Pepito\",\r\n    \"surname\": \"Juan\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"username\": \"Juan Pepito\",\r\n    \"password\": \"string\",\r\n    \"email\": \"juan1@plexus.es\",\r\n    \"hospitalId\": 1,\r\n    \"roleList\": [\r\n        2\r\n    ],\r\n    \"serviceId\": 1\r\n}",
+							"raw": "{\r\n    \"id\": 14,\r\n    \"name\": \"Antoine\",\r\n    \"surname\": \"Griezmann\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"user\": {\r\n        \"id\": 14,\r\n        \"username\": \"antoine.griezmann\",\r\n        \"password\": \"$2a$10$9V4XbSY0uLgN6qwtHeODOeK44E8rQnz7lbX7q5GNYKrZVlokM3L4e\",\r\n        \"email\": \"antoine.griezmann1@plexus.es\",\r\n        \"roles\": [\r\n            2\r\n        ],\r\n        \"hospitalId\": 4\r\n    },\r\n    \"service\": {\r\n        \"id\": 1,\r\n        \"name\": \"Dermatologia\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -823,6 +823,151 @@
 							"path": [
 								"v1",
 								"doctor"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Add User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"victor.gonzales1\",\n    \"password\": \"password\",\n    \"email\": \"victor.gonzales1@plexus.es\",\n    \"roles\": [1,2],\n    \"hospitalId\": 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/user",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Hospital",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/hospital",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"hospital"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/service",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"service"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/role",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role"
 							]
 						}
 					},

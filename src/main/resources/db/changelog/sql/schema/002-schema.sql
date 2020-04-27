@@ -26,8 +26,8 @@ CREATE TABLE public.doctors(
 	dct_service_id smallint NOT NULL,
 	dct_active boolean NOT NULL,
 	dct_user_id smallint,
-	dct_date_create timestamp,
-	dct_date_modify timestamp,
+    date_created timestamp,
+    date_updated timestamp,
 	CONSTRAINT dct_id_pk PRIMARY KEY (dct_id),
 	CONSTRAINT dct_srv_id_fk FOREIGN KEY (dct_service_id) REFERENCES public.services(srv_id),
     CONSTRAINT dct_usr_id_fk FOREIGN KEY (dct_user_id) REFERENCES public.users(usr_id)
@@ -44,8 +44,8 @@ COMMENT ON COLUMN public.doctors.dct_college_number IS 'Columna que contiene el 
 COMMENT ON COLUMN public.doctors.dct_service_id IS 'Columna que contiene el identificador del servicio al que pertenece el médico';
 COMMENT ON COLUMN public.doctors.dct_active IS 'Columna que indica que el médico está dado de alta en el sistema';
 COMMENT ON COLUMN public.doctors.dct_user_id IS 'Columna que contiene el identificador del usuario del médico';
-COMMENT ON COLUMN public.doctors.dct_date_create IS 'Columna que contiene la fecha de alta del médico en el sistema';
-COMMENT ON COLUMN public.doctors.dct_date_modify IS 'Columna que contiene la fecha de la última modificación sufrida en los datos del médico de la tabla doctors';
+COMMENT ON COLUMN public.doctors.date_created IS 'Columna que contiene la fecha de alta del médico en el sistema';
+COMMENT ON COLUMN public.doctors.date_updated IS 'Columna que contiene la fecha de la última modificación sufrida en los datos del médico de la tabla doctors';
 COMMENT ON CONSTRAINT dct_id_pk ON public.doctors IS 'pk de la tabla DOCTORS';
 COMMENT ON CONSTRAINT dct_srv_id_fk ON public.doctors IS 'fk Relacion con la tabla SERVICES';
 COMMENT ON CONSTRAINT dct_usr_id_fk ON public.doctors IS 'fk Relacion con la tabla USERS';

@@ -12,12 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @Data
 @Entity
 @Table(name = "doctors")
-public class Doctor {
+public class Doctor extends AbstractAudit {
 
 	@Id
 	@Column(name = "dct_id", nullable = false)
@@ -46,15 +45,7 @@ public class Doctor {
 
 	@Basic
 	@Column(name = "dct_active", nullable = false)
-	private Boolean active;
-
-	@Basic
-	@Column(name = "dct_date_create", columnDefinition = "TIMESTAMP")
-	private LocalDate dateCreate;
-
-	@Basic
-	@Column(name = "dct_date_modify", columnDefinition = "TIMESTAMP")
-	private LocalDate dateModify;
+	private Boolean active = true;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "dct_user_id", referencedColumnName = "usr_id")

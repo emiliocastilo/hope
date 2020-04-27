@@ -24,7 +24,7 @@ public class Service {
 	private String name;
 
 	@Basic
-	@Column(name = "srv_description", nullable = true, length = 100)
+	@Column(name = "srv_description", length = 100)
 	private String description;
 
 }

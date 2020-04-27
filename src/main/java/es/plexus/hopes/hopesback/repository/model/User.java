@@ -18,7 +18,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +26,7 @@ import java.util.Set;
 @Table(name = "users", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "usr_name"),
 		@UniqueConstraint(columnNames = "usr_email")})
-public class User {
+public class User extends AbstractAudit {
 
 	@Id
 	@Column(name = "usr_id")
@@ -50,12 +49,6 @@ public class User {
 	@Email
 	private String email;
 
-	@Column(name = "usr_date_crea", columnDefinition = "TIMESTAMP")
-	private LocalDate dateCreation;
-
-	@Column(name = "usr_date_mod", columnDefinition = "TIMESTAMP")
-	private LocalDate dateModification;
-
 	@ManyToOne
 	@JoinColumn(name = "usr_hos_id")
 	private Hospital hospital;
@@ -67,9 +60,10 @@ public class User {
 	private Set<Role> roles = new HashSet<>();
 
 	@Column(name = "usr_active")
-	private boolean active;
+	private boolean active = true;
 
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private Doctor doctor;
 
 }
+

@@ -1,16 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.util.Collections;
-
+import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
+import es.plexus.hopes.hopesback.service.DoctorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,8 +18,16 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
-import es.plexus.hopes.hopesback.service.DoctorService;
+import java.util.Collections;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DoctorControllerTest {
@@ -68,8 +67,28 @@ public class DoctorControllerTest {
 
 		// then
 		assertNotNull(response);
-	}	
-	
+	}
+
+	@Test
+	public void filterDoctorsShouldBeStatusOk() {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
+		given(doctorService.filterDoctors(any(String.class), any(Pageable.class)))
+				.willReturn(getPageableDoctor(pageRequest));
+
+		// when
+		Page<DoctorDTO> response = doctorController
+				.filterDoctors(mockJSONDoctor(), pageRequest);
+
+		// then
+		assertNotNull(response);
+	}
+
+	private String mockJSONDoctor() {
+		String jsonDoctor = "{\"name\":\"" + mockDoctorDTO().getName() + "\"}";
+		return jsonDoctor;
+	}
+
 	@Test
 	public void getOneDoctorShouldBeStatusOk() {
 		// given
@@ -105,11 +124,10 @@ public class DoctorControllerTest {
 		given(doctorService.addDoctor(any(DoctorDTO.class))).willReturn(mockDoctorDTO());
 
 		// when
-		ResponseEntity<DoctorDTO> response = doctorController.addDoctor(mockDoctorDTO());
+		DoctorDTO response = doctorController.addDoctor(mockDoctorDTO());
 
 		// then
-		assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-		assertNotNull(response.getBody());
+		assertNotNull(response);
 	}
 
 	@Test
@@ -155,32 +173,11 @@ public class DoctorControllerTest {
 		doctorDTO.setPhone("123456789");
 		doctorDTO.setDni("12345678Z");
 		doctorDTO.setCollegeNumber(123456L);
-		doctorDTO.setServiceId(1L);
 
 		return doctorDTO;
 	}
 
 	private PageImpl<DoctorDTO> getPageableDoctor(PageRequest pageRequest) {
 		return new PageImpl<>(Collections.singletonList(mockDoctorDTO()), pageRequest, 1);
-	}
-	
-	@Test
-	public void filterDoctorsShouldBeStatusOk() {
-		// given
-		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
-		given(doctorService.filterDoctors(any(String.class), any(Pageable.class)))
-				.willReturn(getPageableDoctor(pageRequest));
-
-		// when
-		Page<DoctorDTO> response = doctorController
-				.filterDoctors(mockJSONDoctor(), pageRequest);
-
-		// then
-		assertNotNull(response);
-	}
-	
-	private String mockJSONDoctor() {
-		String jsonDoctor = "{\"name\":\"" + mockDoctorDTO().getName() + "\"}";
-		return jsonDoctor;
 	}
 }
