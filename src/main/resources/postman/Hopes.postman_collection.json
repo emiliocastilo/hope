@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "86de73a8-f556-45f8-997f-2d57f909ed58",
+		"_postman_id": "02c3d913-d9c6-4757-a237-14bd3ad25a57",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -421,6 +421,18 @@
 				},
 				{
 					"name": "choose profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e34ac820-2865-4082-957b-0d10114b57fa",
+								"exec": [
+									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -968,6 +980,95 @@
 							"path": [
 								"v1",
 								"role"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Template",
+			"item": [
+				{
+					"name": "Subir plantilla",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"value\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar plantilla",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"value\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template?key=PLANTILLA_PRUEBA",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "PLANTILLA_PRUEBA"
+								}
 							]
 						}
 					},

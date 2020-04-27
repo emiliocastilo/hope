@@ -1,7 +1,12 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import javax.persistence.*;
-import java.util.Objects;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "values_aux_tables")

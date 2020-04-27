@@ -1,7 +1,11 @@
 package es.plexus.hopes.hopesback.service;
 
-import java.util.Optional;
-
+import es.plexus.hopes.hopesback.controller.model.PatientDTO;
+import es.plexus.hopes.hopesback.repository.PatientRepository;
+import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.service.mapper.PatientDTOMapper;
+import es.plexus.hopes.hopesback.service.mapper.PatientMapper;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -9,12 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.repository.PatientRepository;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.service.mapper.PatientDTOMapper;
-import es.plexus.hopes.hopesback.service.mapper.PatientMapper;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
