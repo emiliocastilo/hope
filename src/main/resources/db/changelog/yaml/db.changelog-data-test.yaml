@@ -1,16 +1,19 @@
 databaseChangeLog:
 - include:
-      file: ../sql/data-test/001-login_rol.sql
-      relativeToChangelogFile: true
+    file: ../sql/data-test/001-login_rol.sql
+    relativeToChangelogFile: true
 - include:
-        file: ../sql/data-test/002-menu.sql
-        relativeToChangelogFile: true
+    file: ../sql/data-test/002-menu.sql
+    relativeToChangelogFile: true
 - include:
-        file: ../sql/data-test/003-patients.sql
-        relativeToChangelogFile: true
+    file: ../sql/data-test/003-patients.sql
+    relativeToChangelogFile: true
 - include:
-        file: ../sql/data-test/004-service.sql
-        relativeToChangelogFile: true
+    file: ../sql/data-test/004-service.sql
+    relativeToChangelogFile: true
 - include:
-        file: ../sql/data-test/005-doctor.sql
-        relativeToChangelogFile: true
+    file: ../sql/data-test/005-doctor.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/006-hospital.sql
+    relativeToChangelogFile: true

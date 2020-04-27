@@ -31,4 +31,10 @@ public class Hospital {
 			joinColumns = @JoinColumn(name = "hsp_hos_id"),
 			inverseJoinColumns = @JoinColumn(name = "hsp_pth_id"))
 	private Set<Pathology> pathologies = new HashSet<>();
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "hospitals_services", joinColumns = @JoinColumn(name = "hss_hos_id"),
+	inverseJoinColumns = @JoinColumn(name = "hss_srv_id"))
+	private Set<Service> services = new HashSet<>();
+
 }

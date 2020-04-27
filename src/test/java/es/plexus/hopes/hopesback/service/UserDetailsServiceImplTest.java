@@ -16,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -87,8 +86,6 @@ public class UserDetailsServiceImplTest {
 		user.setUsername("User Name");
 		user.setPassword("User password");
 		user.setEmail("User email");
-		user.setDateCreation(LocalDate.now());
-		user.setDateModification(LocalDate.now());
 		user.setHospital(mockFullHospital());
 		user.setRoles(new HashSet<>(Collections.singletonList(mockFullRole())));
 

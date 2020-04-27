@@ -11,3 +11,9 @@ databaseChangeLog:
 - include:
     file: ../sql/schema/004-schema.sql
     relativeToChangelogFile: true
+- include:
+    file: ../sql/schema/005-schema.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/schema/006-schema.sql
+    relativeToChangelogFile: true

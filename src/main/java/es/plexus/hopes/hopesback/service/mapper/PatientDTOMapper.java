@@ -12,20 +12,20 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface PatientDTOMapper {
 
-    PatientDTOMapper INSTANCE = Mappers.getMapper(PatientDTOMapper.class);
+	PatientDTOMapper INSTANCE = Mappers.getMapper(PatientDTOMapper.class);
 
-    @Named("jsonToPatientDTOConventer")
-    default PatientDTO jsonToPatientDTOConventer(String patient){
-        PatientDTO patientDTO = new PatientDTO();
-        try {
-        	patientDTO = new ObjectMapper().readValue(patient, PatientDTO.class);
-        } catch (JsonMappingException e) {
+	@Named("jsonToPatientDTOConventer")
+	default PatientDTO jsonToPatientDTOConventer(String patient) {
+		PatientDTO patientDTO;
+		try {
+			patientDTO = new ObjectMapper().readValue(patient, PatientDTO.class);
+		} catch (JsonMappingException e) {
 			throw new ServiceException("Fields not belonging to the object are being sent " + e.getMessage());
 		} catch (JsonProcessingException e) {
 			throw new ServiceException("Filter processing error occurred " + e.getMessage());
 		}
 
-        return patientDTO;
-    }
- 
+		return patientDTO;
+	}
+
 }

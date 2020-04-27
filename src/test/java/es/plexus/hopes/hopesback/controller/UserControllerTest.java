@@ -1,233 +1,115 @@
 package es.plexus.hopes.hopesback.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
-import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.repository.model.Role;
-import es.plexus.hopes.hopesback.repository.model.User;
-import org.junit.Before;
+import es.plexus.hopes.hopesback.controller.model.UserDTO;
+import es.plexus.hopes.hopesback.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
+import java.util.List;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 public class UserControllerTest {
 
-	@LocalServerPort
-	int randomServerPort;
+	@Mock
+	private UserService userService;
 
-	private static final String URL_TEMPLATE = "/user/";
+	@InjectMocks
+	private UserController userController;
 
-	// Componente de Spring para pruebas IT
+	@Autowired
 	private MockMvc mockMvc;
 
-	// Dependencias del controlador
-	@MockBean
-	private UserRepository userRepository;
-	@MockBean
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-	// Contexto web de la aplicacion
-	@Autowired
-	private WebApplicationContext webApplicationContext;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	@Before
-	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-				.apply(springSecurity())
-				.build();
-	}
-
 	@Test
-	public void callSaveUserShouldWorkCorrectlyWithStatus200() throws Exception {
+	public void getAllUserShouldBeStatusOk() {
 		// given
-		User user = mockFullUser();
-		final String request = objectMapper.writeValueAsString(user);
-		final String token = mockTokenAccess();
+		given(userService.getAllUsers()).willReturn(Collections.singletonList(mockFullUser()));
 
 		// when
-		mockMvc.perform(post(URL_TEMPLATE)
-				.contentType(MediaType.APPLICATION_JSON)
-				.header("Authorization", "Bearer " + token)
-				.content(request))
-				.andExpect(status().isOk());
+		List<UserDTO> response = userController.getAllUsers();
 
 		// then
-		verify(userRepository, times(1)).save(any(User.class));
+		assertNotNull(response);
 	}
 
 	@Test
-	public void callSaveUserShouldWorkFailWhenNoToken() throws Exception {
+	public void getOneUserByIdShouldBeStatusOk() {
 		// given
-		User user = mockFullUser();
-
-		final String request = objectMapper.writeValueAsString(user);
+		given(userService.getOneUserById(anyLong())).willReturn(mockFullUser());
 
 		// when
-		mockMvc.perform(post(URL_TEMPLATE)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(request))
-				.andExpect(status().isForbidden());
-	}
-
-	@Test
-	public void callGetAllUsersShouldWorkCorrectlyWithStatus200() throws Exception {
-		// given
-		final String token = mockTokenAccess();
-
-		// when
-		String response = mockMvc.perform(get(URL_TEMPLATE)
-				.header("Authorization", "Bearer " + token)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andReturn().getResponse().getContentAsString();
-
-		final ArrayList responseList = objectMapper.readValue(response, ArrayList.class);
+		UserDTO response = userController.getOneUserById(1L);
 
 		// then
-		assertNotNull(responseList);
+		assertNotNull(response);
 	}
 
 	@Test
-	public void callGetAllUsersShouldWorkFailWhenNoToken() throws Exception {
+	public void saveUserShouldBeStatusCreated() {
 		// given
-		final String token = mockTokenAccess();
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		given(userService.addUser(any(UserDTO.class))).willReturn(mockFullUser());
 
 		// when
-		mockMvc.perform(get(URL_TEMPLATE)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isForbidden());
-	}
-
-	@Test
-	public void callGetUserShouldWorkCorrectlyWithStatus200() throws Exception {
-		// given
-		final String token = mockTokenAccess();
-
-		given(userRepository.findByUsername("test")).willReturn(Optional.of(mockFullUser()));
-
-		// when
-		String response = mockMvc.perform(get(URL_TEMPLATE + "{username}", "test")
-				.header("Authorization", "Bearer " + token)
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andReturn().getResponse().getContentAsString();
-
-		final User user = objectMapper.readValue(response, User.class);
+		UserDTO response = userController.saveUser(mockFullUser());
 
 		// then
-		assertNotNull(user);
+		assertNotNull(response);
 	}
 
 	@Test
-	public void callGetUserShouldWorkFailWhenNoToken() throws Exception {
-		// given
-		given(userRepository.findByUsername("test")).willReturn(Optional.of(mockFullUser()));
-
-		// when
-		mockMvc.perform(get(URL_TEMPLATE + "{username}", "test")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isForbidden());
-	}
-
-	@Test
-	public void callChooseProfileShouldWorkCorrectlyWithStatus200() throws Exception {
-		// given
-		final String token = mockTokenAccess();
-
-		// when
-		ResultActions result = mockMvc.perform(post(URL_TEMPLATE + "choose_profile")
-				.header("Authorization", "Bearer " + token)
-				.content("ROLE_ADMIN")
+	@WithMockUser
+	public void chooseProfileShouldBeStatusOk() throws Exception {
+		//when
+		mockMvc.perform(post("/user/choose_profile")
+				.content("ROLE_TEST")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
-
-		MockHttpServletResponse response = result.andReturn().getResponse();
-		String newToken = response.getHeader("Authorization");
-
-		// then
-		assertNotNull(newToken);
-		assertNotEquals(token, newToken);
 	}
 
 	@Test
-	public void callChooseProfileShouldWorkFailWhenNoToken() throws Exception {
-		// when
-		mockMvc.perform(post(URL_TEMPLATE + "choose_profile")
-				.content("ROLE_ADMIN")
+	public void chooseProfileShouldBeStatusForbidden() throws Exception {
+		//when
+		mockMvc.perform(post("/user/choose_profile")
+				.content("ROLE_TEST")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isForbidden());
 	}
 
-	//Mocks
-	private String mockTokenAccess() {
-		given(userRepository.findByUsername(anyString())).willReturn(Optional.of(mockFullUser()));
 
-		return TokenProvider.generateToken("admin", "ROLE_ADMIN", 5000);
-	}
-
-	private User mockFullUser() {
-		final User user = new User();
+	private UserDTO mockFullUser() {
+		final UserDTO user = new UserDTO();
 		user.setId(1L);
 		user.setUsername("User Name");
 		user.setPassword("User password");
 		user.setEmail("User email");
-		user.setDateCreation(LocalDate.now());
-		user.setDateModification(LocalDate.now());
-		user.setHospital(mockFullHospital());
-		user.setRoles(new HashSet<>(Collections.singletonList(mockFullRole())));
+		user.setRoles(new HashSet<>(Arrays.asList(1L, 2L)));
 
 		return user;
-	}
-
-	private Hospital mockFullHospital() {
-		final Hospital hospital = new Hospital();
-		hospital.setId(1L);
-		hospital.setName("Hospital Name");
-
-		return hospital;
-	}
-
-	private Role mockFullRole() {
-		final Role role = new Role();
-		role.setId(1L);
-		role.setName("ROLE_ADMIN");
-		role.setDescription("Rol Description");
-
-		return role;
 	}
 }

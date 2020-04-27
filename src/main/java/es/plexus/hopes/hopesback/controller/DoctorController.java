@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import javax.validation.Valid;
 import java.util.Objects;
 
 @RestController
@@ -49,28 +48,26 @@ public class DoctorController {
 	}
 
 	@GetMapping("/findDoctorsBySearch")
-	public Page<DoctorDTO> findDoctorsBySearch(@RequestParam(value = "search", required = false, defaultValue = "")String search, @PageableDefault(size = 5) Pageable pageable) {
+	public Page<DoctorDTO> findDoctorsBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
 		LOGGER.debug(CALLING_SERVICE);
 		return doctorService.findDoctorsBySearch(search, pageable);
-	  
-    }
-	
-	//todo añadir los @valid en el post y put cuando tengamos en el front los servicios cargados
-	@PostMapping
-	public ResponseEntity<DoctorDTO> addDoctor(@RequestBody final DoctorDTO doctorDTO) {
-		LOGGER.debug(CALLING_SERVICE);
-		final DoctorDTO doctor = doctorService.addDoctor(doctorDTO);
-		final URI location = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(doctorDTO.getId())
-				.toUri();
 
-		return ResponseEntity.created(location).body(doctor);
+	}
+
+	@GetMapping("/filterDoctors")
+	public Page<DoctorDTO> filterDoctors(@RequestParam(value = "doctor", required = false, defaultValue = "{}") String doctor, @PageableDefault(size = 5) Pageable pageable) {
+		LOGGER.debug(CALLING_SERVICE);
+		return doctorService.filterDoctors(doctor, pageable);
+	}
+
+	@PostMapping
+	public DoctorDTO addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
+		LOGGER.debug(CALLING_SERVICE);
+		return doctorService.addDoctor(doctorDTO);
 	}
 
 	@PutMapping
-	public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody final DoctorDTO doctorDTO) {
+	public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
 		final Long id = doctorDTO.getId();
 		if (checkDoctorExistence(id)) return ResponseEntity.badRequest().build();
 
@@ -94,10 +91,4 @@ public class DoctorController {
 		}
 		return false;
 	}
-	
-	@GetMapping("/filterDoctors")
-	public Page<DoctorDTO> filterDoctors(@RequestParam(value = "doctor", required = false, defaultValue = "{}") String doctor, @PageableDefault(size = 5) Pageable pageable) {
-		LOGGER.debug(CALLING_SERVICE);
-		return doctorService.filterDoctors(doctor, pageable);
-    }
 }

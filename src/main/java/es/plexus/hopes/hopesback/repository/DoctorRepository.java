@@ -18,6 +18,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 			+ " OR CAST(doc.collegeNumber as text) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(doc.user.username) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(doc.user.email) like CONCAT('%',LOWER(:search),'%') ")
-	Page<Doctor> findDoctorsBySearch(@Param("search")String search, Pageable pageable);
-	
+	Page<Doctor> findDoctorsBySearch(@Param("search") String search, Pageable pageable);
+
 }
