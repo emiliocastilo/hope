@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "02c3d913-d9c6-4757-a237-14bd3ad25a57",
+		"_postman_id": "3e8695ed-488f-4599-9c31-fd1f677f6cdf",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fb64fb0e-0992-43d2-b6db-39547265b331",
+								"id": "e9182a9c-a7a5-408a-925f-399583b0d430",
 								"exec": [
 									""
 								],
@@ -261,14 +261,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctor/filterDoctors?page=0&size=5&sort=name,asc&doctor={\"name\":\"Juan\", \"surname\":\"Perez\"}",
+							"raw": "{{dev}}/v1/patient/filterPatiens?page=0&size=5&sort=name,asc",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor",
-								"filterDoctors"
+								"patient",
+								"filterPatiens"
 							],
 							"query": [
 								{
@@ -285,7 +285,8 @@
 								},
 								{
 									"key": "doctor",
-									"value": "{\"name\":\"Juan\", \"surname\":\"Perez\"}"
+									"value": "{\"name\":\"Juan\", \"surname\":\"Perez\"}",
+									"disabled": true
 								}
 							]
 						}
@@ -380,7 +381,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9ab53404-7985-45e3-a65c-cf5050f92fff",
+								"id": "6bf945c9-f2ac-45c4-b010-ffa414aa3411",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -425,7 +426,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e34ac820-2865-4082-957b-0d10114b57fa",
+								"id": "4ff6d04d-8f33-4bf1-8c24-d252cf8e6820",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1071,6 +1072,484 @@
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "DispensationDetails",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"date\": \"2020-01-22T00:00:00\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 8\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Create Method"
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d0f0e8a6-c10b-4c8b-ba6e-7a9b26d53a1b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details"
+							]
+						},
+						"description": "find All Dispensation Details"
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/3",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"3"
+							]
+						},
+						"description": "findById dispensation detail"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/33",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"33"
+							]
+						},
+						"description": "delete"
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 35,\r\n    \"date\": \"2020-01-22T00:00:00\",\r\n    \"nhc\": \"MDMD2599636542\",\r\n    \"code\": \"NH0895\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 1,\r\n        \"date\": null,\r\n        \"startPeriod\": null,\r\n        \"endPeriod\": null,\r\n        \"numRecords\": 0\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterDispensationDetail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/filters?page=0&size=2&sort=id,desc&dispensationDetail={\"date\":\"24\"}",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"filters"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								},
+								{
+									"key": "sort",
+									"value": "id,desc"
+								},
+								{
+									"key": "dispensationDetail",
+									"value": "{\"date\":\"24\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findDispensationDetailBySearch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/findBySearch?page=0&size=2&sort=date,desc&search=NH098",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"findBySearch"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								},
+								{
+									"key": "sort",
+									"value": "date,desc"
+								},
+								{
+									"key": "search",
+									"value": "NH098"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Dispensations",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "fileDispensation",
+									"contentType": "",
+									"type": "file",
+									"src": "/C:/Users/angel.broncanorodrig/Desktop/dispensations.csv"
+								},
+								{
+									"key": "date",
+									"value": "",
+									"contentType": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "startPeriod",
+									"value": "2020-03-01T00:00:00Z",
+									"contentType": "",
+									"type": "text"
+								},
+								{
+									"key": "endPeriod",
+									"value": "2020-03-01T00:00:00Z",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/dispensation",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": null,
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Create Method"
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d1e5a4ff-262b-4aa2-babd-c43a3d157fb4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation"
+							]
+						},
+						"description": "find All Dispensations"
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation/11",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation",
+								"11"
+							]
+						},
+						"description": "findById patient"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation/11",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation",
+								"11"
+							]
+						},
+						"description": "delete"
 					},
 					"response": []
 				}
