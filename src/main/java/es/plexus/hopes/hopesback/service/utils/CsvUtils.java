@@ -15,19 +15,14 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Objects;
 
-public class CsvUtils {
+public final class CsvUtils {
     /**
      * The constant LOGGER.
      */
     private static final Logger LOGGER = LogManager.getLogger(CsvUtils.class);
 
-    private CsvUtils() {
-        throw new IllegalStateException("Utility class");
-    }
-
     public static List<CSVRecord> obtainCsvRecords(MultipartFile file){
-        try {
-            Reader in = new InputStreamReader(Objects.requireNonNull(file.getInputStream()));
+        try(Reader in = new InputStreamReader(Objects.requireNonNull(file.getInputStream()))){
             return IteratorUtils.toList( CSVFormat.DEFAULT.parse(in).iterator());
         } catch (FileNotFoundException e) {
             LOGGER.error("Fichero no encontrado", e.getCause());

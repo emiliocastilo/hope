@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @ApiModel
 public class DispensationDetailDTO {
-	@Column(name = "dsd_id", nullable = false)
 	@ApiModelProperty(position = 10, example = "1", value = "Identificador en la BD")
 	@NotBlank
 	private Long id;

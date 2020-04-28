@@ -30,13 +30,13 @@ public class DispensationService {
 		}
 	}
 
-	public Optional<DispensationDTO> findById(Long id) {
-
+	public DispensationDTO findById(Long id) {
+		DispensationDTO dispensationDTO = null;
 		Dispensation dispensationEntity = dispensationRepository.findById(id).orElse(null);
 		if(Objects.nonNull(dispensationEntity)){
-			return Optional.of(DispensationMapper.INSTANCE.entityToDto(dispensationEntity));
+			dispensationDTO = Optional.of(DispensationMapper.INSTANCE.entityToDto(dispensationEntity)).get();
 		}
-		return Optional.empty();
+		return dispensationDTO;
 	}
 
 	public void deleteById(Long id) {

@@ -42,13 +42,13 @@ public class DispensationDetailService {
 		}
 	}
 
-	public Optional<DispensationDetailDTO> findById(Long id) {
-
+	public DispensationDetailDTO findById(Long id) {
+		DispensationDetailDTO dispensationDetailDTO = null;
 		DispensationDetail dispensationDetail = dispensationDetailRepository.findById(id).orElse(null);
 		if(Objects.nonNull(dispensationDetail)) {
-			return Optional.of(DispensationDetailMapper.INSTANCE.entityToDto(dispensationDetail));
+			dispensationDetailDTO = Optional.of(DispensationDetailMapper.INSTANCE.entityToDto(dispensationDetail)).get();
 		}
-		return Optional.empty();
+		return dispensationDetailDTO;
 	}
 
 	public void deleteById(Long id) {
@@ -66,7 +66,7 @@ public class DispensationDetailService {
 	}
 
 	public int loadFile(MultipartFile dispensationFile, Dispensation dispensation) {
-
+		int numberCsvRecord = 0;
 		List<CSVRecord> dispensationsRecords = CsvUtils.obtainCsvRecords(dispensationFile);
 		if (dispensationsRecords!=null){
 
@@ -77,9 +77,9 @@ public class DispensationDetailService {
 			}).collect(Collectors.toList());
 
 			dispensationDetailRepository.saveAll(dispensationDetailList);
-			return dispensationDetailList.size();
+			numberCsvRecord = dispensationDetailList.size();
 		}
-		return 0;
+		return numberCsvRecord;
 	}
 
 	public Page<DispensationDetailDTO> findDispensationDetailsBySearch(String search, Pageable pageable) {
@@ -109,6 +109,5 @@ public class DispensationDetailService {
 		return ExampleMatcher.matchingAll().
 				withIgnoreCase(true)
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-				//.withIgnorePaths("nationalCode");
 	}
 }

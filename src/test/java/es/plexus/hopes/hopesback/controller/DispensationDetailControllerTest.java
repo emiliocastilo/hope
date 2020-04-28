@@ -8,20 +8,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,11 +40,10 @@ public class DispensationDetailControllerTest {
 		given(dispensationDetailService.save(new DispensationDetailDTO())).willReturn(mockDispensationDetailDTO());
 
 		// when
-		ResponseEntity response = dispensationDetailController.create(new DispensationDetailDTO());
+		DispensationDetailDTO response = dispensationDetailController.create(new DispensationDetailDTO());
 
 		// then
-		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-		Assert.assertNotNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test(expected = ServiceException.class)
@@ -65,88 +59,38 @@ public class DispensationDetailControllerTest {
 	@Test
 	public void callFindByIdShouldBeStatusOK() {
 		// given
-		given(dispensationDetailService.findById(1L)).willReturn(Optional.of(mockDispensationDetailDTO()));
+		given(dispensationDetailService.findById(1L)).willReturn(mockDispensationDetailDTO());
 
 		// when
-		ResponseEntity response = dispensationDetailController.findById(1L);
+		DispensationDetailDTO response = dispensationDetailController.findById(1L);
 
 		// then
-		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-		Assert.assertNotNull(response.getBody());
-	}
-
-	@Test
-	public void callFindByIdShouldBeStatusBad() {
-		// given
-		given(dispensationDetailService.findById(anyLong())).willReturn(Optional.empty());
-
-		// when
-		ResponseEntity response = dispensationDetailController.findById(anyLong());
-
-		// then
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		Assert.assertNull(response.getBody());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void callFindByIdShouldThrowException() {
-		// given
-		given(dispensationDetailService.findById(anyLong())).willReturn(null);
-
-		// when
-		dispensationDetailController.findById(anyLong());
+		Assert.assertNotNull(response);
 	}
 
 	@Test
 	public void callUpdateShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findById(1L)).willReturn(Optional.of(mockDispensationDetailDTO()));
-		given(dispensationDetailService.save(mockDispensationDetailDTO())).willReturn(mockDispensationDetailDTO());
+		given(dispensationDetailService.save(mockDispensationDetailDTO())).willReturn(new DispensationDetailDTO());
 
 		// when
-		ResponseEntity response = dispensationDetailController.update(mockDispensationDetailDTO());
+		DispensationDetailDTO response  = dispensationDetailController.update(mockDispensationDetailDTO());
 
 		// then
-		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-	}
-
-	@Test
-	public void callUpdateShouldBeStatusBad() {
-		// given
-		given(dispensationDetailService.findById(null)).willReturn(Optional.empty());
-
-		// when
-		ResponseEntity response = dispensationDetailController.update(new DispensationDetailDTO());
-
-		// then
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		Assert.assertNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test
 	public void callDeleteShouldBeStatusOk() {
 		// given
-		given(dispensationDetailService.findById(anyLong())).willReturn(Optional.of(mockDispensationDetailDTO()));
+		given(dispensationDetailService.findById(anyLong())).willReturn(mockDispensationDetailDTO());
 
 		// when
-		ResponseEntity response = dispensationDetailController.delete(anyLong());
+		dispensationDetailController.delete(anyLong());
 
 		// then
 		verify(dispensationDetailService, times(1)).deleteById(anyLong());
-		Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-		Assert.assertNull(response.getBody());
-	}
-
-	@Test
-	public void callDeleteShouldBeStatusBad() {
-		// given
-		given(dispensationDetailService.findById(Mockito.anyLong())).willReturn(Optional.empty());
-
-		// when
-		ResponseEntity response = dispensationDetailController.delete(anyLong());
-
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
 
 	@Test
@@ -209,7 +153,6 @@ public class DispensationDetailControllerTest {
 	private DispensationDetailDTO mockDispensationDetailDTO() {
 		DispensationDetailDTO dispensationDTO = new DispensationDetailDTO();
 		dispensationDTO.setId(1L);
-		dispensationDTO.setDate(LocalDateTime.now());
 		dispensationDTO.setDispensation(null);
 		dispensationDTO.setAmount(new BigDecimal(2));
 		dispensationDTO.setQuantity("quantity");
