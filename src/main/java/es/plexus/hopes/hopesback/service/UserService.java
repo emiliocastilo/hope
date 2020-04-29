@@ -4,8 +4,9 @@ import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.User;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.UserMapper;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,12 +64,12 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserDTO addUser(final UserDTO userDTO) {
+	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
 		final User user = addUserAndReturnEntity(userDTO);
 		return userMapper.userToUserDTOConverter(user);
 	}
 
-	User addUserAndReturnEntity(final UserDTO userDTO) {
+	User addUserAndReturnEntity(final UserDTO userDTO) throws ServiceException {
 		validateUsername(userDTO);
 
 		final User user = userMapper.userDTOToUserConverter(userDTO);
@@ -85,17 +86,18 @@ public class UserService {
 		return userRepository.findById(id);
 	}
 
-	private void validateUsername(UserDTO userDTO) {
+	private void validateUsername(UserDTO userDTO) throws ServiceException {
 		if (userDTO != null && userDTO.getId() == null && getOneUserByName(userDTO.getUsername()) != null) {
-			throw new ServiceException(String.format("User with name %s already exists", userDTO.getUsername()));
+			throw ServiceExceptionCatalog.USERNAME_DUPLICATE_EXCEPTION.exception(
+					String.format("User with name %s already exists", userDTO.getUsername()));
 		}
 	}
 
-	private Hospital searchHospital(UserDTO userDTO) {
+	private Hospital searchHospital(UserDTO userDTO) throws ServiceException {
 		final Optional<Hospital> hospital = hospitalService.getOneHospitalById(userDTO.getHospitalId());
 
 		if (!hospital.isPresent()) {
-			throw new ServiceException(
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
 					String.format("Hospital with id %d not found. Hospital is mandatory for the user",
 							userDTO.getHospitalId()));
 		}

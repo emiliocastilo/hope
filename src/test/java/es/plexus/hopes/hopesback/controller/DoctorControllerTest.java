@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
 import es.plexus.hopes.hopesback.service.DoctorService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -85,8 +86,7 @@ public class DoctorControllerTest {
 	}
 
 	private String mockJSONDoctor() {
-		String jsonDoctor = "{\"name\":\"" + mockDoctorDTO().getName() + "\"}";
-		return jsonDoctor;
+		return "{\"name\":\"" + mockDoctorDTO().getName() + "\"}";
 	}
 
 	@Test
@@ -116,7 +116,7 @@ public class DoctorControllerTest {
 	}
 
 	@Test
-	public void addDoctorShouldBeStatusCreated() {
+	public void addDoctorShouldBeStatusCreated() throws ServiceException {
 		// given
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
@@ -131,7 +131,7 @@ public class DoctorControllerTest {
 	}
 
 	@Test
-	public void updateDoctorShouldBeStatusOk() {
+	public void updateDoctorShouldBeStatusOk() throws ServiceException {
 		// given
 		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
 		given(doctorService.updateDoctor(any(DoctorDTO.class))).willReturn(mockDoctorDTO());
@@ -144,17 +144,14 @@ public class DoctorControllerTest {
 		assertNotNull(response.getBody());
 	}
 
-	@Test
-	public void updateDoctorShouldBeBadRequestWhenNotFound() {
+	@Test(expected = ServiceException.class)
+	public void updateDoctorShouldBeBadRequestWhenNotFound() throws ServiceException {
 		// when
-		ResponseEntity<DoctorDTO> response = doctorController.updateDoctor(mockDoctorDTO());
-
-		// then
-		assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
+		doctorController.updateDoctor(mockDoctorDTO());
 	}
 
 	@Test
-	public void deleteDoctorShouldBeOk() {
+	public void deleteDoctorShouldBeOk() throws ServiceException {
 		// given
 		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
 

@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.PatientDTO;
 import es.plexus.hopes.hopesback.service.PatientService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,12 +56,12 @@ public class PatientController {
 
 	//todo añadir los @valid cuando tengamos el crud de hospitales
 	@PostMapping
-	public ResponseEntity create(@RequestBody PatientDTO patient) {
+	public ResponseEntity create(@RequestBody PatientDTO patient) throws ServiceException {
 		return ResponseEntity.ok(patientService.save(patient));
 	}
 
 	@PutMapping
-	public ResponseEntity<PatientDTO> update(@RequestBody PatientDTO patient) {
+	public ResponseEntity<PatientDTO> update(@RequestBody PatientDTO patient) throws ServiceException {
 		if (!patientService.findById(patient.getId()).isPresent()) {
 			LOGGER.error("Id " + patient.getId() + " is not existed");
 			return ResponseEntity.badRequest().build();

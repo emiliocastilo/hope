@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.service.UserService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -68,7 +69,7 @@ public class UserControllerTest {
 	}
 
 	@Test
-	public void saveUserShouldBeStatusCreated() {
+	public void saveUserShouldBeStatusCreated() throws ServiceException {
 		// given
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
