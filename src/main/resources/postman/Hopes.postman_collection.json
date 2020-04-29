@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "99a2d74b-3a36-4456-ba4c-d67342a2ef64",
+		"_postman_id": "86925fe2-7005-417f-8f83-e76df840b986",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "adbdfefa-a187-4dac-9b0a-5ff66d05e7c3",
+								"id": "44f029ae-0a90-47a2-99e6-3fe1cbfc302b",
 								"exec": [
 									""
 								],
@@ -381,7 +381,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2fb970c9-4454-4be4-9f31-b84dd4f404d6",
+								"id": "b7c36381-a29c-4383-8315-440ba4dabf87",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -426,7 +426,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2ae0484f-4370-415a-8d1a-9f003ac93d50",
+								"id": "0b067b38-2769-440b-a69d-b2af64df62ab",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1138,7 +1138,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "90ac74e4-1f96-4893-abf0-b1b13020a13b",
+								"id": "5d705dfc-e597-4d2a-b632-4634fc8c0ea8",
 								"exec": [
 									""
 								],
@@ -1458,7 +1458,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "67b0a208-7679-4a4e-b569-02b214fe0e3b",
+								"id": "c5dfb014-ab00-4af2-b15c-5b6b2d5d869c",
 								"exec": [
 									""
 								],
@@ -1550,6 +1550,345 @@
 							]
 						},
 						"description": "delete"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Medicines",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D23S34\",\r\n    \"recommended\": \"true\",\r\n    \"recommendation\": {\r\n    \t\"id\": 3\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mágicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": \"true\" \r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/medicines",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Create Method"
+					},
+					"response": []
+				},
+				{
+					"name": "findAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48b0872b-1772-4421-aba4-d6a89fdda1f3",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/medicines",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines"
+							]
+						},
+						"description": "find All Dispensation Details"
+					},
+					"response": []
+				},
+				{
+					"name": "findById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/medicines/4",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"4"
+							]
+						},
+						"description": "findById dispensation detail"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/medicines/3",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"3"
+							]
+						},
+						"description": "delete"
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 4,\r\n    \"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D234F45\",\r\n    \"recommended\": true,\r\n    \"recommendation\": {\r\n        \"id\": 3,\r\n        \"value\": \"Recomendacion03\"\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mÃ¡gicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/medicines",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filterMedicines",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/medicines/filters?medicines={\"acronym\":\"A\"}",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"filters"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "id,desc",
+									"disabled": true
+								},
+								{
+									"key": "medicines",
+									"value": "{\"acronym\":\"A\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findMedicinesBySearch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/medicines/findBySearch?page=0&size=1&sort=id,asc&search=A",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"findBySearch"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "1"
+								},
+								{
+									"key": "sort",
+									"value": "id,asc"
+								},
+								{
+									"key": "search",
+									"value": "A"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Recommendations",
+			"item": [
+				{
+					"name": "findAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0ad8d95d-81b8-4b9c-9fca-b95d1112046b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/recommendations",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"recommendations"
+							]
+						},
+						"description": "find All Dispensation Details"
 					},
 					"response": []
 				}

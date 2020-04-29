@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "dispensations")
-public class Dispensation {
+public class Dispensation extends AbstractAudit {
 	@Id
 	@Column(name = "dsp_id", nullable = false)
 	@GeneratedValue(strategy= GenerationType.IDENTITY)

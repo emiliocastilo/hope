@@ -17,7 +17,7 @@ public class Recommendation {
     @Id
     @Column(name = "rec_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    private Long id;
 
     @Basic
     @Column(name = "rec_value", nullable = false, length = 50)
