@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "sections_forms", schema = "public", catalog = "hopes_back")
+@Table(name = "sections_forms", schema = "hopes", catalog = "hopes_back")
 public class SectionForm {
     private Integer id;
     private Short order;

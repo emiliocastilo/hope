@@ -2,7 +2,7 @@
 -- Section: Dispensations
 INSERT INTO sections(
 	sec_id, sec_title, sec_description, sec_menu, sec_order, sec_section_root, sec_icon, sec_url)
-VALUES (nextval('public.sections_sec_id_seq'),
+VALUES (nextval('hopes.sections_sec_id_seq'),
         'DISPENSATIONS',
         'Dispensaciones',
         true,

@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "hospitals", schema = "public", catalog = "hopes_back")
+@Table(name = "hospitals", schema = "hopes", catalog = "hopes_back")
 public class Hospital {
 	@Id
 	@Column(name = "hos_id", nullable = false)
