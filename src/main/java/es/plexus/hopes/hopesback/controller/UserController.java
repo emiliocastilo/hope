@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.controller;
 import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.service.UserService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public UserDTO saveUser(@RequestBody @Valid UserDTO user) {
+	public UserDTO saveUser(@RequestBody @Valid UserDTO user) throws ServiceException {
 		return userService.addUser(user);
 	}
 

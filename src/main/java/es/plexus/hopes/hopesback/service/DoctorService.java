@@ -4,11 +4,12 @@ import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
 import es.plexus.hopes.hopesback.repository.DoctorRepository;
 import es.plexus.hopes.hopesback.repository.model.Doctor;
 import es.plexus.hopes.hopesback.repository.model.User;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.DoctorDTOMapper;
 import es.plexus.hopes.hopesback.service.mapper.DoctorMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -81,7 +82,7 @@ public class DoctorService {
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
 	}
 
-	public DoctorDTO addDoctor(final DoctorDTO doctorDTO) {
+	public DoctorDTO addDoctor(final DoctorDTO doctorDTO) throws ServiceException {
 		Doctor doctor = addDoctorCommon(doctorDTO);
 		LOGGER.debug("Calling DB...");
 		doctor = doctorRepository.save(doctor);
@@ -89,7 +90,7 @@ public class DoctorService {
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
 	}
 
-	public DoctorDTO updateDoctor(final DoctorDTO doctorDTO) {
+	public DoctorDTO updateDoctor(final DoctorDTO doctorDTO) throws ServiceException {
 		final Optional<Doctor> storedDoctor = getOneDoctorCommon(doctorDTO.getId());
 
 		Doctor doctor = addDoctorCommon(doctorDTO);
@@ -115,13 +116,13 @@ public class DoctorService {
 		return doctorRepository.findById(id);
 	}
 
-	private Doctor addDoctorCommon(DoctorDTO doctorDTO) {
+	private Doctor addDoctorCommon(DoctorDTO doctorDTO) throws ServiceException {
 		final User user = userService.addUserAndReturnEntity(doctorDTO.getUser());
 		final Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService
 				.getOneServiceById(doctorDTO.getService().getId());
 
 		if (!service.isPresent()) {
-			throw new ServiceException(
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
 					String.format("Service with id %d not found. Service is mandatory for the doctor",
 							doctorDTO.getService().getId()));
 		}

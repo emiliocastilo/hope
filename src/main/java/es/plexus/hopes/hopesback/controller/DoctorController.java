@@ -2,6 +2,8 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
 import es.plexus.hopes.hopesback.service.DoctorService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ public class DoctorController {
 
 	private static final Logger LOGGER = LogManager.getLogger(DoctorController.class);
 	private static final String CALLING_SERVICE = "Calling service...";
+	private static final String NOT_FOUND_DOCTOR_WITH_ID = "Not found doctor with id=";
 
 	private final DoctorService doctorService;
 
@@ -48,36 +51,41 @@ public class DoctorController {
 	}
 
 	@GetMapping("/findDoctorsBySearch")
-	public Page<DoctorDTO> findDoctorsBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
+	public Page<DoctorDTO> findDoctorsBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search,
+											   @PageableDefault(size = 5) Pageable pageable) {
 		LOGGER.debug(CALLING_SERVICE);
 		return doctorService.findDoctorsBySearch(search, pageable);
 
 	}
 
 	@GetMapping("/filterDoctors")
-	public Page<DoctorDTO> filterDoctors(@RequestParam(value = "doctor", required = false, defaultValue = "{}") String doctor, @PageableDefault(size = 5) Pageable pageable) {
+	public Page<DoctorDTO> filterDoctors(@RequestParam(value = "doctor", required = false, defaultValue = "{}") String doctor,
+										 @PageableDefault(size = 5) Pageable pageable) {
 		LOGGER.debug(CALLING_SERVICE);
 		return doctorService.filterDoctors(doctor, pageable);
 	}
 
 	@PostMapping
-	public DoctorDTO addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
+	public DoctorDTO addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) throws ServiceException {
 		LOGGER.debug(CALLING_SERVICE);
 		return doctorService.addDoctor(doctorDTO);
 	}
 
 	@PutMapping
-	public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) {
+	public ResponseEntity<DoctorDTO> updateDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) throws ServiceException {
 		final Long id = doctorDTO.getId();
-		if (checkDoctorExistence(id)) return ResponseEntity.badRequest().build();
+		if (checkDoctorExistence(id)) throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+				.exception(NOT_FOUND_DOCTOR_WITH_ID + id);
 
 		LOGGER.debug(CALLING_SERVICE);
 		return ResponseEntity.ok(doctorService.updateDoctor(doctorDTO));
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Object> deleteDoctor(@PathVariable final Long id) {
-		if (checkDoctorExistence(id)) return ResponseEntity.badRequest().build();
+	public ResponseEntity<Object> deleteDoctor(@PathVariable final Long id) throws ServiceException {
+		if (checkDoctorExistence(id)) throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+				.exception(NOT_FOUND_DOCTOR_WITH_ID + id);
+
 		LOGGER.debug(CALLING_SERVICE);
 		doctorService.deleteDoctor(id);
 
@@ -85,10 +93,6 @@ public class DoctorController {
 	}
 
 	private boolean checkDoctorExistence(Long id) {
-		if (Objects.isNull(doctorService.getOneDoctor(id))) {
-			LOGGER.error("Not found doctor with id=" + id);
-			return true;
-		}
-		return false;
+		return Objects.isNull(doctorService.getOneDoctor(id));
 	}
 }
