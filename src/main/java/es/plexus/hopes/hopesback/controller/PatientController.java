@@ -4,8 +4,7 @@ import es.plexus.hopes.hopesback.controller.model.PatientDTO;
 import es.plexus.hopes.hopesback.service.PatientService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/patient")
 public class PatientController {
-	private static final Logger LOGGER = LogManager.getLogger(PatientController.class);
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final PatientService patientService;
@@ -40,7 +39,7 @@ public class PatientController {
 	public ResponseEntity<PatientDTO> findById(@PathVariable Long id) {
 		Optional<PatientDTO> patient = patientService.findById(id);
 		if (!patient.isPresent()) {
-			LOGGER.error("Id " + id + " is not existed");
+			log.error("Id " + id + " is not existed");
 			return ResponseEntity.badRequest().build();
 		}
 
@@ -49,7 +48,7 @@ public class PatientController {
 
 	@GetMapping("/findPatientBySearch")
 	public Page<PatientDTO> findPatientBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
-		LOGGER.debug(CALLING_SERVICE);
+		log.debug(CALLING_SERVICE);
 		return patientService.findPatientBySearch(search, pageable);
 
 	}
@@ -63,7 +62,7 @@ public class PatientController {
 	@PutMapping
 	public ResponseEntity<PatientDTO> update(@RequestBody PatientDTO patient) throws ServiceException {
 		if (!patientService.findById(patient.getId()).isPresent()) {
-			LOGGER.error("Id " + patient.getId() + " is not existed");
+			log.error("Id " + patient.getId() + " is not existed");
 			return ResponseEntity.badRequest().build();
 		}
 
@@ -73,7 +72,7 @@ public class PatientController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity delete(@PathVariable Long id) {
 		if (!patientService.findById(id).isPresent()) {
-			LOGGER.error("Id " + id + " is not existed");
+			log.error("Id " + id + " is not existed");
 			ResponseEntity.badRequest().build();
 		}
 
@@ -84,7 +83,7 @@ public class PatientController {
 
 	@GetMapping("/filterPatiens")
 	public Page<PatientDTO> filterPatiens(@RequestParam(value = "patient", required = false, defaultValue = "{}") String patient, @PageableDefault(size = 5) Pageable pageable) {
-		LOGGER.debug(CALLING_SERVICE);
+		log.debug(CALLING_SERVICE);
 		return patientService.filterPatiens(patient, pageable);
 	}
 

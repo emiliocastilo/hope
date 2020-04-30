@@ -4,8 +4,7 @@ import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.service.UserService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +22,12 @@ import static es.plexus.hopes.hopesback.configuration.security.Constants.HEADER_
 import static es.plexus.hopes.hopesback.configuration.security.Constants.SECOND_TOKEN_EXPIRATION_TIME;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_BEARER_PREFIX;
 
+@Log4j2
 @RestController
 @RequestMapping(UserController.USER_MAPPING)
 public class UserController {
 
 	static final String USER_MAPPING = "/user";
-
-	private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
 	private final UserService userService;
 
@@ -40,7 +38,7 @@ public class UserController {
 
 	@GetMapping
 	public List<UserDTO> getAllUsers() {
-		LOGGER.info("Get all users");
+		log.info("Get all users");
 		return userService.getAllUsers();
 	}
 

@@ -8,8 +8,7 @@ import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.DoctorDTOMapper;
 import es.plexus.hopes.hopesback.service.mapper.DoctorMapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -19,10 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Log4j2
 @Service
 public class DoctorService {
-
-	private static final Logger LOGGER = LogManager.getLogger(DoctorService.class);
 
 	private final UserService userService;
 	private final DoctorMapper doctorMapper;
@@ -39,7 +37,7 @@ public class DoctorService {
 	}
 
 	public Page<DoctorDTO> getAllDoctors(final Pageable pageable) {
-		LOGGER.debug("Calling DB...");
+		log.debug("Calling DB...");
 		Page<Doctor> doctorList = doctorRepository.findAll(pageable);
 
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
@@ -53,14 +51,14 @@ public class DoctorService {
 		if (doctor.isPresent()) {
 			doctorDTO = doctorMapper.doctorToDoctorDTOConverter(doctor.get());
 		} else {
-			LOGGER.debug(String.format("Doctor with id = %s not found ...", id));
+			log.debug(String.format("Doctor with id = %s not found ...", id));
 		}
 
 		return doctorDTO;
 	}
 
 	public Page<DoctorDTO> findDoctorsBySearch(final String search, final Pageable pageable) {
-		LOGGER.debug("Calling DB...");
+		log.debug("Calling DB...");
 		Page<Doctor> doctorList = doctorRepository.findDoctorsBySearch(search, pageable);
 
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
@@ -68,7 +66,7 @@ public class DoctorService {
 
 	public Page<DoctorDTO> filterDoctors(final String doctor, final Pageable pageable) {
 		DoctorDTO doctorDTO = DoctorDTOMapper.INSTANCE.jsonToDoctorDTOConventer(doctor);
-		LOGGER.debug("Check DTO...");
+		log.debug("Check DTO...");
 
 		ExampleMatcher matcher = ExampleMatcher.matchingAll().
 				withIgnoreCase(true).withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
@@ -84,7 +82,7 @@ public class DoctorService {
 
 	public DoctorDTO addDoctor(final DoctorDTO doctorDTO) throws ServiceException {
 		Doctor doctor = addDoctorCommon(doctorDTO);
-		LOGGER.debug("Calling DB...");
+		log.debug("Calling DB...");
 		doctor = doctorRepository.save(doctor);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
@@ -100,19 +98,19 @@ public class DoctorService {
 			doctor.setActive(storedDoctor.get().getActive());
 		}
 
-		LOGGER.debug("Calling DB...");
+		log.debug("Calling DB...");
 		doctor = doctorRepository.save(doctor);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
 	}
 
 	public void deleteDoctor(final Long id) {
-		LOGGER.debug("Calling DB...");
+		log.debug("Calling DB...");
 		doctorRepository.deleteById(id);
 	}
 
 	public Optional<Doctor> getOneDoctorCommon(Long id) {
-		LOGGER.debug(String.format("Calling DB with id = %d ...", id));
+		log.debug(String.format("Calling DB with id = %d ...", id));
 		return doctorRepository.findById(id);
 	}
 
