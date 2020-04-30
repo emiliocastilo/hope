@@ -7,9 +7,8 @@ import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
 import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.utils.CsvUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -23,17 +22,17 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class DispensationDetailService {
 
-	private static final Logger LOGGER = LogManager.getLogger(DispensationDetailService.class);
 	private static final String CALLING_DB = "Calling DB...";
 	private final DispensationDetailRepository dispensationDetailRepository;
 
 	public DispensationDetailDTO save(DispensationDetailDTO dispensationDTO) {
 		if(Objects.nonNull(dispensationDTO)){
+			log.debug(CALLING_DB);
 			return DispensationDetailMapper.INSTANCE.
 					entityToDto(dispensationDetailRepository.save(DispensationDetailMapper.
 																	INSTANCE.dtoToEntity(dispensationDTO)));
@@ -44,6 +43,7 @@ public class DispensationDetailService {
 
 	public DispensationDetailDTO findById(Long id) {
 		DispensationDetailDTO dispensationDetailDTO = null;
+		log.debug(CALLING_DB);
 		DispensationDetail dispensationDetail = dispensationDetailRepository.findById(id).orElse(null);
 		if(Objects.nonNull(dispensationDetail)) {
 			dispensationDetailDTO = Optional.of(DispensationDetailMapper.INSTANCE.entityToDto(dispensationDetail)).get();
@@ -56,6 +56,7 @@ public class DispensationDetailService {
 	}
 
 	public void deleteAllByIdDispensation(Long id) {
+		log.debug(CALLING_DB);
 		List<DispensationDetail> dispensationDetails = dispensationDetailRepository.findByDispensation(id);
 		dispensationDetailRepository.deleteAll(dispensationDetails);
 	}
@@ -75,7 +76,7 @@ public class DispensationDetailService {
 				dispensationDetail.setDispensation(dispensation);
 				return dispensationDetail;
 			}).collect(Collectors.toList());
-
+			log.debug(CALLING_DB);
 			dispensationDetailRepository.saveAll(dispensationDetailList);
 			numberCsvRecord = dispensationDetailList.size();
 		}
@@ -83,7 +84,7 @@ public class DispensationDetailService {
 	}
 
 	public Page<DispensationDetailDTO> findDispensationDetailsBySearch(String search, Pageable pageable) {
-		LOGGER.debug(CALLING_DB);
+		log.debug(CALLING_DB);
 		Page<DispensationDetail> page = dispensationDetailRepository.findDispensationDetailBySearch(search, pageable);
 
 		return page.map(DispensationDetailMapper.INSTANCE::entityToDto);
@@ -91,7 +92,7 @@ public class DispensationDetailService {
 
 	public Page<DispensationDetailDTO> filterDispensationDetails(String json, Pageable pageable) {
 		DispensationDetailDTO dispensationDetailDTO = DispensationDetailMapper.INSTANCE.jsonToDTO(json);
-		LOGGER.debug("Check DTO...");
+		log.debug("Check DTO...");
 
 		DispensationDetail dispensationDetail = DispensationDetailMapper.INSTANCE.dtoToEntity(dispensationDetailDTO);
 

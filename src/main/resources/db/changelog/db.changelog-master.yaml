@@ -11,11 +11,3 @@ databaseChangeLog:
     file: yaml/db.changelog-data-test.yaml
     relativeToChangelogFile: true
     context: dev
-- include:
-    file: sql/schema/007-schema.sql
-    relativeToChangelogFile: true
-    context: dev or prod
-- include:
-    file: sql/data/002-configuration_dispensations.sql
-    relativeToChangelogFile: true
-    context: dev
