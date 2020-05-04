@@ -1,5 +1,13 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
+import static es.plexus.hopes.hopesback.configuration.security.Constants.LOGIN_URL;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.REQUEST_PASSWORD_CHANGE_URL;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.RESET_PASSWORD_URL;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.SAVE_NEW_PASSWORD_URL;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.Collections;
-
-import static es.plexus.hopes.hopesback.configuration.security.Constants.LOGIN_URL;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +50,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-
 		httpSecurity
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				.cors().and()
@@ -55,6 +57,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/actuator/**", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
 				.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
+				.antMatchers(HttpMethod.POST, REQUEST_PASSWORD_CHANGE_URL).permitAll()
+				.antMatchers(HttpMethod.GET, RESET_PASSWORD_URL).permitAll()
+				.antMatchers(HttpMethod.POST, SAVE_NEW_PASSWORD_URL).permitAll()
 				.anyRequest().authenticated().and()
 				.addFilterBefore(new JWTAuthenticationFilter(authenticationManager(), userDetailsService), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JWTAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);

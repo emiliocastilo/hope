@@ -3,6 +3,10 @@ package es.plexus.hopes.hopesback.configuration.security;
 public class Constants {
 
 	public static final String LOGIN_URL = "/login";
+	public static final String REQUEST_PASSWORD_CHANGE_URL = "/user/request_password_change";
+	public static final String RESET_PASSWORD_URL = "/user/reset_password";
+	public static final String SAVE_NEW_PASSWORD_URL = "/user/save_new_password";
+
 	public static final String HEADER_AUTHORIZACION_KEY = "Authorization";
 	public static final String TOKEN_BEARER_PREFIX = "Bearer ";
 	public static final String ISSUER_INFO = "hopes";

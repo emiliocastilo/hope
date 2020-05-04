@@ -25,3 +25,7 @@ databaseChangeLog:
     file: ../sql/schema/008-schema.sql
     relativeToChangelogFile: true
     context: dev or prod
+- include:
+    file: ../sql/schema/009-schema.sql
+    relativeToChangelogFile: true
+    context: dev or prod
