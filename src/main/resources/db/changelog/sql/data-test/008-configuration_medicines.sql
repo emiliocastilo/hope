@@ -1,7 +1,7 @@
 ----------------------------------------------------- CONFIGURACIÓN ----------------------------------------------------
 -- Section: Medicines
 INSERT INTO sections(
-	sec_id, sec_title, sec_description, sec_menu, sec_order, sec_section_root, sec_icon, sec_url)
+	sec_id, sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('sections_sec_id_seq'),
         'MEDICINES',
         'Medicamentos',

@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class MenuDTO {
 
-    private Integer id;
+    private Long id;
     private Integer order;
     private String title;
     private String icon;

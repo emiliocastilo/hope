@@ -1,4 +1,4 @@
-INSERT INTO hopes.sections (sec_title,sec_description,sec_menu,sec_order,sec_section_root,sec_icon,sec_url) VALUES
+INSERT INTO hopes.sections (sec_title,sec_description,sec_active,sec_order,sec_section_root,sec_icon,sec_url) VALUES
 ('HOPES','root',true,1,NULL,NULL,'#')
 ,('CALENDAR','Calendario',true,1,1,'assets/img/modules/calendario.png','#')
 ,('PATIENTS','Pacientes',true,2,1,'assets/img/modules/planes-atencion.png','#')
@@ -24,4 +24,5 @@ INSERT INTO hopes.sections_roles (scr_section_id,scr_role_id) VALUES
 ,(5,8)
 ,(6,8)
 ,(8,8)
+,(1,1)
 ;
