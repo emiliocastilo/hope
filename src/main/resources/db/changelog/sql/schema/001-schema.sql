@@ -1,7 +1,3 @@
-------------------------------------------------- INICIO ESQUEMA -------------------------------------------------------------------------------------
--- object: hopes | type: SCHEMA --
-CREATE SCHEMA IF NOT EXISTS hopes;
-SET search_path TO hopes;
 ------------------------------------------------- INICIO TABLAS --------------------------------------------------------------------------------------
 -- object: hopes.hospitals | type: TABLE --
 DROP TABLE IF EXISTS hopes.hospitals CASCADE;
