@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.controller;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.service.SectionService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,9 +45,9 @@ public class SectionController {
 	}
 
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Long id) {
+	public SectionDTO delete(@PathVariable Long id) throws ServiceException {
 		log.debug(CALLING_SERVICE);
-		sectionService.deleteById(id);
+		return sectionService.deleteById(id);
 	}
 
 	@GetMapping

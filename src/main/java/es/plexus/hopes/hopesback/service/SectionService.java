@@ -4,6 +4,8 @@ import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.repository.SectionRepository;
 import es.plexus.hopes.hopesback.repository.model.Section;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.SectionMapper;
 import es.plexus.hopes.hopesback.service.utils.MenuUtils;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import static es.plexus.hopes.hopesback.service.Constants.ROLE_ADMIN;
 public class SectionService {
 
 	private static final String CALLING_DB = "Calling DB...";
+	private static final String NOT_FOUND_ID = "Not found section with id=";
 
 	private final SectionRepository sectionRepository;
 
@@ -34,16 +37,21 @@ public class SectionService {
 	public SectionDTO findById(Long id) {
 		SectionDTO sectionDto = null;
 		log.debug(CALLING_DB);
-		Section dispensationDetail = sectionRepository.findById(id).orElse(null);
-		if(Objects.nonNull(dispensationDetail)) {
-			sectionDto = Optional.of(SectionMapper.INSTANCE.entityToDto(dispensationDetail)).get();
+		Section section = sectionRepository.findById(id).orElse(null);
+		if(Objects.nonNull(section)) {
+			sectionDto = Optional.of(SectionMapper.INSTANCE.entityToDto(section)).get();
 		}
 		return sectionDto;
 	}
 
-	public void deleteById(Long id) {
+	public SectionDTO deleteById(Long id) throws ServiceException {
 		log.debug(CALLING_DB);
-		sectionRepository.deleteById(id);
+		Section section = sectionRepository.findById(id).orElse(null);
+		if(Objects.isNull(section)) {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(NOT_FOUND_ID + id);
+		}
+		section.setActive(false);
+		return SectionMapper.INSTANCE.entityToDto(sectionRepository.save(section));
 	}
 
 	public MenuDTO findAllSections() {

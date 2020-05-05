@@ -12,5 +12,6 @@ public class MenuDTO {
     private String title;
     private String icon;
     private String url;
+    private boolean active;
     private List<MenuDTO> children;
 }
