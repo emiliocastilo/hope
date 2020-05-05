@@ -17,7 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.plexus.hopes.hopesback.configuration.MailTemplateConfiguration;
 import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
+import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.repository.TokenRepository;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
@@ -44,10 +53,10 @@ public class UserService {
 	private final MailService mailService;
 	private final TokenRepository tokenRepository;
 	private static final String EVERY_30_MINUTES = "0 0/30 * * * ?";
-	
+
 	@Autowired
 	MailTemplateConfiguration mailTemplateConfiguration;
-	
+
 	@Autowired
 	public UserService(final UserRepository userRepository, final UserMapper userMapper,
 					   final RoleService roleService, final HospitalService hospitalService,
@@ -90,6 +99,18 @@ public class UserService {
 		}
 
 		return userDTO;
+	}
+
+	public UserSimpleDTO getOneSimpleUserByName(final String name) {
+		UserSimpleDTO userSimpleDTO = null;
+
+		final Optional<User> user = userRepository.findByUsername(name);
+
+		if (user.isPresent()) {
+			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
+		}
+
+		return userSimpleDTO;
 	}
 
 	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
@@ -142,7 +163,7 @@ public class UserService {
 			storedUser.ifPresent(value -> user.setActive(value.isActive()));
 		}
 	}
-	
+
 	public void requestPasswordChange(final String email) throws ServiceException {
         log.debug("requestPasswordChange");
 
@@ -150,10 +171,10 @@ public class UserService {
 
         if (optionalUser.isPresent()) {
             log.debug("User found -> create temporal token");
-            
+
             String token = UUID.randomUUID().toString();
             createPasswordResetTokenForUser(optionalUser.get(), bCryptPasswordEncoder.encode(token));
-            
+
             final TemplateMail simpleMail = TemplateMail.builder()
                     .from(mailTemplateConfiguration.getDefaultSender())
                     .to(optionalUser.get().getEmail())
@@ -164,13 +185,13 @@ public class UserService {
                     .html(true)
                     .build();
             mailService.sendMail(simpleMail);
-            
+
         } else {
             throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
 				.exception("Error: Email address not found while requesting password change");
         }
     }
-	
+
 	private void createPasswordResetTokenForUser(User user, String token) {
 	    Token createPasswordToken = new Token();
 	    createPasswordToken.setValue(token);
@@ -180,20 +201,20 @@ public class UserService {
 	    createPasswordToken.setTokenExpirationDate(LocalDateTime.now().plusSeconds(FIRST_TOKEN_EXPIRATION_TIME));
 	    tokenRepository.save(createPasswordToken);
 	}
-	
-	public Token resetPassword(String token) {		
-		return findPasswordResetToken(token);				
+
+	public Token resetPassword(String token) {
+		return findPasswordResetToken(token);
 	}
-	
+
 	public String saveNewPassword(PasswordDTO passwordDTO) throws ServiceException {
-		 
+
 	    Token passwordResetToken = findPasswordResetToken(passwordDTO.getToken());
-	 
+
 	    if(passwordResetToken == null) {
 	    	throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
 				.exception("Error: Token for password not found");
-	    }	    
-	    
+	    }
+
 	    changeUserPassword(passwordResetToken.getUser(), passwordDTO.getNewPassword());
 	    return "OK";
 	}
@@ -202,32 +223,32 @@ public class UserService {
 	    user.setPassword(bCryptPasswordEncoder.encode(password));
 	    userRepository.save(user);
 	}
-	
+
 	private Token findPasswordResetToken(String token) {
-		final List<Token> listToken = tokenRepository.findByTokenExpirationDateAfter(LocalDateTime.now());	 
+		final List<Token> listToken = tokenRepository.findByTokenExpirationDateAfter(LocalDateTime.now());
 	    Token tokenPassRecover = listToken.stream()
 	    	.filter(p -> bCryptPasswordEncoder.matches(token, p.getValue()))
-	    	.findAny()                                      
+	    	.findAny()
             .orElse(null);
 		return tokenPassRecover;
 	}
-	
+
 	@Scheduled(cron = EVERY_30_MINUTES)
-	@Transactional 
+	@Transactional
 	public void removeTokenExpired() {
 		log.info("Delete expired tokens");
         tokenRepository.deleteByTokenExpirationDateBefore(LocalDateTime.now());
 	}
-	
+
 	public String updatePassword(PasswordDTO passwordDTO) throws ServiceException {
 		log.info("Find user in context");
 	    Optional<User> user = userRepository.findByUsername(
 	    		SecurityContextHolder.getContext().getAuthentication().getName());
-	     
-	    if (user.isPresent()) { 
+
+	    if (user.isPresent()) {
 	    	if(checkIfValidOldPassword(user.get(), passwordDTO.getPassword())) {
 	    		changeUserPassword(user.get(), passwordDTO.getNewPassword());
-	    	} else {	
+	    	} else {
 	    		throw ServiceExceptionCatalog.INVALID_LOGIN
 					.exception("Error: Invalid password");
 	    	}
@@ -235,13 +256,13 @@ public class UserService {
             throw ServiceExceptionCatalog.INVALID_LOGIN
 				.exception("Error: Username not found while requesting password change");
         }
-	    
+
 	    return "OK";
 	}
 
 	private boolean checkIfValidOldPassword(User user, String password) {
-		return bCryptPasswordEncoder.matches(password, user.getPassword());		
+		return bCryptPasswordEncoder.matches(password, user.getPassword());
 	}
-	
-	
+
+
 }
