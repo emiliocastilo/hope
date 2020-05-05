@@ -1,19 +1,21 @@
 package es.plexus.hopes.hopesback.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
+import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.User;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -64,6 +66,18 @@ public class UserService {
 		return userDTO;
 	}
 
+	public UserSimpleDTO getOneSimpleUserByName(final String name) {
+		UserSimpleDTO userSimpleDTO = null;
+
+		final Optional<User> user = userRepository.findByUsername(name);
+
+		if (user.isPresent()) {
+			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
+		}
+
+		return userSimpleDTO;
+	}
+	
 	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
 		final User user = addUserAndReturnEntity(userDTO);
 		return userMapper.userToUserDTOConverter(user);

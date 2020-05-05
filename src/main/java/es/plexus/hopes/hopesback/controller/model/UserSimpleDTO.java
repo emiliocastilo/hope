@@ -13,18 +13,11 @@ import lombok.Data;
 
 @ApiModel
 @Data
-public class UserDTO {
-
-	@ApiModelProperty(position = 10, example = "1L", value = "Identificador en la BD")
-	private Long id;
-
+public class UserSimpleDTO {
+	
 	@ApiModelProperty(position = 20, example = "carlos.ruiz", value = "Nombre del usuario")
 	@NotBlank(message = "Username is mandatory")
 	private String username;
-
-	@ApiModelProperty(position = 30, example = "password", value = "Contraseña del usuario")
-	@NotBlank(message = "Password is mandatory")
-	private String password;
 
 	@ApiModelProperty(position = 40, example = "carlos.ruiz@hotmail.com", value = "Email relacionado al usuario")
 	@NotBlank(message = "Email is mandatory")

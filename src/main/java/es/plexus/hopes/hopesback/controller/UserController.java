@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
+import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.service.UserService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 
@@ -58,11 +59,11 @@ public class UserController {
 	}
 
 	@PostMapping("/choose_profile")
-	public UserDTO chooseProfile(@RequestBody String role, Authentication authentication, HttpServletResponse response) {
+	public UserSimpleDTO chooseProfile(@RequestBody String role, Authentication authentication, HttpServletResponse response) {
 		String token = TokenProvider.generateToken(authentication.getName(), role, SECOND_TOKEN_EXPIRATION_TIME);
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-		return userService.getOneUserByName(userName);
+		return userService.getOneSimpleUserByName(userName);
 	}
 
 }
