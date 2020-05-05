@@ -1,7 +1,3 @@
-------------------------------------------------- INICIO ESQUEMA -------------------------------------------------------------------------------------
--- object: hopes | type: SCHEMA --
-CREATE SCHEMA IF NOT EXISTS hopes;
-SET search_path TO hopes;
 ------------------------------------------------- INICIO TABLAS --------------------------------------------------------------------------------------
 -- object: hopes.hospitals | type: TABLE --
 DROP TABLE IF EXISTS hopes.hospitals CASCADE;
@@ -171,7 +167,7 @@ CREATE TABLE hopes.sections (
 	sec_id serial,
 	sec_title varchar(50) NOT NULL,
 	sec_description varchar(500),
-	sec_menu boolean,
+	sec_active boolean,
 	sec_order smallint NOT NULL,
 	sec_section_root smallint,
 	CONSTRAINT sec_id_pk PRIMARY KEY (sec_id),
@@ -182,7 +178,7 @@ COMMENT ON TABLE hopes.sections IS 'Tabla que representa la entidad SECTIONS. Se
 COMMENT ON COLUMN hopes.sections.sec_id IS 'Columna con el id de base de datos del patologia(pk)';
 COMMENT ON COLUMN hopes.sections.sec_title IS 'Columna que contiene el titulo del apartado del menu de la patologia';
 COMMENT ON COLUMN hopes.sections.sec_description IS 'Columna que contiene la descripcion detallada del apartado del menu de la patologia';
-COMMENT ON COLUMN hopes.sections.sec_menu IS 'Columna que indica sí este apartado forma parte del menu de la patologia';
+COMMENT ON COLUMN hopes.sections.sec_active IS 'Columna que indica sí este apartado forma parte del menu de la patologia';
 COMMENT ON COLUMN hopes.sections.sec_order IS 'Columna que indica el orden del apartado dentro del menu/listado de apartados de la patologia';
 COMMENT ON COLUMN hopes.sections.sec_section_root IS 'Columna que contiene el identificador del apartado padre en el que estaría incluido creando un arbol de apartados dentro del menú de la patologia';
 COMMENT ON CONSTRAINT sec_id_pk ON hopes.sections IS 'pk de la tabla SECTIONS';

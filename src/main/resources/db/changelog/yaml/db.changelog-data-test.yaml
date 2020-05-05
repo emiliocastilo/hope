@@ -23,3 +23,6 @@ databaseChangeLog:
 - include:
     file: ../sql/data-test/008-configuration_medicines.sql
     relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/010-configuration_sections.sql
+    relativeToChangelogFile: true
