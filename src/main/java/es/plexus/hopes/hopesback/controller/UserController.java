@@ -66,6 +66,7 @@ public class UserController {
 		String token = TokenProvider.generateToken(authentication.getName(), role, SECOND_TOKEN_EXPIRATION_TIME);
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userService.getOneSimpleUserByName(userName, role);
 		return userService.getOneUserByName(userName);
 	}
 
