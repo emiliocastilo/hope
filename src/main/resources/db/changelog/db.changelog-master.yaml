@@ -14,3 +14,9 @@ databaseChangeLog:
 - include:
     file: sql/data/002-configuration_dispensations.sql
     relativeToChangelogFile: true
+- include:
+    file: sql/schema/008-schema.sql
+    relativeToChangelogFile: true
+- include:
+    file: sql/data/003-configuration_data_demo.sql
+    relativeToChangelogFile: true

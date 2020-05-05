@@ -17,7 +17,11 @@ public class RoleDTO {
 	@NotBlank
 	private String name;
 	
-	@ApiModelProperty(position = 30, example = "ROLE_ADMIN", value = "Descripcion del rol")
+	@ApiModelProperty(position = 30, example = "Rol administrador. Tiene le máximo nivel de acceso a la aplicación", value = "Descripcion del rol")
 	@NotBlank
 	private String description;
+	
+	@ApiModelProperty(position = 30, example = "Administrador", value = "Traduccón del nombre del rol")
+	@NotBlank
+	private String traduction;
 }
