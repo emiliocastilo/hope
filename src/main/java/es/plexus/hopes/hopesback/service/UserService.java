@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.repository.UserRepository;
@@ -66,13 +67,17 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserSimpleDTO getOneSimpleUserByName(final String name) {
+	public UserSimpleDTO getOneSimpleUserByName(final String name, String roleName) {
 		UserSimpleDTO userSimpleDTO = null;
 
 		final Optional<User> user = userRepository.findByUsername(name);
 
 		if (user.isPresent()) {
 			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
+			Optional<RoleDTO> role = roleService.getRoleByName(roleName);
+			if(role.isPresent()) {
+				userSimpleDTO.setRolSelected(role.get());
+			}
 		}
 
 		return userSimpleDTO;
