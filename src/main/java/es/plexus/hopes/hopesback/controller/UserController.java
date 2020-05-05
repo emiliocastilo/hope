@@ -45,7 +45,7 @@ public class UserController {
 
 	@GetMapping
 	public List<UserDTO> getAllUsers() {
-		log.info("Get all users");
+		LOGGER.info("Get all users");
 		return userService.getAllUsers();
 	}
 
@@ -63,28 +63,30 @@ public class UserController {
 	public void chooseProfile(@RequestBody String role, Authentication authentication, HttpServletResponse response) {
 		String token = TokenProvider.generateToken(authentication.getName(), role, SECOND_TOKEN_EXPIRATION_TIME);
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
+		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userService.getOneUserByName(userName);
 	}
-	
+
 	@PostMapping("/request_password_change")
 	public ResponseEntity requestPasswordChange(@Valid @RequestBody RequestPasswordChangeDTO request) throws ServiceException {
 		log.info("Request password change");
-		
+
 		userService.requestPasswordChange(request.getEmail());
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@GetMapping("/reset_password")
 	public String resetPassword(@RequestParam("token") String token) {
 		log.info("Reset password");
-		
+
 	    Token result = userService.resetPassword(token);
 	    if(result != null) {
 	    	 return "redirect:/updatePassword.html";
-	    } else {     
+	    } else {
 	        return "redirect:/login.html";
 	    }
 	}
-	
+
 	@PostMapping("/save_new_password")
 	public String saveNewPassword(@Valid  @RequestBody PasswordDTO passwordDTO) throws ServiceException {
 		log.info("Save new password (for forget password)");
@@ -96,5 +98,5 @@ public class UserController {
 		log.info("Update new password (for logged users)");
 		return userService.updatePassword(passwordDTO);
 	}
-	
+
 }
