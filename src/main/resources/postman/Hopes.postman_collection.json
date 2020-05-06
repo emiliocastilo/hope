@@ -1106,40 +1106,6 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Role",
-			"item": [
-				{
-					"name": "GetAll",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/role",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"role"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
 			"name": "Template",
 			"item": [
 				{
@@ -2039,6 +2005,246 @@
 							]
 						},
 						"description": "find All Dispensation Details"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/role",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllFilter",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/role/filter?name=doctor",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "doctor"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/role/1",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddRole",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Enfermeria\",\n    \"description\": \"Abarca la atención autónoma y en colaboración dispensada a personas de todas las edades, familias, grupos y comunidades, enfermos o no, y en todas circunstancias\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/role",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\" : 9,\n    \"name\": \"Enfermeria\",\n    \"description\": \"Abarca la atención autónoma\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/role",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/role/9",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkMenu",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/role/menu/7",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"role",
+								"menu",
+								"7"
+							]
+						}
 					},
 					"response": []
 				}
