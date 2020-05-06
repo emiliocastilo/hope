@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ca07e018-ceee-4e0f-9134-97089caf3781",
+		"_postman_id": "8b51f65a-2fef-408d-b481-8a2485e9d1d4",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -2464,6 +2464,182 @@
 							""
 						]
 					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Template",
+			"item": [
+				{
+					"name": "Subir plantilla",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"form\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar plantilla",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"value\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template?key=PLANTILLA_PRUEBA",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "PLANTILLA_PRUEBA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rellenar formulario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"template\": \"PLANTILLA_PRUEBA\",\n\t\"data\": [{ \"name\":\"a\", \"value\":\"MODIFICADO\"}, { \"name\":\"b\", \"value\":\"bb\"}, { \"name\":\"c\", \"value\":\"cc\"}],\n\t\"patientId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/data",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar formulario",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"template\": \"PLANTILLA_PRUEBA\",\n\t\"data\": [{ \"name\":\"a\", \"value\":\"MODIFICADO\"}, { \"name\":\"b\", \"value\":\"bb\"}, { \"name\":\"c\", \"value\":\"cc\"}],\n\t\"patientId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/data?template=PLANTILLA_PRUEBA&patientId=1",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"data"
+							],
+							"query": [
+								{
+									"key": "template",
+									"value": "PLANTILLA_PRUEBA"
+								},
+								{
+									"key": "patientId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
