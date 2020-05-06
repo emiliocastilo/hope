@@ -17,3 +17,12 @@ databaseChangeLog:
 - include:
     file: ../sql/data-test/006-hospital.sql
     relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/007-configuration_dispensations.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/008-configuration_medicines.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/010-configuration_sections.sql
+    relativeToChangelogFile: true
