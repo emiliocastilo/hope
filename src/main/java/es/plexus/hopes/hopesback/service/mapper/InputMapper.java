@@ -29,7 +29,9 @@ public interface InputMapper {
 
     default List<InputDTO> jsonToDtos(String json) {
         try {
-            return (List<InputDTO>) new ObjectMapper().readValue(json, InputDTO.class);
+            ObjectMapper mapper = new ObjectMapper();
+
+            return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, InputDTO.class));
         } catch (JsonProcessingException e) {
             throw new ServiceException("Filter processing error occurred " + e.getMessage());
         }

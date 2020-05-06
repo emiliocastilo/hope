@@ -33,7 +33,7 @@ public class FormService {
 
     public FormDTO findByTemplateAndPatientId(String template, Integer patientId) {
 
-        FormMongo formMongo = formMongoRepository.findOneByTemplateAndPatientId(template, patientId); //todo no lo encuentra
+        FormMongo formMongo = formMongoRepository.findByTemplateAndPatientId(template, patientId);
 
         FormDTO formDTO = formMapper.entityToDto(formMongo);
 
