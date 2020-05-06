@@ -14,13 +14,13 @@ import javax.persistence.Table;
 @Table(name = "roles")
 public class Role {
 
-    @Id
-    @Column(name = "rol_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@Column(name = "rol_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(name = "rol_name", length = 50)
-    private String name;
+	private String name;
 
 	@Column(name = "rol_description", length = 500)
 	private String description;
