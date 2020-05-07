@@ -57,7 +57,7 @@ public class PatientService {
 		patientRepository.deleteById(id);
 	}
 
-	public Page<PatientDTO> filterPatiens(String patient, final Pageable pageable) {
+	public Page<PatientDTO> filterPatients(String patient, final Pageable pageable) {
 		PatientDTO patientDTO = PatientDTOMapper.INSTANCE.jsonToPatientDTOConventer(patient);
 
 		ExampleMatcher matcher = ExampleMatcher.matchingAll().

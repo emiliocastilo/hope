@@ -17,14 +17,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -75,11 +71,10 @@ public class PatientControllerTest {
 		given(patientService.findById(1L)).willReturn(Optional.of(mockPatientDTO()));
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.findById(1L);
+		PatientDTO response = patientController.findById(1L);
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertNotNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test
@@ -88,11 +83,10 @@ public class PatientControllerTest {
 		given(patientService.findById(Mockito.anyLong())).willReturn(Optional.empty());
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.findById(Mockito.anyLong());
+		PatientDTO response = patientController.findById(Mockito.anyLong());
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
-		Assert.assertNull(response.getBody());
+		Assert.assertNull(response);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -101,7 +95,7 @@ public class PatientControllerTest {
 		given(patientService.findById(Mockito.anyLong())).willReturn(null);
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.findById(Mockito.anyLong());
+		patientController.findById(Mockito.anyLong());
 	}
 
 	@Test
@@ -110,11 +104,10 @@ public class PatientControllerTest {
 		given(patientService.save(new PatientDTO())).willReturn(mockPatientDTO());
 
 		// when
-		ResponseEntity<List<PatientDTO>> response = patientController.create(new PatientDTO());
+		PatientDTO response = patientController.create(new PatientDTO());
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertNotNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test(expected = ServiceException.class)
@@ -123,7 +116,7 @@ public class PatientControllerTest {
 		given(patientService.save(null)).willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.create(null);
+		patientController.create(null);
 
 	}
 
@@ -135,11 +128,10 @@ public class PatientControllerTest {
 		given(patientService.save(mockPatientDTO())).willReturn(mockPatientDTO());
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.update(mockPatientDTO());
+		PatientDTO response = patientController.update(mockPatientDTO());
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertNotNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test
@@ -148,11 +140,10 @@ public class PatientControllerTest {
 		given(patientService.findById(null)).willReturn(Optional.empty());
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.update(new PatientDTO());
+		PatientDTO response = patientController.update(new PatientDTO());
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
-		Assert.assertNull(response.getBody());
+		Assert.assertNull(response);
 	}
 
 	@Test(expected = ServiceException.class)
@@ -164,19 +155,11 @@ public class PatientControllerTest {
 		given(patientService.save(mockPatientDTO())).willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.update(mockPatientDTO());
+		patientController.update(mockPatientDTO());
 
 	}
 
 	//Mocks
-	private List<PatientDTO> mockPatientList() {
-		List<PatientDTO> patientDtoList = new ArrayList<PatientDTO>();
-
-		PatientDTO patientDto = mockPatientDTO();
-		patientDtoList.add(patientDto);
-
-		return patientDtoList;
-	}
 
 	private PatientDTO mockPatientDTO() {
 		PatientDTO patientDto = new PatientDTO();
@@ -214,20 +197,19 @@ public class PatientControllerTest {
 	public void filterPatientsShouldBeStatusOk() {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
-		given(patientService.filterPatiens(any(String.class), any(Pageable.class)))
+		given(patientService.filterPatients(any(String.class), any(Pageable.class)))
 				.willReturn(getPageablePatient(pageRequest));
 
 		// when
 		Page<PatientDTO> response = patientController
-				.filterPatiens(mockJSONPatien(), pageRequest);
+				.filterPatients(mockJSONPatient(), pageRequest);
 
 		// then
 		assertNotNull(response);
 	}
 
-	private String mockJSONPatien() {
-		String jsonPatient = "{\"name\":\"" + mockPatientDTO().getName() + "\"}";
-		return jsonPatient;
+	private String mockJSONPatient() {
+		return "{\"name\":\"" + mockPatientDTO().getName() + "\"}";
 	}
 
 }

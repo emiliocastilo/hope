@@ -13,15 +13,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,12 +44,10 @@ public class DoctorControllerTest {
 				.willReturn(getPageableDoctor(pageRequest));
 
 		// when
-		ResponseEntity<Page<DoctorDTO>> response = doctorController
-				.getAllDoctors(pageRequest);
+		Page<DoctorDTO> response = doctorController.getAllDoctors(pageRequest);
 
 		// then
-		assertEquals(response.getStatusCode(), HttpStatus.OK);
-		assertNotNull(response.getBody());
+		assertNotNull(response);
 	}
 
 	@Test
@@ -95,11 +90,10 @@ public class DoctorControllerTest {
 		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
 
 		// when
-		ResponseEntity<DoctorDTO> response = doctorController.getOneDoctor(1L);
+		DoctorDTO response = doctorController.getOneDoctor(1L);
 
 		// then
-		assertEquals(response.getStatusCode(), HttpStatus.OK);
-		assertNotNull(response.getBody());
+		assertNotNull(response);
 	}
 
 	@Test
@@ -108,11 +102,10 @@ public class DoctorControllerTest {
 		given(doctorService.getOneDoctor(anyLong())).willReturn(null);
 
 		// when
-		ResponseEntity<DoctorDTO> response = doctorController.getOneDoctor(1L);
+		DoctorDTO response = doctorController.getOneDoctor(1L);
 
 		// then
-		assertEquals(response.getStatusCode(), HttpStatus.OK);
-		assertNull(response.getBody());
+		assertNull(response);
 	}
 
 	@Test
@@ -137,11 +130,10 @@ public class DoctorControllerTest {
 		given(doctorService.updateDoctor(any(DoctorDTO.class))).willReturn(mockDoctorDTO());
 
 		// when
-		ResponseEntity<DoctorDTO> response = doctorController.updateDoctor(mockDoctorDTO());
+		DoctorDTO response = doctorController.updateDoctor(mockDoctorDTO());
 
 		// then
-		assertEquals(response.getStatusCode(), HttpStatus.OK);
-		assertNotNull(response.getBody());
+		assertNotNull(response);
 	}
 
 	@Test(expected = ServiceException.class)
