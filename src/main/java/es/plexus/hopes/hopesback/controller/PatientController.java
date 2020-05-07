@@ -48,9 +48,9 @@ public class PatientController {
 	}
 
 	@GetMapping("/findPatientBySearch")
-	public Page<PatientDTO> findPatientBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
+	public Page<PatientDTO> findPatientBySearch(@RequestParam(value = "pth") Long pth, @RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
 		LOGGER.debug(CALLING_SERVICE);
-		return patientService.findPatientBySearch(search, pageable);
+		return patientService.findPatientBySearch(pth, search, pageable);
 
 	}
 
