@@ -28,7 +28,7 @@ public class Section {
 	private Long id;
 
 	@Basic
-	@Column(name = "sec_title", nullable = false, length = 50)
+	@Column(name = "sec_title", nullable = false, length = 100)
 	private String title;
 
 	@Basic

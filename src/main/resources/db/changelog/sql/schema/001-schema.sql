@@ -165,7 +165,7 @@ COMMENT ON CONSTRAINT hsp_pth_id_fk ON hopes.hospitals_pathologies IS 'fk Relaci
 DROP TABLE IF EXISTS hopes.sections CASCADE;
 CREATE TABLE hopes.sections (
 	sec_id serial,
-	sec_title varchar(50) NOT NULL,
+	sec_title varchar(100) NOT NULL,
 	sec_description varchar(500),
 	sec_active boolean,
 	sec_order smallint NOT NULL,

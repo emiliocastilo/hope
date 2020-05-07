@@ -1,14 +1,13 @@
------------------------------------------------------------------ PATHOLOGIES -------------------------------------------------------------------------------
-
 ----------------------------------------------------------------- ROLES -------------------------------------------------------------------------------
-INSERT INTO hopes.roles VALUES (1,'ROLE_ADMIN', 'Rol administrador. Tiene le máximo nivel de acceso a la aplicación');
-INSERT INTO hopes.roles VALUES (2,'ROLE_MANAGER_CAU', 'Rol gestor del CAU. Permite la gestión de las credenciales de acceso de los diferentes usuarios de la aplicación, recuperación y asignación de perfiles');
-INSERT INTO hopes.roles VALUES (3,'ROLE_MANAGER', 'Rol gestor. Personaliza las características de los formularios, encuestas, tramtamientos, medicamentos, etc a la aplicación');
-INSERT INTO hopes.roles VALUES (4,'ROLE_PHARMACIST', 'Rol farmacéutico. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
-INSERT INTO hopes.roles VALUES (5,'ROLE_NURSING', 'Rol enfermero. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
-INSERT INTO hopes.roles VALUES (6,'ROLE_PATIENT', 'Rol gestor. Posee acceso a la información que los roles de seguimiento le concedan, ademas de a encuestas, recordatorios de consulta');
-INSERT INTO hopes.roles VALUES (7,'ROLE_DOCTOR_DERMATOLOGY', 'Rol médico de la patología dermatología');
-INSERT INTO hopes.roles VALUES (8,'ROLE_DOCTOR_VIH', 'Rol médico de la patología VIH');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Administrador', 'Rol administrador. Tiene le máximo nivel de acceso a la aplicación');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Gestor CAU', 'Rol gestor del CAU. Permite la gestión de las credenciales de acceso de los diferentes usuarios de la aplicación, recuperación y asignación de perfiles');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Gestor', 'Rol gestor. Personaliza las características de los formularios, encuestas, tramtamientos, medicamentos, etc a la aplicación');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Farmacéutico', 'Rol farmacéutico. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Médico Dermatología', 'Rol médico de la patología dermatología');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Médico VIH', 'Rol médico de la patología VIH');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Médica Reumatología', 'Rol médico de la patología reumatología');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Enfermero', 'Rol enfermero. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
+INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Paciente', 'Rol gestor. Posee acceso a la información que los roles de seguimiento le concedan, ademas de a encuestas, recordatorios de consulta');
 ----------------------------------------------------------------- ROLES -------------------------------------------------------------------------------
 
 ----------------------------------------------------------------- GENDERS -------------------------------------------------------------------------------

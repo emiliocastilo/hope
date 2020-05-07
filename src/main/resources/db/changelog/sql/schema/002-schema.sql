@@ -105,3 +105,6 @@ ALTER TABLE hopes.sections DROP COLUMN IF EXISTS sec_url;
 ALTER TABLE hopes.sections ADD COLUMN sec_url character varying(100);
 
 COMMENT ON COLUMN hopes.sections.sec_url IS 'Columna que incluye el path dentro del árbol de secciones de menus';
+
+ALTER TABLE hopes.sections DROP COLUMN IF EXISTS sec_principal;
+ALTER TABLE hopes.sections ADD COLUMN sec_principal boolean DEFAULT false;
