@@ -1,24 +1,18 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
-import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
-import es.plexus.hopes.hopesback.controller.model.RequestPasswordChangeDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
-import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
-import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.service.UserService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
-import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
