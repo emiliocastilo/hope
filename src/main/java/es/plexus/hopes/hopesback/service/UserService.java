@@ -204,12 +204,13 @@ public class UserService {
 	}
 	
 	private Token findPasswordResetToken(String token) {
-		final List<Token> listToken = tokenRepository.findByTokenExpirationDateAfter(LocalDateTime.now());	 
-	    Token tokenPassRecover = listToken.stream()
-	    	.filter(p -> bCryptPasswordEncoder.matches(token, p.getValue()))
-	    	.findAny()                                      
-            .orElse(null);
-		return tokenPassRecover;
+		final List<Token> listToken = tokenRepository.findByTypeAndTokenExpirationDateAfter(
+				TokenType.PASSWORD_CHANGE,
+				LocalDateTime.now());
+		return listToken.stream()
+				.filter(p -> bCryptPasswordEncoder.matches(token, p.getValue()))
+				.findAny()
+				.orElse(null);
 	}
 	
 	@Scheduled(cron = EVERY_30_MINUTES)
