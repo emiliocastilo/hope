@@ -39,7 +39,7 @@ public class PatientController {
 	public ResponseEntity<PatientDTO> findById(@PathVariable Long id) {
 		Optional<PatientDTO> patient = patientService.findById(id);
 		if (!patient.isPresent()) {
-			log.error("Id " + id + " is not existed");
+			LOGGER.error("Id " + id + " is not existed");
 			return ResponseEntity.badRequest().build();
 		}
 
@@ -50,6 +50,9 @@ public class PatientController {
 	public Page<PatientDTO> findPatientBySearch(@RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return patientService.findPatientBySearch(search, pageable);
+	public Page<PatientDTO> findPatientBySearch(@RequestParam(value = "pth") Long pth, @RequestParam(value = "search", required = false, defaultValue = "") String search, @PageableDefault(size = 5) Pageable pageable) {
+		LOGGER.debug(CALLING_SERVICE);
+		return patientService.findPatientBySearch(pth, search, pageable);
 
 	}
 
@@ -62,7 +65,7 @@ public class PatientController {
 	@PutMapping
 	public ResponseEntity<PatientDTO> update(@RequestBody PatientDTO patient) throws ServiceException {
 		if (!patientService.findById(patient.getId()).isPresent()) {
-			log.error("Id " + patient.getId() + " is not existed");
+			LOGGER.error("Id " + patient.getId() + " is not existed");
 			return ResponseEntity.badRequest().build();
 		}
 
@@ -72,7 +75,7 @@ public class PatientController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity delete(@PathVariable Long id) {
 		if (!patientService.findById(id).isPresent()) {
-			log.error("Id " + id + " is not existed");
+			LOGGER.error("Id " + id + " is not existed");
 			ResponseEntity.badRequest().build();
 		}
 
@@ -83,7 +86,7 @@ public class PatientController {
 
 	@GetMapping("/filterPatiens")
 	public Page<PatientDTO> filterPatiens(@RequestParam(value = "patient", required = false, defaultValue = "{}") String patient, @PageableDefault(size = 5) Pageable pageable) {
-		log.debug(CALLING_SERVICE);
+		LOGGER.debug(CALLING_SERVICE);
 		return patientService.filterPatiens(patient, pageable);
 	}
 
