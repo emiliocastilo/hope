@@ -1,30 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
-import static es.plexus.hopes.hopesback.configuration.security.Constants.FIRST_TOKEN_EXPIRATION_TIME;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import es.plexus.hopes.hopesback.configuration.MailTemplateConfiguration;
 import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
@@ -40,6 +17,20 @@ import es.plexus.hopes.hopesback.service.mail.MailService;
 import es.plexus.hopes.hopesback.service.mail.TemplateMail;
 import es.plexus.hopes.hopesback.service.mapper.UserMapper;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static es.plexus.hopes.hopesback.configuration.security.Constants.FIRST_TOKEN_EXPIRATION_TIME;
 
 
 @Service
@@ -53,17 +44,17 @@ public class UserService {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final MailService mailService;
 	private final TokenRepository tokenRepository;
+	private final MailTemplateConfiguration mailTemplateConfiguration;
 	private static final String EVERY_30_MINUTES = "0 0/30 * * * ?";
 
-	@Autowired
-	MailTemplateConfiguration mailTemplateConfiguration;
-
+	//ToDo refactorizar para eliminar la sobrecarga del constructor
 	@Autowired
 	public UserService(final UserRepository userRepository, final UserMapper userMapper,
 					   final RoleService roleService, final HospitalService hospitalService,
 					   final BCryptPasswordEncoder bCryptPasswordEncoder,
 					   final MailService mailService,
-					   final TokenRepository tokenRepository) {
+					   final TokenRepository tokenRepository,
+					   final MailTemplateConfiguration mailTemplateConfiguration) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.roleService = roleService;
@@ -71,6 +62,7 @@ public class UserService {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.mailService = mailService;
 		this.tokenRepository = tokenRepository;
+		this.mailTemplateConfiguration = mailTemplateConfiguration;
 	}
 
 
@@ -110,7 +102,7 @@ public class UserService {
 		if (user.isPresent()) {
 			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
 			Optional<RoleDTO> role = roleService.getRoleByName(roleName);
-			if(role.isPresent()) {
+			if (role.isPresent()) {
 				userSimpleDTO.setRolSelected(role.get());
 			}
 		}
@@ -119,7 +111,9 @@ public class UserService {
 	}
 
 	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
-		final User user = addUserAndReturnEntity(userDTO);
+		User user = addUserAndReturnEntity(userDTO);
+		user = userRepository.save(user);
+
 		return userMapper.userToUserDTOConverter(user);
 	}
 
@@ -133,7 +127,7 @@ public class UserService {
 
 		updateAccountStatus(userDTO, user);
 
-		return userRepository.save(user);
+		return user;
 	}
 
 	private Optional<User> getOneUserCommon(Long id) {
@@ -170,41 +164,41 @@ public class UserService {
 	}
 
 	public void requestPasswordChange(final String email) throws ServiceException {
-        log.debug("requestPasswordChange");
+		log.debug("requestPasswordChange");
 
-        final Optional<User> optionalUser = userRepository.findByEmail(email);
+		final Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        if (optionalUser.isPresent()) {
-            log.debug("User found -> create temporal token");
+		if (optionalUser.isPresent()) {
+			log.debug("User found -> create temporal token");
 
-            String token = UUID.randomUUID().toString();
-            createPasswordResetTokenForUser(optionalUser.get(), bCryptPasswordEncoder.encode(token));
+			String token = UUID.randomUUID().toString();
+			createPasswordResetTokenForUser(optionalUser.get(), bCryptPasswordEncoder.encode(token));
 
-            final TemplateMail simpleMail = TemplateMail.builder()
-                    .from(mailTemplateConfiguration.getDefaultSender())
-                    .to(optionalUser.get().getEmail())
-                    .subject(mailTemplateConfiguration.getDefaultSubject())
-                    .text(mailTemplateConfiguration.getDefaultText())
-                    .template("emails/changePassword")
-                    .templateParam("passwordChangeUrl", mailTemplateConfiguration.getResetPasswordUrl() + token)
-                    .html(true)
-                    .build();
-            mailService.sendMail(simpleMail);
+			final TemplateMail simpleMail = TemplateMail.builder()
+					.from(mailTemplateConfiguration.getDefaultSender())
+					.to(optionalUser.get().getEmail())
+					.subject(mailTemplateConfiguration.getDefaultSubject())
+					.text(mailTemplateConfiguration.getDefaultText())
+					.template("emails/changePassword")
+					.templateParam("passwordChangeUrl", mailTemplateConfiguration.getResetPasswordUrl() + token)
+					.html(true)
+					.build();
+			mailService.sendMail(simpleMail);
 
-        } else {
-            throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
-				.exception("Error: Email address not found while requesting password change");
-        }
-    }
+		} else {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception("Error: Email address not found while requesting password change");
+		}
+	}
 
 	private void createPasswordResetTokenForUser(User user, String token) {
-	    Token createPasswordToken = new Token();
-	    createPasswordToken.setValue(token);
-	    createPasswordToken.setUser(user);
-	    createPasswordToken.setType(TokenType.PASSWORD_CHANGE);
-	    createPasswordToken.setTokenCreationDate(LocalDateTime.now());
-	    createPasswordToken.setTokenExpirationDate(LocalDateTime.now().plusSeconds(FIRST_TOKEN_EXPIRATION_TIME));
-	    tokenRepository.save(createPasswordToken);
+		Token createPasswordToken = new Token();
+		createPasswordToken.setValue(token);
+		createPasswordToken.setUser(user);
+		createPasswordToken.setType(TokenType.PASSWORD_CHANGE);
+		createPasswordToken.setTokenCreationDate(LocalDateTime.now());
+		createPasswordToken.setTokenExpirationDate(LocalDateTime.now().plusSeconds(FIRST_TOKEN_EXPIRATION_TIME));
+		tokenRepository.save(createPasswordToken);
 	}
 
 	public Token resetPassword(String token) {
@@ -213,61 +207,59 @@ public class UserService {
 
 	public String saveNewPassword(PasswordDTO passwordDTO) throws ServiceException {
 
-	    Token passwordResetToken = findPasswordResetToken(passwordDTO.getToken());
+		Token passwordResetToken = findPasswordResetToken(passwordDTO.getToken());
 
-	    if(passwordResetToken == null) {
-	    	throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
-				.exception("Error: Token for password not found");
-	    }
+		if (passwordResetToken == null) {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception("Error: Token for password not found");
+		}
 
-	    changeUserPassword(passwordResetToken.getUser(), passwordDTO.getNewPassword());
-	    return "OK";
+		changeUserPassword(passwordResetToken.getUser(), passwordDTO.getNewPassword());
+		return "OK";
 	}
 
 	private void changeUserPassword(User user, String password) {
-	    user.setPassword(bCryptPasswordEncoder.encode(password));
-	    userRepository.save(user);
+		user.setPassword(bCryptPasswordEncoder.encode(password));
+		userRepository.save(user);
 	}
 
 	private Token findPasswordResetToken(String token) {
 		final List<Token> listToken = tokenRepository.findByTokenExpirationDateAfter(LocalDateTime.now());
-	    Token tokenPassRecover = listToken.stream()
-	    	.filter(p -> bCryptPasswordEncoder.matches(token, p.getValue()))
-	    	.findAny()
-            .orElse(null);
-		return tokenPassRecover;
+		return listToken.stream()
+				.filter(p -> bCryptPasswordEncoder.matches(token, p.getValue()))
+				.findAny()
+				.orElse(null);
 	}
 
 	@Scheduled(cron = EVERY_30_MINUTES)
 	@Transactional
 	public void removeTokenExpired() {
 		log.info("Delete expired tokens");
-        tokenRepository.deleteByTokenExpirationDateBefore(LocalDateTime.now());
+		tokenRepository.deleteByTokenExpirationDateBefore(LocalDateTime.now());
 	}
 
 	public String updatePassword(PasswordDTO passwordDTO) throws ServiceException {
 		log.info("Find user in context");
-	    Optional<User> user = userRepository.findByUsername(
-	    		SecurityContextHolder.getContext().getAuthentication().getName());
+		Optional<User> user = userRepository.findByUsername(
+				SecurityContextHolder.getContext().getAuthentication().getName());
 
-	    if (user.isPresent()) {
-	    	if(checkIfValidOldPassword(user.get(), passwordDTO.getPassword())) {
-	    		changeUserPassword(user.get(), passwordDTO.getNewPassword());
-	    	} else {
-	    		throw ServiceExceptionCatalog.INVALID_LOGIN
-					.exception("Error: Invalid password");
-	    	}
-	    } else {
-            throw ServiceExceptionCatalog.INVALID_LOGIN
-				.exception("Error: Username not found while requesting password change");
-        }
+		if (user.isPresent()) {
+			if (checkIfValidOldPassword(user.get(), passwordDTO.getPassword())) {
+				changeUserPassword(user.get(), passwordDTO.getNewPassword());
+			} else {
+				throw ServiceExceptionCatalog.INVALID_LOGIN
+						.exception("Error: Invalid password");
+			}
+		} else {
+			throw ServiceExceptionCatalog.INVALID_LOGIN
+					.exception("Error: Username not found while requesting password change");
+		}
 
-	    return "OK";
+		return "OK";
 	}
 
 	private boolean checkIfValidOldPassword(User user, String password) {
 		return bCryptPasswordEncoder.matches(password, user.getPassword());
 	}
-
 
 }

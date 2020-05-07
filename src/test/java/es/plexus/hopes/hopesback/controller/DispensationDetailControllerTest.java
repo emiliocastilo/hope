@@ -128,7 +128,7 @@ public class DispensationDetailControllerTest {
 
 		// when
 		Page response = dispensationDetailController
-				.findDispensationDetailtBySearch(mockDispensationDetailDTO().getCode(), pageRequest);
+				.findDispensationDetailBySearch(mockDispensationDetailDTO().getCode(), pageRequest);
 
 		// then
 		assertNotNull(response);
