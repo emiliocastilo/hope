@@ -1,14 +1,14 @@
 package es.plexus.hopes.hopesback.controller;
 
-import static es.plexus.hopes.hopesback.configuration.security.Constants.HEADER_AUTHORIZACION_KEY;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.SECOND_TOKEN_EXPIRATION_TIME;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_BEARER_PREFIX;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
+import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
+import es.plexus.hopes.hopesback.controller.model.RequestPasswordChangeDTO;
+import es.plexus.hopes.hopesback.controller.model.UserDTO;
+import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
+import es.plexus.hopes.hopesback.repository.model.Token;
+import es.plexus.hopes.hopesback.service.UserService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,15 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
-import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
-import es.plexus.hopes.hopesback.controller.model.RequestPasswordChangeDTO;
-import es.plexus.hopes.hopesback.controller.model.UserDTO;
-import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
-import es.plexus.hopes.hopesback.repository.model.Token;
-import es.plexus.hopes.hopesback.service.UserService;
-import es.plexus.hopes.hopesback.service.exception.ServiceException;
-import lombok.extern.log4j.Log4j2;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.List;
+
+import static es.plexus.hopes.hopesback.configuration.security.Constants.HEADER_AUTHORIZACION_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.SECOND_TOKEN_EXPIRATION_TIME;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_BEARER_PREFIX;
 
 @RestController
 @Log4j2
@@ -47,7 +45,7 @@ public class UserController {
 
 	@GetMapping
 	public List<UserDTO> getAllUsers() {
-		LOGGER.info("Get all users");
+		log.info("Get all users");
 		return userService.getAllUsers();
 	}
 
@@ -67,7 +65,6 @@ public class UserController {
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
 		return userService.getOneSimpleUserByName(userName, role);
-		return userService.getOneUserByName(userName);
 	}
 
 	@PostMapping("/request_password_change")

@@ -20,14 +20,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import es.plexus.hopes.hopesback.controller.model.RoleDTO;
-import es.plexus.hopes.hopesback.repository.RoleRepository;
-import es.plexus.hopes.hopesback.repository.model.Role;
-import es.plexus.hopes.hopesback.service.mapper.RoleMapper;
-
 @Log4j2
 @Service
 public class RoleService {
@@ -98,16 +90,47 @@ public class RoleService {
 
 	public Set<Role> getAllRolesByIdSet(final Set<Long> roleIdSet) {
 		final Set<Role> roleSet = new HashSet<>();
-		roleIdSet.forEach(aLong -> getOneRoleById(aLong).ifPresent(roleSet::add));
+		roleIdSet.forEach(aLong -> getOneRoleByIdCommon(aLong).ifPresent(roleSet::add));
 		return roleSet;
-	}
-
-	private Optional<Role> getOneRoleById(Long aLong) {
-		return roleRepository.findById(aLong);
 	}
 
 	public Optional<RoleDTO> getRoleByName(String name) {
 		Role role = roleRepository.findByName(name).orElse(null);
 		return Optional.of(roleMapper.roleToRoleDTOConverter(role));
+	}
+	public MenuDTO getMenuByRole(final Long id) throws ServiceException {
+		Optional<Role> role = getOneRoleByIdCommon(id);
+
+		if (!role.isPresent()) {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception(String.format("RoleDto with id = %s not found ...", id));
+		}
+
+		MenuDTO menuDTO = menuService.findMenuByRole(Collections.singletonList(role.get().getName()));
+
+		if (menuDTO.getId() == null) {
+			log.debug("Not found tree for role " + role.get().getName());
+			return null;
+		}
+
+		return menuDTO;
+	}
+
+	private Optional<Role> getOneRoleByIdCommon(Long id) {
+		log.debug(String.format("Calling DB. Search for a role with id = %d", id));
+		return roleRepository.findById(id);
+	}
+
+	private Role addRoleCommon(RoleDTO roleDTO) {
+		return roleMapper.roleDTOToRoleConverter(roleDTO);
+	}
+
+	private void checkRoleExistence(Long id) throws ServiceException {
+		final Optional<Role> storedRole = getOneRoleByIdCommon(id);
+		log.debug("Checking if record exists.");
+		if (!storedRole.isPresent()) {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception(String.format("RoleDto with id = %s not found ...", id));
+		}
 	}
 }

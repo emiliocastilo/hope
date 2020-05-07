@@ -5,8 +5,6 @@ import es.plexus.hopes.hopesback.repository.model.Patient;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
 @Mapper
 public interface PatientMapper {
 
@@ -15,8 +13,5 @@ public interface PatientMapper {
     PatientDTO entityToDto(Patient entity);
 
     Patient dtoToEntity(PatientDTO dto);
-
-    List<PatientDTO> entityListToDtoList (List<Patient> entityList);
-    List<Patient> dtoListToEntityList(List<PatientDTO> dtoList);
 
 }
