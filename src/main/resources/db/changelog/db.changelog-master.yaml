@@ -7,3 +7,7 @@ databaseChangeLog:
     file: yaml/db.changelog-data.yaml
     relativeToChangelogFile: true
     context: dev or prod
+- include:
+    file: yaml/db.changelog-data-test.yaml
+    relativeToChangelogFile: true
+    context: dev

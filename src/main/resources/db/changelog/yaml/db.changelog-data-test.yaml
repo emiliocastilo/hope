@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: ../sql/data-test/001-login_rol.sql
+      relativeToChangelogFile: true
