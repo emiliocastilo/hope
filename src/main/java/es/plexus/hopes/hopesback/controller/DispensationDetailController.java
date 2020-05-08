@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DispensationDetailController {
 
 	static final String DISPENSATION_DETAILS_MAPPING = "/dispensation-details";
-	private static final String CALLING_SERVICE = "Calling service...";
+	private static final String CALLING_SERVICE = "Llamando al servicio...";
 
 	private final DispensationDetailService dispensationDetailService;
 

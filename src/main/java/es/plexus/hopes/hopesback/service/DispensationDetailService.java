@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DispensationDetailService {
 
-	private static final String CALLING_DB = "Calling DB...";
+	private static final String CALLING_DB = "Llamando a la DB...";
 	private final DispensationDetailRepository dispensationDetailRepository;
 
 	public DispensationDetailDTO save(DispensationDetailDTO dispensationDTO) {
