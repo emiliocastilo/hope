@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MedicineController {
 
 	static final String MAPPING_MEDICINES = "/medicines";
-	private static final String CALLING_SERVICE = "Calling service...";
+	private static final String CALLING_SERVICE = "Llamando al servicio...";
 
 	private final MedicineService medicineService;
 

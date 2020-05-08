@@ -34,8 +34,8 @@ import java.util.Objects;
 public class DoctorController {
 
 	static final String DOCTOR_MAPPING = "/doctors";
-	private static final String CALLING_SERVICE = "Calling service...";
-	private static final String NOT_FOUND_DOCTOR_WITH_ID = "Not found doctor with id=";
+	private static final String CALLING_SERVICE = "Llamando al servicio...";
+	private static final String NOT_FOUND_DOCTOR_WITH_ID = "Doctor no encontrado con id=";
 
 	private final DoctorService doctorService;
 

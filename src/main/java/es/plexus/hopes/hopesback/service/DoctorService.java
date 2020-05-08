@@ -37,7 +37,7 @@ public class DoctorService {
 	}
 
 	public Page<DoctorDTO> getAllDoctors(final Pageable pageable) {
-		log.debug("Calling DB...");
+		log.debug("Llamando a la DB...");
 		Page<Doctor> doctorList = doctorRepository.findAll(pageable);
 
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
@@ -51,14 +51,14 @@ public class DoctorService {
 		if (doctor.isPresent()) {
 			doctorDTO = doctorMapper.doctorToDoctorDTOConverter(doctor.get());
 		} else {
-			log.debug(String.format("Doctor with id = %s not found ...", id));
+			log.debug(String.format("Doctor con id = %s no encontrado ...", id));
 		}
 
 		return doctorDTO;
 	}
 
 	public Page<DoctorDTO> findDoctorsBySearch(final String search, final Pageable pageable) {
-		log.debug("Calling DB...");
+		log.debug("Llamando a la DB...");
 		Page<Doctor> doctorList = doctorRepository.findDoctorsBySearch(search, pageable);
 
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
@@ -82,7 +82,7 @@ public class DoctorService {
 
 	public DoctorDTO addDoctor(final DoctorDTO doctorDTO) throws ServiceException {
 		Doctor doctor = addDoctorCommon(doctorDTO);
-		log.debug("Calling DB...");
+		log.debug("Llamando a la DB...");
 		doctor = doctorRepository.save(doctor);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
@@ -98,19 +98,19 @@ public class DoctorService {
 			doctor.setActive(storedDoctor.get().getActive());
 		}
 
-		log.debug("Calling DB...");
+		log.debug("Llamando a la DB...");
 		doctor = doctorRepository.save(doctor);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
 	}
 
 	public void deleteDoctor(final Long id) {
-		log.debug("Calling DB...");
+		log.debug("Llamando a la DB...");
 		doctorRepository.deleteById(id);
 	}
 
 	public Optional<Doctor> getOneDoctorCommon(Long id) {
-		log.debug(String.format("Calling DB with id = %d ...", id));
+		log.debug(String.format("Llamando a la BD con id = %d ...", id));
 		return doctorRepository.findById(id);
 	}
 

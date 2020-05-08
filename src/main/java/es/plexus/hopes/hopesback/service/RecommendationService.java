@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RecommendationService {
-	private static final String CALLING_DB = "Calling DB...";
+	private static final String CALLING_DB = "Llamando a la DB...";
 
 	private final RecommendationRepository recommendationRepository;
 

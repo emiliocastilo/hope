@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DispensationController {
 
 	static final String DISPENSATION_MAPPING = "/dispensations";
-	private static final String CALLING_SERVICE = "Calling service...";
+	private static final String CALLING_SERVICE = "Llamando al servicio...";
 
 	private final DispensationService dispensationService;
 

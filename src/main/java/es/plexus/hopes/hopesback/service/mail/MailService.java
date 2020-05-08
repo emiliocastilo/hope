@@ -78,7 +78,7 @@ public class MailService {
                     messageHelper.addInline(file.getName(), file);
                 }
             } catch (final MessagingException ex) {
-                log.error("Error while adding files to the email");
+                log.error("Error mientras se añadian fiechero al email");
             }
         }
     }

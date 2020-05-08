@@ -19,7 +19,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class DispensationService {
-	private static final String CALLING_DB = "Calling DB...";
+	private static final String CALLING_DB = "Llamando a la DB...";
 	private final DispensationRepository dispensationRepository;
 	private final DispensationDetailService dispensationDetailService;
 
