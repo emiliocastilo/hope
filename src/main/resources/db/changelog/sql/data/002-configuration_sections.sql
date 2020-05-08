@@ -216,7 +216,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         'assets/img/modules/alertas.png',
         '#');
 
@@ -234,9 +234,9 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
-        null,
-        '#');
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
+        'assets/img/modules/medics.png',
+        '/hopes/management/medics');
 
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
@@ -258,7 +258,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         null,
         '#');
 
@@ -276,8 +276,8 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         true,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
-        null,
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
+        'assets/img/modules/planes-atencion.png',
         '/hopes/management/patients');
 
 -- Role_Admin
@@ -301,7 +301,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         null,
         '/hopes/management/patients');
 
@@ -325,7 +325,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         null,
         '/hopes/management/patients');
 
@@ -349,7 +349,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         null,
         '#');
 
@@ -367,7 +367,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         'assets/img/modules/dispensaciones.png',
         '#');
 
@@ -391,7 +391,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         'assets/img/modules/medicamentos.png',
         '#');
 
@@ -415,7 +415,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         null,
         '#');
 
@@ -433,7 +433,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
         null,
         '#');
 
@@ -459,7 +459,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
         null,
         '#');
 
@@ -485,7 +485,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
         null,
         '#');
 
@@ -496,7 +496,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
 
 
--- Role_MEdico
+-- Role_Medico
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 		(select sec_id from hopes.sections where sec_title ='Información Tratamientos' LIMIT 1),
@@ -510,7 +510,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
         null,
         '#');
 
@@ -535,7 +535,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
         null,
         '#');
 
@@ -560,7 +560,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
         null,
         '#');
 
@@ -610,7 +610,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -635,7 +635,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -660,7 +660,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -685,7 +685,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -710,7 +710,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -736,7 +736,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -761,7 +761,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -786,7 +786,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -811,7 +811,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -836,7 +836,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1),
         null,
         '#');
 
@@ -861,7 +861,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1),
         null,
         '#');
 
@@ -887,7 +887,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1),
         null,
         '#');
 
@@ -912,7 +912,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1),
         null,
         '#');
 
@@ -937,7 +937,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -961,7 +961,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1),
         null,
         '#');
 
@@ -986,7 +986,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1),
         null,
         '#');
 
@@ -1011,7 +1011,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1),
         null,
         '#');
 
@@ -1036,7 +1036,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1),
         null,
         '#');
 
@@ -1061,7 +1061,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1),
         null,
         '#');
 
@@ -1086,7 +1086,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1),
         null,
         '#');
 
@@ -1111,7 +1111,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1135,7 +1135,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1160,7 +1160,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1184,7 +1184,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1208,7 +1208,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1232,7 +1232,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1256,7 +1256,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1280,7 +1280,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
         '#');
 
@@ -1304,7 +1304,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1329,7 +1329,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1354,7 +1354,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1378,7 +1378,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1403,7 +1403,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1428,7 +1428,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1453,7 +1453,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1477,7 +1477,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1502,7 +1502,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1527,7 +1527,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1552,7 +1552,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1577,7 +1577,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1602,7 +1602,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1627,7 +1627,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1652,7 +1652,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
         null,
         '#');
 
@@ -1669,6 +1669,25 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
         (select sec_id from hopes.sections where sec_title ='Tratamiento biológico en pacientes con psoriasis pustulosa' LIMIT 1),
         (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
 
+-- Section: Cuadro de Mando - Información Resultados en Salud
+INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
+VALUES (nextval('hopes.sections_sec_id_seq'),
+        'Información Resultados en Salud',
+        'Sección que contiene la información de diagnóstico',
+        false,
+        true,
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
+        null,
+        '#');
+
+-- Role_Admin
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+		(select sec_id from hopes.sections where sec_title ='Información Tratamientos' LIMIT 1),
+		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
+
+
 -- Section: Información Resultados en Salud - Pacientes según PASI
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
@@ -1677,7 +1696,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1),
         null,
         '#');
 
@@ -1702,7 +1721,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1),
         null,
         '#');
 
@@ -1728,7 +1747,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1),
         null,
         '#');
 
@@ -1753,7 +1772,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1),
         null,
         '#');
 
@@ -1778,7 +1797,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Pacientes/Dosis' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Pacientes/Dosis' LIMIT 1),
         null,
         '#');
 
@@ -1804,7 +1823,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1),
         null,
         '#');
 
@@ -1829,7 +1848,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo anual de tratamientos biológicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo anual de tratamientos biológicos' LIMIT 1),
         null,
         '#');
 
@@ -1854,7 +1873,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo anual de tratamientos biológicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo anual de tratamientos biológicos' LIMIT 1),
         null,
         '#');
 
@@ -1879,7 +1898,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1),
         null,
         '#');
 
@@ -1904,7 +1923,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo medio de tratamientos biológicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo medio de tratamientos biológicos' LIMIT 1),
         null,
         '#');
 
@@ -1929,7 +1948,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo medio de tratamientos biológicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo medio de tratamientos biológicos' LIMIT 1),
         null,
         '#');
 
