@@ -9,5 +9,5 @@ databaseChangeLog:
       file: ../sql/data/003-configuration_hospital_path_user.sql
       relativeToChangelogFile: true
 - include:
-      file: ../sql/data-test/004-services_hospitals.sql
+      file: ../sql/data/004-services_hospitals.sql
       relativeToChangelogFile: true
