@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SectionController {
 
 	static final String MAPPING_SECTIONS = "/sections";
-	private static final String CALLING_SERVICE = "Calling service...";
+	private static final String CALLING_SERVICE = "Llamando al servicio...";
 
 	private final SectionService sectionService;
 

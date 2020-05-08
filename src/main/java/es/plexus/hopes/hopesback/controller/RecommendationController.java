@@ -22,7 +22,7 @@ import java.util.List;
 public class RecommendationController {
 
 	static final String RECOMMENDATION_MAPPING = "/recommendations";
-	private static final String CALLING_SERVICE = "Calling service...";
+	private static final String CALLING_SERVICE = "Llamando al servicio...";
 
 	private final RecommendationService recommendationService;
 

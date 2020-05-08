@@ -169,7 +169,7 @@ public class UserService {
 		final Optional<User> optionalUser = userRepository.findByEmail(email);
 
 		if (optionalUser.isPresent()) {
-			log.debug("User found -> create temporal token");
+			log.debug("Usuario encontrado -> creacion de token temporal");
 
 			String token = UUID.randomUUID().toString();
 			createPasswordResetTokenForUser(optionalUser.get(), bCryptPasswordEncoder.encode(token));

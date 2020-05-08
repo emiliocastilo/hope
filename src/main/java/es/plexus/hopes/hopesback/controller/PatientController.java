@@ -34,7 +34,7 @@ import java.util.Optional;
 public class PatientController {
 
 	static final String PATIENT_MAPPING = "/patients";
-	private static final String CALLING_SERVICE = "Calling service...";
+	private static final String CALLING_SERVICE = "Llamando al servicio...";
 
 	private final PatientService patientService;
 
@@ -52,7 +52,7 @@ public class PatientController {
 	public PatientDTO findById(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) {
 		Optional<PatientDTO> patient = patientService.findById(id);
 		if (!patient.isPresent()) {
-			log.error("Id " + id + " is not existed");
+			log.error("Id " + id + " no existe");
 			return null;
 		}
 
@@ -84,7 +84,7 @@ public class PatientController {
 	@PutMapping
 	public PatientDTO update(@RequestBody final PatientDTO patient) throws ServiceException {
 		if (!patientService.findById(patient.getId()).isPresent()) {
-			log.error("Id " + patient.getId() + " is not existed");
+			log.error("Id " + patient.getId() + " no existe");
 			return null;
 		}
 
@@ -97,7 +97,7 @@ public class PatientController {
 	@DeleteMapping("/{id}")
 	public void delete(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) {
 		if (!patientService.findById(id).isPresent()) {
-			log.error("Id " + id + " is not existed");
+			log.error("Id " + id + " no existe");
 		}
 
 		patientService.deleteById(id);
