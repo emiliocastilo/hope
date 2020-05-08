@@ -6,6 +6,8 @@ import es.plexus.hopes.hopesback.repository.model.TemplateMongo;
 import es.plexus.hopes.hopesback.service.mapper.TemplateMapper;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+
 @Service
 public class TemplateService {
 
@@ -22,7 +24,10 @@ public class TemplateService {
         return TemplateMapper.INSTANCE.entityToDto(template);
     }
 
-    public void uploadTemplate(TemplateMongo templateMongo) {
+    public void uploadTemplate(@Valid TemplateDTO dto) {
+
+        TemplateMongo templateMongo = TemplateMapper.INSTANCE.dtoToEntity(dto);
+
         templateMongoRepository.save(templateMongo);
     }
 }

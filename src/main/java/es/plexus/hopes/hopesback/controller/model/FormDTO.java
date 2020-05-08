@@ -1,19 +1,20 @@
 package es.plexus.hopes.hopesback.controller.model;
 
-import es.plexus.hopes.hopesback.controller.validation.IsValidJson;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
-@ApiModel
 @Data
-public class TemplateDTO {
+@ApiModel
+public class FormDTO {
 
     @NotEmpty
-    private String key;
+    private String template;
 
-    @IsValidJson
+    private Integer patientId;
+
     @NotEmpty
-    private String form;
+    private List<InputDTO> data;
 }

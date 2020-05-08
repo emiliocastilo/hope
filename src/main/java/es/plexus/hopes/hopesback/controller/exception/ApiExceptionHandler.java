@@ -34,6 +34,8 @@ public class ApiExceptionHandler {
 				throwable.getCause().getMessage();
 		errorMessage.setDeveloperMessage(developerMessage);
 
+		//TODO METER LOGS
+
 		return new ResponseEntity<>(errorMessage, errorMessage.getHttpStatus());
 	}
 }
