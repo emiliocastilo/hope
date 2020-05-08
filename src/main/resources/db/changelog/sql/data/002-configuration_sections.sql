@@ -293,54 +293,6 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 		(select sec_id from hopes.sections where sec_title ='Gestión de Pacientes' LIMIT 1),
 		(select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
 
--- Section: Management - Información Farmaeconómicos
-INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
-VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Información Farmaeconómicos',
-        'Sección que contiene la Información Farmaeconómicos',
-        false,
-        true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
-        null,
-        '/hopes/management/patients');
-
--- Role_Admin
-INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
-VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Gestión de Pacientes' LIMIT 1),
-		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
-
--- Role_Doctor
-INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
-VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Gestión de Pacientes' LIMIT 1),
-		(select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
-
--- Section: Management - Gestión de Médicos
-INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
-VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Gestión de Médicos',
-        'Sección que contiene la Gestión de Médicos',
-        false,
-        true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
-        null,
-        '/hopes/management/patients');
-
--- Role_Admin
-INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
-VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Gestión de Médicos' LIMIT 1),
-		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
-
--- Role_Gestor
-INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
-VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Gestión de Médicos' LIMIT 1),
-		(select rol_id from hopes.roles where rol_name = 'Gestor' LIMIT 1));
-
 -- Section: Administración 	Gestión de Roles
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
@@ -429,7 +381,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Soporte',
-        'Sección que contiene la configuración del CAU',
+        'Sección que contiene la configuración de las opciones de soporte',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
@@ -455,7 +407,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Información Diagnóstico',
-        'Sección que contiene la información de diagnóstico',
+        'Sección que contiene la información de diagnóstico de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
@@ -480,8 +432,8 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 -- Section: Cuadro de Mando - Información Tratamientos
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Información Tratamientos',
-        'Sección que contiene la información de diagnóstico',
+        'Información de Tratamientos',
+        'Sección que contiene la información de los tratamientos de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
@@ -492,21 +444,21 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Información Tratamientos' LIMIT 1),
+		(select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
 		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
 
 
 -- Role_Medico
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Información Tratamientos' LIMIT 1),
+		(select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
 		(select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
 
 -- Section: Cuadro de Mando - Resultados en Salud
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Resultados en Salud',
-        'Sección que contiene los Resultados en Salud',
+        'Información Resultados en Salud',
+        'Sección que contiene los Resultados en salud de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
@@ -517,21 +469,21 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Resultados en Salud' LIMIT 1),
+		(select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1),
 		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
 
 
 -- Role_Manager_CAU
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Resultados en Salud' LIMIT 1),
+		(select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1),
 		(select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
 
 -- Section: Cuadro de Mando - Información Pacientes/Dosis
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Información Pacientes/Dosis',
-        'Sección que contiene la Información Pacientes/Dosis',
+        'Sección que contiene la Información de Pacientes/Dosis de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
@@ -556,7 +508,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Información Farmaeconómicos',
-        'Sección que contiene la Información Farmaeconómicos',
+        'Sección que contiene la Información Farmaeconómica de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
@@ -581,7 +533,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Paciente',
-        'Sección que contiene la Cuadro de Mando Paciente',
+        'Sección que contiene el Menú completo tras la seleccion de un Paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1)), null), 1)) ,
@@ -631,7 +583,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Datos sociodemográficos',
-        'Sección que contiene la Cuadro de Mando Paciente',
+        'Sección que contiene los datos sociodemograficos de un paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -732,7 +684,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Seguimiento',
-        'Sección que contiene los Seguimiento del paciente',
+        'Sección que contiene el Seguimiento del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -782,7 +734,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Tratamiento anteriores',
-        'Sección que contiene el Tratamiento anteriores del paciente',
+        'Sección que contiene los Tratamientos anteriores del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -857,7 +809,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'DLQI',
-        'Sección que contiene el indice DLQI',
+        'Sección que contiene el indice DLQI del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1)), null), 1)) ,
@@ -883,7 +835,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'EAV Y PASE',
-        'Sección que contiene el indice EAV Y PASE',
+        'Sección que contiene el indice EAV Y PASE del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1)), null), 1)) ,
@@ -908,7 +860,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Otros índices: NAPSI',
-        'Sección que contiene el indice Otros índices: NAPSI',
+        'Sección que contiene el indice Otros índices: NAPSI  del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1)), null), 1)) ,
@@ -933,7 +885,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Evaluación de análisis clínicos',
-        'Sección que contiene la Evaluación de análisis clínicos paciente',
+        'Sección que contiene la Evaluación de análisis clínicos del paciente ',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -961,7 +913,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Evolución de índices clínicos' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1),
         null,
         '#');
 
@@ -982,7 +934,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Perfil metabólico',
-        'Sección que contiene los hemogramas del paciente',
+        'Sección que contiene el perfil metabólico del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
@@ -1007,7 +959,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Bioquímica hepática y renal',
-        'Sección que contiene las Bioquímica hepática y renal del paciente',
+        'Sección que contiene la Bioquímica hepática y renal del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
@@ -1057,7 +1009,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Anticuerpo y antígeno leucocitario',
-        'Sección que contiene las Anticuerpo y antígeno leucocitario del paciente',
+        'Sección que contiene la información de los Anticuerpo y antígeno leucocitario del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
@@ -1082,7 +1034,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Monitorización de fármacos biológicos',
-        'Sección que contiene las Monitorización de fármacos biológicos del paciente',
+        'Sección que contiene la Monitorización de fármacos biológicos del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Evaluación de análisis clínicos' LIMIT 1)), null), 1)) ,
@@ -1131,7 +1083,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Exploraciones complementarias de imagen',
-        'Sección que contiene la Exploraciones complementarias de imagen del paciente',
+        'Sección que contiene las Exploraciones complementarias de imagen del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -1156,7 +1108,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Paciente compartido',
-        'Sección que contiene la Paciente compartido del paciente',
+        'Sección que contiene informacion del Paciente compartido',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -1180,7 +1132,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Incidencias',
-        'Sección que contiene la Incidencias del paciente',
+        'Sección que contiene Incidencias del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -1228,7 +1180,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Consentimiento',
-        'Sección que contiene la Consentimiento del paciente',
+        'Sección que contiene el Consentimiento del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -1252,7 +1204,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Exportar',
-        'Sección que contiene las opciones de exportacion',
+        'Sección que contiene las opciones de exportacion de la informacion del paciente',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
@@ -1300,7 +1252,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes por indicación',
-        'Sección que contiene la Pacientes por indicación',
+        'Sección que contiene informacion de diagnostico de Pacientes por indicación',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1325,7 +1277,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes por diagnóstico CIE9',
-        'Sección que contiene la Pacientes por diagnóstico CIE9',
+        'Sección que contiene  informacion de diagnostico de Pacientes por diagnóstico CIE9',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1350,7 +1302,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes por tipo de tratamiento',
-        'Sección que contiene la Pacientes por tipo de tratamiento',
+        'Sección que contiene informacion de diagnostico de Pacientes por tipo de tratamiento',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1374,7 +1326,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes por tratamientos combinados',
-        'Sección que contiene la Pacientes por tratamientos combinados',
+        'Sección que contiene  informacion de diagnostico de Pacientes por tratamientos combinados',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1399,7 +1351,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Motivo del cambio de tratamiento biológico de los últimos 5 años',
-        'Sección que contiene la Motivo del cambio de tratamiento biológico de los últimos 5 años',
+        'Sección que contiene  informacion de diagnostico del Motivo del cambio de tratamiento biológico de los últimos 5 años',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1424,7 +1376,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Motivo del último cambio de tratamiento biológico',
-        'Sección que contiene la Motivo del cambio de tratamiento biológico de los últimos 5 años',
+        'Sección que contiene informacion de diagnostico del Motivo del cambio de tratamiento biológico de los últimos 5 años',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1449,7 +1401,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Motivo de la suspensión de tratamiento biológico',
-        'Sección que contiene la Motivo de la suspensión de tratamiento biológico',
+        'Sección que contiene informacion de diagnostico del Motivo de la suspensión de tratamiento biológico',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1473,7 +1425,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Motivo del cambio de tratamiento biológico de los últimos 5 años',
-        'Sección que contiene la Motivo de la suspensión de tratamiento biológico',
+        'Sección que contiene informacion de diagnostico del Motivo de la suspensión de tratamiento biológico',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1498,7 +1450,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Número de cambios de tratamiento biológico',
-        'Sección que contiene la Número de cambios de tratamiento biológico',
+        'Sección que contiene informacion de diagnostico del Número de cambios de tratamiento biológico',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
@@ -1523,11 +1475,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes en tratamiento según agentes químicos',
-        'Sección que contiene la Pacientes en tratamiento según agentes químicos',
+        'Sección que contiene informacion de tratamiento de Pacientes en tratamiento según agentes químicos',
         false,
         true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
         null,
         '#');
 
@@ -1548,11 +1500,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes en tratamiento según agentes biológicos',
-        'Sección que contiene la Pacientes en tratamiento según agentes biológicos',
+        'Sección que contiene informacion de tratamiento de Pacientes en tratamiento según agentes biológicos',
         false,
         true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
         null,
         '#');
 
@@ -1573,11 +1525,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Tratamiento biológico en pacientes con psoriasis en placas',
-        'Sección que contiene la Tratamiento biológico en pacientes con psoriasis en placas',
+        'Sección que contiene informacion de tratamiento de Tratamiento biológico en pacientes con psoriasis en placas',
         false,
         true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
         null,
         '#');
 
@@ -1598,11 +1550,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Tratamiento biológico en pacientes con psoriasis palmo-plantar',
-        'Sección que contiene la Tratamiento biológico en pacientes con psoriasis palmo-plantar',
+        'Sección que contiene informacion de tratamiento de Tratamiento biológico en pacientes con psoriasis palmo-plantar',
         false,
         true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
         null,
         '#');
 
@@ -1623,11 +1575,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Tratamiento biológico en pacientes con eritrodermia',
-        'Sección que contiene la Tratamiento biológico en pacientes con eritrodermia',
+        'Sección que contiene informacion de tratamiento de Tratamiento biológico en pacientes con eritrodermia',
         false,
         true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
         null,
         '#');
 
@@ -1648,11 +1600,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Tratamiento biológico en pacientes con psoriasis pustulosa',
-        'Sección que contiene la Tratamiento biológico en pacientes con psoriasis pustulosa',
+        'Sección que contiene informacion de tratamiento de Tratamiento biológico en pacientes con psoriasis pustulosa',
         false,
         true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información de Tratamientos' LIMIT 1),
         null,
         '#');
 
@@ -1669,30 +1621,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
         (select sec_id from hopes.sections where sec_title ='Tratamiento biológico en pacientes con psoriasis pustulosa' LIMIT 1),
         (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
 
--- Section: Cuadro de Mando - Información Resultados en Salud
-INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
-VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Información Resultados en Salud',
-        'Sección que contiene la información de diagnóstico',
-        false,
-        true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
-        null,
-        '#');
-
--- Role_Admin
-INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
-VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Información Tratamientos' LIMIT 1),
-		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
-
-
 -- Section: Información Resultados en Salud - Pacientes según PASI
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes según PASI',
-        'Sección que contiene la Pacientes según PASI',
+        'Sección que contiene la información de resultados en salud de Pacientes según PASI de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
@@ -1717,7 +1650,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes según BSA',
-        'Sección que contiene la Pacientes según BSA',
+        'Sección que contiene  la información de resultados en salud de Pacientes según BSA de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
@@ -1743,7 +1676,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes según PGA',
-        'Sección que contiene la Pacientes según PGA',
+        'Sección que contiene  la información de resultados en salud de Pacientes según PGA de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
@@ -1768,7 +1701,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes según DLQI',
-        'Sección que contiene la Pacientes según DLQI',
+        'Sección que contiene  la información de resultados en salud de Pacientes según DLQI de la patologia',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Resultados en Salud' LIMIT 1)), null), 1)) ,
@@ -1793,7 +1726,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Pacientes según dosis/frecuencia del tratamiento biológico',
-        'Sección que contiene la Pacientes según dosis/frecuencia del tratamiento biológico',
+        'Sección que contiene informacion de Pacientes según dosis/frecuencia del tratamiento biológico',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Pacientes/Dosis' LIMIT 1)), null), 1)) ,
@@ -1819,7 +1752,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Consumo anual de tratamientos biológicos',
-        'Sección que contiene la Consumo anual de tratamientos biológicos',
+        'Sección que contiene la Información Farmaeconómicos de Consumo anual de tratamientos biológicos',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1)), null), 1)) ,
@@ -1844,7 +1777,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Consumo mensual en euros',
-        'Sección que contiene la Consumo anual de tratamientos Consumo mensual en euros biológicos',
+        'Sección que contiene la Información del Consumo anual de tratamientos biologicos por Consumo mensual en euros',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo anual de tratamientos biológicos' LIMIT 1)), null), 1)) ,
@@ -1869,7 +1802,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Consumo mensual acumulado en euros',
-        'Sección que contiene la Consumo anual de tratamientos Consumo mensual acumulado en euros biológicos',
+        'Sección que contiene la informacion del Consumo anual de tratamientos biológicos por Consumo mensual acumulado en euros',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo anual de tratamientos biológicos' LIMIT 1)), null), 1)) ,
@@ -1894,7 +1827,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Consumo medio de tratamientos biológicos',
-        'Sección que contiene la Consumo medio de tratamientos biológicos',
+        'Sección que contiene la informacion del Consumo medio de tratamientos biológicos',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1)), null), 1)) ,
@@ -1918,8 +1851,8 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 -- Section: Consumo medio de tratamientos biológicos
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Biologicos - Consumo mensual medio en euros',
-        'Sección que contiene la Consumo medio de tratamientos biológicos',
+        'Consumo mensual medio en euros',
+        'Sección que contiene la informacion del Consumo medio de tratamientos biológicos mensual medio en euros',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo medio de tratamientos biológicos' LIMIT 1)), null), 1)) ,
@@ -1930,21 +1863,21 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-        (select sec_id from hopes.sections where sec_title ='Biologicos - Consumo mensual medio en euros' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo mensual medio en euros' LIMIT 1),
         (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
 
 
 -- Role_Medico
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-        (select sec_id from hopes.sections where sec_title ='Biologicos - Consumo mensual medio en euros' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo mensual medio en euros' LIMIT 1),
         (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
 
 -- Section: Consumo medio de tratamientos biológicos - Consumo mensual medio acumulado en euros
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Biologicos - Consumo mensual medio acumulado en euros',
-        'Sección que contiene la Consumo medio de tratamientos biológicos',
+        'Consumo mensual medio acumulado en euros',
+        'Sección que contiene la informacion de Consumo medio de tratamientos biológicos mensual medio acumulado en euros',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Consumo medio de tratamientos biológicos' LIMIT 1)), null), 1)) ,
@@ -1955,12 +1888,162 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-        (select sec_id from hopes.sections where sec_title ='Biologicos - Consumo mensual medio acumulado en euros' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo mensual medio acumulado en euros' LIMIT 1),
         (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
 
 
 -- Role_Medico
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-        (select sec_id from hopes.sections where sec_title ='Biologicos - Consumo mensual medio acumulado en euros' LIMIT 1),
+        (select sec_id from hopes.sections where sec_title ='Consumo mensual medio acumulado en euros' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
+
+-- Section: Información Farmaeconómicos - Coste total por tratamiento biológico
+INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
+VALUES (nextval('hopes.sections_sec_id_seq'),
+        'Coste total por tratamiento biológico',
+        'Sección que contiene el Coste total por tratamiento biológico',
+        false,
+        true,
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1),
+        null,
+        '#');
+
+-- Role_Admin
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Coste total por tratamiento biológico' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
+
+
+-- Role_Medico
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Coste total por tratamiento biológico' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
+
+-- Section: Coste total por tratamiento biológico - Costes totales
+INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
+VALUES (nextval('hopes.sections_sec_id_seq'),
+        'Costes totales',
+        'Sección que contiene el Costes totales por tratamiento biologico',
+        false,
+        true,
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Coste total por tratamiento biológico' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Coste total por tratamiento biológico' LIMIT 1),
+        null,
+        '#');
+
+-- Role_Admin
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes totales' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
+
+
+-- Role_Medico
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes totales' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
+
+-- Section: Coste total por tratamiento biológico - Costes acumulados
+INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
+VALUES (nextval('hopes.sections_sec_id_seq'),
+        'Costes acumulados',
+        'Sección que contiene los Costes total acumulados por tratamiento biologico ',
+        false,
+        true,
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Coste total por tratamiento biológico' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Coste total por tratamiento biológico' LIMIT 1),
+        null,
+        '#');
+
+-- Role_Admin
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes acumulados' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
+
+
+-- Role_Medico
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes acumulados' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
+
+-- Section: Información Farmaeconómicos - Coste medio por tratamiento biológico
+INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
+VALUES (nextval('hopes.sections_sec_id_seq'),
+        'Coste medio por tratamiento biológico',
+        'Sección que contiene el Coste medio por tratamiento biológico',
+        false,
+        true,
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Información Farmaeconómicos' LIMIT 1),
+        null,
+        '#');
+
+-- Role_Admin
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Coste medio por tratamiento biológico' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
+
+
+-- Role_Medico
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Coste medio por tratamiento biológico' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
+
+-- Section: Coste medio por tratamiento biológico - Costes medios
+INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
+VALUES (nextval('hopes.sections_sec_id_seq'),
+        'Costes medios',
+        'Sección que contiene el Coste medio por tratamiento biológico: Costes medios',
+        false,
+        true,
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Coste medio por tratamiento biológico' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Coste medio por tratamiento biológico' LIMIT 1),
+        null,
+        '#');
+
+-- Role_Admin
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes medios' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
+
+
+-- Role_Medico
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes medios' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
+
+-- Section: Coste medio por tratamiento biológico - Costes medios acumulados
+INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
+VALUES (nextval('hopes.sections_sec_id_seq'),
+        'Costes medios acumulados',
+        'Sección que contiene el Coste medio por tratamiento biológico: Costes medios acumulados',
+        false,
+        true,
+        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Coste medio por tratamiento biológico' LIMIT 1)), null), 1)) ,
+        (select sec_id from hopes.sections where sec_title ='Coste medio por tratamiento biológico' LIMIT 1),
+        null,
+        '#');
+
+-- Role_Admin
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes medios acumulados' LIMIT 1),
+        (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
+
+
+-- Role_Medico
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+        (select sec_id from hopes.sections where sec_title ='Costes medios acumulados' LIMIT 1),
         (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
