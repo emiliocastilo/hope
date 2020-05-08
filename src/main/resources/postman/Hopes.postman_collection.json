@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8b51f65a-2fef-408d-b481-8a2485e9d1d4",
+		"_postman_id": "7f299f83-8aa9-4d6b-9100-e8e7f29dfb3f",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "54e29c76-44bf-4945-afc3-89fd38c7761c",
+								"id": "7259311a-497f-4f1b-b67f-65c60bf5b057",
 								"exec": [
 									""
 								],
@@ -381,7 +381,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3d604a0f-01cc-4cfe-bfd5-c83ebfb50a2e",
+								"id": "8b2bab29-b668-49f8-b23d-d074a9ae52b6",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -426,7 +426,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "57985368-2870-45cd-8809-8a40a81026dd",
+								"id": "3a2dfcbb-fad4-4378-a9fe-a59629a96568",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1125,7 +1125,192 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"value\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}",
+							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"form\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subir plantilla Antecedentes Familiares",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"form\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subir plantilla Seguimiento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"key\": \"PLANTILLA_PRUEBA\",\n\t\"form\": \"[{'type': 'input','label': 'Nombre','name': 'name','placeholder': 'nombre','validation': 'Validators.required, Validators.minLength(4)'}]\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subir plantilla Diagnostico",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key\": \"DIAGNOSTICO\",\r\n\t\"form\": \"[{'type':'select','label':'Tipo de psoriasis','name':'psoriasisType','placeholder':'','options':['Psoriasis en placas','Palmoplantar','Eritrodermia','Psoriasis pustulosa','Otras']},{'type':'input','label':'Otras psoriasis descripción','name':'otherPsoriaseDescription','placeholder':'otherPsoriaseDescription'},{'type':'input','label':'Código CIE 9 del diagnóstico principal','name':'cie9Code','placeholder':'cie9Code'},{'type':'input','label':'Descripción del diagnóstico CIE 9','name':'cie9Description','placeholder':'cie9Description'},{'type':'input','label':'Otros datos del diagnóstico principal','name':'otherDiagnosisData','placeholder':'otherDiagnosisData'},{'type':'input','label':'Fecha del diagnóstico principal','name':'mainDiagnosisDate','placeholder':'mainDiagnosisDate'},{'type':'input','label':'Fecha de aparición de los primeros síntomas','name':'firstSymptomsDate','placeholder':'firstSymptomsDate'},{'type':'input','label':'Fecha de derivación a la atención especializada','name':'specialtyCareDate','placeholder':'specialtyCareDate'},{'type':'input','label':'Antecedentes personales','name':'personalHistory','placeholder':'personalHistory'},{'type':'input','label':'Síntomas al inicio de la enfermedad:','name':'beginningSymptoms','placeholder':'beginningSymptoms'},{'type':'input','label':'secondaryDiagnoses','name':'','placeholder':'secondaryDiagnoses'},{'type':'input','label':'Código CIE 9 del diagnóstico secundario','name':'icd9Secondary','placeholder':'icd9Secondary'},{'type':'input','label':'Descripción del diagnóstico CIE 9 secundario','name':'icd9SecondaryDescription','placeholder':'icd9SecondaryDescription'},{'type':'input','label':'Otros datos del diagnóstico secundario','name':'otherSecondaryDiagnosis','placeholder':'otherSecondaryDiagnosis'},{'type':'input','label':'Fecha del diagnóstico secundario','name':'secondaryDiagnosisDate','placeholder':'secondaryDiagnosisDate'}]\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subir plantilla Datos Generales Paciente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key\": \"DATOS_ GENERALES_PACIENTE\",\r\n    \"form\": \"[{'type':'input','label':'Fecha del registro','name':'registDate','placeholder':'registDate'},{'type':'input','label':'Edad','name':'age','placeholder':'age'},{'type':'input','label':'Estatura (m) ','name':'height','placeholder':'height'},{'type':'input','label':'Peso (kg)','name':'weigth','placeholder':'height'},{'type':'input','label':'Perímetro de cintura (cm)','name':'waistSize','placeholder':'waistSize'},{'type':'input','label':'IMC','name':'imc','placeholder':'imc'},{'type':'input','label':'Superficie corporal (m2) ','name':'bodySurface','placeholder':'bodySurface'},{'type':'input','label':'PAS (mmHg) ','name':'pas','placeholder':'pass'},{'type':'input','label':'PAD (mmHg) ','name':'pad','placeholder':'pad'},{'type':'input','label':'Hábitos de consumo de alcohol y tabaco ','name':'habits','placeholder':'habits'},{'type':'radio','label':'¿Consume alcohol de forma habitual?','name':'alcoholConsume','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}],'placeholder':'alcoholConsume'},{'type':'select','label':'UBE (unidades de bebida estándar; 1UBE = 10 g de alcohol)','name':'ube','placeholder':'','options':['Diario','Semanal','Consumo ocasional']},{'type':'radio','label':'Fumador (consumo de tabaco)','name':'smoker ','placeholder':'smoker','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':' En el momento del diagnóstico ','name':'diagnosticSmoker','placeholder':'diagnosticSmoker','radioButton':[{'optionName':'Sí','value':'yes'},{'optionName':'No','value':'no'},{'optionName':'Exfumador','value':'ex'}]},{'type':'radio','label':' Actual','name':'actualSmoker','placeholder':'actualSmoker','radioButton':[{'optionName':'Sí','value':'yes'},{'optionName':'No','value':'no'},{'optionName':'Exfumador','value':'ex'}]},{'type':'input','label':'Nº de cigarrillos diarios(en fumadores)','name':'dailyCigarrettes','placeholder':'dailyCigarrettes'},{'type':'input','label':'Nº cigarrillos/año ','name':'yearCigarrettes','placeholder':'yearCigarrettes'},{'type':'input','label':'Años de fumador','name':'','placeholder':''},{'type':'input','label':'Exfumador desde','name':'noSmokerFrom','placeholder':'noSmokerFrom'},{'type':'input','label':'Años sin fumar ','name':'notSmokinYears','placeholder':'notSmokinYears'},{'type':'input','label':'Datos sobre ensayos clínicos ','name':'clinicData','placeholder':'clinicData'},{'type':'select','label':'Grupo de Trabajo (Ensayo clínico)','name':'workGroup','placeholder':'','options':['Grupo 1','Grupo 2','Grupo 3','Grupo 4','Grupo 5','Grupo 6','Grupo 7','Grupo 8','Grupo 9','Grupo 10']},{'type':'radio','label':'Demuestra interés en participar en ensayo clínico','name':'interestedClinicalTest','placeholder':'interestedClinicalTest','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Participa en ensayo clínico','name':'participateClinicalTest','placeholder':'participateClinicalTest','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'input','label':'COMORBILIDADES ','name':'comorbidities','placeholder':'comorbidities'},{'type':'input','label':'Comorbilidades generales ','name':'generalComorbidities','placeholder':'generalComorbidities'},{'type':'radio','label':'Artritis Psoriásica','name':'psoriasicArthritis','placeholder':'psoriasicArthritis','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Esclerosis múltiple','name':'multipleSclerosis','placeholder':'multipleSclerosis','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Hipertensión ','name':'hypertension','placeholder':'hypertension','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Diabetes ','name':'diabetes','placeholder':'diabetes','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Hiperlipidemia ','name':'hyperlipidemia','placeholder':'hyperlipidemia','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'select','label':'Clasificación del estado nutricional según IMC ','name':'ibmClassification','placeholder':'','options':[]},{'type':'radio','label':'Disfunción tiroidea','name':'thyroidDysfunction','placeholder':'','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Insuficiencia renal','name':'renalInsufficiency','placeholder':'renalInsufficiency','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Diálisis','name':'dialysis','placeholder':'dialysis','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Cirrosis Hepática','name':'hepaticCirrhosis','placeholder':'hepaticCirrhosis','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'select','label':'Tipo de cirrosis ','name':'typeCirrhosis','placeholder':'','options':['Child-Pugh A','Child-Pugh B','Child-Pugh C']},{'type':'radio','label':'HGNA (Higado graso no alcohólico)','name':'hgna','placeholder':'hgna','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'EHNA (Esteatohepatitis no alcohólica)','name':'','placeholder':'ehna','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'input','label':'Psiquiatría: ','name':'Psychiatry','placeholder':'Psychiatry'},{'type':'radio','label':'Ansiedad','name':'anxiety','placeholder':'anxiety','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Depresión mayor','name':'majorDepression','placeholder':'majorDepression','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'input','label':'Otras: ','name':'others','placeholder':'others'},{'type':'input','label':'COINFECCIONES','name':'coinfections','placeholder':'coinfections'},{'type':'radio','label':'VIH','name':'vih','placeholder':'vih','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'VHB','name':'vhb','placeholder':'vhb','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'VHC','name':'vhc','placeholder':'vhc','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'VHD','name':'vhd','placeholder':'vhd','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'radio','label':'Tuberculosis ','name':'tuberculosis','placeholder':'tuberculosis','radioButton':[{'optionName':'Sí','value':true},{'optionName':'No','value':false}]},{'type':'input','label':'Otras: ','name':'others','placeholder':'others'}]\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/template",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"template"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subir plantilla Datos Sociodemograficos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key\": \"DATOS_ SOCIODEMOGRAFICOS\",\r\n    \"form\": \"[{'type':'input','label':'Nombre','name':'name','disabled':true,'placeholder':'name'},{'type':'input','label':'Apellidos','name':'surname','disabled':true,'placeholder':'surname'},{'type':'input','label':'Número de Historia Clínica','name':'nhc','placeholder':'nhc'},{'type':'input','label':'Número de Tarjeta Sanitaria','name':'healthCard','disabled':true,'placeholder':'healthCard'},{'type':'input','label':'DNI','name':'dni','disabled':true,'placeholder':'dni'},{'type':'input','label':'Dirección','name':'address','disabled':true,'placeholder':'address'},{'type':'input','label':'Localidad','name':'city','disabled':true,'placeholder':'city'},{'type':'input','label':'Provincia','name':'state','disabled':true,'placeholder':'state'},{'type':'input','label':'CP','name':'postaCode','disabled':true,'placeholder':'postaCode'},{'type':'input','label':'Teléfono','name':'phoneParticular','disabled':true,'placeholder':'phoneParticular'},{'type':'input','label':'Tel. móvil','name':'phone','disabled':true,'placeholder':'phone'},{'type':'select','name':'genderCode','disabled':true,'label':'Sexo','options':['Hombre','Mujer'],'placeholder':''},{'type':'input','label':'Fecha de nacimiento','name':'birthDate','disabled':true,'placeholder':'birthDate'},{'type':'input','label':'Edad','name':'age','disabled':true,'placeholder':'age'},{'type':'select','name':'country','label':'País de origen','options':[],'disabled':true,'placeholder':''},{'type':'select','name':'phnotype','label':'Fenotipo','options':['Caucásico','Latinoamericano','Asiático','Africano (raza negra)'],'disabled':true,'placeholder':''},{'type':'input','label':'Actividad Laboral','name':'laboralActivity','disabled':true,'placeholder':'laboralActivity'},{'type':'select','name':'StudiesLevelSelect','label':'Nivel de estudios','options':['Sin estudios','Primaria ','Secundaria','Universitaria'],'disabled':true,'placeholder':''}]\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1254,7 +1439,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7fb01266-a831-4e21-ab4b-fd05c95d0a11",
+								"id": "ecccd62e-1ced-48f2-8adb-5360fe301d17",
 								"exec": [
 									""
 								],
@@ -1574,7 +1759,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "134b867b-7459-45e5-aba0-1d35278484b2",
+								"id": "fdd9fc4e-88da-45db-89f8-65b71926d1f3",
 								"exec": [
 									""
 								],
@@ -1732,7 +1917,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dfa363de-b7c1-4322-a62e-92b42ec0d07c",
+								"id": "c8df225a-e730-4ef4-bd62-00d716b50a8f",
 								"exec": [
 									""
 								],
@@ -1973,7 +2158,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "db53aa37-4832-48a2-87c4-f0d74aadcc1f",
+								"id": "bb4c9733-d8ef-4f51-9806-e89abaa98f63",
 								"exec": [
 									""
 								],
@@ -2341,7 +2526,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "48d12521-d5af-4a16-995c-cab4573a3dfb",
+								"id": "ae4b9302-c8b8-4867-af7a-da422420c964",
 								"exec": [
 									""
 								],
@@ -2448,7 +2633,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6afe7f11-77c9-4c0f-a6e3-881d4766678b",
+						"id": "7c09e6f5-3409-4a12-88e4-89a3a244a6e0",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2458,7 +2643,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "57cf6f00-b60f-4952-a688-4e238da3b4bb",
+						"id": "d4275c05-dc2c-4904-bf37-e36136fc7246",
 						"type": "text/javascript",
 						"exec": [
 							""
