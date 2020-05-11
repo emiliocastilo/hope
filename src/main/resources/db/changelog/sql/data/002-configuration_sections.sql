@@ -565,12 +565,12 @@ INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, se
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Paciente',
         'Sección que contiene el Menú completo tras la seleccion de un Paciente',
-        false,
+        true,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1)), null), 1)) ,
         (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
-        null,
-        '#');
+        'assets/img/modules/planes-atencion.png',
+        '/hopes/pathology/patients');
 
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
@@ -595,7 +595,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1)), null), 1)) ,
         (select sec_id from hopes.sections where sec_title ='Paciente' LIMIT 1),
         null,
-        '#');
+        '/hopes/pathology/patients/dashboard');
 
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
