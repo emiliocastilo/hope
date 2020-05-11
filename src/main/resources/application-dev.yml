@@ -1,0 +1,18 @@
+---
+# Data base access configuration
+spring:
+  liquibase:
+    contexts: dev
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/hopes_back"
+    username: postgres
+    password: postgres
+  data:
+    # Mongo
+    mongodb:
+      database: hopes_back
+      host: localhost
+      port: 27017
+      username: root
+      password: root

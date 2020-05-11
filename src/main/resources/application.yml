@@ -15,6 +15,8 @@ server:
     context-path: "/v1"
 
 spring:
+  profiles:
+    active: @spring.profiles.active@
   jpa:
     # Hibernate
     hibernate:
@@ -24,6 +26,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+        default_schema: "hopes"
+        #enable_lazy_load_no_trans: true
     open-in-view: false
     show-sql: true
   # Database
@@ -42,6 +46,7 @@ spring:
   liquibase:
     enabled: true
     change-log: "classpath:db/changelog/db.changelog-master.yaml"
+    liquibaseSchema: "hopes"
   # Mail
   mail:
     host: "localhost"
@@ -54,6 +59,7 @@ spring:
       auth: false
       starttls:
         enable: false
+
 # Logging
 logging:
   level:

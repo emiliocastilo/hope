@@ -1,15 +1,15 @@
 package es.plexus.hopes.hopesback.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import es.plexus.hopes.hopesback.repository.model.Token;
+import es.plexus.hopes.hopesback.repository.model.TokenType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.plexus.hopes.hopesback.repository.model.Token;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
-	List<Token> findByTokenExpirationDateAfter(LocalDateTime localDateTime);
+	List<Token> findByTypeAndTokenExpirationDateAfter(TokenType tokenType, LocalDateTime localDateTime);
 	Long deleteByTokenExpirationDateBefore(LocalDateTime localDateTime);
 }
