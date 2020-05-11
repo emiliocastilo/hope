@@ -54,6 +54,7 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 	  	(select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
 	  	(select rol_id from hopes.roles where rol_name = 'Farmacéutico' LIMIT 1));
 
+
 -- Section: Administración
 INSERT INTO hopes.sections(
 	sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
@@ -97,6 +98,12 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 	  	(select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
 	  	(select rol_id from hopes.roles where rol_name = 'Farmacéutico' LIMIT 1));
 
+-- Role_Medic
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+	  	(select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
+	  	(select rol_id from hopes.roles where rol_name = 'Gestor' LIMIT 1));
+
 -- Section: Cuadro de Mando
 INSERT INTO hopes.sections(
 	sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
@@ -133,6 +140,12 @@ INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 	  	(select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
 	  	(select rol_id from hopes.roles where rol_name = 'Médico VIH' LIMIT 1));
+
+-- Role_Medic
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+	  	(select sec_id from hopes.sections where sec_title ='Cuadro de Mando' LIMIT 1),
+	  	(select rol_id from hopes.roles where rol_name = 'Gestor' LIMIT 1));
 
 -- Section: Calendario
 INSERT INTO hopes.sections(
@@ -171,6 +184,12 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 	  	(select sec_id from hopes.sections where sec_title ='Calendario' LIMIT 1),
 	  	(select rol_id from hopes.roles where rol_name = 'Médico VIH' LIMIT 1));
 
+-- Role_Medic
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+	  	(select sec_id from hopes.sections where sec_title ='Calendario' LIMIT 1),
+	  	(select rol_id from hopes.roles where rol_name = 'Gestor' LIMIT 1));
+
 
 -- Section: Alertas
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
@@ -208,6 +227,12 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 	  	(select sec_id from hopes.sections where sec_title ='Alertas' LIMIT 1),
 	  	(select rol_id from hopes.roles where rol_name = 'Médico VIH' LIMIT 1));
 
+-- Role_Medic
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+	  	(select sec_id from hopes.sections where sec_title ='Alertas' LIMIT 1),
+	  	(select rol_id from hopes.roles where rol_name = 'Gestor' LIMIT 1));
+
 -- Section: Administración 	Secciones
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
@@ -235,7 +260,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
         (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
-        'assets/img/modules/medics.png',
+        'assets/img/modules/medicos.png',
         '/hopes/management/medics');
 
 -- Role_Admin
@@ -292,6 +317,12 @@ INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
 		(select sec_id from hopes.sections where sec_title ='Gestión de Pacientes' LIMIT 1),
 		(select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
+
+-- Role_Medic
+INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
+VALUES (nextval('hopes.sections_roles_scr_id_seq'),
+	  	(select sec_id from hopes.sections where sec_title ='Gestión de Pacientes' LIMIT 1),
+	  	(select rol_id from hopes.roles where rol_name = 'Gestor' LIMIT 1));
 
 -- Section: Administración 	Gestión de Roles
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)

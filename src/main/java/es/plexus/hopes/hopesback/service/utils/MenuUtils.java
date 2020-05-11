@@ -33,6 +33,7 @@ public final class MenuUtils {
                 parent.setUrl(section.getUrl());
                 parent.setOrder(section.getOrder());
                 parent.setActive(section.isActive());
+                parent.setPrincipal(section.isActive());
                 parent.setChildren(new ArrayList<>());
 
                 remainingSections.remove(section);

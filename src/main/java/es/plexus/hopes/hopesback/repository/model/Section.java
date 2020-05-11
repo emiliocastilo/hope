@@ -40,6 +40,10 @@ public class Section {
 	private boolean active;
 
 	@Basic
+	@Column(name = "sec_principal", nullable = false)
+	private boolean principal;
+
+	@Basic
 	@Column(name = "sec_order", nullable = false)
 	private int order;
 
