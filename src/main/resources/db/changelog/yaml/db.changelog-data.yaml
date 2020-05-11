@@ -2,6 +2,3 @@ databaseChangeLog:
 - include:
       file: ../sql/data/001-catalogues.sql
       relativeToChangelogFile: true
-- include:
-      file: ../sql/data/002-catalogues.sql
-      relativeToChangelogFile: true

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -17,26 +18,27 @@ import lombok.Data;
 @Entity
 
 @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
-@Table(name = "localized_roles")
-public class LocalizedRole {
+@Table(name = "localized_sections")
+public class LocalizedSection {
     
 	@Id
-	@Column(name = "lcr_id", nullable = false)
+	@Column(name = "lcs_id", nullable = false)
 	private Long id;
 	
 	@Basic
-	@Column(name = "lcr_locale", nullable = false, length = 2)
+	@Column(name = "lcs_locale", nullable = false, length = 2)
 	private String locale;
 	
     @Basic
-    @Column(name = "lcr_name", nullable = false, length = 60)
-    private String name;
+    @Column(name = "lcs_title", nullable = false, length = 60)
+    private String title;
     
     @Basic
-    @Column(name = "lcr_description", nullable = false, length = 200)
+    @Column(name = "lcs_description", nullable = false, length = 200)
     private String description;
 
     @ManyToOne
-	@JoinColumn(name = "lcr_rol_id", referencedColumnName = "rol_id")
-	private Role role;    
+    //@MapsId("id")
+	@JoinColumn(name = "lcs_sec_id", referencedColumnName = "sec_id")
+	private Section section;    
 }

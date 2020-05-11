@@ -1,8 +1,13 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import lombok.Data;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +18,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
+
+import lombok.Data;
 
 @Data
 @Entity
@@ -66,5 +73,23 @@ public class Section {
 			joinColumns = @JoinColumn(name = "scr_section_id"),
 			inverseJoinColumns = @JoinColumn(name = "scr_role_id"))
 	private Set<Role> roles;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
+	@MapKey(name = "locale")
+    //@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+    private Map<String, LocalizedSection> localizations = new HashMap<>();
 
+	public LocalizedSection getLocale() {
+		LocalizedSection localizedSection = localizations.get(Locale.getDefault().getLanguage());
+		return localizedSection;
+    }
+ 
+	public String getTitle() { 	
+        return this.getLocale()!=null?this.getLocale().getTitle():title;
+    }
+	
+    public String getDescription() {
+    	return this.getLocale()!=null?this.getLocale().getDescription():description;
+    }
+	
 }
