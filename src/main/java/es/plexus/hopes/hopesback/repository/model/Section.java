@@ -2,7 +2,6 @@ package es.plexus.hopes.hopesback.repository.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,6 +20,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import lombok.Data;
 
@@ -76,11 +79,11 @@ public class Section {
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)
 	@MapKey(name = "locale")
-    //@Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
+    @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     private Map<String, LocalizedSection> localizations = new HashMap<>();
 
 	public LocalizedSection getLocale() {
-		LocalizedSection localizedSection = localizations.get(Locale.getDefault().getLanguage());
+		LocalizedSection localizedSection = localizations.get(LocaleContextHolder.getLocale().getLanguage());
 		return localizedSection;
     }
  
