@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
+import es.plexus.hopes.hopesback.controller.model.DoctorUpdateDTO;
+import es.plexus.hopes.hopesback.controller.model.DoctorViewDTO;
 import es.plexus.hopes.hopesback.service.DoctorService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import org.junit.Test;
@@ -44,7 +46,7 @@ public class DoctorControllerTest {
 				.willReturn(getPageableDoctor(pageRequest));
 
 		// when
-		Page<DoctorDTO> response = doctorController.getAllDoctors(pageRequest);
+		Page<DoctorViewDTO> response = doctorController.getAllDoctors(pageRequest);
 
 		// then
 		assertNotNull(response);
@@ -58,7 +60,7 @@ public class DoctorControllerTest {
 				.willReturn(getPageableDoctor(pageRequest));
 
 		// when
-		Page<DoctorDTO> response = doctorController
+		Page<DoctorViewDTO> response = doctorController
 				.findDoctorsBySearch(mockDoctorDTO().getName(), pageRequest);
 
 		// then
@@ -73,7 +75,7 @@ public class DoctorControllerTest {
 				.willReturn(getPageableDoctor(pageRequest));
 
 		// when
-		Page<DoctorDTO> response = doctorController
+		Page<DoctorViewDTO> response = doctorController
 				.filterDoctors(mockJSONDoctor(), pageRequest);
 
 		// then
@@ -87,10 +89,10 @@ public class DoctorControllerTest {
 	@Test
 	public void getOneDoctorShouldBeStatusOk() {
 		// given
-		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
+		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorViewDTO());
 
 		// when
-		DoctorDTO response = doctorController.getOneDoctor(1L);
+		DoctorViewDTO response = doctorController.getOneDoctor(1L);
 
 		// then
 		assertNotNull(response);
@@ -102,7 +104,7 @@ public class DoctorControllerTest {
 		given(doctorService.getOneDoctor(anyLong())).willReturn(null);
 
 		// when
-		DoctorDTO response = doctorController.getOneDoctor(1L);
+		DoctorViewDTO response = doctorController.getOneDoctor(1L);
 
 		// then
 		assertNull(response);
@@ -114,10 +116,10 @@ public class DoctorControllerTest {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-		given(doctorService.addDoctor(any(DoctorDTO.class))).willReturn(mockDoctorDTO());
+		given(doctorService.addDoctor(any(DoctorDTO.class))).willReturn(mockDoctorViewDTO());
 
 		// when
-		DoctorDTO response = doctorController.addDoctor(mockDoctorDTO());
+		DoctorViewDTO response = doctorController.addDoctor(mockDoctorDTO());
 
 		// then
 		assertNotNull(response);
@@ -126,11 +128,11 @@ public class DoctorControllerTest {
 	@Test
 	public void updateDoctorShouldBeStatusOk() throws ServiceException {
 		// given
-		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
-		given(doctorService.updateDoctor(any(DoctorDTO.class))).willReturn(mockDoctorDTO());
+		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorViewDTO());
+		given(doctorService.updateDoctor(any(DoctorUpdateDTO.class))).willReturn(mockDoctorViewDTO());
 
 		// when
-		DoctorDTO response = doctorController.updateDoctor(mockDoctorDTO());
+		DoctorViewDTO response = doctorController.updateDoctor(mockDoctorUpdateDTO());
 
 		// then
 		assertNotNull(response);
@@ -139,13 +141,13 @@ public class DoctorControllerTest {
 	@Test(expected = ServiceException.class)
 	public void updateDoctorShouldBeBadRequestWhenNotFound() throws ServiceException {
 		// when
-		doctorController.updateDoctor(mockDoctorDTO());
+		doctorController.updateDoctor(mockDoctorUpdateDTO());
 	}
 
 	@Test
 	public void deleteDoctorShouldBeOk() throws ServiceException {
 		// given
-		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorDTO());
+		given(doctorService.getOneDoctor(anyLong())).willReturn(mockDoctorViewDTO());
 
 		// when
 		doctorController.deleteDoctor(1L);
@@ -166,7 +168,31 @@ public class DoctorControllerTest {
 		return doctorDTO;
 	}
 
-	private PageImpl<DoctorDTO> getPageableDoctor(PageRequest pageRequest) {
-		return new PageImpl<>(Collections.singletonList(mockDoctorDTO()), pageRequest, 1);
+	private DoctorUpdateDTO mockDoctorUpdateDTO() {
+		DoctorUpdateDTO doctorDTO = new DoctorUpdateDTO();
+		doctorDTO.setId(1L);
+		doctorDTO.setName("Paco");
+		doctorDTO.setSurname("Gonzales");
+		doctorDTO.setPhone("123456789");
+		doctorDTO.setDni("12345678Z");
+		doctorDTO.setCollegeNumber(123456L);
+
+		return doctorDTO;
+	}
+
+	private DoctorViewDTO mockDoctorViewDTO() {
+		DoctorViewDTO doctorDTO = new DoctorViewDTO();
+		doctorDTO.setId(1L);
+		doctorDTO.setName("Paco");
+		doctorDTO.setSurname("Gonzales");
+		doctorDTO.setPhone("123456789");
+		doctorDTO.setDni("12345678Z");
+		doctorDTO.setCollegeNumber(123456L);
+
+		return doctorDTO;
+	}
+
+	private PageImpl<DoctorViewDTO> getPageableDoctor(PageRequest pageRequest) {
+		return new PageImpl<>(Collections.singletonList(mockDoctorViewDTO()), pageRequest, 1);
 	}
 }

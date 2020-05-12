@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
+import es.plexus.hopes.hopesback.controller.model.DoctorUpdateDTO;
+import es.plexus.hopes.hopesback.controller.model.DoctorViewDTO;
 import es.plexus.hopes.hopesback.service.DoctorService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
@@ -47,7 +49,7 @@ public class DoctorController {
 	@ApiOperation("Recuperar todos los doctores")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public Page<DoctorDTO> getAllDoctors(@PageableDefault(size = 5) Pageable pageable) {
+	public Page<DoctorViewDTO> getAllDoctors(@PageableDefault(size = 5) Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return doctorService.getAllDoctors(pageable);
 	}
@@ -55,7 +57,7 @@ public class DoctorController {
 	@ApiOperation("Buscar un doctor por el identificador")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{id}")
-	public DoctorDTO getOneDoctor(
+	public DoctorViewDTO getOneDoctor(
 			@ApiParam(value = "identificador", required = true) @PathVariable Long id) {
 		return doctorService.getOneDoctor(id);
 	}
@@ -63,7 +65,7 @@ public class DoctorController {
 	@ApiOperation("Buscador de medicos")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/searches")
-	public Page<DoctorDTO> findDoctorsBySearch(
+	public Page<DoctorViewDTO> findDoctorsBySearch(
 			@ApiParam(value = "buscador")
 			@RequestParam(value = "search", required = false, defaultValue = "") String search,
 			@PageableDefault(size = 5) Pageable pageable) {
@@ -75,7 +77,7 @@ public class DoctorController {
 	@ApiOperation("Filtro de medicos")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/filters")
-	public Page<DoctorDTO> filterDoctors(
+	public Page<DoctorViewDTO> filterDoctors(
 			@ApiParam(value = "filtrado")
 			@RequestParam(value = "doctor", required = false, defaultValue = "{}") String doctor,
 			@PageableDefault(size = 5) Pageable pageable) {
@@ -86,7 +88,7 @@ public class DoctorController {
 	@ApiOperation("Añadir un medico nuevo")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public DoctorDTO addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) throws ServiceException {
+	public DoctorViewDTO addDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) throws ServiceException {
 		log.debug(CALLING_SERVICE);
 		return doctorService.addDoctor(doctorDTO);
 	}
@@ -94,7 +96,7 @@ public class DoctorController {
 	@ApiOperation("Actualizar un medico")
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping
-	public DoctorDTO updateDoctor(@RequestBody @Valid final DoctorDTO doctorDTO) throws ServiceException {
+	public DoctorViewDTO updateDoctor(@RequestBody @Valid final DoctorUpdateDTO doctorDTO) throws ServiceException {
 		final Long id = doctorDTO.getId();
 		if (checkDoctorExistence(id)) throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
 				.exception(NOT_FOUND_DOCTOR_WITH_ID + id);

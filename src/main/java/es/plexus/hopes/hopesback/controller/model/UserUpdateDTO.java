@@ -5,11 +5,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import java.util.Set;
 
-@ApiModel
 @Data
-public class UserDTO {
+@ApiModel
+public class UserUpdateDTO {
 
 	@ApiModelProperty(position = 10, example = "1L", value = "Identificador en la BD")
 	private Long id;
@@ -25,9 +24,7 @@ public class UserDTO {
 	@Email
 	private String email;
 
-	@ApiModelProperty(position = 50, example = "[1, 2]", value = "Lista de roles que tiene el usuario")
-	private Set<Long> roles;
-
-	@ApiModelProperty(position = 60, example = "1", value = "Identificador del hospital al que pertenece el usuario")
+	@ApiModelProperty(position = 50, example = "1", value = "Identificador del hospital al que pertenece el usuario")
 	private Long hospitalId;
+
 }

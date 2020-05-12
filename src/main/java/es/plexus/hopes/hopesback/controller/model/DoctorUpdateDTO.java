@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @ApiModel
-public class DoctorDTO {
+public class DoctorUpdateDTO {
 
 	@ApiModelProperty(position = 10, example = "1", value = "Identificador en la BD")
 	private Long id;
@@ -31,8 +31,9 @@ public class DoctorDTO {
 	private Long collegeNumber;
 
 	@ApiModelProperty(position = 60, value = "Usuario relacionado al médico")
-	private UserDTO userDTO;
+	private UserUpdateDTO userDTO;
 
 	@ApiModelProperty(position = 70, example = "1", value = "Servicio relacionado al médico")
 	private ServiceDTO serviceDTO;
+
 }

@@ -5,6 +5,7 @@ import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
+import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.TokenRepository;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
@@ -118,15 +119,32 @@ public class UserService {
 	}
 
 	User addUserAndReturnEntity(final UserDTO userDTO) throws ServiceException {
+		return addUserAndReturnEntityCommon(userDTO);
+	}
+
+	User addUserAndReturnEntity(final UserUpdateDTO userUpdateDTO) throws ServiceException {
+		UserDTO userDTO = userMapper.userUpdateDTOToUserDTOConverter(userUpdateDTO);
+		return addUserAndReturnEntityCommon(userDTO);
+	}
+
+	private User addUserAndReturnEntityCommon(UserDTO userDTO) throws ServiceException {
 		validateUsername(userDTO);
 
 		final User user = userMapper.userDTOToUserConverter(userDTO);
-		user.setHospital(searchHospital(userDTO));
-		user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
-		user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+
+		if (userDTO.getHospitalId() != null) {
+			user.setHospital(searchHospital(userDTO));
+		}
+
+		if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
+			user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
+		}
+
+		if (userDTO.getPassword() != null) {
+			user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+		}
 
 		updateAccountStatus(userDTO, user);
-
 		return user;
 	}
 
@@ -146,7 +164,7 @@ public class UserService {
 
 		if (!hospital.isPresent()) {
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
-					String.format("Hospital with id %d not found. Hospital is mandatory for the user",
+					String.format("Hospital con id %d no encontrado. El hospital es requerido para el usuario.",
 							userDTO.getHospitalId()));
 		}
 
