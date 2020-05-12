@@ -37,10 +37,12 @@ public class Section {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	// Campo a extinguir
 	@Basic
 	@Column(name = "sec_title", nullable = false, length = 50)
 	private String title;
 
+	// Campo a extinguir
 	@Basic
 	@Column(name = "sec_description", length = 500)
 	private String description;
@@ -87,11 +89,13 @@ public class Section {
 		return localizedSection;
     }
  
-	public String getTitle() { 	
+	public String getTitle() { 
+		// this.getLocale().getTitle
         return this.getLocale()!=null?this.getLocale().getTitle():title;
     }
 	
     public String getDescription() {
+    	// this.getLocale().getDescription()
     	return this.getLocale()!=null?this.getLocale().getDescription():description;
     }
 	

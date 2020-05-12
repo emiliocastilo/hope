@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -38,7 +37,6 @@ public class LocalizedSection {
     private String description;
 
     @ManyToOne
-    //@MapsId("id")
 	@JoinColumn(name = "lcs_sec_id", referencedColumnName = "sec_id")
 	private Section section;    
 }
