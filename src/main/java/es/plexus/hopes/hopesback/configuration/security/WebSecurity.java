@@ -1,13 +1,5 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
-import static es.plexus.hopes.hopesback.configuration.security.Constants.LOGIN_URL;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.REQUEST_PASSWORD_CHANGE_URL;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.RESET_PASSWORD_URL;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.SAVE_NEW_PASSWORD_URL;
-
-import java.util.Arrays;
-import java.util.Collections;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +17,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
+
+import static es.plexus.hopes.hopesback.configuration.security.Constants.LOGIN_URL;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.REQUEST_PASSWORD_CHANGE_URL;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.RESET_PASSWORD_URL;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.SAVE_NEW_PASSWORD_URL;
 
 @Configuration
 @EnableWebSecurity
