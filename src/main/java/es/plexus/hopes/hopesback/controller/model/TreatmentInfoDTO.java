@@ -6,7 +6,7 @@ import lombok.Data;
 public class TreatmentInfoDTO {
     
 	private String codeAct;
-    private String description;    
+    private String actIngredients;    
     private Integer count;
    
 }

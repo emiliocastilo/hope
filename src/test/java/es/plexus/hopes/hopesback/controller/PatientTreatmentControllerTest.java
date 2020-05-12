@@ -70,8 +70,8 @@ public class PatientTreatmentControllerTest {
 	private TreatmentInfoDTO mockTreatmentInfoDTO() {
 		TreatmentInfoDTO treatmentInfoDTO = new TreatmentInfoDTO();
 	
-		treatmentInfoDTO.setCodeAct("Treatment code");
-		treatmentInfoDTO.setDescription("Treatment description");
+		treatmentInfoDTO.setCodeAct("ACT code");
+		treatmentInfoDTO.setActIngredients("Act Ingredient");
 		treatmentInfoDTO.setCount(1);		
 	
 		return treatmentInfoDTO;

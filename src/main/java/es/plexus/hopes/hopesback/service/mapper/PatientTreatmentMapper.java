@@ -23,7 +23,7 @@ public interface PatientTreatmentMapper {
 		for (Object[] treatment : treatmentList) {
 			TreatmentInfoDTO treatmentInfoDTO =  new TreatmentInfoDTO();
 			treatmentInfoDTO.setCodeAct((String)treatment[0]);
-			treatmentInfoDTO.setDescription((String)treatment[1]);
+			treatmentInfoDTO.setActIngredients((String)treatment[1]);
 			treatmentInfoDTO.setCount(((Long)treatment[2]).intValue());
 			
 			listTreatmentInfoDTO.add(treatmentInfoDTO);
