@@ -50,12 +50,14 @@ public final class MenuUtils {
                 children.setChildren(new ArrayList<>());
 
                 // Assign child to parent
-                childrens.add(children);
-                parent.setChildren(childrens);
+                if (!childrens.contains(children)) {
+                    childrens.add(children);
+                    parent.setChildren(childrens);
 
-                // depth search
-                remainingSections.remove(section);
-                buildTree(remainingSections, children);
+                    // depth search
+                    remainingSections.remove(section);
+                    buildTree(remainingSections, children);
+                }
             }
         }
     }
