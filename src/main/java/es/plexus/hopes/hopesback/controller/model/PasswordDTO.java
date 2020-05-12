@@ -1,9 +1,9 @@
 package es.plexus.hopes.hopesback.controller.model;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import lombok.Data;
 
 @Data
 public class PasswordDTO {

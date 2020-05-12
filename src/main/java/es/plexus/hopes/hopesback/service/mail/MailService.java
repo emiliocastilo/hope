@@ -1,11 +1,9 @@
 package es.plexus.hopes.hopesback.service.mail;
 
-import java.io.File;
-import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
+import es.plexus.hopes.hopesback.configuration.MailTemplateConfiguration;
+import io.jsonwebtoken.lang.Collections;
+import io.micrometer.core.instrument.util.StringUtils;
+import lombok.extern.log4j.Log4j2;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailException;
@@ -15,10 +13,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
-import es.plexus.hopes.hopesback.configuration.MailTemplateConfiguration;
-import io.jsonwebtoken.lang.Collections;
-import io.micrometer.core.instrument.util.StringUtils;
-import lombok.extern.log4j.Log4j2;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.util.List;
 
 @Service
 @Log4j2
