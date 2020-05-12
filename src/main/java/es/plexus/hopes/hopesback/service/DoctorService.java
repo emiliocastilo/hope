@@ -1,6 +1,10 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.DoctorDTO;
+import es.plexus.hopes.hopesback.controller.model.DoctorUpdateDTO;
+import es.plexus.hopes.hopesback.controller.model.DoctorViewDTO;
+import es.plexus.hopes.hopesback.controller.model.ServiceDTO;
+import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.DoctorRepository;
 import es.plexus.hopes.hopesback.repository.model.Doctor;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -15,6 +19,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -36,37 +41,42 @@ public class DoctorService {
 		this.doctorRepository = doctorRepository;
 	}
 
-	public Page<DoctorDTO> getAllDoctors(final Pageable pageable) {
-		log.debug("Llamando a la DB...");
+	public Page<DoctorViewDTO> getAllDoctors(final Pageable pageable) {
+		log.debug("Llamando a la BD para recuperar todos los registros de médicos...");
 		Page<Doctor> doctorList = doctorRepository.findAll(pageable);
 
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
 	}
 
-	public DoctorDTO getOneDoctor(final Long id) {
+	public DoctorViewDTO getOneDoctor(final Long id) {
 		final Optional<Doctor> doctor = getOneDoctorCommon(id);
 
-		DoctorDTO doctorDTO = null;
+		DoctorViewDTO doctorDTO = null;
 
 		if (doctor.isPresent()) {
 			doctorDTO = doctorMapper.doctorToDoctorDTOConverter(doctor.get());
 		} else {
-			log.debug(String.format("Doctor con id = %s no encontrado ...", id));
+			log.debug(String.format("Médico con id=%s no encontrado...", id));
 		}
 
 		return doctorDTO;
 	}
 
-	public Page<DoctorDTO> findDoctorsBySearch(final String search, final Pageable pageable) {
-		log.debug("Llamando a la DB...");
+	private Optional<Doctor> getOneDoctorCommon(Long id) {
+		log.debug(String.format("Llamando a la BD para buscar el registro en médicos con id=%d...", id));
+		return doctorRepository.findById(id);
+	}
+
+	public Page<DoctorViewDTO> findDoctorsBySearch(final String search, final Pageable pageable) {
+		log.debug(String.format("Llamando a la BD para buscar el registro de médico filtrado por %s...", search));
 		Page<Doctor> doctorList = doctorRepository.findDoctorsBySearch(search, pageable);
 
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
 	}
 
-	public Page<DoctorDTO> filterDoctors(final String doctor, final Pageable pageable) {
+	public Page<DoctorViewDTO> filterDoctors(final String doctor, final Pageable pageable) {
 		DoctorDTO doctorDTO = DoctorDTOMapper.INSTANCE.jsonToDoctorDTOConventer(doctor);
-		log.debug("Check DTO...");
+		log.debug("Comprobando DTO...");
 
 		ExampleMatcher matcher = ExampleMatcher.matchingAll().
 				withIgnoreCase(true).withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
@@ -80,55 +90,113 @@ public class DoctorService {
 		return doctorList.map(doctorMapper::doctorToDoctorDTOConverter);
 	}
 
-	public DoctorDTO addDoctor(final DoctorDTO doctorDTO) throws ServiceException {
-		Doctor doctor = addDoctorCommon(doctorDTO);
-		log.debug("Llamando a la DB...");
-		doctor = doctorRepository.save(doctor);
-
-		return doctorMapper.doctorToDoctorDTOConverter(doctor);
-	}
-
-	public DoctorDTO updateDoctor(final DoctorDTO doctorDTO) throws ServiceException {
-		final Optional<Doctor> storedDoctor = getOneDoctorCommon(doctorDTO.getId());
-
-		Doctor doctor = addDoctorCommon(doctorDTO);
-
-		//ToDo Hasta el 23-04-2020 solo se puede desactivar un usuario por BD
-		if (storedDoctor.isPresent()) {
-			doctor.setActive(storedDoctor.get().getActive());
-		}
-
-		log.debug("Llamando a la DB...");
-		doctor = doctorRepository.save(doctor);
-
-		return doctorMapper.doctorToDoctorDTOConverter(doctor);
-	}
-
 	public void deleteDoctor(final Long id) {
-		log.debug("Llamando a la DB...");
+		log.debug(String.format("Llamando a la BD para borrar el registro de médicos con id=%d...", id));
 		doctorRepository.deleteById(id);
 	}
 
-	public Optional<Doctor> getOneDoctorCommon(Long id) {
-		log.debug(String.format("Llamando a la BD con id = %d ...", id));
-		return doctorRepository.findById(id);
-	}
-
-	private Doctor addDoctorCommon(DoctorDTO doctorDTO) throws ServiceException {
-		final User user = userService.addUserAndReturnEntity(doctorDTO.getUser());
-		final Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService
-				.getOneServiceById(doctorDTO.getService().getId());
-
-		if (!service.isPresent()) {
-			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
-					String.format("Service with id %d not found. Service is mandatory for the doctor",
-							doctorDTO.getService().getId()));
-		}
+	@Transactional
+	public DoctorViewDTO addDoctor(final DoctorDTO doctorDTO) throws ServiceException {
+		checkServiceExistence(doctorDTO.getServiceDTO());
 
 		Doctor doctor = doctorMapper.doctorDTOToDoctorConverter(doctorDTO);
-		doctor.setUser(user);
-		doctor.setService(service.get());
+		doctor.setUser(userService.addUserAndReturnEntity(doctorDTO.getUserDTO()));
 
-		return doctor;
+		log.debug("Llamando a la BD para añadir un nuevo registro de médico...");
+		doctor = doctorRepository.save(doctor);
+
+		return doctorMapper.doctorToDoctorDTOConverter(doctor);
+	}
+
+	private void checkServiceExistence(ServiceDTO serviceDTO) throws ServiceException {
+		if (serviceDTO != null && serviceDTO.getId() != null) {
+			final Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService
+					.getOneServiceById(serviceDTO.getId());
+
+			if (!service.isPresent()) {
+				throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+						String.format("Servicio con el id %d no encontrado. El servicio es requerido en médicos",
+								serviceDTO.getId()));
+			}
+		}
+	}
+
+	@Transactional
+	public DoctorViewDTO updateDoctor(final DoctorUpdateDTO doctorDTO) throws ServiceException {
+		checkServiceExistence(doctorDTO.getServiceDTO());
+
+		final Doctor storedDoctor = getOneDoctorCommon(doctorDTO.getId()).get();
+
+		Doctor doctor = doctorMapper.doctorUpdateDTOToDoctorConverter(doctorDTO);
+		checkDoctorChanges(doctorDTO, storedDoctor, doctor);
+		checkRelationshipData(doctorDTO, storedDoctor, doctor);
+
+		log.debug("Llamando a la BD para actualizar un nuevo registro de médico...");
+		doctor = doctorRepository.save(doctor);
+
+		return doctorMapper.doctorToDoctorDTOConverter(doctor);
+	}
+
+	private void checkDoctorChanges(DoctorUpdateDTO doctorUpdateDTO, Doctor storedDoctor, Doctor doctor) {
+		if (doctorUpdateDTO.getName() == null) {
+			doctor.setName(storedDoctor.getName());
+		}
+
+		if (doctorUpdateDTO.getSurname() == null) {
+			doctor.setSurname(storedDoctor.getSurname());
+		}
+
+		if (doctorUpdateDTO.getPhone() == null) {
+			doctor.setPhone(storedDoctor.getPhone());
+		}
+
+		if (doctorUpdateDTO.getDni() == null) {
+			doctor.setDni(storedDoctor.getDni());
+		}
+
+		if (doctorUpdateDTO.getCollegeNumber() == null) {
+			doctor.setCollegeNumber(storedDoctor.getCollegeNumber());
+		}
+
+		//ToDo Hasta el 23-04-2020 solo se puede desactivar un usuario por BD
+		doctor.setActive(storedDoctor.getActive());
+	}
+
+	private void checkRelationshipData(DoctorUpdateDTO doctorUpdateDTO, Doctor storedDoctor, Doctor doctor)
+			throws ServiceException {
+
+		final UserUpdateDTO userUpdateDTO = doctorUpdateDTO.getUserDTO();
+		final User storedUser = storedDoctor.getUser();
+
+		if (userUpdateDTO != null) {
+			doctor.setUser(userService.addUserAndReturnEntity(doctorUpdateDTO.getUserDTO()));
+
+			User user = doctor.getUser();
+
+			if (userUpdateDTO.getUsername() == null) {
+				user.setUsername(storedUser.getUsername());
+			}
+
+			if (userUpdateDTO.getPassword() == null) {
+				user.setPassword(storedUser.getPassword());
+			}
+
+			if (userUpdateDTO.getEmail() == null) {
+				user.setUsername(storedUser.getEmail());
+			}
+
+			if (userUpdateDTO.getHospitalId() == null) {
+				user.setHospital(storedUser.getHospital());
+			}
+
+			user.setRoles(storedUser.getRoles());
+
+		} else {
+			doctor.setUser(storedUser);
+		}
+
+		if (doctorUpdateDTO.getServiceDTO() == null) {
+			doctor.setService(storedDoctor.getService());
+		}
 	}
 }
