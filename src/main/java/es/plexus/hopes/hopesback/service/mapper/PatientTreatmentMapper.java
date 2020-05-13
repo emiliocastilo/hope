@@ -12,7 +12,6 @@ import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 @Mapper
 public interface PatientTreatmentMapper {
 
-	static final String ERROR_GET_VALUE_FIELD = "Error getting value field for treatment";
     PatientTreatmentMapper INSTANCE = Mappers.getMapper(PatientTreatmentMapper.class);
 
     @Named("treatmentListToTreatmentInfoDTOList")
