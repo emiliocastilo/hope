@@ -39,7 +39,7 @@ public class Section {
 
 	// Campo a extinguir
 	@Basic
-	@Column(name = "sec_title", nullable = false, length = 50)
+	@Column(name = "sec_title", nullable = false, length = 100)
 	private String title;
 
 	// Campo a extinguir
@@ -50,6 +50,10 @@ public class Section {
 	@Basic
 	@Column(name = "sec_active", nullable = false)
 	private boolean active;
+
+	@Basic
+	@Column(name = "sec_principal", nullable = false)
+	private boolean principal;
 
 	@Basic
 	@Column(name = "sec_order", nullable = false)

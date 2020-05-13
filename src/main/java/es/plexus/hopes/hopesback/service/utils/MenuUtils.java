@@ -33,6 +33,7 @@ public final class MenuUtils {
                 parent.setUrl(section.getUrl());
                 parent.setOrder(section.getOrder());
                 parent.setActive(section.isActive());
+                parent.setPrincipal(section.isActive());
                 parent.setChildren(new ArrayList<>());
 
                 remainingSections.remove(section);
@@ -49,12 +50,14 @@ public final class MenuUtils {
                 children.setChildren(new ArrayList<>());
 
                 // Assign child to parent
-                childrens.add(children);
-                parent.setChildren(childrens);
+                if (!childrens.contains(children)) {
+                    childrens.add(children);
+                    parent.setChildren(childrens);
 
-                // depth search
-                remainingSections.remove(section);
-                buildTree(remainingSections, children);
+                    // depth search
+                    remainingSections.remove(section);
+                    buildTree(remainingSections, children);
+                }
             }
         }
     }

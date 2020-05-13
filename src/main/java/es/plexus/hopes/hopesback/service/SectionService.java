@@ -23,7 +23,7 @@ import static es.plexus.hopes.hopesback.service.Constants.ROLE_ADMIN;
 @RequiredArgsConstructor
 public class SectionService {
 
-	private static final String CALLING_DB = "Calling DB...";
+	private static final String CALLING_DB = "Llamando a la DB...";
 	private static final String NOT_FOUND_ID = "Not found section with id=";
 
 	private final SectionRepository sectionRepository;

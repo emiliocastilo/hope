@@ -28,8 +28,8 @@ public class PatientService {
 		return patientList.map(PatientMapper.INSTANCE::entityToDto);
 	}
 
-	public Page<PatientDTO> findPatientBySearch(String search, final Pageable pageable) {
-		Page<Patient> patientList = patientRepository.findPatientBySearch(search, pageable);
+	public Page<PatientDTO> findPatientBySearch(Long pth, String search, final Pageable pageable) {
+		Page<Patient> patientList = patientRepository.findPatientBySearch(pth, search, pageable);
 
 		return patientList.map(PatientMapper.INSTANCE::entityToDto);
 	}
@@ -57,7 +57,7 @@ public class PatientService {
 		patientRepository.deleteById(id);
 	}
 
-	public Page<PatientDTO> filterPatiens(String patient, final Pageable pageable) {
+	public Page<PatientDTO> filterPatients(String patient, final Pageable pageable) {
 		PatientDTO patientDTO = PatientDTOMapper.INSTANCE.jsonToPatientDTOConventer(patient);
 
 		ExampleMatcher matcher = ExampleMatcher.matchingAll().
