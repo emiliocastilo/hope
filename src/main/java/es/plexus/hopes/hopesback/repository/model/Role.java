@@ -1,13 +1,13 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import lombok.Data;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import lombok.Data;
 
 @Data
 @Entity
@@ -24,5 +24,5 @@ public class Role {
 
 	@Column(name = "rol_description", length = 500)
 	private String description;
-
+ 	
 }
