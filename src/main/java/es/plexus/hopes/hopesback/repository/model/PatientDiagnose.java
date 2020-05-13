@@ -32,19 +32,19 @@ public class PatientDiagnose {
     private String indication;
 
     @Basic
-    @Column(name = "pdg_cienueve_code", nullable = false, length = 50)
-    private String cienueveCode;
+    @Column(name = "pdg_cie9_code", nullable = false, length = 50)
+    private String cie9Code;
 
     @Basic
-    @Column(name = "pdg_cienueve_desc", nullable = true, length = 50)
-    private String cienueveDesc;
+    @Column(name = "pdg_cie9_desc", nullable = true, length = 50)
+    private String cie9Desc;
 
     @Basic
-    @Column(name = "pdg_cidiez_code", nullable = false, length = 50)
+    @Column(name = "pdg_ci10_code", nullable = false, length = 50)
     private String cidiezCode;
 
     @Basic
-    @Column(name = "pdg_cidiez_desc", nullable = false, length = 50)
+    @Column(name = "pdg_ci10_desc", nullable = false, length = 50)
     private String cidiezDesc;
 
     @Basic
