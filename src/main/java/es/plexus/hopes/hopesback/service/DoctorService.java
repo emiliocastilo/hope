@@ -197,6 +197,8 @@ public class DoctorService {
 
 		if (doctorUpdateDTO.getServiceDTO() == null) {
 			doctor.setService(storedDoctor.getService());
+		}else{
+			doctor.setService(serviceService.getOneServiceById(doctorUpdateDTO.getServiceDTO().getId()).get());
 		}
 	}
 }

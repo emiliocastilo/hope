@@ -43,7 +43,7 @@ public class SectionController {
 	@ApiOperation("Buscar una seccion por identificador")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{id}")
-	public SectionDTO findById(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) {
+	public SectionDTO findById(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) throws ServiceException {
 		log.debug(CALLING_SERVICE);
 		return sectionService.findById(id);
 	}
@@ -68,7 +68,7 @@ public class SectionController {
 	@ApiOperation("Recuperar todas las seccioens")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public MenuDTO findAll() {
+	public MenuDTO findAll() throws ServiceException {
 		log.debug(CALLING_SERVICE);
 		return sectionService.findAllSections();
 	}

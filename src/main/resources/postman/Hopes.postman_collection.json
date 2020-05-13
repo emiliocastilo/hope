@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8b51f65a-2fef-408d-b481-8a2485e9d1d4",
+		"_postman_id": "27b437c6-c12a-40a0-b8ad-8a8b17e0e69b",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "54e29c76-44bf-4945-afc3-89fd38c7761c",
+								"id": "239ffba7-afcd-4d98-b66f-5deea8a4c0d9",
 								"exec": [
 									""
 								],
@@ -345,7 +345,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3d604a0f-01cc-4cfe-bfd5-c83ebfb50a2e",
+								"id": "c870b301-714c-4917-9183-c9ba05759f6d",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -364,7 +364,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"username\": \"doctor\", \"password\": \"password\"}",
+							"raw": "{ \"username\": \"admin\", \"password\": \"password\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -390,7 +390,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "57985368-2870-45cd-8809-8a40a81026dd",
+								"id": "ee5bc1be-2186-4ad4-8454-0a14bad49c7f",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -550,7 +550,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Leo\",\n    \"surname\": \"Messi\",\n    \"phone\": 123456789,\n    \"dni\": \"12345678Z\",\n    \"collegeNumber\": 12345678,\n    \"user\": {\n        \"username\": \"leo.messi2\",\n        \"password\": \"password\",\n        \"email\": \"leo.messi2@plexus.es\",\n        \"roles\": [\n            2\n        ],\n        \"hospitalId\": 4\n    },\n    \"service\": {\n    \t\"id\" : 1,\n    \t\"name\" : \"Servicio algo\"\n    }\n}",
+							"raw": "{\n    \"name\": \"Leo\",\n    \"surname\": \"Messi\",\n    \"phone\": 123456789,\n    \"dni\": \"12345678Z\",\n    \"collegeNumber\": 12345678,\n    \"userDTO\": {\n        \"username\": \"leo.messi2\",\n        \"password\": \"password\",\n        \"email\": \"leo.messi2@plexus.es\",\n        \"roles\": [\n            2\n        ],\n        \"hospitalId\": 1\n    },\n    \"serviceDTO\": {\n    \t\"id\" : 1\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1109,7 +1109,7 @@
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1146,7 +1146,7 @@
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1177,7 +1177,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/templates",
+							"raw": "{{dev}}/v1/template",
 							"host": [
 								"{{dev}}"
 							],
@@ -1220,7 +1220,7 @@
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1257,7 +1257,7 @@
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1294,7 +1294,7 @@
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1375,7 +1375,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"date\": \"2020-01-22T00:00:00\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 8\r\n    }\r\n}",
+							"raw": "{\r\n\t\"date\": \"2020-05-13T16:21:45Z\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 2\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1409,7 +1409,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7fb01266-a831-4e21-ab4b-fd05c95d0a11",
+								"id": "257ce3b6-5355-4707-a4de-f495d5e5e3b9",
 								"exec": [
 									""
 								],
@@ -1676,7 +1676,7 @@
 									"key": "fileDispensation",
 									"contentType": "",
 									"type": "file",
-									"src": "/C:/Users/angel.broncanorodrig/Desktop/dispensations.csv"
+									"src": "/C:/Development/hopes/IdeaProjects/hopes-back/src/main/resources/postman/dispensations.csv"
 								},
 								{
 									"key": "date",
@@ -1687,13 +1687,13 @@
 								},
 								{
 									"key": "startPeriod",
-									"value": "2020-03-01T00:00:00Z",
+									"value": "01-03-2020 00:00:00",
 									"contentType": "",
 									"type": "text"
 								},
 								{
 									"key": "endPeriod",
-									"value": "2020-03-01T00:00:00Z",
+									"value": "01-03-2020 00:00:00",
 									"type": "text"
 								}
 							],
@@ -1735,7 +1735,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "134b867b-7459-45e5-aba0-1d35278484b2",
+								"id": "0c48f8f2-2db4-4a08-b8ff-3b4fd574cdba",
 								"exec": [
 									""
 								],
@@ -1893,7 +1893,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dfa363de-b7c1-4322-a62e-92b42ec0d07c",
+								"id": "ed731c1d-8713-4ed6-abe2-025580c36527",
 								"exec": [
 									""
 								],
@@ -1974,14 +1974,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/3",
+							"raw": "{{dev}}/v1/medicines/1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"medicines",
-								"3"
+								"1"
 							]
 						},
 						"description": "delete"
@@ -2005,7 +2005,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n    \"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D234F45\",\r\n    \"recommended\": true,\r\n    \"recommendation\": {\r\n        \"id\": 3,\r\n        \"value\": \"Recomendacion03\"\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mÃ¡gicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": true\r\n}",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D23S34\",\r\n    \"recommended\": true,\r\n    \"recommendation\": {\r\n        \"id\": 3,\r\n        \"value\": \"Recomendacion 03\"\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento propiedades mÃ¡gicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2134,7 +2134,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "db53aa37-4832-48a2-87c4-f0d74aadcc1f",
+								"id": "c507c158-0977-433d-bf17-92ef53212035",
 								"exec": [
 									""
 								],
@@ -2321,7 +2321,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\" : 9,\n    \"name\": \"Enfermeria\",\n    \"description\": \"Abarca la atención autónoma\"\n}",
+							"raw": "{\r\n    \"id\": 10,\r\n    \"name\": \"Enfermera\",\r\n    \"description\": \"Adispensada a personas de todas las edades, familias, grupos y comunidades, enfermos o no, y en todas circunstancias\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2366,14 +2366,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/role/9",
+							"raw": "{{dev}}/v1/roles/10",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role",
-								"9"
+								"roles",
+								"10"
 							]
 						}
 					},
@@ -2482,14 +2482,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/sections/11",
+							"raw": "{{dev}}/v1/sections/81",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"sections",
-								"11"
+								"81"
 							]
 						},
 						"description": "findById dispensation detail"
@@ -2502,7 +2502,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "48d12521-d5af-4a16-995c-cab4573a3dfb",
+								"id": "045ccea5-126a-4a3b-9b47-aa991fc04f8d",
 								"exec": [
 									""
 								],
@@ -2553,14 +2553,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/sections/11",
+							"raw": "{{dev}}/v1/sections/81",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"sections",
-								"11"
+								"81"
 							]
 						},
 						"description": "delete"
@@ -2584,7 +2584,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n    \"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D234F45\",\r\n    \"recommended\": true,\r\n    \"recommendation\": {\r\n        \"id\": 3,\r\n        \"value\": \"Recomendacion03\"\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mÃ¡gicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": true\r\n}",
+							"raw": "{\r\n    \"id\": 81,\r\n    \"title\": \"CONTROL_PANEL\",\r\n    \"description\": \"Cuadro de mansdos\",\r\n    \"active\": false,\r\n    \"principal\": false,\r\n    \"order\": 6,\r\n    \"icon\": \"assets/img/modules/cuadro-de-mando.png\",\r\n    \"url\": \"#\",\r\n    \"fatherSection\": {\r\n        \"id\": 1,\r\n        \"title\": null,\r\n        \"description\": null,\r\n        \"active\": false,\r\n        \"principal\": false,\r\n        \"order\": 0,\r\n        \"icon\": null,\r\n        \"url\": null,\r\n        \"fatherSection\": null,\r\n        \"roles\": []\r\n    },\r\n    \"roles\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": null,\r\n            \"description\": null\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"name\": null,\r\n            \"description\": null\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2609,7 +2609,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6afe7f11-77c9-4c0f-a6e3-881d4766678b",
+						"id": "6ec08318-1e46-4343-8cef-b181af2bf758",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2619,7 +2619,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "57cf6f00-b60f-4952-a688-4e238da3b4bb",
+						"id": "c89b7c07-4d18-4f9e-9a78-19ddd7a608cc",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2747,13 +2747,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/data?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{dev}}/v1/datas?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"data"
+								"datas"
 							],
 							"query": [
 								{

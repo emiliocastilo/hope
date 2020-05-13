@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Optional;
+import java.util.Objects;
 
 @Api(value = "Controlador de pacientes", tags = "patients")
 @Log4j2
@@ -49,14 +49,9 @@ public class PatientController {
 	@ApiOperation("Recuperar un paciente por el identificador")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{id}")
-	public PatientDTO findById(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) {
-		Optional<PatientDTO> patient = patientService.findById(id);
-		if (!patient.isPresent()) {
-			log.error("Id " + id + " no existe");
-			return null;
-		}
-
-		return patient.get();
+	public PatientDTO findById(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) throws ServiceException {
+		log.debug(CALLING_SERVICE);
+		return patientService.findById(id);
 	}
 
 	@ApiOperation("Buscador de pacientes")
@@ -83,11 +78,10 @@ public class PatientController {
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping
 	public PatientDTO update(@RequestBody final PatientDTO patient) throws ServiceException {
-		if (!patientService.findById(patient.getId()).isPresent()) {
+		if (Objects.isNull(patientService.findById(patient.getId()))) {
 			log.error("Id " + patient.getId() + " no existe");
 			return null;
 		}
-
 		return patientService.save(patient);
 	}
 
@@ -95,8 +89,8 @@ public class PatientController {
 	@ApiOperation("Eliminar un paciente")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
-	public void delete(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) {
-		if (!patientService.findById(id).isPresent()) {
+	public void delete(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) throws ServiceException {
+		if (Objects.isNull(patientService.findById(id))) {
 			log.error("Id " + id + " no existe");
 		}
 

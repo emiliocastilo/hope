@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Recommendation {
     @Id
     @Column(name = "rec_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Basic

@@ -31,7 +31,7 @@ public class DataController {
 	private final FormService formService;
     private final FormMongoRepository formMongoRepository;
 
-	public DataController(FormService formService) {
+	public DataController(FormService formService, FormMongoRepository formMongoRepository) {
 		this.formService = formService;
         this.formMongoRepository = formMongoRepository;
 	}
@@ -59,7 +59,7 @@ public class DataController {
     }
 
     @ApiOperation("Borra los datos de los formularios")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
     public void deleteData(@RequestParam String template, @RequestParam Integer patientId) throws ServiceException {
         formService.deleteData(template, patientId);

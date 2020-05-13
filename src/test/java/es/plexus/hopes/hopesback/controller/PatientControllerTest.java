@@ -4,6 +4,7 @@ import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientDTO;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.service.PatientService;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.Sort;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
@@ -66,9 +66,9 @@ public class PatientControllerTest {
 	}
 
 	@Test
-	public void callFindByIdShouldBeStatusOK() {
+	public void callFindByIdShouldBeStatusOK() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.findById(1L)).willReturn(Optional.of(mockPatientDTO()));
+		given(patientService.findById(1L)).willReturn(mockPatientDTO());
 
 		// when
 		PatientDTO response = patientController.findById(1L);
@@ -78,9 +78,9 @@ public class PatientControllerTest {
 	}
 
 	@Test
-	public void callFindByIdShouldBeStatusBad() {
+	public void callFindByIdShouldBeStatusBad() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.findById(Mockito.anyLong())).willReturn(Optional.empty());
+		given(patientService.findById(Mockito.anyLong())).willReturn(null);
 
 		// when
 		PatientDTO response = patientController.findById(Mockito.anyLong());
@@ -89,10 +89,11 @@ public class PatientControllerTest {
 		Assert.assertNull(response);
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void callFindByIdShouldThrowException() throws Exception {
+	@Test(expected = es.plexus.hopes.hopesback.service.exception.ServiceException.class)
+	public void callFindByIdShouldThrowException() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.findById(Mockito.anyLong())).willReturn(null);
+		given(patientService.findById(Mockito.anyLong())).willThrow(ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+				"No existe el paciente con el id"));
 
 		// when
 		patientController.findById(Mockito.anyLong());
@@ -124,7 +125,7 @@ public class PatientControllerTest {
 	public void callUpdateShouldBeStatusOk() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 
 		// given
-		given(patientService.findById(1L)).willReturn(Optional.of(mockPatientDTO()));
+		given(patientService.findById(1L)).willReturn(mockPatientDTO());
 		given(patientService.save(mockPatientDTO())).willReturn(mockPatientDTO());
 
 		// when
@@ -137,7 +138,7 @@ public class PatientControllerTest {
 	@Test
 	public void callUpdateShouldBeStatusBad() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.findById(null)).willReturn(Optional.empty());
+		given(patientService.findById(null)).willReturn(null);
 
 		// when
 		PatientDTO response = patientController.update(new PatientDTO());
@@ -149,7 +150,7 @@ public class PatientControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callUpdateShouldThrowException() throws Exception {
 		// given
-		given(patientService.findById(1L)).willReturn(Optional.of(new PatientDTO()));
+		given(patientService.findById(1L)).willReturn(new PatientDTO());
 
 		// given
 		given(patientService.save(mockPatientDTO())).willThrow(new ServiceException("Error: Too much pathologies"));

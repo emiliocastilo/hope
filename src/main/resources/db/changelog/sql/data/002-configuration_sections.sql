@@ -381,13 +381,13 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
 -- Role_Admin
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-		(select sec_id from hopes.sections where sec_title ='Dispensaciones' LIMIT 1),
+		(select sec_id from hopes.sections where sec_title ='Gestión de Medicamentos' LIMIT 1),
 		(select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
 
 -- Role_Pharmaceutist
 INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
 VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-	  	(select sec_id from hopes.sections where sec_title ='Dispensaciones' LIMIT 1),
+	  	(select sec_id from hopes.sections where sec_title ='Gestión de Medicamentos' LIMIT 1),
 	  	(select rol_id from hopes.roles where rol_name = 'Farmacéutico' LIMIT 1));
 
 -- Section: Administración 	Informes
@@ -1378,36 +1378,11 @@ VALUES (nextval('hopes.sections_roles_scr_id_seq'),
         (select sec_id from hopes.sections where sec_title ='Pacientes por tratamientos combinados' LIMIT 1),
         (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
 
--- Section: Información Diagnóstico - Motivo del cambio de tratamiento biológico de los últimos 5 años
-INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
-VALUES (nextval('hopes.sections_sec_id_seq'),
-        'Motivo del cambio de tratamiento biológico de los últimos 5 años',
-        'Sección que contiene  informacion de diagnostico del Motivo del cambio de tratamiento biológico de los últimos 5 años',
-        false,
-        true,
-        (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,
-        (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1),
-        null,
-        '#');
-
--- Role_Admin
-INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
-VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-        (select sec_id from hopes.sections where sec_title ='Motivo del cambio de tratamiento biológico de los últimos 5 años' LIMIT 1),
-        (select rol_id from hopes.roles where rol_name = 'Administrador' LIMIT 1));
-
-
--- Role_Medico
-INSERT INTO hopes.sections_roles(scr_id, scr_section_id, scr_role_id)
-VALUES (nextval('hopes.sections_roles_scr_id_seq'),
-        (select sec_id from hopes.sections where sec_title ='Motivo del cambio de tratamiento biológico de los últimos 5 años' LIMIT 1),
-        (select rol_id from hopes.roles where rol_name = 'Médico Dermatología' LIMIT 1));
-
 -- Section: Información Diagnóstico - Motivo del último cambio de tratamiento biológico
 INSERT INTO hopes.sections(sec_id, sec_title, sec_description, sec_principal, sec_active, sec_order, sec_section_root, sec_icon, sec_url)
 VALUES (nextval('hopes.sections_sec_id_seq'),
         'Motivo del último cambio de tratamiento biológico',
-        'Sección que contiene informacion de diagnostico del Motivo del cambio de tratamiento biológico de los últimos 5 años',
+        'Sección que contiene informacion de diagnostico del Motivo del cambio de tratamiento biológico de los últimos',
         false,
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Información Diagnóstico' LIMIT 1)), null), 1)) ,

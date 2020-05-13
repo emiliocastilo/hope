@@ -10,15 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -32,12 +25,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+@RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
 
 	@Mock
@@ -45,9 +36,6 @@ public class UserControllerTest {
 
 	@InjectMocks
 	private UserController userController;
-
-	@Autowired
-	private MockMvc mockMvc;
 
 	@Test
 	public void getAllUserShouldBeStatusOk() {
@@ -88,26 +76,6 @@ public class UserControllerTest {
 		assertNotNull(response);
 	}
 
-	@Test
-	@WithMockUser
-	public void chooseProfileShouldBeStatusOk() throws Exception {
-		//when
-		mockMvc.perform(post("/user/choose_profile")
-				.content("ROLE_TEST")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void chooseProfileShouldBeStatusForbidden() throws Exception {
-		//when
-		mockMvc.perform(post("/user/choose_profile")
-				.content("ROLE_TEST")
-				.contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isForbidden());
-	}
-
-
 	private UserDTO mockFullUser() {
 		final UserDTO user = new UserDTO();
 		user.setId(1L);
@@ -118,31 +86,30 @@ public class UserControllerTest {
 
 		return user;
 	}
-	
+
 	private PasswordDTO mockPassword() {
-		final PasswordDTO password = new PasswordDTO();		
+		final PasswordDTO password = new PasswordDTO();
 		password.setToken("a7631aea-c582-4e4c-99a6-0d1d48955f98");
 		password.setPassword("password");
 		password.setNewPassword("12345");
 		return password;
 	}
-	
+
 	private RequestPasswordChangeDTO mockRequestPassword() {
-		final RequestPasswordChangeDTO request = new RequestPasswordChangeDTO();		
+		final RequestPasswordChangeDTO request = new RequestPasswordChangeDTO();
 		request.setEmail("User email");
 
 		return request;
 	}
-	
-	@Test
-	public void requestPasswordChangeBeStatusOk() throws Exception {		
-		// when
-		ResponseEntity<String> response = userController.requestPasswordChange(mockRequestPassword());
 
-		// then
-		assertNotNull(response);
+	@Test
+	public void requestPasswordChangeBeStatusOk() throws Exception {
+		// when
+		userController.requestPasswordChange(mockRequestPassword());
+
+		verify(userService, times(1)).requestPasswordChange(anyString());
 	}
-	
+
 	@Test
 	public void resetPasswordBeStatusOk() {
 		// given
@@ -154,7 +121,7 @@ public class UserControllerTest {
 		// then
 		assertNotNull(response);
 	}
-	
+
 	@Test
 	public void saveNewPasswordShouldBeStatusOk() throws ServiceException {
 		// given
@@ -166,7 +133,7 @@ public class UserControllerTest {
 		// then
 		assertNotNull(response);
 	}
-	
+
 	@Test
 	public void updatePasswordShouldBeStatusOk() throws ServiceException {
 		// given
