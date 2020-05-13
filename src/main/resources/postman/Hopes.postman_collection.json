@@ -567,6 +567,47 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "PatientTreatments",
+			"item": [
+				{
+					"name": "Patients Under Treatment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patient_treatments/patients_under_treatment?type=BIOLOGICOS",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patient_treatments",
+								"patients_under_treatment"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "BIOLOGICOS"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Doctor",
 			"item": [
 				{
