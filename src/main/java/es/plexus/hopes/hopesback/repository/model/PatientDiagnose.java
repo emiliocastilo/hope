@@ -41,11 +41,11 @@ public class PatientDiagnose {
 
     @Basic
     @Column(name = "pdg_ci10_code", nullable = false, length = 50)
-    private String cidiezCode;
+    private String ci10Code;
 
     @Basic
     @Column(name = "pdg_ci10_desc", nullable = false, length = 50)
-    private String cidiezDesc;
+    private String ci10Desc;
 
     @Basic
     @Column(name = "pdg_others_indications", nullable = true, length = 50)
