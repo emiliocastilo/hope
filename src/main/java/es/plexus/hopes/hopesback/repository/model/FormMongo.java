@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.repository.model;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -14,6 +15,9 @@ import java.util.Date;
         @CompoundIndex(name = "form_idx", def = "{'template': 1, 'patientId': 1}", unique = true)
 })
 public class FormMongo {
+
+    @Id
+    private String id;
 
     @Indexed
     private String template;

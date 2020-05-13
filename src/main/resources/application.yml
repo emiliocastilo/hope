@@ -18,6 +18,8 @@ server:
     context-path: "/v1"
 
 spring:
+  profiles:
+    active: @spring.profiles.active@
   jpa:
     # Hibernate
     hibernate:

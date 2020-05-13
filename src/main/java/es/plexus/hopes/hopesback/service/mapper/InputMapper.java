@@ -2,7 +2,6 @@ package es.plexus.hopes.hopesback.service.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.InputDTO;
 import org.hibernate.service.spi.ServiceException;
 import org.mapstruct.Mapper;
