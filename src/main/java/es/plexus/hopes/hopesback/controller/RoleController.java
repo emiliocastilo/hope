@@ -46,9 +46,9 @@ public class RoleController {
 	@ApiOperation("Recuperar todos los roles")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public List<RoleDTO> getAllRoles() {
+	public Page<RoleDTO> getAllRoles(@PageableDefault(size = 5) Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return roleService.getAllRoles();
+		return roleService.getAllRoles(pageable);
 	}
 
 	@ApiOperation("Recuperar un rol por identificador")
