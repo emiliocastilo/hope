@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.service.GraphsService;
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-@Api(value = "Controlador para recuperar los gráficos del sistema", tags = "graphs-detail")
 @Log4j2
 @RestController
 @RequiredArgsConstructor

@@ -19,7 +19,7 @@ public class GraphsService {
 	private static final String CALLING_DB = "Calling DB...";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
-	private final HealthOutcomeRepository healthOutcomesRepository;
+	private final HealthOutcomeRepository healthOutcomeRepository;
 
 	public List<TreatmentInfoDTO> patientsUnderChemicalTreatment(String type, String indication) {
 		log.debug(CALLING_DB);
@@ -29,6 +29,6 @@ public class GraphsService {
 	public List<HealthOutcomeDTO> healthOutcomesByType(String type) {
 		
 		log.debug(CALLING_DB);
-		return healthOutcomesRepository.healthOutcomesByType(type);
+		return healthOutcomeRepository.healthOutcomesByType(type);
 	}
 }
