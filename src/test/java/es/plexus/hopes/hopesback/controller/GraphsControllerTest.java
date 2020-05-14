@@ -16,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 
 import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.service.GraphsService;
 
@@ -84,6 +85,34 @@ public class GraphsControllerTest {
 		Assert.assertNull(response);
 	}
 	
+	@Test
+	public void callInfoPatientsDosesShouldBeStatusOk() {
+
+		// given
+		given(graphsService.infoPatientsDoses())
+				.willReturn(mockPatientDosesInfoList());
+
+		// when
+		List<PatientDosesInfoDTO> response = graphsController.infoPatientsDoses();
+
+		// then		
+		Assert.assertNotNull(response);
+		Assert.assertTrue(!response.isEmpty());
+	}
+		
+	@Test(expected = ServiceException.class)
+	public void callInfoPatientsDosesThrowException() throws Exception {
+		// given
+		given(graphsService.infoPatientsDoses())
+				.willThrow(new ServiceException("Error: No contled error"));
+
+		// when
+		List<PatientDosesInfoDTO> response = graphsController.infoPatientsDoses();
+
+		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertNull(response);
+	}
+	
 	//Mocks
 	private List<TreatmentInfoDTO> mockTreatmentList() {
 		List<TreatmentInfoDTO> treatmentInfoDTOList = new ArrayList<TreatmentInfoDTO>();
@@ -115,5 +144,20 @@ public class GraphsControllerTest {
 		return healthOutcomeDTO;
 	}
 
+	private List<PatientDosesInfoDTO> mockPatientDosesInfoList() {
+		List<PatientDosesInfoDTO> patientDosesInfoDTOList = new ArrayList<PatientDosesInfoDTO>();
+
+		PatientDosesInfoDTO patientDosesInfoDTO = mockPatientDosesInfoDTO();
+		patientDosesInfoDTOList.add(patientDosesInfoDTO);
+
+		return  patientDosesInfoDTOList;
+	}
+
+
+	private PatientDosesInfoDTO mockPatientDosesInfoDTO() {
+		PatientDosesInfoDTO patientDosesInfoDTO = new PatientDosesInfoDTO("Desinfectada", 1L);
+		return patientDosesInfoDTO;
+	}
+	
 }
 

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 
@@ -20,6 +21,11 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 			"and ptr.active = true " + 
 			"group by med.codeAct, med.actIngredients ")
 	List<TreatmentInfoDTO> patientsUnderTreatment(@Param("type")String type, @Param("indication")String indication);
+	
+	@Query("select new es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO(ptr.regimen , count(*)) from PatientTreatment ptr " + 
+			"where ptr.active = true " + 
+			"group by ptr.regimen ")
+	List<PatientDosesInfoDTO> infoPatientsDoses();
 	
 }
 

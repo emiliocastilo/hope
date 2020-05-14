@@ -2881,6 +2881,35 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Info Patients Doses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/graphs/info-patients-doses",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"graphs",
+								"info-patients-doses"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}

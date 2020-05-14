@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.service.GraphsService;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +27,18 @@ public class GraphsController {
 	public List<TreatmentInfoDTO> patientsUnderChemicalTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
 		return graphsService.patientsUnderChemicalTreatment(type, indication);
-
 	}
 
 	@GetMapping("/health-outcomes-by-types")
 	public List<HealthOutcomeDTO> healthOutcomesByType(@RequestParam(value = "type", required = true) String type) {
 		log.debug(CALLING_SERVICE);
 		return graphsService.healthOutcomesByType(type);
-
+	}
+	
+	@GetMapping("/info-patients-doses")
+	public List<PatientDosesInfoDTO> infoPatientsDoses() {
+		log.debug(CALLING_SERVICE);
+		return graphsService.infoPatientsDoses();
 	}
 	
 }

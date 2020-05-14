@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
@@ -30,5 +31,10 @@ public class GraphsService {
 		
 		log.debug(CALLING_DB);
 		return healthOutcomeRepository.healthOutcomesByType(type);
+	}
+
+	public List<PatientDosesInfoDTO> infoPatientsDoses() {
+		log.debug(CALLING_DB);
+		return patientTreatmentRepository.infoPatientsDoses();
 	}
 }
