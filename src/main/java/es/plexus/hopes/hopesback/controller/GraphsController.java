@@ -2,6 +2,9 @@ package es.plexus.hopes.hopesback.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,4 +44,10 @@ public class GraphsController {
 		return graphsService.infoPatientsDoses();
 	}
 	
+	@GetMapping("/details-graphs")
+	//public Page<DetailGraphDTO> detailsDrapths(@PageableDefault(size = 5) final Pageable pageable) {
+	public Page<String> detailsDrapths(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
+		log.debug(CALLING_SERVICE);
+		return graphsService.detailsDrapths(type, indication, pageable);
+	}
 }
