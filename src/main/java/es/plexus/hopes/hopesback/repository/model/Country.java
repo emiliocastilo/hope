@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Country {
     @Id
     @Column(name = "pai_code", nullable = false, length = 3)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String code;
 
     @Basic

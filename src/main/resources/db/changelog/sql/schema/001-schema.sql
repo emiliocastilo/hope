@@ -165,7 +165,7 @@ COMMENT ON CONSTRAINT hsp_pth_id_fk ON hopes.hospitals_pathologies IS 'fk Relaci
 DROP TABLE IF EXISTS hopes.sections CASCADE;
 CREATE TABLE hopes.sections (
 	sec_id serial,
-	sec_title varchar(50) NOT NULL,
+	sec_title varchar(100) NOT NULL,
 	sec_description varchar(500),
 	sec_active boolean,
 	sec_order smallint NOT NULL,
@@ -269,12 +269,12 @@ COMMENT ON CONSTRAINT rol_id_pk ON hopes.roles IS 'pk de la tabla ROLES';
 DROP TABLE IF EXISTS hopes.users CASCADE;
 CREATE TABLE hopes.users (
 	usr_id serial,
-	usr_name varchar(50) NOT NULL,
-	usr_password varchar(200) NOT NULL,
+	usr_name varchar(50),
+	usr_password varchar(200),
 	usr_email varchar(50),
-	usr_hos_id smallint NOT NULL,
-    date_created timestamp NOT NULL,
-    date_updated timestamp NOT NULL,
+	usr_hos_id smallint,
+    date_created timestamp,
+    date_updated timestamp,
 	CONSTRAINT usr_id_pk PRIMARY KEY (usr_id),
 	CONSTRAINT usr_name_unique UNIQUE (usr_name),
 	CONSTRAINT usr_email_unique UNIQUE (usr_email),

@@ -1,9 +1,9 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import lombok.Data;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,12 +20,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.context.i18n.LocaleContextHolder;
-
-import lombok.Data;
+import javax.persistence.UniqueConstraint;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Data
 @Entity
@@ -39,7 +38,7 @@ public class Section {
 
 	// Campo a extinguir
 	@Basic
-	@Column(name = "sec_title", nullable = false, length = 50)
+	@Column(name = "sec_title", nullable = false, length = 100)
 	private String title;
 
 	// Campo a extinguir
@@ -50,6 +49,10 @@ public class Section {
 	@Basic
 	@Column(name = "sec_active", nullable = false)
 	private boolean active;
+
+	@Basic
+	@Column(name = "sec_principal", nullable = false)
+	private boolean principal;
 
 	@Basic
 	@Column(name = "sec_order", nullable = false)
@@ -76,7 +79,8 @@ public class Section {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "sections_roles",
 			joinColumns = @JoinColumn(name = "scr_section_id"),
-			inverseJoinColumns = @JoinColumn(name = "scr_role_id"))
+			inverseJoinColumns = @JoinColumn(name = "scr_role_id"),
+			uniqueConstraints = {@UniqueConstraint(columnNames = {"scr_section_id","scr_role_id"})})
 	private Set<Role> roles;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "section", cascade = CascadeType.ALL, orphanRemoval = true)

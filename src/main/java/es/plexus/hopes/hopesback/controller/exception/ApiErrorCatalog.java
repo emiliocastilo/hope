@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ApiErrorCatalog {
 
-	GENERIC_ERROR("API-001", "An unexpected error has occurred.", HttpStatus.SERVICE_UNAVAILABLE);
+	GENERIC_ERROR("API-001", "Ocurrió un error inexperado.", HttpStatus.SERVICE_UNAVAILABLE);
 
 	private final String errorCode;
 	private final String message;

@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MedicineService {
 
-	private static final String CALLING_DB = "Calling DB...";
+	private static final String CALLING_DB = "Llamando a la DB...";
 	public static final String DEVELOPER_MESSAGE_RECOMMENDATION_MANDATORY =
 			"Recommendation not found. If checked Recommended field, Recommendation is mandatory for the medicine";
 

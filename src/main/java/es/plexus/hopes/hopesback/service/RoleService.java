@@ -37,7 +37,7 @@ public class RoleService {
 	}
 
 	public List<RoleDTO> getAllRoles() {
-		log.debug("Calling BD. Give all roles...");
+		log.debug("Calling BD. Obtener todos los roles...");
 		return roleRepository.findAll().stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
 	}
 
@@ -49,7 +49,7 @@ public class RoleService {
 		if (role.isPresent()) {
 			roleDTO = roleMapper.roleToRoleDTOConverter(role.get());
 		} else {
-			log.error(String.format("RoleDto with id = %s not found ...", id));
+			log.error(String.format("RoleDto con id = %s no encontrado ...", id));
 		}
 
 		return roleDTO;
@@ -58,7 +58,7 @@ public class RoleService {
 	public RoleDTO addRole(final RoleDTO roleDTO) {
 		Role role = addRoleCommon(roleDTO);
 
-		log.debug("Calling DB. Save record.");
+		log.debug("Llamando DB. Guardando record.");
 		role = roleRepository.save(role);
 
 		return roleMapper.roleToRoleDTOConverter(role);
@@ -68,7 +68,7 @@ public class RoleService {
 		checkRoleExistence(roleDTO.getId());
 
 		Role role = addRoleCommon(roleDTO);
-		log.debug("Calling DB. Update record with id=" + roleDTO.getId());
+		log.debug("Llamando DB. Registro actualizado con id=" + roleDTO.getId());
 		role = roleRepository.save(role);
 
 		return roleMapper.roleToRoleDTOConverter(role);
@@ -77,12 +77,12 @@ public class RoleService {
 	public void deleteRole(final Long id) throws ServiceException {
 		checkRoleExistence(id);
 
-		log.debug("Calling DB. Delete record with id=" + id);
+		log.debug("Llamando a la DB. Registro eliminado con id=" + id);
 		roleRepository.deleteById(id);
 	}
 
 	public Page<RoleDTO> findRolesBySearch(final String search, final Pageable pageable) {
-		log.debug("Calling DB...");
+		log.debug("Llamando a la DB...");
 		Page<Role> rolePage = roleRepository.findByNameContainingIgnoreCase(search, pageable);
 
 		return rolePage.map(roleMapper::roleToRoleDTOConverter);
@@ -94,6 +94,10 @@ public class RoleService {
 		return roleSet;
 	}
 
+	public Optional<RoleDTO> getRoleByName(String name) {
+		Role role = roleRepository.findByName(name).orElse(null);
+		return Optional.of(roleMapper.roleToRoleDTOConverter(role));
+	}
 	public MenuDTO getMenuByRole(final Long id) throws ServiceException {
 		Optional<Role> role = getOneRoleByIdCommon(id);
 
@@ -105,7 +109,7 @@ public class RoleService {
 		MenuDTO menuDTO = menuService.findMenuByRole(Collections.singletonList(role.get().getName()));
 
 		if (menuDTO.getId() == null) {
-			log.debug("Not found tree for role " + role.get().getName());
+			log.debug("Arbol no encontrado para rol " + role.get().getName());
 			return null;
 		}
 
@@ -113,7 +117,7 @@ public class RoleService {
 	}
 
 	private Optional<Role> getOneRoleByIdCommon(Long id) {
-		log.debug(String.format("Calling DB. Search for a role with id = %d", id));
+		log.debug(String.format("Llamando a la DB. Buscando rol por id = %d", id));
 		return roleRepository.findById(id);
 	}
 
@@ -123,10 +127,10 @@ public class RoleService {
 
 	private void checkRoleExistence(Long id) throws ServiceException {
 		final Optional<Role> storedRole = getOneRoleByIdCommon(id);
-		log.debug("Checking if record exists.");
+		log.debug("Comprobando si record existe.");
 		if (!storedRole.isPresent()) {
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
-					.exception(String.format("RoleDto with id = %s not found ...", id));
+					.exception(String.format("RoleDto con id = %s no encontrado ...", id));
 		}
 	}
 }

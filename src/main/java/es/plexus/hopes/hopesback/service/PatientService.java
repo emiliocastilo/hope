@@ -8,6 +8,7 @@ import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.PatientDTOMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class PatientService {
@@ -28,17 +30,22 @@ public class PatientService {
 		return patientList.map(PatientMapper.INSTANCE::entityToDto);
 	}
 
-	public Page<PatientDTO> findPatientBySearch(String search, final Pageable pageable) {
-		Page<Patient> patientList = patientRepository.findPatientBySearch(search, pageable);
+	public Page<PatientDTO> findPatientBySearch(Long pth, String search, final Pageable pageable) {
+		Page<Patient> patientList = patientRepository.findPatientBySearch(pth, search, pageable);
 
 		return patientList.map(PatientMapper.INSTANCE::entityToDto);
 	}
 
-	public Optional<PatientDTO> findById(Long id) {
+	public PatientDTO findById(Long id) throws ServiceException {
 
-		Patient patientEntity = patientRepository.findById(id).orElse(null);
+		Optional<Patient> patientEntity = patientRepository.findById(id);
+		if (!patientEntity.isPresent()) {
+			log.error("Id " + id + " no existe");
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception("No se ha encontrado el paciente con el id: "+ id);
+		}
 
-		return Optional.of(PatientMapper.INSTANCE.entityToDto(patientEntity));
+		return PatientMapper.INSTANCE.entityToDto(patientEntity.get());
 	}
 
 	public PatientDTO save(PatientDTO patient) throws ServiceException {
@@ -57,7 +64,7 @@ public class PatientService {
 		patientRepository.deleteById(id);
 	}
 
-	public Page<PatientDTO> filterPatiens(String patient, final Pageable pageable) {
+	public Page<PatientDTO> filterPatients(String patient, final Pageable pageable) {
 		PatientDTO patientDTO = PatientDTOMapper.INSTANCE.jsonToPatientDTOConventer(patient);
 
 		ExampleMatcher matcher = ExampleMatcher.matchingAll().

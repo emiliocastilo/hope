@@ -42,7 +42,7 @@ public class SectionControllerTest {
 	}
 
 	@Test
-	public void callFindByIdShouldBeStatusOK() {
+	public void callFindByIdShouldBeStatusOK() throws ServiceException {
 		// given
 		given(sectionService.findById(1L)).willReturn(mockSectionDTO());
 
@@ -89,7 +89,7 @@ public class SectionControllerTest {
 	}
 
 	@Test
-	public void callFindAllShouldBeStatusOk() {
+	public void callFindAllShouldBeStatusOk() throws ServiceException {
 		// given
 		given(sectionService.findAllSections()).willReturn(mockMenuDto());
 

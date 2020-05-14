@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Form {
     @Id
     @Column(name = "for_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Basic

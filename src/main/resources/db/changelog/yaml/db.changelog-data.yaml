@@ -2,3 +2,15 @@ databaseChangeLog:
 - include:
       file: ../sql/data/001-catalogues.sql
       relativeToChangelogFile: true
+- include:
+      file: ../sql/data/002-configuration_sections.sql
+      relativeToChangelogFile: true
+- include:
+      file: ../sql/data/003-configuration_hospital_path_user.sql
+      relativeToChangelogFile: true
+- include:
+      file: ../sql/data/004-services_hospitals.sql
+      relativeToChangelogFile: true
+- include:
+      file: ../sql/data/005-Configuration_Recommendations.sql
+      relativeToChangelogFile: true

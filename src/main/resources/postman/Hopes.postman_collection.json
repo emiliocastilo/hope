@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ca67552d-9af2-48c1-b7b4-26eb73dae51d",
+		"_postman_id": "27b437c6-c12a-40a0-b8ad-8a8b17e0e69b",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -39,13 +39,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/patient",
+							"raw": "{{dev}}/v1/patients",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"patient"
+								"patients"
 							],
 							"query": [
 								{
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7259311a-497f-4f1b-b67f-65c60bf5b057",
+								"id": "239ffba7-afcd-4d98-b66f-5deea8a4c0d9",
 								"exec": [
 									""
 								],
@@ -87,13 +87,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patient?pth=1",
+							"raw": "{{dev}}/v1/patients?pth=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"patient"
+								"patients"
 							],
 							"query": [
 								{
@@ -122,22 +122,27 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctor?page=0&size=5&sort=name,asc",
+							"raw": "{{dev}}/v1/patients/searches?pth=1&pageable=0&size=7&sort=name,asc",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor"
+								"patients",
+								"searches"
 							],
 							"query": [
 								{
-									"key": "page",
+									"key": "pth",
+									"value": "1"
+								},
+								{
+									"key": "pageable",
 									"value": "0"
 								},
 								{
 									"key": "size",
-									"value": "5"
+									"value": "7"
 								},
 								{
 									"key": "sort",
@@ -164,13 +169,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patient/3",
+							"raw": "{{dev}}/v1/patients/3",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"patient",
+								"patients",
 								"3"
 							]
 						},
@@ -194,14 +199,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patient/9",
+							"raw": "{{dev}}/v1/patients/3",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"patient",
-								"9"
+								"patients",
+								"3"
 							]
 						},
 						"description": "delet"
@@ -225,7 +230,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"id\": 17,\r\n        \"name\": \"patient\",\r\n        \"firstSurname\": \"asdf\",\r\n        \"lastSurname\": \"45\",\r\n        \"nhc\": \"MDMD210604237712\",\r\n        \"healthCard\": \"2112375698\",\r\n        \"dni\": \"94736562J\",\r\n        \"address\": \"Calle 21, 24, Segovia, Segovia, EspaÃ±a CP: 28080\",\r\n        \"phone\": \"+34668795263\",\r\n        \"email\": \"patient.numero.cinco@hopes.com\",\r\n        \"birthDate\": \"1981-01-01\",\r\n        \"hospital\": {\r\n            \"id\": 1,\r\n            \"name\": \"Hospital Perpetuo Confinamiento\",\r\n            \"pathologies\": []\r\n        },\r\n        \"genderCode\": \"F\",\r\n        \"pathologies\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"ReumatologÃ­a\",\r\n                \"description\": \"Patologia ReumatologÃ­a\"\r\n            }\r\n        ]\r\n    }",
+							"raw": "    {\r\n        \"id\": 1,\r\n        \"name\": \"patient\",\r\n        \"firstSurname\": \"asdf\",\r\n        \"lastSurname\": \"45\",\r\n        \"nhc\": \"MDMD210604237712\",\r\n        \"healthCard\": \"2112375698\",\r\n        \"dni\": \"94736562J\",\r\n        \"address\": \"Calle 21, 24, Segovia, Segovia, EspaÃ±a CP: 28080\",\r\n        \"phone\": \"+34668795263\",\r\n        \"email\": \"patient.numero.cinco@hopes.com\",\r\n        \"birthDate\": \"1981-01-01\",\r\n        \"hospital\": {\r\n            \"id\": 1,\r\n            \"name\": \"Hospital Perpetuo Confinamiento\",\r\n            \"pathologies\": []\r\n        },\r\n        \"genderCode\": \"F\",\r\n        \"pathologies\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"ReumatologÃ­a\",\r\n                \"description\": \"Patologia ReumatologÃ­a\"\r\n            }\r\n        ]\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -233,13 +238,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/patient",
+							"raw": "{{dev}}/v1/patients",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"patient"
+								"patients"
 							]
 						}
 					},
@@ -261,14 +266,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patient/filterPatiens?page=0&size=5&sort=name,asc",
+							"raw": "{{dev}}/v1/patients/filters?page=0&size=5&sort=name,asc",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"patient",
-								"filterPatiens"
+								"patients",
+								"filters"
 							],
 							"query": [
 								{
@@ -288,47 +293,6 @@
 									"value": "{\"name\":\"Juan\", \"surname\":\"Perez\"}",
 									"disabled": true
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "findAllByPageable",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"pageable\":{\n\t\"pageNumber\":\"0\",\n\t\"pageSize\":\"2\",\n\t\"sort\":{\n\t\t\t\"sorted\":\"true\",\n\t\t\t\"properties\":[{\"name\"}]\n\t\t}\n\t}\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/patient/sort",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient",
-								"sort"
 							]
 						}
 					},
@@ -357,13 +321,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/menu",
+							"raw": "{{dev}}/v1/menus",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"menu"
+								"menus"
 							]
 						}
 					},
@@ -381,7 +345,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8b2bab29-b668-49f8-b23d-d074a9ae52b6",
+								"id": "c870b301-714c-4917-9183-c9ba05759f6d",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -400,7 +364,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{ \"username\": \"doctor\", \"password\": \"password\"}",
+							"raw": "{ \"username\": \"admin\", \"password\": \"password\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -426,7 +390,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3a2dfcbb-fad4-4378-a9fe-a59629a96568",
+								"id": "ee5bc1be-2186-4ad4-8454-0a14bad49c7f",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -463,14 +427,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/user/choose_profile",
+							"raw": "{{dev}}/v1/users/choose-profiles",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
-								"choose_profile"
+								"users",
+								"choose-profiles"
 							]
 						}
 					},
@@ -492,13 +456,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/user/",
+							"raw": "{{dev}}/v1/users/",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
+								"users",
 								""
 							]
 						}
@@ -521,13 +485,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/user/admin",
+							"raw": "{{dev}}/v1/users/admin",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
+								"users",
 								"admin"
 							]
 						}
@@ -550,55 +514,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/user/doctor",
+							"raw": "{{dev}}/v1/users/doctor",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
+								"users",
 								"doctor"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "PatientTreatments",
-			"item": [
-				{
-					"name": "Patients Under Treatment",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patient_treatments/patients_under_treatment?type=BIOLOGICOS",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patient_treatments",
-								"patients_under_treatment"
-							],
-							"query": [
-								{
-									"key": "type",
-									"value": "BIOLOGICOS"
-								}
 							]
 						}
 					},
@@ -627,7 +550,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Antoine\",\n    \"surname\": \"Griezmann\",\n    \"phone\": 123456789,\n    \"dni\": \"12345678Z\",\n    \"collegeNumber\": 12345678,\n    \"user\": {\n        \"username\": \"antoine.griezmann\",\n        \"password\": \"password\",\n        \"email\": \"antoine.griezmann@plexus.es\",\n        \"roles\": [\n            2\n        ],\n        \"hospitalId\": 4\n    },\n    \"service\": {\n    \t\"id\" : 1,\n    \t\"name\" : \"Servicio algo\"\n    }\n}",
+							"raw": "{\n    \"name\": \"Leo\",\n    \"surname\": \"Messi\",\n    \"phone\": 123456789,\n    \"dni\": \"12345678Z\",\n    \"collegeNumber\": 12345678,\n    \"userDTO\": {\n        \"username\": \"leo.messi2\",\n        \"password\": \"password\",\n        \"email\": \"leo.messi2@plexus.es\",\n        \"roles\": [\n            2\n        ],\n        \"hospitalId\": 1\n    },\n    \"serviceDTO\": {\n    \t\"id\" : 1\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -635,13 +558,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/doctor",
+							"raw": "{{dev}}/v1/doctors",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor"
+								"doctors"
 							]
 						},
 						"description": "Usuario y correo deben ser unicos"
@@ -664,13 +587,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctor?page=0&size=5&sort=name,asc",
+							"raw": "{{dev}}/v1/doctors?page=0&size=5&sort=name,asc",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor"
+								"doctors"
 							],
 							"query": [
 								{
@@ -706,13 +629,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctor?page=0&size=5&sort=name,asc",
+							"raw": "{{dev}}/v1/doctors/searches?page=0&size=5&sort=name,asc&search=ant",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor"
+								"doctors",
+								"searches"
 							],
 							"query": [
 								{
@@ -726,6 +650,10 @@
 								{
 									"key": "sort",
 									"value": "name,asc"
+								},
+								{
+									"key": "search",
+									"value": "ant"
 								}
 							]
 						}
@@ -748,14 +676,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctor/filterDoctors?page=0&size=5&sort=name,asc&doctor={\"name\":\"Juan\", \"surname\":\"Perez\"}",
+							"raw": "{{dev}}/v1/doctors/filters?page=0&size=5&sort=name,asc&doctor={\"name\":\"Antonio\"}",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor",
-								"filterDoctors"
+								"doctors",
+								"filters"
 							],
 							"query": [
 								{
@@ -772,7 +700,7 @@
 								},
 								{
 									"key": "doctor",
-									"value": "{\"name\":\"Juan\", \"surname\":\"Perez\"}"
+									"value": "{\"name\":\"Antonio\"}"
 								}
 							]
 						}
@@ -795,14 +723,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctor/13",
+							"raw": "{{dev}}/v1/doctors/1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor",
-								"13"
+								"doctors",
+								"1"
 							]
 						}
 					},
@@ -825,7 +753,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 14,\r\n    \"name\": \"Antoine\",\r\n    \"surname\": \"Griezmann\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"user\": {\r\n        \"id\": 14,\r\n        \"username\": \"antoine.griezmann\",\r\n        \"password\": \"$2a$10$9V4XbSY0uLgN6qwtHeODOeK44E8rQnz7lbX7q5GNYKrZVlokM3L4e\",\r\n        \"email\": \"antoine.griezmann1@plexus.es\",\r\n        \"roles\": [\r\n            2\r\n        ],\r\n        \"hospitalId\": 4\r\n    },\r\n    \"service\": {\r\n        \"id\": 1,\r\n        \"name\": \"Dermatologia\"\r\n    }\r\n}",
+							"raw": "{\r\n    \"id\": 11,\r\n    \"name\": \"Antoine\",\r\n    \"surname\": \"Griezmann\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"user\": {\r\n        \"id\": 8,\r\n        \"username\": \"antoine.griezmann1\",\r\n        \"password\": \"$2a$10$9V4XbSY0uLgN6qwtHeODOeK44E8rQnz7lbX7q5GNYKrZVlokM3L4e\",\r\n        \"email\": \"antoine.griezmann1@plexus.es\",\r\n        \"roles\": [\r\n            2\r\n        ],\r\n        \"hospitalId\": 4\r\n    },\r\n    \"service\": {\r\n        \"id\": 1,\r\n        \"name\": \"Dermatologia\"\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -833,13 +761,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/doctor",
+							"raw": "{{dev}}/v1/doctors",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor"
+								"doctors"
 							]
 						}
 					},
@@ -870,13 +798,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/doctor",
+							"raw": "{{dev}}/v1/doctors/1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctor"
+								"doctors",
+								"1"
 							]
 						}
 					},
@@ -913,13 +842,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/user",
+							"raw": "{{dev}}/v1/users",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user"
+								"users"
 							]
 						}
 					},
@@ -950,14 +879,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/user/update_password",
+							"raw": "{{dev}}/v1/users/update-passwords",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
-								"update_password"
+								"users",
+								"update-passwords"
 							]
 						}
 					},
@@ -988,14 +917,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/user/request_password_change",
+							"raw": "{{dev}}/v1/users/request-password-changes",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
-								"request_password_change"
+								"users",
+								"request-password-changes"
 							]
 						}
 					},
@@ -1026,14 +955,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/user/save_password",
+							"raw": "{{dev}}/v1/users/save-new-passwords",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
-								"save_password"
+								"users",
+								"save-new-passwords"
 							]
 						}
 					},
@@ -1055,14 +984,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/user/reset_password?token=e2b360db-e8d0-460c-9d8f-fa04090cb97f",
+							"raw": "{{dev}}/v1/users/reset-passwords?token=e2b360db-e8d0-460c-9d8f-fa04090cb97f",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"user",
-								"reset_password"
+								"users",
+								"reset-passwords"
 							],
 							"query": [
 								{
@@ -1097,13 +1026,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/hospital",
+							"raw": "{{dev}}/v1/hospitals",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"hospital"
+								"hospitals"
 							]
 						}
 					},
@@ -1131,13 +1060,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/service",
+							"raw": "{{dev}}/v1/services",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"service"
+								"services"
 							]
 						}
 					},
@@ -1174,13 +1103,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/template",
+							"raw": "{{dev}}/v1/templates",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1211,13 +1140,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/template",
+							"raw": "{{dev}}/v1/templates",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1285,13 +1214,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/template",
+							"raw": "{{dev}}/v1/templates",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1322,13 +1251,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/template",
+							"raw": "{{dev}}/v1/templates",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1359,13 +1288,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/template",
+							"raw": "{{dev}}/v1/templates",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							]
 						}
 					},
@@ -1399,13 +1328,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/template?key=PLANTILLA_PRUEBA",
+							"raw": "{{dev}}/v1/templates?key=PLANTILLA_PRUEBA",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"template"
+								"templates"
 							],
 							"query": [
 								{
@@ -1446,7 +1375,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"date\": \"2020-01-22T00:00:00\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 8\r\n    }\r\n}",
+							"raw": "{\r\n\t\"date\": \"2020-05-13T16:21:45Z\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 2\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1480,7 +1409,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ecccd62e-1ced-48f2-8adb-5360fe301d17",
+								"id": "257ce3b6-5355-4707-a4de-f495d5e5e3b9",
 								"exec": [
 									""
 								],
@@ -1502,13 +1431,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details",
+							"raw": "{{dev}}/v1/dispensation-details?dsp=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"dispensation-details"
+							],
+							"query": [
+								{
+									"key": "dsp",
+									"value": "1"
+								}
 							]
 						},
 						"description": "find All Dispensation Details"
@@ -1675,14 +1610,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/findBySearch?page=0&size=2&sort=date,desc&search=NH098",
+							"raw": "{{dev}}/v1/dispensation-details/searches?page=0&size=2&sort=date,desc&search=NH098",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"dispensation-details",
-								"findBySearch"
+								"searches"
 							],
 							"query": [
 								{
@@ -1741,7 +1676,7 @@
 									"key": "fileDispensation",
 									"contentType": "",
 									"type": "file",
-									"src": "/C:/Users/angel.broncanorodrig/Desktop/dispensations.csv"
+									"src": "/C:/Development/hopes/IdeaProjects/hopes-back/src/main/resources/postman/dispensations.csv"
 								},
 								{
 									"key": "date",
@@ -1752,13 +1687,13 @@
 								},
 								{
 									"key": "startPeriod",
-									"value": "2020-03-01T00:00:00Z",
+									"value": "01-03-2020 00:00:00",
 									"contentType": "",
 									"type": "text"
 								},
 								{
 									"key": "endPeriod",
-									"value": "2020-03-01T00:00:00Z",
+									"value": "01-03-2020 00:00:00",
 									"type": "text"
 								}
 							],
@@ -1769,13 +1704,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensation",
+							"raw": "{{dev}}/v1/dispensations",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"dispensation"
+								"dispensations"
 							],
 							"query": [
 								{
@@ -1800,7 +1735,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fdd9fc4e-88da-45db-89f8-65b71926d1f3",
+								"id": "0c48f8f2-2db4-4a08-b8ff-3b4fd574cdba",
 								"exec": [
 									""
 								],
@@ -1822,13 +1757,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation",
+							"raw": "{{dev}}/v1/dispensations",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"dispensation"
+								"dispensations"
 							]
 						},
 						"description": "find All Dispensations"
@@ -1851,13 +1786,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation/11",
+							"raw": "{{dev}}/v1/dispensations/11",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"dispensation",
+								"dispensations",
 								"11"
 							]
 						},
@@ -1881,13 +1816,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation/11",
+							"raw": "{{dev}}/v1/dispensations/11",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"dispensation",
+								"dispensations",
 								"11"
 							]
 						},
@@ -1958,7 +1893,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c8df225a-e730-4ef4-bd62-00d716b50a8f",
+								"id": "ed731c1d-8713-4ed6-abe2-025580c36527",
 								"exec": [
 									""
 								],
@@ -2009,14 +1944,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/4",
+							"raw": "{{dev}}/v1/medicines/1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"medicines",
-								"4"
+								"1"
 							]
 						},
 						"description": "findById dispensation detail"
@@ -2039,14 +1974,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/3",
+							"raw": "{{dev}}/v1/medicines/1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"medicines",
-								"3"
+								"1"
 							]
 						},
 						"description": "delete"
@@ -2070,7 +2005,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n    \"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D234F45\",\r\n    \"recommended\": true,\r\n    \"recommendation\": {\r\n        \"id\": 3,\r\n        \"value\": \"Recomendacion03\"\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mÃ¡gicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": true\r\n}",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D23S34\",\r\n    \"recommended\": true,\r\n    \"recommendation\": {\r\n        \"id\": 3,\r\n        \"value\": \"Recomendacion 03\"\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento propiedades mÃ¡gicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2156,14 +2091,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/findBySearch?page=0&size=1&sort=id,asc&search=A",
+							"raw": "{{dev}}/v1/medicines/searches?page=0&size=1&sort=id,asc&search=A",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"medicines",
-								"findBySearch"
+								"searches"
 							],
 							"query": [
 								{
@@ -2199,7 +2134,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bb4c9733-d8ef-4f51-9806-e89abaa98f63",
+								"id": "c507c158-0977-433d-bf17-92ef53212035",
 								"exec": [
 									""
 								],
@@ -2256,13 +2191,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/role",
+							"raw": "{{dev}}/v1/roles",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role"
+								"roles"
 							]
 						}
 					},
@@ -2284,14 +2219,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/role/filter?name=doctor",
+							"raw": "{{dev}}/v1/roles/searches?name=doctor",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role",
-								"filter"
+								"roles",
+								"searches"
 							],
 							"query": [
 								{
@@ -2319,13 +2254,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/role/1",
+							"raw": "{{dev}}/v1/roles/1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role",
+								"roles",
 								"1"
 							]
 						}
@@ -2357,13 +2292,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/role",
+							"raw": "{{dev}}/v1/roles",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role"
+								"roles"
 							]
 						}
 					},
@@ -2386,7 +2321,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\" : 9,\n    \"name\": \"Enfermeria\",\n    \"description\": \"Abarca la atención autónoma\"\n}",
+							"raw": "{\r\n    \"id\": 10,\r\n    \"name\": \"Enfermera\",\r\n    \"description\": \"Adispensada a personas de todas las edades, familias, grupos y comunidades, enfermos o no, y en todas circunstancias\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2394,13 +2329,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/role",
+							"raw": "{{dev}}/v1/roles",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role"
+								"roles"
 							]
 						}
 					},
@@ -2431,14 +2366,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/role/9",
+							"raw": "{{dev}}/v1/roles/10",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role",
-								"9"
+								"roles",
+								"10"
 							]
 						}
 					},
@@ -2460,14 +2395,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/role/menu/7",
+							"raw": "{{dev}}/v1/roles/menus/7",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"role",
-								"menu",
+								"roles",
+								"menus",
 								"7"
 							]
 						}
@@ -2547,14 +2482,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/sections/11",
+							"raw": "{{dev}}/v1/sections/81",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"sections",
-								"11"
+								"81"
 							]
 						},
 						"description": "findById dispensation detail"
@@ -2567,7 +2502,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ae4b9302-c8b8-4867-af7a-da422420c964",
+								"id": "045ccea5-126a-4a3b-9b47-aa991fc04f8d",
 								"exec": [
 									""
 								],
@@ -2618,14 +2553,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/sections/11",
+							"raw": "{{dev}}/v1/sections/81",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"sections",
-								"11"
+								"81"
 							]
 						},
 						"description": "delete"
@@ -2649,7 +2584,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 4,\r\n    \"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D234F45\",\r\n    \"recommended\": true,\r\n    \"recommendation\": {\r\n        \"id\": 3,\r\n        \"value\": \"Recomendacion03\"\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mÃ¡gicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": true\r\n}",
+							"raw": "{\r\n    \"id\": 81,\r\n    \"title\": \"CONTROL_PANEL\",\r\n    \"description\": \"Cuadro de mansdos\",\r\n    \"active\": false,\r\n    \"principal\": false,\r\n    \"order\": 6,\r\n    \"icon\": \"assets/img/modules/cuadro-de-mando.png\",\r\n    \"url\": \"#\",\r\n    \"fatherSection\": {\r\n        \"id\": 1,\r\n        \"title\": null,\r\n        \"description\": null,\r\n        \"active\": false,\r\n        \"principal\": false,\r\n        \"order\": 0,\r\n        \"icon\": null,\r\n        \"url\": null,\r\n        \"fatherSection\": null,\r\n        \"roles\": []\r\n    },\r\n    \"roles\": [\r\n        {\r\n            \"id\": 1,\r\n            \"name\": null,\r\n            \"description\": null\r\n        },\r\n        {\r\n            \"id\": 2,\r\n            \"name\": null,\r\n            \"description\": null\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2674,7 +2609,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "7c09e6f5-3409-4a12-88e4-89a3a244a6e0",
+						"id": "6ec08318-1e46-4343-8cef-b181af2bf758",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2684,7 +2619,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d4275c05-dc2c-4904-bf37-e36136fc7246",
+						"id": "c89b7c07-4d18-4f9e-9a78-19ddd7a608cc",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2722,13 +2657,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/data",
+							"raw": "{{dev}}/v1/datas",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"data"
+								"datas"
 							]
 						}
 					},
@@ -2762,13 +2697,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/data?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{dev}}/v1/datas?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"data"
+								"datas"
 							],
 							"query": [
 								{
@@ -2812,13 +2747,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/data?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{dev}}/v1/datas?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"data"
+								"datas"
 							],
 							"query": [
 								{
@@ -2859,13 +2794,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/data",
+							"raw": "{{dev}}/v1/datas",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"data"
+								"datas"
 							]
 						}
 					},

@@ -25,24 +25,28 @@ public class SectionDTO {
 	@Column(name = "sec_description", nullable = true, length = 500)
 	private String description;
 
-	@ApiModelProperty(position = 40, example = "true", value = "Indicador de si está sección forma parte del menú central")
+	@ApiModelProperty(position = 40, example = "true", value = "Indicador de si está sección está activa")
 	@NotNull
 	private boolean active;
 
-	@ApiModelProperty(position = 50, example = "3", value = "Posición de la sección dentro de su nivel")
+	@ApiModelProperty(position = 50, example = "true", value = "Indicador de si está sección forma parte del menú central")
+	@NotNull
+	private boolean principal;
+
+	@ApiModelProperty(position = 60, example = "3", value = "Posición de la sección dentro de su nivel")
 	@NotNull
 	private int order;
 
-	@ApiModelProperty(position = 60, example = "assets/img/modules/alertas.png", value = "Ruta del icono")
+	@ApiModelProperty(position = 70, example = "assets/img/modules/alertas.png", value = "Ruta del icono")
 	private String icon;
 
-	@ApiModelProperty(position = 70, example = "/secciones", value = "Url de la ruta")
+	@ApiModelProperty(position = 80, example = "/secciones", value = "Url de la ruta")
 	private String url;
 
-	@ApiModelProperty(position = 80, example = "{id=1L}", value = "Padre de la sección")
+	@ApiModelProperty(position = 90, example = "{id=1L}", value = "Padre de la sección")
 	private SectionDTO fatherSection;
 
-	@ApiModelProperty(position = 90, example = "[{id=1},{id=2}]", value = "Roles con permisos para poder visualizar esta sección")
+	@ApiModelProperty(position = 100, example = "[{id=1},{id=2}]", value = "Roles con permisos para poder visualizar esta sección")
 	private Set<RoleDTO> roles = new HashSet<>();
 
 }

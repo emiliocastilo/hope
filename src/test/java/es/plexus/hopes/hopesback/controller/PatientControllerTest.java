@@ -4,6 +4,7 @@ import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientDTO;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.service.PatientService;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,15 +18,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
@@ -70,38 +66,37 @@ public class PatientControllerTest {
 	}
 
 	@Test
-	public void callFindByIdShouldBeStatusOK() {
+	public void callFindByIdShouldBeStatusOK() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.findById(1L)).willReturn(Optional.of(mockPatientDTO()));
+		given(patientService.findById(1L)).willReturn(mockPatientDTO());
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.findById(1L);
+		PatientDTO response = patientController.findById(1L);
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertNotNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test
-	public void callFindByIdShouldBeStatusBad() {
-		// given
-		given(patientService.findById(Mockito.anyLong())).willReturn(Optional.empty());
-
-		// when
-		ResponseEntity<PatientDTO> response = patientController.findById(Mockito.anyLong());
-
-		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
-		Assert.assertNull(response.getBody());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void callFindByIdShouldThrowException() throws Exception {
+	public void callFindByIdShouldBeStatusBad() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
 		given(patientService.findById(Mockito.anyLong())).willReturn(null);
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.findById(Mockito.anyLong());
+		PatientDTO response = patientController.findById(Mockito.anyLong());
+
+		// then
+		Assert.assertNull(response);
+	}
+
+	@Test(expected = es.plexus.hopes.hopesback.service.exception.ServiceException.class)
+	public void callFindByIdShouldThrowException() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
+		// given
+		given(patientService.findById(Mockito.anyLong())).willThrow(ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+				"No existe el paciente con el id"));
+
+		// when
+		patientController.findById(Mockito.anyLong());
 	}
 
 	@Test
@@ -110,11 +105,10 @@ public class PatientControllerTest {
 		given(patientService.save(new PatientDTO())).willReturn(mockPatientDTO());
 
 		// when
-		ResponseEntity<List<PatientDTO>> response = patientController.create(new PatientDTO());
+		PatientDTO response = patientController.create(new PatientDTO());
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertNotNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test(expected = ServiceException.class)
@@ -123,7 +117,7 @@ public class PatientControllerTest {
 		given(patientService.save(null)).willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.create(null);
+		patientController.create(null);
 
 	}
 
@@ -131,52 +125,42 @@ public class PatientControllerTest {
 	public void callUpdateShouldBeStatusOk() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 
 		// given
-		given(patientService.findById(1L)).willReturn(Optional.of(mockPatientDTO()));
+		given(patientService.findById(1L)).willReturn(mockPatientDTO());
 		given(patientService.save(mockPatientDTO())).willReturn(mockPatientDTO());
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.update(mockPatientDTO());
+		PatientDTO response = patientController.update(mockPatientDTO());
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.OK);
-		Assert.assertNotNull(response.getBody());
+		Assert.assertNotNull(response);
 	}
 
 	@Test
 	public void callUpdateShouldBeStatusBad() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.findById(null)).willReturn(Optional.empty());
+		given(patientService.findById(null)).willReturn(null);
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.update(new PatientDTO());
+		PatientDTO response = patientController.update(new PatientDTO());
 
 		// then
-		Assert.assertEquals(response.getStatusCode(), HttpStatus.BAD_REQUEST);
-		Assert.assertNull(response.getBody());
+		Assert.assertNull(response);
 	}
 
 	@Test(expected = ServiceException.class)
 	public void callUpdateShouldThrowException() throws Exception {
 		// given
-		given(patientService.findById(1L)).willReturn(Optional.of(new PatientDTO()));
+		given(patientService.findById(1L)).willReturn(new PatientDTO());
 
 		// given
 		given(patientService.save(mockPatientDTO())).willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		ResponseEntity<PatientDTO> response = patientController.update(mockPatientDTO());
+		patientController.update(mockPatientDTO());
 
 	}
 
 	//Mocks
-	private List<PatientDTO> mockPatientList() {
-		List<PatientDTO> patientDtoList = new ArrayList<PatientDTO>();
-
-		PatientDTO patientDto = mockPatientDTO();
-		patientDtoList.add(patientDto);
-
-		return patientDtoList;
-	}
 
 	private PatientDTO mockPatientDTO() {
 		PatientDTO patientDto = new PatientDTO();
@@ -214,20 +198,19 @@ public class PatientControllerTest {
 	public void filterPatientsShouldBeStatusOk() {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
-		given(patientService.filterPatiens(any(String.class), any(Pageable.class)))
+		given(patientService.filterPatients(any(String.class), any(Pageable.class)))
 				.willReturn(getPageablePatient(pageRequest));
 
 		// when
 		Page<PatientDTO> response = patientController
-				.filterPatiens(mockJSONPatien(), pageRequest);
+				.filterPatients(mockJSONPatient(), pageRequest);
 
 		// then
 		assertNotNull(response);
 	}
 
-	private String mockJSONPatien() {
-		String jsonPatient = "{\"name\":\"" + mockPatientDTO().getName() + "\"}";
-		return jsonPatient;
+	private String mockJSONPatient() {
+		return "{\"name\":\"" + mockPatientDTO().getName() + "\"}";
 	}
 
 }

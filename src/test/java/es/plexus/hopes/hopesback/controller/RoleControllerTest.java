@@ -67,7 +67,7 @@ public class RoleControllerTest {
 				.willReturn(getPageableRole(pageRequest));
 
 		// when
-		Page<RoleDTO> response = roleController.filterRole("name", pageRequest);
+		Page<RoleDTO> response = roleController.findRolesBySearch("name", pageRequest);
 
 		// then
 		assertNotNull(response);
