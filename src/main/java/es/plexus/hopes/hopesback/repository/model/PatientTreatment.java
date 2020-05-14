@@ -33,7 +33,7 @@ public class PatientTreatment {
     
     @Basic
 	@Column(name = "ptr_active", nullable = false)
-	private String active;
+	private boolean active;
     
     @Basic
     @Column(name = "ptr_indication", nullable = false, length = 50)

@@ -6,6 +6,9 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -16,7 +19,8 @@ public class DispensationDetailDTO {
 	@NotBlank
 	private Long id;
 
-	@ApiModelProperty(position = 20, example = "1981-01-01T00:00:00Z", value = "Fecha de la dispensación al paciente")
+	@ApiModelProperty(position = 20, example = "01-01-1981 00:00:00", value = "Fecha de la dispensación al paciente")
+	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
 	@NotBlank
 	private LocalDateTime date;
 
