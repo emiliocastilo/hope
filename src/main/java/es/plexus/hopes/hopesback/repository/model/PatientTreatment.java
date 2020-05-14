@@ -1,6 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import java.time.LocalDateTime;
+import lombok.Data;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,8 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import lombok.Data;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -33,7 +32,7 @@ public class PatientTreatment {
     
     @Basic
 	@Column(name = "ptr_active", nullable = false)
-	private String active;
+	private boolean active;
     
     @Basic
     @Column(name = "ptr_indication", nullable = false, length = 50)
@@ -79,5 +78,5 @@ public class PatientTreatment {
     @Column(name = "ptr_reason", nullable = false, length = 50)
     private String reason;
 
- 
+    private Long numberPatients;
 }
