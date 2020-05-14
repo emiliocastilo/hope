@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TreatmentInfoDTO {
+public class HealthOutcomeDTO {
     
-	private String codeAct;
-    private String actIngredients;    
+	private String result;
     private Long count;
    
 }

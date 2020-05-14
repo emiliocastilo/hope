@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -21,8 +20,7 @@ public class PatientTreatmentService {
 
 	public List<TreatmentInfoDTO> patientsUnderChemicalTreatment(String type, String indication) {
 		log.debug(CALLING_DB);
-		List<Object[]> patientTreatmenList = patientTreatmentRepository.patientsUnderTreatment(type, indication);
-		return PatientTreatmentMapper.INSTANCE.treatmentListToTreatmentInfoDTOList(patientTreatmenList);
+		return patientTreatmentRepository.patientsUnderTreatment(type, indication);
 	}
 
 }

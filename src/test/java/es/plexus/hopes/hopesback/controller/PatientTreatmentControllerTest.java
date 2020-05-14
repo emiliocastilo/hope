@@ -46,7 +46,7 @@ public class PatientTreatmentControllerTest {
 	public void callPatientsUnderChemicalTreatmentThrowException() throws Exception {
 		// given
 		given(patientTreatmentService.patientsUnderChemicalTreatment(anyString(), anyString()))
-				.willThrow(new ServiceException("Error: Too much pathologies"));
+				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
 		List<TreatmentInfoDTO> response = patientTreatmentController.patientsUnderChemicalTreatment(anyString(), anyString());
@@ -72,7 +72,7 @@ public class PatientTreatmentControllerTest {
 	
 		treatmentInfoDTO.setCodeAct("ACT code");
 		treatmentInfoDTO.setActIngredients("Act Ingredient");
-		treatmentInfoDTO.setCount(1);		
+		treatmentInfoDTO.setCount(1L);		
 	
 		return treatmentInfoDTO;
 	}
