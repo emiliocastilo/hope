@@ -40,12 +40,12 @@ public class PatientDiagnose {
     private String cie9Desc;
 
     @Basic
-    @Column(name = "pdg_ci10_code", nullable = false, length = 50)
-    private String ci10Code;
+    @Column(name = "pdg_cie10_code", nullable = false, length = 50)
+    private String cie10Code;
 
     @Basic
-    @Column(name = "pdg_ci10_desc", nullable = false, length = 50)
-    private String ci10Desc;
+    @Column(name = "pdg_cie10_desc", nullable = false, length = 50)
+    private String cie10Desc;
 
     @Basic
     @Column(name = "pdg_others_indications", length = 50)

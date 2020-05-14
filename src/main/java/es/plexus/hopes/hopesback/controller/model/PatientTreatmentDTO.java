@@ -2,14 +2,12 @@ package es.plexus.hopes.hopesback.controller.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @ApiModel
 public class PatientTreatmentDTO {
     @ApiModelProperty(position = 10, example = "1L", value = "Identificador de la BBDD")
@@ -35,13 +33,13 @@ public class PatientTreatmentDTO {
     @ApiModelProperty(position = 70, example = "2mg por dia", value = "Dosis de tratamiento")
     private String dose;
 
-    @ApiModelProperty(position = 80, value = "Formula maestra ")
+    @ApiModelProperty(position = 80, value = "Formula del tratamiento ")
     private String masterFormula;
 
-    @ApiModelProperty(position = 90, value = "Dosis de la formula maestra")
+    @ApiModelProperty(position = 90, value = "Formula para el cálculo de la dosis del tratamiento")
     private String masterFormulaDose;
 
-    @ApiModelProperty(position = 100, example = "regimen", value = "Regimen del tratamiento del paciente")
+    @ApiModelProperty(position = 100, example = "Esquema intensificado", value = "Regimen del tratamiento actual del paciente")
     private String regimen;
 
     @ApiModelProperty(position = 110, example = "01-01-2020 00:00:00", value = "Fecha de inicio")
