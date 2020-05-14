@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "27b437c6-c12a-40a0-b8ad-8a8b17e0e69b",
+		"_postman_id": "593b2760-40f6-4efa-a87f-b71ea1c6435d",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "239ffba7-afcd-4d98-b66f-5deea8a4c0d9",
+								"id": "00257dfd-3623-4c6f-b4cb-4f5fba9f5fbb",
 								"exec": [
 									""
 								],
@@ -345,7 +345,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c870b301-714c-4917-9183-c9ba05759f6d",
+								"id": "ef5212af-fd13-4d02-bbf9-0a63f80763b6",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -390,7 +390,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ee5bc1be-2186-4ad4-8454-0a14bad49c7f",
+								"id": "1b3b0a67-1e5f-4073-ac52-2cc0409fb73d",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1409,7 +1409,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "257ce3b6-5355-4707-a4de-f495d5e5e3b9",
+								"id": "3ef19cdc-b846-42e5-ac53-7b9c063d0fb8",
 								"exec": [
 									""
 								],
@@ -1735,7 +1735,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "0c48f8f2-2db4-4a08-b8ff-3b4fd574cdba",
+								"id": "86f36429-c16e-4cfa-abec-e5efb93f9cb1",
 								"exec": [
 									""
 								],
@@ -1893,7 +1893,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ed731c1d-8713-4ed6-abe2-025580c36527",
+								"id": "31ab6335-51f3-4529-839a-a6ed23d76620",
 								"exec": [
 									""
 								],
@@ -2134,7 +2134,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c507c158-0977-433d-bf17-92ef53212035",
+								"id": "ccaa502c-1c79-40a2-94e7-d6ead460fd38",
 								"exec": [
 									""
 								],
@@ -2502,7 +2502,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "045ccea5-126a-4a3b-9b47-aa991fc04f8d",
+								"id": "19d531f9-2cbe-4708-af50-0f79e96aafb5",
 								"exec": [
 									""
 								],
@@ -2609,7 +2609,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "6ec08318-1e46-4343-8cef-b181af2bf758",
+						"id": "823ed954-fe6d-40e0-8db6-7080eb722f8d",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2619,7 +2619,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "c89b7c07-4d18-4f9e-9a78-19ddd7a608cc",
+						"id": "4ddf6b19-76fe-4ef8-9835-8a5d4106bfa2",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2801,6 +2801,82 @@
 							"path": [
 								"v1",
 								"datas"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Graphs",
+			"item": [
+				{
+					"name": "Patients Under Treatment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/graphs/patients_under_treatment?type=BIOLOGICOS",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"graphs",
+								"patients_under_treatment"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "BIOLOGICOS"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health Outcomes By Types",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/graphs/health_outcomes_by_types?type=PASI",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"graphs",
+								"health_outcomes_by_types"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "PASI"
+								}
 							]
 						}
 					},

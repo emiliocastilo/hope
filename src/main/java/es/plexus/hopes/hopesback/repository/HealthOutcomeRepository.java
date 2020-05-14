@@ -23,7 +23,7 @@ public interface HealthOutcomeRepository extends JpaRepository<Patient, Long> {
 				"group by hou2.patient.id" +
 			") " + 
 			"group by hou.patient.id, hou.result ")
-	List<HealthOutcomeDTO> getHealthOutcomesByType(@Param("type")String type);
+	List<HealthOutcomeDTO> healthOutcomesByType(@Param("type")String type);
 	
 }
 

@@ -7,25 +7,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
-import es.plexus.hopes.hopesback.service.PatientTreatmentService;
+import es.plexus.hopes.hopesback.service.GraphsService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+@Api(value = "Controlador para recuperar los gráficos del sistema", tags = "graphs-detail")
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/patient_treatments")
-public class PatientTreatmentController {
+@RequestMapping("/graphs")
+public class GraphsController {
 	private static final String CALLING_SERVICE = "Calling service...";
 
-	private final PatientTreatmentService patientTreatmentService;
+	private final GraphsService graphsService;
 
 	@GetMapping("/patients_under_treatment")
 	public List<TreatmentInfoDTO> patientsUnderChemicalTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.patientsUnderChemicalTreatment(type, indication);
+		return graphsService.patientsUnderChemicalTreatment(type, indication);
 
 	}
 
+	@GetMapping("/health_outcomes_by_types")
+	public List<HealthOutcomeDTO> healthOutcomesByType(@RequestParam(value = "type", required = true) String type) {
+		log.debug(CALLING_SERVICE);
+		return graphsService.healthOutcomesByType(type);
+
+	}
+	
 }
