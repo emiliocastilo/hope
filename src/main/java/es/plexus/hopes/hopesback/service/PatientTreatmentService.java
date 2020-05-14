@@ -2,7 +2,6 @@ package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GroupingFieldTreatmentInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
-import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
@@ -17,16 +16,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PatientTreatmentService {
-	
+
 	private static final String CALLING_DB = "Calling DB...";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
-
-	public List<TreatmentInfoDTO> patientsUnderChemicalTreatment(String type, String indication) {
-		log.debug(CALLING_DB);
-		List<Object[]> patientTreatmenList = patientTreatmentRepository.patientsUnderTreatment(type, indication);
-		return PatientTreatmentMapper.INSTANCE.treatmentListToTreatmentInfoDTOList(patientTreatmenList);
-	}
 
 	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByTreatment() {
 		log.debug(CALLING_DB);

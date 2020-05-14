@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.controller.model;
 
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ public class PatientDTO {
     private String address;
     private String phone;
     private String email;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     private Hospital hospital;
     private String genderCode;
