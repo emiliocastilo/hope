@@ -2828,14 +2828,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/graphs/patients_under_treatment?type=BIOLOGICOS",
+							"raw": "{{dev}}/v1/graphs/patients-under-treatment?type=BIOLOGICOS",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"graphs",
-								"patients_under_treatment"
+								"patients-under-treatment"
 							],
 							"query": [
 								{
@@ -2863,14 +2863,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/graphs/health_outcomes_by_types?type=PASI",
+							"raw": "{{dev}}/v1/graphs/health-outcomes-by-types?type=PASI",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"graphs",
-								"health_outcomes_by_types"
+								"health-outcomes-by-types"
 							],
 							"query": [
 								{

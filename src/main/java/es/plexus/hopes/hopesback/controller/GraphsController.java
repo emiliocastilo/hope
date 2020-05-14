@@ -22,14 +22,14 @@ public class GraphsController {
 
 	private final GraphsService graphsService;
 
-	@GetMapping("/patients_under_treatment")
+	@GetMapping("/patients-under-treatment")
 	public List<TreatmentInfoDTO> patientsUnderChemicalTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
 		return graphsService.patientsUnderChemicalTreatment(type, indication);
 
 	}
 
-	@GetMapping("/health_outcomes_by_types")
+	@GetMapping("/health-outcomes-by-types")
 	public List<HealthOutcomeDTO> healthOutcomesByType(@RequestParam(value = "type", required = true) String type) {
 		log.debug(CALLING_SERVICE);
 		return graphsService.healthOutcomesByType(type);
