@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -21,6 +22,9 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_TREATMENT)
 	List<PatientTreatment> findPatientTreatmentByTreatment();
 
+	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_WITHOUT_TREATMENT)
+	List<PatientTreatment> findPatientTreatmentByWithoutTreatment();
+
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_COMBINED_TREATMENT)
 	List<PatientTreatment> findPatientTreatmentByCombinedTreatment();
 
@@ -28,7 +32,7 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	List<PatientTreatment> findPatientTreatmentByEndCauseBiologicTreatment(@Param("endCause")String endCause);
 
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE_IN_LAST_5_YEARS)
-	List<PatientTreatment> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(@Param("endCause")String endCause);
+	List<PatientTreatment> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(@Param("endCause")String endCause, @Param("initDate")LocalDateTime initDate);
 
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_NUMBER_CHANGES_OF_BIOLOGICAL_TREATMENT)
 	List<PatientTreatment> findPatientTreatmentByNumberChangesOfBiologicTreatment();

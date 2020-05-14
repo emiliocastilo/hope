@@ -5,10 +5,12 @@ import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,9 @@ public class PatientTreatmentService {
 	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByTreatment() {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByTreatment();
+		if(!Collections.isEmpty(patientTreatmentList)) {
+			patientTreatmentList.addAll(patientTreatmentRepository.findPatientTreatmentByWithoutTreatment());
+		}
 		return patientTreatmentList.stream()
 				.map(PatientTreatmentMapper.INSTANCE::entityToTypeTreatmentInfoDto).collect(Collectors.toList());
 	}
@@ -46,7 +51,8 @@ public class PatientTreatmentService {
 	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(String endCause) {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientTreatmentList =
-				patientTreatmentRepository.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(endCause);
+				patientTreatmentRepository
+						.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(endCause, LocalDateTime.now().plusYears(-5));
 		return patientTreatmentList.stream()
 				.map(PatientTreatmentMapper.INSTANCE::entityToReasonTreatmentInfoDto).collect(Collectors.toList());
 	}
