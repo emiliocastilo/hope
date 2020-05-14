@@ -1,13 +1,14 @@
 package es.plexus.hopes.hopesback.repository.model;
 
+import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.Data;
 
 @Data
 @Entity
@@ -16,7 +17,8 @@ public class Role {
 
 	@Id
 	@Column(name = "rol_id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+	@GenericGenerator(name = "seq", strategy = "increment")
 	private Long id;
 
 	@Column(name = "rol_name", length = 50)
@@ -24,5 +26,5 @@ public class Role {
 
 	@Column(name = "rol_description", length = 500)
 	private String description;
- 	
+
 }

@@ -15,10 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -36,9 +34,11 @@ public class RoleService {
 		this.menuService = menuService;
 	}
 
-	public List<RoleDTO> getAllRoles() {
+	public Page<RoleDTO> getAllRoles(final Pageable pageable) {
 		log.debug("Calling BD. Obtener todos los roles...");
-		return roleRepository.findAll().stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
+		Page<Role> roles = roleRepository.findAll(pageable);
+
+		return roles.map(roleMapper::roleToRoleDTOConverter);
 	}
 
 	public RoleDTO getOneRoleById(final Long id) {
@@ -98,6 +98,7 @@ public class RoleService {
 		Role role = roleRepository.findByName(name).orElse(null);
 		return Optional.of(roleMapper.roleToRoleDTOConverter(role));
 	}
+
 	public MenuDTO getMenuByRole(final Long id) throws ServiceException {
 		Optional<Role> role = getOneRoleByIdCommon(id);
 
