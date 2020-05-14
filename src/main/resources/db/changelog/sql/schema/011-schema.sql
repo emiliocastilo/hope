@@ -23,7 +23,7 @@ CREATE TABLE hopes.patients_treatments	(
 	ptr_id serial  NOT NULL,
 	ptr_pac_id int8 REFERENCES hopes.patients (pac_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT,
 	ptr_pdg_id int8 REFERENCES hopes.patients_diagnoses (pdg_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT,
-	ptr_active VARCHAR(1), --Y/N
+	ptr_active boolean,
 	ptr_indication VARCHAR(50),
 	ptr_type VARCHAR(50),
 	ptr_med_id int8 REFERENCES hopes.medicines (med_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT,	

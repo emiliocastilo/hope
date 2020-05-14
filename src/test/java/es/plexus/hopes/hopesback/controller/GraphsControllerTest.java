@@ -96,12 +96,7 @@ public class GraphsControllerTest {
 
 
 	private TreatmentInfoDTO mockTreatmentInfoDTO() {
-		TreatmentInfoDTO treatmentInfoDTO = new TreatmentInfoDTO();
-	
-		treatmentInfoDTO.setCodeAct("ACT code");
-		treatmentInfoDTO.setActIngredients("Act Ingredient");
-		treatmentInfoDTO.setCount(1L);		
-	
+		TreatmentInfoDTO treatmentInfoDTO = new TreatmentInfoDTO("ACT code", "Act Ingredient", 1L);
 		return treatmentInfoDTO;
 	}
 	
@@ -116,11 +111,7 @@ public class GraphsControllerTest {
 
 
 	private HealthOutcomeDTO mockHealthOutcomeDTO() {
-		HealthOutcomeDTO healthOutcomeDTO = new HealthOutcomeDTO();
-	
-		healthOutcomeDTO.setResult("Leve");
-		healthOutcomeDTO.setCount(1L);		
-	
+		HealthOutcomeDTO healthOutcomeDTO = new HealthOutcomeDTO("Leve", 1L);
 		return healthOutcomeDTO;
 	}
 

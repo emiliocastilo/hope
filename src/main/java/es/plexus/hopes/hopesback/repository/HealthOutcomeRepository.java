@@ -8,10 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
-import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 
 @Repository
-public interface HealthOutcomeRepository extends JpaRepository<Patient, Long> {
+public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Long> {
 
 	@Query("select new es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO(hou.result, count(*)) from HealthOutcome hou " + 
 			"where hou.indexType = :type " + 
