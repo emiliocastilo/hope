@@ -24,3 +24,6 @@ COMMENT ON CONSTRAINT hou_id_pk ON hopes.health_outcomes IS 'pk de la tabla heal
 COMMENT ON CONSTRAINT hou_pac_id_fk ON hopes.health_outcomes IS 'fk  Relacion con la tabla SECCIONS';
 
 -- ddl-end --
+
+ALTER TABLE hopes.patients_treatments DROP COLUMN IF EXISTS ptr_active;
+ALTER TABLE hopes.patients_treatments ADD COLUMN ptr_active boolean NOT NULL DEFAULT true;
