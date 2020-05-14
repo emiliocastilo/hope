@@ -19,7 +19,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: @spring.profiles.active@
   jpa:
     # Hibernate
     hibernate:
