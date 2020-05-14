@@ -31,7 +31,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"patient\",\n    \"firstSurname\": \"numero\",\n    \"lastSurname\": \"45\",\n    \"nhc\": \"MDMD210604237712\",\n    \"healthCard\": \"2112375698\",\n    \"dni\": \"94736562J\",\n    \"address\": \"Calle 21, 24, Segovia, Segovia, España CP: 28080\",\n    \"phone\":\"+34668795263\",\n    \"email\":\"patient.numero.cinco@hopes.com\",\n    \"birthDate\": \"1981-01-01T00:00:00Z\",\n    \"hospital\":{\n    \t\"id\":\"1\"\n    },\n    \"genderCode\":\"F\",\n    \"pathologies\":[\n    \t{\"id\":\"1\"}\n    ]\n}",
+							"raw": "{\n    \"name\": \"patient\",\n    \"firstSurname\": \"numero\",\n    \"lastSurname\": \"45\",\n    \"nhc\": \"MDMD210604237712\",\n    \"healthCard\": \"2112375698\",\n    \"dni\": \"94736562J\",\n    \"address\": \"Calle 21, 24, Segovia, Segovia, España CP: 28080\",\n    \"phone\":\"+34668795263\",\n    \"email\":\"patient.numero.cinco@hopes.com\",\n    \"birthDate\": \"01-01-1981 00:00:00\",\n    \"hospital\":{\n    \t\"id\":\"1\"\n    },\n    \"genderCode\":\"F\",\n    \"pathologies\":[\n    \t{\"id\":\"1\"}\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1375,7 +1375,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"date\": \"2020-05-13T16:21:45Z\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 2\r\n    }\r\n}",
+							"raw": "{\r\n\t\"date\": \"13-05-2020 16:21:00\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 2\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
