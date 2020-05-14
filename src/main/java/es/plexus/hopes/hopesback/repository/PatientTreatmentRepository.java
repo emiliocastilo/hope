@@ -7,18 +7,19 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
+import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 
 @Repository
-public interface PatientTreatmentRepository extends JpaRepository<Patient, Long> {
+public interface PatientTreatmentRepository extends JpaRepository<PatientTreatment, Long> {
 
-	@Query("select med.codeAct , med.actIngredients , count(*) from PatientTreatment ptr " + 
+	@Query("select new es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO(med.codeAct , med.actIngredients , count(*)) from PatientTreatment ptr " + 
 			"join Medicine med on ptr.medicine.id = med.id " + 
 			"where ptr.type = :type " + 
 			"and (:indication is null or ptr.indication = :indication) " + 
-			"and ptr.active = 'S' " + 
+			"and ptr.active = true " + 
 			"group by med.codeAct, med.actIngredients ")
-	List<Object[]> patientsUnderTreatment(@Param("type")String type, @Param("indication")String indication);
+	List<TreatmentInfoDTO> patientsUnderTreatment(@Param("type")String type, @Param("indication")String indication);
 	
 }
 

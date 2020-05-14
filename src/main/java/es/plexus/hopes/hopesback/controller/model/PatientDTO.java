@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Data
 public class PatientDTO {
     private Long id;
@@ -19,6 +21,7 @@ public class PatientDTO {
     private String address;
     private String phone;
     private String email;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     private Hospital hospital;
     private String genderCode;
