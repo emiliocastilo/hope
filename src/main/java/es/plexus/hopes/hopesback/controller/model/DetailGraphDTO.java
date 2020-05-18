@@ -1,19 +1,17 @@
 package es.plexus.hopes.hopesback.controller.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@AllArgsConstructor
 @Data
 public class DetailGraphDTO {
     
 	@ApiModelProperty(position = 10, example = "MDMD610604911012", value = "Codigo de la tarjeta sanitaria")
 	private String nhc;	 
 	
-	private String dni;
+	private String sip;
 	
 	private String patient;
 	
@@ -25,10 +23,10 @@ public class DetailGraphDTO {
 	
 	private String pasi;
 	
-	private Date datePasi;
+	private LocalDateTime datePasi;
 	
-	private String dlqui;
+	private String dlqi;
 	
-	private Date dateDlqui;
+	private LocalDateTime dateDlqi;
    
 }

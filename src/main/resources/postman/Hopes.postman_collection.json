@@ -2846,42 +2846,7 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Health Outcomes By Types",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/graphs/health-outcomes-by-types?type=PASI",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"graphs",
-								"health-outcomes-by-types"
-							],
-							"query": [
-								{
-									"key": "type",
-									"value": "PASI"
-								}
-							]
-						}
-					},
-					"response": []
-				},
+				},				
 				{
 					"name": "Info Patients Doses",
 					"request": {
@@ -2906,6 +2871,117 @@
 								"v1",
 								"graphs",
 								"info-patients-doses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail Info Tratamientos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/graphs/details-graphs?type=BIOLOGICOS",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"graphs",
+								"details-graphs"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "BIOLOGICOS"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "HealOutcomes",
+			"item": [
+				{
+					"name": "Health Outcomes By Types",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/health-outcomes/find-results-by-types?type=PASI",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"health-outcomes",
+								"find-results-by-types"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "PASI"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail Results",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/health-outcomes/details-results?type=PASI",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"health-outcomes",
+								"details-results"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "PASI"
+								}
 							]
 						}
 					},

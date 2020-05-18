@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.service.GraphsService;
@@ -27,15 +27,9 @@ public class GraphsController {
 	private final GraphsService graphsService;
 
 	@GetMapping("/patients-under-treatment")
-	public List<TreatmentInfoDTO> patientsUnderChemicalTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
+	public List<TreatmentInfoDTO> patientsUnderTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
-		return graphsService.patientsUnderChemicalTreatment(type, indication);
-	}
-
-	@GetMapping("/health-outcomes-by-types")
-	public List<HealthOutcomeDTO> healthOutcomesByType(@RequestParam(value = "type", required = true) String type) {
-		log.debug(CALLING_SERVICE);
-		return graphsService.healthOutcomesByType(type);
+		return graphsService.patientsUnderTreatment(type, indication);
 	}
 	
 	@GetMapping("/info-patients-doses")
@@ -45,9 +39,8 @@ public class GraphsController {
 	}
 	
 	@GetMapping("/details-graphs")
-	//public Page<DetailGraphDTO> detailsDrapths(@PageableDefault(size = 5) final Pageable pageable) {
-	public Page<String> detailsDrapths(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
+	public Page<DetailGraphDTO> detailsGrapths(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return graphsService.detailsDrapths(type, indication, pageable);
+		return graphsService.detailsGrapths(type, indication, pageable);
 	}
 }

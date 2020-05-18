@@ -1,9 +1,12 @@
 package es.plexus.hopes.hopesback.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.service.spi.ServiceException;
@@ -13,9 +16,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
-import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.service.GraphsService;
@@ -30,14 +38,14 @@ public class GraphsControllerTest {
 	private GraphsController graphsController;
 
 	@Test
-	public void callPatientsUnderChemicalTreatmentShouldBeStatusOk() {
+	public void callPatientsUnderTreatmentShouldBeStatusOk() {
 
 		// given
-		given(graphsService.patientsUnderChemicalTreatment(anyString(), anyString()))
+		given(graphsService.patientsUnderTreatment(anyString(), anyString()))
 				.willReturn(mockTreatmentList());
 
 		// when
-		List<TreatmentInfoDTO> response = graphsController.patientsUnderChemicalTreatment(anyString(), anyString());
+		List<TreatmentInfoDTO> response = graphsController.patientsUnderTreatment(anyString(), anyString());
 
 		// then		
 		Assert.assertNotNull(response);
@@ -45,41 +53,13 @@ public class GraphsControllerTest {
 	}
 
 	@Test(expected = ServiceException.class)
-	public void callPatientsUnderChemicalTreatmentThrowException() throws Exception {
+	public void callPatientsUnderTreatmentThrowException() throws Exception {
 		// given
-		given(graphsService.patientsUnderChemicalTreatment(anyString(), anyString()))
+		given(graphsService.patientsUnderTreatment(anyString(), anyString()))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		List<TreatmentInfoDTO> response = graphsController.patientsUnderChemicalTreatment(anyString(), anyString());
-
-		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
-		Assert.assertNull(response);
-	}
-
-	@Test
-	public void callHealthOutcomesByTypeShouldBeStatusOk() {
-
-		// given
-		given(graphsService.healthOutcomesByType(anyString()))
-				.willReturn(mockHealthOutcomeList());
-
-		// when
-		List<HealthOutcomeDTO> response = graphsController.healthOutcomesByType(anyString());
-
-		// then		
-		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
-	}
-		
-	@Test(expected = ServiceException.class)
-	public void callHealthOutcomesByTypeThrowException() throws Exception {
-		// given
-		given(graphsService.healthOutcomesByType(anyString()))
-				.willThrow(new ServiceException("Error: No contled error"));
-
-		// when
-		List<HealthOutcomeDTO> response = graphsController.healthOutcomesByType(anyString());
+		List<TreatmentInfoDTO> response = graphsController.patientsUnderTreatment(anyString(), anyString());
 
 		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
 		Assert.assertNull(response);
@@ -113,6 +93,36 @@ public class GraphsControllerTest {
 		Assert.assertNull(response);
 	}
 	
+	@Test
+	public void callDetailsGrapthsShouldBeStatusOk() {
+
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+		given(graphsService.detailsGrapths(anyString(), anyString(), any(Pageable.class)))
+				.willReturn(getPageableDetailGraph(pageRequest));
+
+		// when
+		Page<DetailGraphDTO> response = graphsController.detailsGrapths("BIOLOGICOS", "Psoriasis en placas", pageRequest);
+
+		// then		
+		Assert.assertNotNull(response);
+		Assert.assertTrue(!response.isEmpty());
+	}
+	
+	@Test(expected = ServiceException.class)
+	public void callDetailsGrapthsThrowException() throws Exception {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+		given(graphsService.detailsGrapths(anyString(), anyString(), any(Pageable.class)))
+				.willThrow(new ServiceException("Error: No contled error"));
+
+		// when
+		Page<DetailGraphDTO> response = graphsController.detailsGrapths("BIOLOGICOS", "Psoriasis en placas", pageRequest);
+
+		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertNull(response);
+	}
+	
 	//Mocks
 	private List<TreatmentInfoDTO> mockTreatmentList() {
 		List<TreatmentInfoDTO> treatmentInfoDTOList = new ArrayList<TreatmentInfoDTO>();
@@ -129,21 +139,6 @@ public class GraphsControllerTest {
 		return treatmentInfoDTO;
 	}
 	
-	private List<HealthOutcomeDTO> mockHealthOutcomeList() {
-		List<HealthOutcomeDTO> healthOutcomeDTOList = new ArrayList<HealthOutcomeDTO>();
-
-		HealthOutcomeDTO healthOutcomeDTO = mockHealthOutcomeDTO();
-		healthOutcomeDTOList.add(healthOutcomeDTO);
-
-		return  healthOutcomeDTOList;
-	}
-
-
-	private HealthOutcomeDTO mockHealthOutcomeDTO() {
-		HealthOutcomeDTO healthOutcomeDTO = new HealthOutcomeDTO("Leve", 1L);
-		return healthOutcomeDTO;
-	}
-
 	private List<PatientDosesInfoDTO> mockPatientDosesInfoList() {
 		List<PatientDosesInfoDTO> patientDosesInfoDTOList = new ArrayList<PatientDosesInfoDTO>();
 
@@ -158,6 +153,24 @@ public class GraphsControllerTest {
 		PatientDosesInfoDTO patientDosesInfoDTO = new PatientDosesInfoDTO("Desinfectada", 1L);
 		return patientDosesInfoDTO;
 	}
+	
+	private DetailGraphDTO mockDetailGraphDTO() {
+		DetailGraphDTO detailGraphDTO = new DetailGraphDTO();
+		detailGraphDTO.setNhc("1234");
+		detailGraphDTO.setSip("1234");
+		detailGraphDTO.setPatient("Antonio Diaz Alonso");
+		detailGraphDTO.setIndication("Indicacion1");
+		detailGraphDTO.setDiagnostig("Diagnostio1");
+		detailGraphDTO.setTreatment("Tratamiento1");
+		detailGraphDTO.setPasi("3");
+		detailGraphDTO.setDatePasi(LocalDateTime.now());
+		return detailGraphDTO;
+	}
+	
+	private PageImpl<DetailGraphDTO> getPageableDetailGraph(PageRequest pageRequest) {
+		return new PageImpl<>(Collections.singletonList(mockDetailGraphDTO()), pageRequest, 1);
+	}
+
 	
 }
 
