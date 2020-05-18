@@ -16,14 +16,13 @@ import lombok.Data;
 public class FormDispensationDTO {
 
 	
-	@ApiModelProperty(position = 10, example = "01-01-1981 00:00:00", value = "Inicio del período de las dispensaciones")
-	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+	@ApiModelProperty(position = 20, example = "1981-01-01T00:00:00Z", value = "Fecha de carga de las dispensaciones")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@NotBlank
 	private LocalDateTime startPeriod;
 
-	@ApiModelProperty(position = 20, example = "01-01-1981 00:00:00", value = "Fin del período de las dispensaciones")
-	@NotBlank
-	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+	@ApiModelProperty(position = 20, example = "1981-01-01T00:00:00Z", value = "Fecha de carga de las dispensaciones")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)	@NotBlank
 	private LocalDateTime endPeriod;
 
 	@ApiModelProperty(position = 30, example = "1", value = "Fichero de carga con las dispensaciones")

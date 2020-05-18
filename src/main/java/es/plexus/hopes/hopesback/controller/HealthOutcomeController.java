@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
 import es.plexus.hopes.hopesback.service.HealthOutcomeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+@Api(value = "Controlador de Healthoutcome", tags = "health-outcomes")
 @Log4j2
 @RestController
 @RequiredArgsConstructor
@@ -25,12 +28,14 @@ public class HealthOutcomeController {
 
 	private final HealthOutcomeService healthOutcomeService;
 
+	@ApiOperation("Recuperar los resultados por tipo")
 	@GetMapping("/find-results-by-types")
 	public List<HealthOutcomeDTO> findResultsByTypes(@RequestParam(value = "type", required = true) String type) {
 		log.debug(CALLING_SERVICE);
 		return healthOutcomeService.findResultsByTypes(type);
 	}
 	
+	@ApiOperation("Detalle de los resultados por tipo")
 	@GetMapping("/details-results")
 	public Page<DetailGraphDTO> detailsResults(@RequestParam(value = "type", required = true) String type, @PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);

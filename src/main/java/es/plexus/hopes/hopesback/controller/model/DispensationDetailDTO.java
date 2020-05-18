@@ -19,8 +19,8 @@ public class DispensationDetailDTO {
 	@NotBlank
 	private Long id;
 
-	@ApiModelProperty(position = 20, example = "01-01-1981 00:00:00", value = "Fecha de la dispensación al paciente")
-	@DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+	@ApiModelProperty(position = 20, example = "1981-01-01T00:00:00Z", value = "Fecha de carga de las dispensaciones")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	@NotBlank
 	private LocalDateTime date;
 

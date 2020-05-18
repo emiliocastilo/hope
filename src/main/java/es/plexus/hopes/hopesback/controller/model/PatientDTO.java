@@ -1,13 +1,14 @@
 package es.plexus.hopes.hopesback.controller.model;
 
-import es.plexus.hopes.hopesback.repository.model.Hospital;
-import lombok.Data;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 @Data
 public class PatientDTO {
@@ -21,8 +22,9 @@ public class PatientDTO {
     private String address;
     private String phone;
     private String email;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate birthDate;
+    @ApiModelProperty(position = 20, example = "1981-01-01T00:00:00Z", value = "Fecha de carga de las dispensaciones")
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime birthDate;
     private Hospital hospital;
     private String genderCode;
     private Set<PathologyDTO> pathologies = new HashSet<>();

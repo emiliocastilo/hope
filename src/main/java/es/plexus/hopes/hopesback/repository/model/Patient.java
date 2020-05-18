@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,9 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+
+import lombok.Data;
 
 @Data
 @Entity
@@ -70,7 +71,7 @@ public class Patient {
 
     @Basic
     @Column(name = "pac_birth_date", nullable = true, columnDefinition = "TIMESTAMP")
-    private LocalDate birthDate;
+    private LocalDateTime birthDate;
 
     @ManyToOne
     @JoinColumn(name = "pac_hos_id", referencedColumnName = "hos_id")

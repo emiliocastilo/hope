@@ -7,10 +7,7 @@ plexus:
         default-subject: "Reset your password"
         default-text: "Hopes password reset"
         reset-password-url: "http://localhost:8080/user/reset_password?token="
-    dates:
-      date-format: dd-MM-yyyy
-      date-time-format: dd-MM-yyyy HH:mm:ss
-
+  
 # Server settings
 server:
   port: 8080
