@@ -63,6 +63,4 @@ public class PatientDiagnose {
     @Column(name = "pdg_derivation_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime derivationDate;
 
-    private Integer numberPatients;
- 
 }

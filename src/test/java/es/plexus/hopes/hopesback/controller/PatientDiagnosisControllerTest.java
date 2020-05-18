@@ -1,9 +1,5 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.CieInfoDTO;
-import es.plexus.hopes.hopesback.controller.model.GroupingFieldTreatmentInfoDTO;
-import es.plexus.hopes.hopesback.controller.model.IndicationInfoDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -15,8 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.BDDMockito.given;
 
@@ -37,10 +33,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientDiagnosisService.findPatientsByIndication())
-				.willReturn(Collections.singletonList(mockIndicationInfoDTO()));
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<IndicationInfoDTO> response = patientDiagnosisController.findPatientsDiagnosesByIndications();
+		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByIndications();
 
 		// then		
 		Assert.assertNotNull(response);
@@ -63,10 +59,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientDiagnosisService.findPatientsByCie9())
-				.willReturn(Collections.singletonList(mockCieInfoDTO()));
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<CieInfoDTO> response = patientDiagnosisController.findPatientsDiagnosesByCie9();
+		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie9();
 
 		// then
 		Assert.assertNotNull(response);
@@ -89,10 +85,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientDiagnosisService.findPatientsByCie10())
-				.willReturn(Collections.singletonList(mockCieInfoDTO()));
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<CieInfoDTO> response = patientDiagnosisController.findPatientsDiagnosesByCie10();
+		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie10();
 
 		// then
 		Assert.assertNotNull(response);
@@ -114,10 +110,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientTreatmentService.findPatientTreatmentByTreatment())
-				.willReturn(Collections.singletonList(mockGroupingFieldTreatmentInfoDTO()));
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<GroupingFieldTreatmentInfoDTO> response = patientDiagnosisController.findPatientTreatmentByTreatment();
+		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByTreatment();
 
 		// then
 		Assert.assertNotNull(response);
@@ -140,10 +136,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientTreatmentService.findPatientTreatmentByCombinedTreatment())
-				.willReturn(Collections.singletonList(mockGroupingFieldTreatmentInfoDTO()));
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<GroupingFieldTreatmentInfoDTO> response = patientDiagnosisController.findPatientTreatmentByCombinedTreatment();
+		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByCombinedTreatment();
 
 		// then
 		Assert.assertNotNull(response);
@@ -166,10 +162,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatment("CHANGE"))
-				.willReturn(Collections.singletonList(mockGroupingFieldTreatmentInfoDTO()));
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<GroupingFieldTreatmentInfoDTO> response = patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatment("CHANGE");
+		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatment("CHANGE");
 
 		// then
 		Assert.assertNotNull(response);
@@ -191,10 +187,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("CHANGE"))
-				.willReturn(Collections.singletonList(mockGroupingFieldTreatmentInfoDTO()));
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<GroupingFieldTreatmentInfoDTO> response =
+		Map<String, Long> response =
 				patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("CHANGE");
 
 		// then
@@ -217,10 +213,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment())
-				.willReturn(Collections.singletonList(mockPatientTreatmentDTO()));
+				.willReturn(mockMapLongInteger());
 
 		// when
-		List<PatientTreatmentDTO> response =
+		Map<Long, Integer> response =
 				patientDiagnosisController.findPatientTreatmentByNumberChangesOfBiologicTreatment();
 
 		// then
@@ -239,46 +235,18 @@ public class PatientDiagnosisControllerTest {
 
 	}
 
-
-	//Mocks IndicationInfoDTO
-	private IndicationInfoDTO mockIndicationInfoDTO() {
-		IndicationInfoDTO indicationInfoDTO = new IndicationInfoDTO();
-	
-		indicationInfoDTO.setIndication("Psoriasis en placas");
-		indicationInfoDTO.setNumberPatients(3L);
-
-		return indicationInfoDTO;
+	//Mocks mockMap
+	private Map<String, Long> mockMapStringLong() {
+		Map<String, Long> map = new HashMap<>();
+		map.put("Type", 3L);
+		return map;
 	}
 
-	//Mocks CieInfoDTO
-	private CieInfoDTO mockCieInfoDTO() {
-		CieInfoDTO indicationInfoDTO = new CieInfoDTO();
-
-		indicationInfoDTO.setCode("A00");
-		indicationInfoDTO.setDescription("Enfermedades infecciosas intestinales");
-		indicationInfoDTO.setNumberPatients(3L);
-
-		return indicationInfoDTO;
-	}
-
-	//Mocks GroupingFieldTreatmentInfoDTO
-	private GroupingFieldTreatmentInfoDTO mockGroupingFieldTreatmentInfoDTO() {
-		GroupingFieldTreatmentInfoDTO groupingFieldTreatmentInfoDTO = new GroupingFieldTreatmentInfoDTO();
-
-		groupingFieldTreatmentInfoDTO.setGroupingField("Type");
-		groupingFieldTreatmentInfoDTO.setNumberPatients(3L);
-
-		return groupingFieldTreatmentInfoDTO;
-	}
-
-	//Mocks PatientTreatmentDTO
-	private PatientTreatmentDTO mockPatientTreatmentDTO() {
-		PatientTreatmentDTO patientTreatmentDTO = new PatientTreatmentDTO();
-
-		patientTreatmentDTO.setActive(true);
-		patientTreatmentDTO.setNumberPatients(3L);
-
-		return patientTreatmentDTO;
+	//Mocks mockMap
+	private Map<Long, Integer> mockMapLongInteger() {
+		Map<Long, Integer> map = new HashMap<>();
+		map.put(3L, 1);
+		return map;
 	}
 }
 

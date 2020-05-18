@@ -1,18 +1,20 @@
 package es.plexus.hopes.hopesback.service;
 
-import es.plexus.hopes.hopesback.controller.model.GroupingFieldTreatmentInfoDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
+import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
-import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
-import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Log4j2
 @Service
@@ -23,46 +25,99 @@ public class PatientTreatmentService {
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
 
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByTreatment() {
+	public  Map<String, Long> findPatientTreatmentByTreatment() {
 		log.debug(CALLING_DB);
-		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByTreatment();
-		if(!Collections.isEmpty(patientTreatmentList)) {
-			patientTreatmentList.addAll(patientTreatmentRepository.findPatientTreatmentByWithoutTreatment());
-		}
+		List<PatientTreatment> patientTreatmentList = fillPatientTreatmentListByTreatmentType();
 		return patientTreatmentList.stream()
-				.map(PatientTreatmentMapper.INSTANCE::entityToTypeTreatmentInfoDto).collect(Collectors.toList());
+				.collect(groupingBy(PatientTreatment::getType, Collectors.counting()));
 	}
 
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByCombinedTreatment() {
+	public Map<String, Long> findPatientTreatmentByCombinedTreatment() {
 		log.debug(CALLING_DB);
-		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByCombinedTreatment();
+		Map<Long, String> combinedLabels = new HashMap<>();
+		List<PatientTreatment> patientTreatmentList = fillPatientTreamentListByCombinedTreament(combinedLabels);
+
 		return patientTreatmentList.stream()
-				.map(PatientTreatmentMapper.INSTANCE::entityToTypeTreatmentInfoDto).collect(Collectors.toList());
+				.collect(groupingBy(PatientTreatment::getType, Collectors.counting()));
 	}
 
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByEndCauseBiologicTreatment(String endCause) {
+	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatment(String endCause) {
 		log.debug(CALLING_DB);
+		List<PatientTreatment> removePatientTreatment = new ArrayList<>();
+		List<Long> idPatients = new ArrayList<>();
 		List<PatientTreatment> patientTreatmentList =
 				patientTreatmentRepository.findPatientTreatmentByEndCauseBiologicTreatment(endCause);
+
+		for(PatientTreatment pt:patientTreatmentList){
+			if(idPatients.contains(pt.getPatient().getId())){
+				removePatientTreatment.add(pt);
+			}else{
+				idPatients.add(pt.getPatient().getId());
+			}
+		}
+
+		patientTreatmentList.removeAll(removePatientTreatment);
+
 		return patientTreatmentList.stream()
-				.map(PatientTreatmentMapper.INSTANCE::entityToReasonTreatmentInfoDto).collect(Collectors.toList());
+				.collect(groupingBy(PatientTreatment::getReason, Collectors.counting()));
+
 	}
 
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(String endCause) {
+	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(String endCause) {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientTreatmentList =
 				patientTreatmentRepository
 						.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(endCause, LocalDateTime.now().plusYears(-5));
 		return patientTreatmentList.stream()
-				.map(PatientTreatmentMapper.INSTANCE::entityToReasonTreatmentInfoDto).collect(Collectors.toList());
+				.collect(groupingBy(PatientTreatment::getReason, Collectors.counting()));
 	}
 
-	public List<PatientTreatmentDTO> findPatientTreatmentByNumberChangesOfBiologicTreatment() {
+	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment() {
 		log.debug(CALLING_DB);
+		Map<Long, Integer> result = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment();
+		return result;
+	}
+
+	private List<PatientTreatment> fillPatientTreatmentListByTreatmentType() {
+		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByTreatment();
+		List<PatientTreatment> patientWithoutTreatmentList = patientTreatmentRepository.findPatientTreatmentByWithoutTreatment();
+		patientWithoutTreatmentList.forEach(pt -> pt.setType("Sin Tratamiento"));
+		patientTreatmentList.addAll(patientWithoutTreatmentList);
+		List<PatientTreatment> patientCombinedTreatmentList = patientTreatmentRepository.findPatientTreatmentByCombinedTreatment();
+		patientCombinedTreatmentList.forEach(pt -> pt.setType("Tratamiento Combinado"));
+		patientTreatmentList.addAll(patientCombinedTreatmentList);
+		return patientTreatmentList;
+	}
+
+	private List<PatientTreatment> fillPatientTreamentListByCombinedTreament(Map<Long, String> combinedLabels) {
+		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByCombinedTreatment();
+		for(PatientTreatment pt:patientTreatmentList){
+			if(combinedLabels.containsKey(pt.getPatient().getId())){
+				String lbl = combinedLabels.get(pt.getPatient().getId()) + " + " + pt.getType();
+				combinedLabels.replace(pt.getPatient().getId(), lbl);
+			}else{
+				combinedLabels.put(pt.getPatient().getId(), pt.getType());
+			}
+		}
+		patientTreatmentList.forEach(pt -> pt.setType(combinedLabels.get(pt.getPatient().getId())));
+		return patientTreatmentList;
+	}
+
+	private Map<Long, Integer> fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment() {
 		List<PatientTreatment> patientTreatmentList =
 				patientTreatmentRepository.findPatientTreatmentByNumberChangesOfBiologicTreatment();
-		return patientTreatmentList.stream()
-				.map(PatientTreatmentMapper.INSTANCE::entityToPatientTreamentDto).collect(Collectors.toList());
+		Map<Patient, Long> map = patientTreatmentList.stream()
+				.collect(groupingBy(PatientTreatment::getPatient, Collectors.counting()));
+		Map<Long, Integer> result = new HashMap<>();
+		map.entrySet().stream().forEach(m -> {
+			if(result.containsKey(m.getValue())){
+				result.replace(m.getValue(), result.get(m.getValue())+1);
+			}else{
+				result.put(m.getValue(), 1);
+			}
+
+		});
+		return result;
 	}
 
 }

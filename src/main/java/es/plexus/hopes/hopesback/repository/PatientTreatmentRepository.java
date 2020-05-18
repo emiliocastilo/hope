@@ -36,5 +36,6 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_NUMBER_CHANGES_OF_BIOLOGICAL_TREATMENT)
 	List<PatientTreatment> findPatientTreatmentByNumberChangesOfBiologicTreatment();
+
 }
 

@@ -63,11 +63,11 @@ public class PatientTreatment {
     private String regimen;
 
     @Basic
-    @Column(name = "ptr_init_date", nullable = true, columnDefinition = "TIMESTAMP")
+    @Column(name = "ptr_init_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime initDate;
     
     @Basic
-    @Column(name = "ptr_final_date", nullable = true, columnDefinition = "TIMESTAMP")
+    @Column(name = "ptr_final_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime finalDate;
     
     @Basic
@@ -78,5 +78,4 @@ public class PatientTreatment {
     @Column(name = "ptr_reason", nullable = false, length = 50)
     private String reason;
 
-    private Long numberPatients;
 }

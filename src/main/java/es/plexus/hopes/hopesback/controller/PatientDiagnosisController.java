@@ -1,9 +1,5 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.CieInfoDTO;
-import es.plexus.hopes.hopesback.controller.model.GroupingFieldTreatmentInfoDTO;
-import es.plexus.hopes.hopesback.controller.model.IndicationInfoDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RestController
@@ -35,49 +31,49 @@ public class PatientDiagnosisController {
 	private final PatientTreatmentService patientTreatmentService;
 
 	@GetMapping(PATIENT_DIAGNOSE_INDICATIONS)
-	public List<IndicationInfoDTO> findPatientsDiagnosesByIndications() {
+	public Map<String, Long> findPatientsDiagnosesByIndications() {
 		log.debug(CALLING_SERVICE);
 		return patientDiagnosisService.findPatientsByIndication();
 	}
 
 	@GetMapping(PATIENT_DIAGNOSE_CI9)
-	public List<CieInfoDTO> findPatientsDiagnosesByCie9(){
+	public Map<String, Long> findPatientsDiagnosesByCie9(){
 		log.debug(CALLING_SERVICE);
 		return patientDiagnosisService.findPatientsByCie9();
 	}
 
 	@GetMapping(PATIENT_DIAGNOSE_CI10)
-	public List<CieInfoDTO> findPatientsDiagnosesByCie10(){
+	public Map<String, Long> findPatientsDiagnosesByCie10(){
 		log.debug(CALLING_SERVICE);
 		return patientDiagnosisService.findPatientsByCie10();
 	}
 
 	@GetMapping(PATIENT_DIAGNOSE_TREATMENT)
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByTreatment() {
+	public Map<String, Long> findPatientTreatmentByTreatment() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientTreatmentByTreatment();
 	}
 
 	@GetMapping(PATIENT_DIAGNOSE_COMBINED_TREATMENT)
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByCombinedTreatment() {
+	public Map<String, Long> findPatientTreatmentByCombinedTreatment() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientTreatmentByCombinedTreatment();
 	}
 
 	@GetMapping(PATIENT_DIAGNOSE_END_CAUSE)
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByEndCauseBiologicTreatment(@RequestParam(value = "endCause") String endCause) {
+	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatment(@RequestParam(value = "endCause") String endCause) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatment(endCause);
 	}
 
 	@GetMapping(PATIENT_DIAGNOSE_END_CAUSE_LAST_YEARS)
-	public List<GroupingFieldTreatmentInfoDTO> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(@RequestParam(value = "endCause") String endCause) {
+	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(@RequestParam(value = "endCause") String endCause) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(endCause);
 	}
 
 	@GetMapping(PATIENT_DIAGNOSE_NUMBER_CHANGES)
-	public List<PatientTreatmentDTO> findPatientTreatmentByNumberChangesOfBiologicTreatment() {
+	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment();
 	}
