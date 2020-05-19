@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,10 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import java.time.LocalDateTime;
 
 @Data
 @Entity

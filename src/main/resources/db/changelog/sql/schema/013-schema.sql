@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS hopes.indications CASCADE;
 CREATE TABLE hopes.indications (
 	ind_code varchar(3) NOT NULL,
-	ind_description varchar(20) NOT NULL,
+	ind_description varchar(50) NOT NULL,
 	CONSTRAINT ind_code_pk PRIMARY KEY (ind_code)
 );
 

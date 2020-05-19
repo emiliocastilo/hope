@@ -10,6 +10,7 @@ import es.plexus.hopes.hopesback.repository.model.Hospital;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+
 @Data
 public class PatientDTO {
     private Long id;

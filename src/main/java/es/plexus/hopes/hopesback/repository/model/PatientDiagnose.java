@@ -1,6 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,13 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
-import lombok.Data;
-
-@Data
+@Getter
 @Entity
 @Table(name = "patients_diagnoses")
 public class PatientDiagnose {
+
     @Id
     @Column(name = "pdg_id", nullable = false)
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -36,32 +36,31 @@ public class PatientDiagnose {
     private String cie9Code;
 
     @Basic
-    @Column(name = "pdg_cie9_desc", nullable = true, length = 50)
+    @Column(name = "pdg_cie9_desc", length = 50)
     private String cie9Desc;
 
     @Basic
-    @Column(name = "pdg_ci10_code", nullable = false, length = 50)
-    private String ci10Code;
+    @Column(name = "pdg_cie10_code", nullable = false, length = 50)
+    private String cie10Code;
 
     @Basic
-    @Column(name = "pdg_ci10_desc", nullable = false, length = 50)
-    private String ci10Desc;
+    @Column(name = "pdg_cie10_desc", nullable = false, length = 50)
+    private String cie10Desc;
 
     @Basic
-    @Column(name = "pdg_others_indications", nullable = true, length = 50)
+    @Column(name = "pdg_others_indications", length = 50)
     private String othersIndications; 
 
     @Basic
-    @Column(name = "pdg_init_date", nullable = true, columnDefinition = "TIMESTAMP")
+    @Column(name = "pdg_init_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime initDate;
     
     @Basic
-    @Column(name = "pdg_symptoms_date", nullable = true, columnDefinition = "TIMESTAMP")
+    @Column(name = "pdg_symptoms_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime symptomsDate;
     
     @Basic
-    @Column(name = "pdg_derivation_date", nullable = true, columnDefinition = "TIMESTAMP")
+    @Column(name = "pdg_derivation_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime derivationDate;
 
- 
 }

@@ -20,7 +20,7 @@ public class Indication {
     private String code;
 
     @Basic
-    @Column(name = "ind_description", nullable = false, length = 20)
+    @Column(name = "ind_description", nullable = false, length = 50)
     private String descripcion;
 
 
