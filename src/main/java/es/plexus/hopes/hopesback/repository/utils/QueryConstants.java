@@ -56,6 +56,17 @@ public class QueryConstants {
 	public static final String QUERY_FIND_RESULTS_BY_TYPES = 
 			SELECT_HO_FROM_HEALTHOUTCOME_HO + 
 			"where ho.indexType = :type ";
+	
+	public static final String QUERY_FIND_RESULTS_BY_TYPES_AND_MAX_DATE = 
+			SELECT_HO_FROM_HEALTHOUTCOME_HO + 
+			"where ho.indexType = :type " + 
+			"and ho.date =" + 
+			"(" + 
+			"	select max(ho2.date) as maxDate " + 
+			"	from HealthOutcome ho2 " + 
+			"	where ho2.patient.id = ho.patient.id " + 
+			"	group by ho2.patient.id " + 
+			") ";
 
 	public static final String QUERY_FIND_INFO_PATIENTS_DOSES = 
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +

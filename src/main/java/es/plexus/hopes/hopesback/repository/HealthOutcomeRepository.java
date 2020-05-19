@@ -20,6 +20,9 @@ public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Lo
 	@Query(QueryConstants.QUERY_FIND_RESULTS_BY_TYPES)
 	List<HealthOutcome> findResultsByTypes(@Param("type")String type);
 	
+	@Query(QueryConstants.QUERY_FIND_RESULTS_BY_TYPES_AND_MAX_DATE)
+	List<HealthOutcome> findResultsByTypesAndMaxDate(@Param("type")String type);
+	
 	@Query(QUERY_DETAIL_RESULTS_INFO)
 	Page<Object[]> detailsResults(@Param("type")String type, Pageable pageable);
 }
