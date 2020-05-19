@@ -35,7 +35,8 @@ public class GraphsService {
 
 	public Page<DetailGraphDTO> detailsGrapths(final String type, final String  indication, final Pageable pageable) {
 		log.debug(CALLING_DB);
-		Page<Object[]>detailGraph = patientTreatmentRepository.detailsGrapths(type, indication, pageable);
-		return detailGraph.map(DetailGraphDTOMapper.INSTANCE::objectToDetailGraphDTOConventer);
+		//Page<Object[]>detailGraph = patientTreatmentRepository.detailsGrapths(type, indication, pageable);
+		//return detailGraph.map(DetailGraphDTOMapper.INSTANCE::objectToDetailGraphDTOConventer);
+		return patientTreatmentRepository.detailsGrapths(type, indication, pageable);
 	}
 }

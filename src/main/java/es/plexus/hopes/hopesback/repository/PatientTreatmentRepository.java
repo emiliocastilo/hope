@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientDosesInfoDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
@@ -28,6 +29,8 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	List<PatientDosesInfoDTO> infoPatientsDoses();
 	
 	@Query(QUERY_DETAIL_TRATMENTS_INFO)
-	Page<Object[]> detailsGrapths(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
+	//Page<Object[]> detailsGrapths(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
+	//Prueba
+	Page<DetailGraphDTO> detailsGrapths(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
 }
 

@@ -27,9 +27,9 @@ public class PatientDiagnose {
 	@JoinColumn(name = "pdg_pac_id", referencedColumnName = "pac_id")
 	private Patient patient;
     
-    @Basic
-    @Column(name = "pdg_indication", nullable = false, length = 50)
-    private String indication;
+    @ManyToOne
+	@JoinColumn(name = "pdg_ind_code", referencedColumnName = "ind_code")
+	private Indication indication;
 
     @Basic
     @Column(name = "pdg_cie9_code", nullable = false, length = 50)
