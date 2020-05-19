@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import es.plexus.hopes.hopesback.service.mapper.DetailGraphDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -95,6 +99,14 @@ public class PatientTreatmentService {
 		return infoPatientsDosesList
 				.stream()
 				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
+	}
+	
+	public Page<DetailGraphDTO> getDetailPatientsUnderTreatment(final String type, final String  indication, final Pageable pageable) {
+		log.debug(CALLING_DB);
+		Page<PatientTreatment> detailPatientsUnderTreatmentList = 
+				patientTreatmentRepository.getDetailPatientsUnderTreatment(type, indication, pageable);
+	
+		return detailPatientsUnderTreatmentList.map(DetailGraphDTOMapper.INSTANCE::patientTreatmentToDetailGraphDTOConventer);
 	}
 	
 	private List<PatientTreatment> fillPatientTreatmentListByTreatmentType() {

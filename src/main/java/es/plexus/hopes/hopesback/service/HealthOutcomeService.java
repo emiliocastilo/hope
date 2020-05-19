@@ -39,7 +39,8 @@ public class HealthOutcomeService {
 		log.debug(CALLING_DB);
 		
 		Page<Object[]>detailGraph = healthOutcomeRepository.detailsResults(type, pageable);
-		return detailGraph.map(DetailGraphDTOMapper.INSTANCE::objectToDetailGraphDTOConventer); 
+		//return detailGraph.map(DetailGraphDTOMapper.INSTANCE::objectToDetailGraphDTOConventer);
+		return null;
 	}
 	
 	private Map<String, Long> fillResultsByTypes(String type) {

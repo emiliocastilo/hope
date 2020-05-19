@@ -2,11 +2,15 @@ package es.plexus.hopes.hopesback.controller;
 
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +26,7 @@ public class PatientTreatmentController {
 	
 	static final String FIND_PATIENTS_UDER_TREATMENT = "/find-patients-under-treatment";
 	static final String FIND_INFO_PATIENTS_DOSES = "/find-info-patients-doses";
+	static final String GET_DETAIL_PATIENTS_UDER_TREATMENT = "/get-detail-patients-under-treatment";
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final PatientTreatmentService patientTreatmentService;
@@ -40,10 +45,10 @@ public class PatientTreatmentController {
 		return patientTreatmentService.findInfoPatientsDoses();
 	}
 	
-	/*@ApiOperation("Detalle de pacientes bajo tratamiento")
-	@GetMapping("/details-graphs")
-	public Page<DetailGraphDTO> detailsGrapths(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
+	@ApiOperation("Detalle de pacientes bajo tratamiento")
+	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT)
+	public Page<DetailGraphDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return graphsService.detailsGrapths(type, indication, pageable);
-	}*/
+		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, pageable);
+	}
 }

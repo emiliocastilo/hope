@@ -3,6 +3,8 @@ package es.plexus.hopes.hopesback.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,9 +40,7 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	@Query(QueryConstants.QUERY_FIND_INFO_PATIENTS_DOSES)
 	List<PatientTreatment> findInfoPatientsDoses();
 	
-	/*@Query(QUERY_DETAIL_TRATMENTS_INFO)
-	//Page<Object[]> detailsGrapths(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
-	//Prueba
-	Page<DetailGraphDTO> detailsGrapths(@Param("type")String type, @Param("indication")String indication, Pageable pageable);*/
+	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION)
+	Page<PatientTreatment> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
 }
 
