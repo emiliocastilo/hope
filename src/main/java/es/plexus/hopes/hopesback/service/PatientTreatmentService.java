@@ -27,12 +27,6 @@ public class PatientTreatmentService {
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
 
-	public Map<String, Long> findPatientsUnderTreatment(String type, String indication) {
-		log.debug(CALLING_DB);
-		Map<String, Long> result = fillPatientsUnderTreatment(type, indication);
-		return result;
-	}	
-	
 	public  Map<String, Long> findPatientTreatmentByTreatment() {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientTreatmentList = fillPatientTreatmentListByTreatmentType();
@@ -86,6 +80,23 @@ public class PatientTreatmentService {
 		return result;
 	}
 
+	public Map<String, Long> findPatientsUnderTreatment(String type, String indication) {
+		log.debug(CALLING_DB);
+		Map<String, Long> result = fillPatientsUnderTreatment(type, indication);
+		return result;
+	}
+	
+	public Map<String, Long> findInfoPatientsDoses() {
+		log.debug(CALLING_DB);
+		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
+		for (PatientTreatment pt : infoPatientsDosesList) {
+			if(pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen("Sin régimen");
+		}
+		return infoPatientsDosesList
+				.stream()
+				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
+	}
+	
 	private List<PatientTreatment> fillPatientTreatmentListByTreatmentType() {
 		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByTreatment();
 		List<PatientTreatment> patientWithoutTreatmentList = patientTreatmentRepository.findPatientTreatmentByWithoutTreatment();
@@ -139,5 +150,6 @@ public class PatientTreatmentService {
 		});
 		return result;
 	}
+	
 
 }

@@ -2810,10 +2810,10 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Graphs",
+			"name": "PatientTreatments",
 			"item": [
 				{
-					"name": "Patients Under Treatment",
+					"name": "/patients-treatments/find-patients-under-treatment",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2828,27 +2828,31 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/graphs/patients-under-treatment?type=BIOLOGICOS",
+							"raw": "{{dev}}/v1/patients-treatments/find-patients-under-treatment?type=Biologico&indication=\"r\"",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"graphs",
-								"patients-under-treatment"
+								"patients-treatments",
+								"find-patients-under-treatment"
 							],
 							"query": [
 								{
 									"key": "type",
-									"value": "BIOLOGICOS"
+									"value": "Biologico"
+								},
+								{
+									"key": "indication",
+									"value": "\"r\""
 								}
 							]
 						}
 					},
 					"response": []
-				},				
+				},
 				{
-					"name": "Info Patients Doses",
+					"name": "/patients-treatments/find-info-patients-doses",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2863,14 +2867,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/graphs/info-patients-doses",
+							"raw": "{{dev}}/v1/patients-treatments/find-info-patients-doses",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"graphs",
-								"info-patients-doses"
+								"patients-treatments",
+								"find-info-patients-doses"
 							]
 						}
 					},
@@ -2918,7 +2922,7 @@
 			"name": "HealOutcomes",
 			"item": [
 				{
-					"name": "Health Outcomes By Types",
+					"name": "/health-outcomes/find-results-by-types",
 					"request": {
 						"auth": {
 							"type": "bearer",

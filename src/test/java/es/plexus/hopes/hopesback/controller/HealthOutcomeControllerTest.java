@@ -5,9 +5,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
@@ -24,7 +24,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
 import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
-import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
 import es.plexus.hopes.hopesback.service.HealthOutcomeService;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -42,10 +41,10 @@ public class HealthOutcomeControllerTest {
 
 		// given
 		given(healthOutcomeService.findResultsByTypes(anyString()))
-				.willReturn(mockHealthOutcomeList());
+				.willReturn(mockMapStringLong());
 
 		// when
-		List<HealthOutcomeDTO> response = healthOutcomeController.findResultsByTypes(anyString());
+		Map<String, Long> response = healthOutcomeController.findResultsByTypes(anyString());
 
 		// then		
 		Assert.assertNotNull(response);
@@ -58,7 +57,7 @@ public class HealthOutcomeControllerTest {
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		List<HealthOutcomeDTO> response = healthOutcomeController.findResultsByTypes(anyString());
+		Map<String, Long> response = healthOutcomeController.findResultsByTypes(anyString());
 
 		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
 		Assert.assertNull(response);
@@ -96,19 +95,10 @@ public class HealthOutcomeControllerTest {
 	
 	
 	//Mocks
-	private List<HealthOutcomeDTO> mockHealthOutcomeList() {
-		List<HealthOutcomeDTO> healthOutcomeDTOList = new ArrayList<HealthOutcomeDTO>();
-
-		HealthOutcomeDTO healthOutcomeDTO = mockHealthOutcomeDTO();
-		healthOutcomeDTOList.add(healthOutcomeDTO);
-
-		return  healthOutcomeDTOList;
-	}
-
-
-	private HealthOutcomeDTO mockHealthOutcomeDTO() {
-		HealthOutcomeDTO healthOutcomeDTO = new HealthOutcomeDTO("Leve", 1L);
-		return healthOutcomeDTO;
+	private Map<String, Long> mockMapStringLong() {
+		Map<String, Long> map = new HashMap<>();
+		map.put("Type", 3L);
+		return map;
 	}
 	
 	private DetailGraphDTO mockDetailGraphDTO() {

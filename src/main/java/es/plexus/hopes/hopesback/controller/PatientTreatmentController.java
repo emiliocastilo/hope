@@ -19,22 +19,25 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @RequestMapping("/patients-treatments")
 public class PatientTreatmentController {
+	
+	static final String FIND_PATIENTS_UDER_TREATMENT = "/find-patients-under-treatment";
+	static final String FIND_INFO_PATIENTS_DOSES = "/find-info-patients-doses";
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final PatientTreatmentService patientTreatmentService;
 	
 	@ApiOperation("Recuperar los pacientes bajo tratameinto (medicamento)")
-	@GetMapping("/find-patients-under-treatment")
+	@GetMapping(FIND_PATIENTS_UDER_TREATMENT)
 	public Map<String, Long> findPatientsUnderTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientsUnderTreatment(type, indication);
 	}
 	
-	/*@ApiOperation("Recuperar los relacion de dosis - paciente")
-	@GetMapping("/info-patients-doses")
-	public List<PatientDosesInfoDTO> infoPatientsDoses() {
+	@ApiOperation("Recuperar los relacion de dosis - paciente")
+	@GetMapping(FIND_INFO_PATIENTS_DOSES)
+	public Map<String, Long> findInfoPatientsDoses() {
 		log.debug(CALLING_SERVICE);
-		return graphsService.infoPatientsDoses();
+		return patientTreatmentService.findInfoPatientsDoses();
 	}
 	
 	/*@ApiOperation("Detalle de pacientes bajo tratamiento")

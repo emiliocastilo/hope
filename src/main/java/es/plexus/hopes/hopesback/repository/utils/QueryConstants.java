@@ -3,13 +3,6 @@ package es.plexus.hopes.hopesback.repository.utils;
 public class QueryConstants {
 	public static final String SELECT_PT_FROM_PATIENT_TREATMENT_PT = "select pt from PatientTreatment pt ";
 	public static final String SELECT_HO_FROM_HEALTHOUTCOME_HO = "select ho from HealthOutcome ho ";
-	
-	public static final String QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION =
-			SELECT_PT_FROM_PATIENT_TREATMENT_PT + 
-			"join Medicine me on pt.medicine.id = me.id " +
-			"where LOWER(pt.type) = LOWER(:type) " +
-			"and (:indication is null or LOWER(pt.indication) = LOWER(:indication)) " +
-			"and pt.active = true ";
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
@@ -53,8 +46,19 @@ public class QueryConstants {
 			"and LOWER(pt.endCause) = 'cambio' " +
 			"group by pt.id, pt.patient";
 	
+	public static final String QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT + 
+			"join Medicine me on pt.medicine.id = me.id " +
+			"where LOWER(pt.type) = LOWER(:type) " +
+			"and (:indication is null or pt.indication = :indication) " +
+			"and pt.active = true ";
+	
 	public static final String QUERY_FIND_RESULTS_BY_TYPES = 
 			SELECT_HO_FROM_HEALTHOUTCOME_HO + 
 			"where ho.indexType = :type ";
 
+	public static final String QUERY_FIND_INFO_PATIENTS_DOSES = 
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+			"where pt.active = true ";
+	
 }

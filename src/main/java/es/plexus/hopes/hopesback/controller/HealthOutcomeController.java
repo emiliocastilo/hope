@@ -1,6 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
-import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
 import es.plexus.hopes.hopesback.service.HealthOutcomeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,13 +23,15 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @RequestMapping("/health-outcomes")
 public class HealthOutcomeController {
+	
+	static final String FIND_RESULTS_BY_TYPE = "/find-results-by-types";
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final HealthOutcomeService healthOutcomeService;
 
 	@ApiOperation("Recuperar los resultados por tipo")
-	@GetMapping("/find-results-by-types")
-	public List<HealthOutcomeDTO> findResultsByTypes(@RequestParam(value = "type", required = true) String type) {
+	@GetMapping(FIND_RESULTS_BY_TYPE)
+	public Map<String, Long> findResultsByTypes(@RequestParam(value = "type", required = true) String type) {
 		log.debug(CALLING_SERVICE);
 		return healthOutcomeService.findResultsByTypes(type);
 	}
