@@ -2,12 +2,11 @@ package es.plexus.hopes.hopesback.controller.model;
 
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 public class PatientDTO {

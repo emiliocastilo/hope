@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "593b2760-40f6-4efa-a87f-b71ea1c6435d",
+		"_postman_id": "9c19e425-9fb4-41e8-8336-1063b4dc3c3d",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -65,7 +65,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "00257dfd-3623-4c6f-b4cb-4f5fba9f5fbb",
+								"id": "7164758d-8801-42cf-938f-0b4ac56d96ae",
 								"exec": [
 									""
 								],
@@ -345,7 +345,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ef5212af-fd13-4d02-bbf9-0a63f80763b6",
+								"id": "4db9457b-450e-4e84-9ff0-fd7ae0aebfb4",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -390,7 +390,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1b3b0a67-1e5f-4073-ac52-2cc0409fb73d",
+								"id": "db81ce7f-d30f-40fc-8ac5-991cbb4c7ce2",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1409,7 +1409,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3ef19cdc-b846-42e5-ac53-7b9c063d0fb8",
+								"id": "a2b435e5-6dd0-4004-bd58-0a646adfe6a9",
 								"exec": [
 									""
 								],
@@ -1735,7 +1735,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "86f36429-c16e-4cfa-abec-e5efb93f9cb1",
+								"id": "3c701cf0-24c8-4517-9a84-32fc624c1124",
 								"exec": [
 									""
 								],
@@ -1893,7 +1893,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "31ab6335-51f3-4529-839a-a6ed23d76620",
+								"id": "934d2554-9174-4230-92e7-50f127f9d8a4",
 								"exec": [
 									""
 								],
@@ -2134,7 +2134,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ccaa502c-1c79-40a2-94e7-d6ead460fd38",
+								"id": "c728810d-950e-42e4-b1bb-a9f1af05501e",
 								"exec": [
 									""
 								],
@@ -2502,7 +2502,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "19d531f9-2cbe-4708-af50-0f79e96aafb5",
+								"id": "f6112f2e-4936-42b6-b745-c5acb3fb9c5c",
 								"exec": [
 									""
 								],
@@ -2609,7 +2609,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "823ed954-fe6d-40e0-8db6-7080eb722f8d",
+						"id": "fc43b1ad-0cf7-40ab-9565-470c2a4731e5",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2619,7 +2619,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "4ddf6b19-76fe-4ef8-9835-8a5d4106bfa2",
+						"id": "1fe4fa26-8b72-4292-99e3-c295d51b282f",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2877,6 +2877,244 @@
 									"key": "type",
 									"value": "PASI"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PatientDiagnoses",
+			"item": [
+				{
+					"name": "/patients-diagnoses/indications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/indications",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"indications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/treatments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/treatments",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"treatments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/combined-treatments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"combined-treatments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie9",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie9",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie10",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie10",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes-last-years",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes-last-years"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/number-changes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/number-changes",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"number-changes"
 							]
 						}
 					},

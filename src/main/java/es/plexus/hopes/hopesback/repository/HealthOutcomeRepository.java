@@ -1,14 +1,13 @@
 package es.plexus.hopes.hopesback.repository;
 
-import java.util.List;
-
+import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import java.util.List;
 
 @Repository
 public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Long> {

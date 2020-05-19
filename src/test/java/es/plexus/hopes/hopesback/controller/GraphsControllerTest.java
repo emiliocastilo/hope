@@ -1,11 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
+import es.plexus.hopes.hopesback.service.GraphsService;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,9 +12,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 
-import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
-import es.plexus.hopes.hopesback.controller.model.TreatmentInfoDTO;
-import es.plexus.hopes.hopesback.service.GraphsService;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class GraphsControllerTest {
