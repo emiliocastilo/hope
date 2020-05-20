@@ -23,7 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
-import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.service.HealthOutcomeService;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -69,10 +69,10 @@ public class HealthOutcomeControllerTest {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
 		given(healthOutcomeService.getDetailsResultsByType(anyString(), any(Pageable.class)))
-				.willReturn(getPageableDetailResult(pageRequest));
+				.willReturn(getPageableGraphPatientDetail(pageRequest));
 
 		// when
-		Page<DetailGraphDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
+		Page<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -87,7 +87,7 @@ public class HealthOutcomeControllerTest {
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		Page<DetailGraphDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
+		Page<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
 
 		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
 		Assert.assertNull(response);
@@ -101,23 +101,26 @@ public class HealthOutcomeControllerTest {
 		return map;
 	}
 	
-	private DetailGraphDTO mockDetailGraphDTO() {
-		DetailGraphDTO detailGraphDTO = new DetailGraphDTO();
-		detailGraphDTO.setNhc("1234");
-		detailGraphDTO.setSip("1234");
-		detailGraphDTO.setPatient("Antonio Diaz Alonso");
-		detailGraphDTO.setIndication("Indicacion1");
-		detailGraphDTO.setDiagnostig("Diagnostio1");
-		detailGraphDTO.setTreatment("Tratamiento1");
-		detailGraphDTO.setPasi("3");
-		detailGraphDTO.setDatePasi(LocalDateTime.now());
-		detailGraphDTO.setDlqi("6");
-		detailGraphDTO.setDateDlqi(LocalDateTime.now());
-		return detailGraphDTO;
+	private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
+		GraphPatientDetailDTO graphPatientDetailDTO =
+				new GraphPatientDetailDTO(1L,
+						"NOHC0001",
+						"HC0001",
+						"Nombre completo",
+						"Indication",
+						"Diagnose CIE 9",
+						"Diagnose cie 10",
+						"Treatment",
+						"PASI Result",
+						LocalDateTime.now(),
+						"DLQI Result",
+						LocalDateTime.now());
+
+		return graphPatientDetailDTO;
 	}
-	
-	private PageImpl<DetailGraphDTO> getPageableDetailResult(PageRequest pageRequest) {
-		return new PageImpl<>(Collections.singletonList(mockDetailGraphDTO()), pageRequest, 1);
+
+	private PageImpl<GraphPatientDetailDTO> getPageableGraphPatientDetail(PageRequest pageRequest) {
+		return new PageImpl<>(Collections.singletonList(mockGraphPatientDetailsDTO()), pageRequest, 1);
 	}
 }
 

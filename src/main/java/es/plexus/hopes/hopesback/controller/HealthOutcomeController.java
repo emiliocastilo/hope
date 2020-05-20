@@ -1,5 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.service.HealthOutcomeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ public class HealthOutcomeController {
 	
 	static final String FIND_RESULTS_BY_TYPE = "/find-results-by-types";
 	static final String GET_DETAIL_RESULTS_BY_TYPE = "/get-detail-results-by-type";
+	static final String GET_DETAIL_RESULTS_BY_TYPE_EXPORT = "/get-detail-results-by-type-export";
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final HealthOutcomeService healthOutcomeService;
@@ -39,8 +41,15 @@ public class HealthOutcomeController {
 	
 	@ApiOperation("Detalle de los resultados por tipo")
 	@GetMapping(GET_DETAIL_RESULTS_BY_TYPE)
-	public Page<DetailGraphDTO> getDetailsResultsByType(@RequestParam(value = "indexType", required = true) String indexType, @PageableDefault(size = 5) final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailsResultsByType(@RequestParam(value = "indexType", required = true) String indexType, @PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return healthOutcomeService.getDetailsResultsByType(indexType, pageable);
+	}
+	
+	@ApiOperation("Detalle de los resultados por tipo para exportar")
+	@GetMapping(GET_DETAIL_RESULTS_BY_TYPE_EXPORT)
+	public List<GraphPatientDetailDTO> getDetailsResultsByType(@RequestParam(value = "indexType", required = true) String indexType) {
+		log.debug(CALLING_SERVICE);
+		return healthOutcomeService.getDetailsResultsByType(indexType);
 	}
 }
