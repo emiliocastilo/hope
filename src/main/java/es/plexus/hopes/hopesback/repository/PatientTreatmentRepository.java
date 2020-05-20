@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 
@@ -41,9 +42,15 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	List<PatientTreatment> findInfoPatientsDoses();
 	
 	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION)
-	Page<PatientTreatment> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
+	Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
+	
+	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION)
+	List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication);
 	
 	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_PER_DOSES)
-	Page<PatientTreatment> getDetailPatientsPerDoses(Pageable pageable);
+	Page<GraphPatientDetailDTO> getDetailPatientsPerDoses(Pageable pageable);
+	
+	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_PER_DOSES)
+	List<GraphPatientDetailDTO> getDetailPatientsPerDoses();
 }
 

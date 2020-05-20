@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,6 +43,18 @@ public class RoleControllerTest {
 
 		// when
 		Page<RoleDTO> response = roleController.getAllRoles(pageRequest);
+
+		// then
+		assertNotNull(response);
+	}
+
+	@Test
+	public void getAllRolesListShouldBeStatusOk() {
+		// given
+		given(roleService.getAllRoles()).willReturn(Collections.singletonList(mockRoleDTO()));
+
+		// when
+		List<RoleDTO> response = roleController.getAllRoles();
 
 		// then
 		assertNotNull(response);

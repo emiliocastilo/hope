@@ -7,21 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
-import es.plexus.hopes.hopesback.service.mapper.DetailGraphDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -105,62 +102,24 @@ public class PatientTreatmentService {
 				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
 	}
 	
-	public Page<DetailGraphDTO> getDetailPatientsUnderTreatment(final String type, final String  indication, final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication, final Pageable pageable) {
 		log.debug(CALLING_DB);
-		Page<PatientTreatment> detailPatientsUnderTreatmentList = 
-				patientTreatmentRepository.getDetailPatientsUnderTreatment(type, indication, pageable);
-		
-		List<HealthOutcome> healthOutcomesPasi = healthOutcomeRepository.findResultsByTypesAndMaxDate("PASI");	
-		Map<String, HealthOutcome> mapPasi = healthOutcomesPasi.stream().collect(Collectors.toMap(p -> p.getPatient().getNhc(), Function.identity()));
-		
-		List<HealthOutcome> healthOutcomesDlqi = healthOutcomeRepository.findResultsByTypesAndMaxDate("DLQI");
-		Map<String, HealthOutcome> mapDlqi = healthOutcomesDlqi.stream().collect(Collectors.toMap(p -> p.getPatient().getNhc(), Function.identity()));
-
-		Page<DetailGraphDTO> mapTreatment = detailPatientsUnderTreatmentList.map(DetailGraphDTOMapper.INSTANCE::patientTreatmentToDetailGraphDTOConventer);
-		for (DetailGraphDTO detailGraphDTO : mapTreatment) {
-			if(mapPasi.containsKey(detailGraphDTO.getNhc())){
-				HealthOutcome healthOutcome = mapPasi.get(detailGraphDTO.getNhc());
-				detailGraphDTO.setDatePasi(healthOutcome.getDate());
-				detailGraphDTO.setPasi(healthOutcome.getValue());
-			}
-			
-			if(mapDlqi.containsKey(detailGraphDTO.getNhc())){
-				HealthOutcome healthOutcome = mapDlqi.get(detailGraphDTO.getNhc());
-				detailGraphDTO.setDateDlqi(healthOutcome.getDate());
-				detailGraphDTO.setDlqi(healthOutcome.getValue());
-			}
-		}
-		
-		return mapTreatment;
+		return patientTreatmentRepository.getDetailPatientsUnderTreatment(type, indication, pageable);		
 	}
 	
-	public Page<DetailGraphDTO> getDetailPatientsPerDoses(final Pageable pageable) {
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication) {
 		log.debug(CALLING_DB);
-		Page<PatientTreatment> detailPatientsPerDosesList = 
-				patientTreatmentRepository.getDetailPatientsPerDoses(pageable);
-		
-		List<HealthOutcome> healthOutcomesPasi = healthOutcomeRepository.findResultsByTypesAndMaxDate("PASI");	
-		Map<String, HealthOutcome> mapPasi = healthOutcomesPasi.stream().collect(Collectors.toMap(p -> p.getPatient().getNhc(), Function.identity()));
-		
-		List<HealthOutcome> healthOutcomesDlqi = healthOutcomeRepository.findResultsByTypesAndMaxDate("DLQI");
-		Map<String, HealthOutcome> mapDlqi = healthOutcomesDlqi.stream().collect(Collectors.toMap(p -> p.getPatient().getNhc(), Function.identity()));
-
-		Page<DetailGraphDTO> mapTreatment = detailPatientsPerDosesList.map(DetailGraphDTOMapper.INSTANCE::patientTreatmentToDetailGraphDTOConventer);
-		for (DetailGraphDTO detailGraphDTO : mapTreatment) {
-			if(mapPasi.containsKey(detailGraphDTO.getNhc())){
-				HealthOutcome healthOutcome = mapPasi.get(detailGraphDTO.getNhc());
-				detailGraphDTO.setDatePasi(healthOutcome.getDate());
-				detailGraphDTO.setPasi(healthOutcome.getValue());
-			}
-			
-			if(mapDlqi.containsKey(detailGraphDTO.getNhc())){
-				HealthOutcome healthOutcome = mapDlqi.get(detailGraphDTO.getNhc());
-				detailGraphDTO.setDateDlqi(healthOutcome.getDate());
-				detailGraphDTO.setDlqi(healthOutcome.getValue());
-			}
-		}
-		
-		return mapTreatment;
+		return patientTreatmentRepository.getDetailPatientsUnderTreatment(type, indication);		
+	}
+	
+	public Page<GraphPatientDetailDTO> getDetailPatientsPerDoses(final Pageable pageable) {
+		log.debug(CALLING_DB);
+		return patientTreatmentRepository.getDetailPatientsPerDoses(pageable);		
+	}
+	
+	public List<GraphPatientDetailDTO> getDetailPatientsPerDoses() {
+		log.debug(CALLING_DB);
+		return patientTreatmentRepository.getDetailPatientsPerDoses();		
 	}
 	
 	private List<PatientTreatment> fillPatientTreatmentListByTreatmentType() {

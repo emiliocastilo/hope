@@ -34,6 +34,7 @@ import java.util.List;
 public class RoleController {
 
 	static final String ROLE_MAPPING = "/roles";
+	static final String ROLE_LIST_MAPPING = "/all";
 	private static final String CALLING_SERVICE = "Calling service from controller...";
 
 	private final RoleService roleService;
@@ -49,6 +50,14 @@ public class RoleController {
 	public Page<RoleDTO> getAllRoles(@PageableDefault(size = 5) Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return roleService.getAllRoles(pageable);
+	}
+
+	@ApiOperation("Recuperar todos los roles")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(ROLE_LIST_MAPPING)
+	public List<RoleDTO> getAllRoles() {
+		log.debug(CALLING_SERVICE);
+		return roleService.getAllRoles();
 	}
 
 	@ApiOperation("Recuperar un rol por identificador")
