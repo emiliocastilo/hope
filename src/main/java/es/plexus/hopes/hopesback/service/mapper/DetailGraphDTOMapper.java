@@ -16,25 +16,18 @@ public interface DetailGraphDTOMapper {
 	default DetailGraphDTO patientTreatmentToDetailGraphDTOConventer(PatientTreatment patientTreatment) {
 		DetailGraphDTO detailGraphDTO = new DetailGraphDTO();
 
-		detailGraphDTO.setNhc(patientTreatment.getPatient().getNhc()); //Nhc
-		detailGraphDTO.setSip(patientTreatment.getPatient().getHealthCard()); //HealthCard
-		detailGraphDTO.setPatient(patientTreatment.getPatient().getName() //Name
-				+ " " + patientTreatment.getPatient().getFirstSurname() //FirstName
+		detailGraphDTO.setNhc(patientTreatment.getPatient().getNhc()); 
+		detailGraphDTO.setSip(patientTreatment.getPatient().getHealthCard()); 
+		detailGraphDTO.setPatient(patientTreatment.getPatient().getName() 
+				+ " " + patientTreatment.getPatient().getFirstSurname() 
 				+ " " + patientTreatment.getPatient().getLastSurname());
-		detailGraphDTO.setIndication(patientTreatment.getIndication()); //Indication tratment
-		detailGraphDTO.setDiagnostig(patientTreatment.getPatientDiagnose().getIndication().getDescripcion()); //Indication diagnostig
-		detailGraphDTO.setTreatment(patientTreatment.getMedicine().getActIngredients()); //actIngredients medicine
-		/*String type = (String)detailGraph[8];
-		if(type.equals("PASI")) {
-			detailGraphDTO.setPasi((String)detailGraph[9]);
-			detailGraphDTO.setDatePasi((LocalDateTime)detailGraph[10]);
-		} else if(type.equals("DLQI")) {
-			detailGraphDTO.setDlqi((String)detailGraph[9]);
-			detailGraphDTO.setDateDlqi((LocalDateTime)detailGraph[10]);
-		}*/
+		detailGraphDTO.setIndication(patientTreatment.getIndication()); 
+		detailGraphDTO.setDiagnostig(patientTreatment.getPatientDiagnose().getIndication().getDescripcion()); 
+		detailGraphDTO.setTreatment(patientTreatment.getMedicine().getActIngredients()); 
 		
 		return detailGraphDTO;
 	}
+
 
 }
 

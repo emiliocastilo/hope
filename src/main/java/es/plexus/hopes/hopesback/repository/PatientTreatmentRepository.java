@@ -42,5 +42,8 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	
 	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION)
 	Page<PatientTreatment> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication, Pageable pageable);
+	
+	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_PER_DOSES)
+	Page<PatientTreatment> getDetailPatientsPerDoses(Pageable pageable);
 }
 

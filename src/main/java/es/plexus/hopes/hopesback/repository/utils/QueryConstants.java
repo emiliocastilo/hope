@@ -49,9 +49,32 @@ public class QueryConstants {
 	public static final String QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT + 
 			"join Medicine me on pt.medicine.id = me.id " +
+			"join HealthOutcome ho on pt.patient.id = ho.patient.id " +
 			"where LOWER(pt.type) = LOWER(:type) " +
 			"and (:indication is null or pt.indication = :indication) " +
-			"and pt.active = true ";
+			"and pt.active = true " +
+			"and ho.date =" + 
+			"(" + 
+			"	select max(ho2.date) as maxDate " + 
+			"	from HealthOutcome ho2 " + 
+			"	where ho2.patient.id = ho.patient.id " + 
+			"   and ho2.indexType in ('PASI','DLQI') " + 
+			"	group by ho2.patient.id " + 
+			") ";
+	
+	public static final String QUERY_PATIENTS_TREAMENT_PER_DOSES =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT + 
+			"join Medicine me on pt.medicine.id = me.id " +
+			"join HealthOutcome ho on pt.patient.id = ho.patient.id " +
+			"where pt.active = true " +
+			"and ho.date =" + 
+			"(" + 
+			"	select max(ho2.date) as maxDate " + 
+			"	from HealthOutcome ho2 " + 
+			"	where ho2.patient.id = ho.patient.id " + 
+			"   and ho2.indexType in ('PASI','DLQI') " + 
+			"	group by ho2.patient.id " + 
+			") ";
 	
 	public static final String QUERY_FIND_RESULTS_BY_TYPES = 
 			SELECT_HO_FROM_HEALTHOUTCOME_HO + 
@@ -59,12 +82,12 @@ public class QueryConstants {
 	
 	public static final String QUERY_FIND_RESULTS_BY_TYPES_AND_MAX_DATE = 
 			SELECT_HO_FROM_HEALTHOUTCOME_HO + 
-			"where ho.indexType = :type " + 
-			"and ho.date =" + 
+			"where ho.date =" + 
 			"(" + 
 			"	select max(ho2.date) as maxDate " + 
 			"	from HealthOutcome ho2 " + 
 			"	where ho2.patient.id = ho.patient.id " + 
+			"   and ho2.indexType = :type " + 
 			"	group by ho2.patient.id " + 
 			") ";
 
@@ -72,4 +95,18 @@ public class QueryConstants {
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where pt.active = true ";
 	
+	public static final String QUERY_GET_DETAIL_RESULTS_BY_TYPE = 
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT + 
+			"join Medicine me on pt.medicine.id = me.id " +
+			"join HealthOutcome ho on pt.patient.id = ho.patient.id " +
+			"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+			"where pt.active = true " +
+			"and ho.date =" + 
+			"(" + 
+			"	select max(ho2.date) as maxDate " + 
+			"	from HealthOutcome ho2 " + 
+			"	where ho2.patient.id = ho.patient.id " + 
+			"   and ho2.indexType = :indexType " + 
+			"	group by ho2.patient.id " + 
+			") ";
 }

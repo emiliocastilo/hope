@@ -16,6 +16,7 @@ import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
 import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.DetailGraphDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -35,12 +36,30 @@ public class HealthOutcomeService {
 		return fillResultsByTypes(type);
 	}
 
-	public Page<DetailGraphDTO> detailsResults(final String type, final Pageable pageable) {
+	public Page<DetailGraphDTO> getDetailsResultsByType(final String indexType, final Pageable pageable) {
 		log.debug(CALLING_DB);
 		
-		Page<Object[]>detailGraph = healthOutcomeRepository.detailsResults(type, pageable);
-		//return detailGraph.map(DetailGraphDTOMapper.INSTANCE::objectToDetailGraphDTOConventer);
-		return null;
+		Page<PatientTreatment>detailResultsByTypeList = healthOutcomeRepository.getDetailsResultsByType(indexType, pageable);
+		Page<DetailGraphDTO> mapTreatment = detailResultsByTypeList.map(DetailGraphDTOMapper.INSTANCE::patientTreatmentToDetailGraphDTOConventer);
+		List<HealthOutcome> healthOutcomesToDate = healthOutcomeRepository.findResultsByTypesAndMaxDate(indexType);	
+		Map<String, HealthOutcome> mapToDate = healthOutcomesToDate.stream().collect(Collectors.toMap(p -> p.getPatient().getNhc(), Function.identity()));
+		
+		
+		for (DetailGraphDTO detailGraphDTO : mapTreatment) {
+			if(mapToDate.containsKey(detailGraphDTO.getNhc())){
+				HealthOutcome healthOutcome = mapToDate.get(detailGraphDTO.getNhc());
+				if(indexType.equals("PASI")){
+					detailGraphDTO.setDatePasi(healthOutcome.getDate());
+					detailGraphDTO.setPasi(healthOutcome.getValue());
+				} else if(indexType.equals("DLQI")){
+					detailGraphDTO.setDateDlqi(healthOutcome.getDate());
+					detailGraphDTO.setDlqi(healthOutcome.getValue());
+				}				
+			}
+			
+		}
+		
+		return mapTreatment;
 	}
 	
 	private Map<String, Long> fillResultsByTypes(String type) {

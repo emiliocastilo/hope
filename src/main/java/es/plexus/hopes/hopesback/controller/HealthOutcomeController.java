@@ -25,6 +25,7 @@ import lombok.extern.log4j.Log4j2;
 public class HealthOutcomeController {
 	
 	static final String FIND_RESULTS_BY_TYPE = "/find-results-by-types";
+	static final String GET_DETAIL_RESULTS_BY_TYPE = "/get-detail-results-by-type";
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final HealthOutcomeService healthOutcomeService;
@@ -37,9 +38,9 @@ public class HealthOutcomeController {
 	}
 	
 	@ApiOperation("Detalle de los resultados por tipo")
-	@GetMapping("/details-results")
-	public Page<DetailGraphDTO> detailsResults(@RequestParam(value = "type", required = true) String type, @PageableDefault(size = 5) final Pageable pageable) {
+	@GetMapping(GET_DETAIL_RESULTS_BY_TYPE)
+	public Page<DetailGraphDTO> getDetailsResultsByType(@RequestParam(value = "indexType", required = true) String indexType, @PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return healthOutcomeService.detailsResults(type, pageable);
+		return healthOutcomeService.getDetailsResultsByType(indexType, pageable);
 	}
 }

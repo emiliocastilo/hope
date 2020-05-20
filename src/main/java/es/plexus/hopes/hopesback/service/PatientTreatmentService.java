@@ -134,6 +134,35 @@ public class PatientTreatmentService {
 		return mapTreatment;
 	}
 	
+	public Page<DetailGraphDTO> getDetailPatientsPerDoses(final Pageable pageable) {
+		log.debug(CALLING_DB);
+		Page<PatientTreatment> detailPatientsPerDosesList = 
+				patientTreatmentRepository.getDetailPatientsPerDoses(pageable);
+		
+		List<HealthOutcome> healthOutcomesPasi = healthOutcomeRepository.findResultsByTypesAndMaxDate("PASI");	
+		Map<String, HealthOutcome> mapPasi = healthOutcomesPasi.stream().collect(Collectors.toMap(p -> p.getPatient().getNhc(), Function.identity()));
+		
+		List<HealthOutcome> healthOutcomesDlqi = healthOutcomeRepository.findResultsByTypesAndMaxDate("DLQI");
+		Map<String, HealthOutcome> mapDlqi = healthOutcomesDlqi.stream().collect(Collectors.toMap(p -> p.getPatient().getNhc(), Function.identity()));
+
+		Page<DetailGraphDTO> mapTreatment = detailPatientsPerDosesList.map(DetailGraphDTOMapper.INSTANCE::patientTreatmentToDetailGraphDTOConventer);
+		for (DetailGraphDTO detailGraphDTO : mapTreatment) {
+			if(mapPasi.containsKey(detailGraphDTO.getNhc())){
+				HealthOutcome healthOutcome = mapPasi.get(detailGraphDTO.getNhc());
+				detailGraphDTO.setDatePasi(healthOutcome.getDate());
+				detailGraphDTO.setPasi(healthOutcome.getValue());
+			}
+			
+			if(mapDlqi.containsKey(detailGraphDTO.getNhc())){
+				HealthOutcome healthOutcome = mapDlqi.get(detailGraphDTO.getNhc());
+				detailGraphDTO.setDateDlqi(healthOutcome.getDate());
+				detailGraphDTO.setDlqi(healthOutcome.getValue());
+			}
+		}
+		
+		return mapTreatment;
+	}
+	
 	private List<PatientTreatment> fillPatientTreatmentListByTreatmentType() {
 		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByTreatment();
 		List<PatientTreatment> patientWithoutTreatmentList = patientTreatmentRepository.findPatientTreatmentByWithoutTreatment();

@@ -1,7 +1,5 @@
 package es.plexus.hopes.hopesback.repository;
 
-import static es.plexus.hopes.hopesback.repository.ConstantsHealthOutcomeQuerys.QUERY_DETAIL_RESULTS_INFO;
-
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -12,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 
 @Repository
@@ -23,7 +22,7 @@ public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Lo
 	@Query(QueryConstants.QUERY_FIND_RESULTS_BY_TYPES_AND_MAX_DATE)
 	List<HealthOutcome> findResultsByTypesAndMaxDate(@Param("type")String type);
 	
-	@Query(QUERY_DETAIL_RESULTS_INFO)
-	Page<Object[]> detailsResults(@Param("type")String type, Pageable pageable);
+	@Query(QueryConstants.QUERY_GET_DETAIL_RESULTS_BY_TYPE)
+	Page<PatientTreatment> getDetailsResultsByType(@Param("indexType")String indexType, Pageable pageable);
 }
 

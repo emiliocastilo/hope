@@ -1,8 +1,11 @@
 package es.plexus.hopes.hopesback.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +16,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
+import es.plexus.hopes.hopesback.controller.model.DetailGraphDTO;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -89,6 +98,83 @@ public class PatientTreatmentControllerTest {
 		return map;
 	}
 	
+	@Test
+	public void callGetDetailPatientsUnderTreatmentShouldBeStatusOk() {
+
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), any(Pageable.class)))
+				.willReturn(getPageableDetailResult(pageRequest));
+
+		// when
+		Page<DetailGraphDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", pageRequest);
+
+		// then		
+		Assert.assertNotNull(response);
+		Assert.assertTrue(!response.isEmpty());
+	}
 	
+	@Test(expected = ServiceException.class)
+	public void callGetDetailPatientsUnderTreatmentThrowException() throws Exception {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), any(Pageable.class)))
+				.willThrow(new ServiceException("Error: No contled error"));
+
+		// when
+		Page<DetailGraphDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", pageRequest);
+
+		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertNull(response);
+	}
+	
+	@Test
+	public void callGetDetailPatientsPerDosesShouldBeStatusOk() {
+
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+		given(patientTreatmentService.getDetailPatientsPerDoses(any(Pageable.class)))
+				.willReturn(getPageableDetailResult(pageRequest));
+
+		// when
+		Page<DetailGraphDTO> response = patientTreatmentController.getDetailPatientsPerDoses(pageRequest);
+
+		// then		
+		Assert.assertNotNull(response);
+		Assert.assertTrue(!response.isEmpty());
+	}
+	
+	@Test(expected = ServiceException.class)
+	public void callGetDetailPatientsPerDosesThrowException() throws Exception {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+		given(patientTreatmentService.getDetailPatientsPerDoses(any(Pageable.class)))
+				.willThrow(new ServiceException("Error: No contled error"));
+
+		// when
+		Page<DetailGraphDTO> response = patientTreatmentController.getDetailPatientsPerDoses(pageRequest);
+
+		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertNull(response);
+	}
+	
+	private DetailGraphDTO mockDetailGraphDTO() {
+		DetailGraphDTO detailGraphDTO = new DetailGraphDTO();
+		detailGraphDTO.setNhc("1234");
+		detailGraphDTO.setSip("1234");
+		detailGraphDTO.setPatient("Antonio Diaz Alonso");
+		detailGraphDTO.setIndication("Indicacion1");
+		detailGraphDTO.setDiagnostig("Diagnostio1");
+		detailGraphDTO.setTreatment("Tratamiento1");
+		detailGraphDTO.setPasi("3");
+		detailGraphDTO.setDatePasi(LocalDateTime.now());
+		detailGraphDTO.setDlqi("6");
+		detailGraphDTO.setDateDlqi(LocalDateTime.now());
+		return detailGraphDTO;
+	}
+	
+	private PageImpl<DetailGraphDTO> getPageableDetailResult(PageRequest pageRequest) {
+		return new PageImpl<>(Collections.singletonList(mockDetailGraphDTO()), pageRequest, 1);
+	}
 }
 

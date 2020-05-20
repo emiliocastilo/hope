@@ -67,12 +67,12 @@ public class HealthOutcomeControllerTest {
 	public void callDetailsResultsShouldBeStatusOk() {
 
 		// given
-		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patien<t"));
-		given(healthOutcomeService.detailsResults(anyString(), any(Pageable.class)))
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+		given(healthOutcomeService.getDetailsResultsByType(anyString(), any(Pageable.class)))
 				.willReturn(getPageableDetailResult(pageRequest));
 
 		// when
-		Page<DetailGraphDTO> response = healthOutcomeController.detailsResults("PASI", pageRequest);
+		Page<DetailGraphDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -83,11 +83,11 @@ public class HealthOutcomeControllerTest {
 	public void callDetailsResultsThrowException() throws Exception {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(healthOutcomeService.detailsResults(anyString(), any(Pageable.class)))
+		given(healthOutcomeService.getDetailsResultsByType(anyString(), any(Pageable.class)))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		Page<DetailGraphDTO> response = healthOutcomeController.detailsResults("PASI", pageRequest);
+		Page<DetailGraphDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
 
 		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
 		Assert.assertNull(response);
@@ -111,6 +111,8 @@ public class HealthOutcomeControllerTest {
 		detailGraphDTO.setTreatment("Tratamiento1");
 		detailGraphDTO.setPasi("3");
 		detailGraphDTO.setDatePasi(LocalDateTime.now());
+		detailGraphDTO.setDlqi("6");
+		detailGraphDTO.setDateDlqi(LocalDateTime.now());
 		return detailGraphDTO;
 	}
 	
