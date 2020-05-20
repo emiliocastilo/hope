@@ -1,15 +1,10 @@
 package es.plexus.hopes.hopesback.controller;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
+import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDTO;
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.service.PatientService;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,11 +19,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.service.PatientService;
-import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientControllerTest {
@@ -126,14 +125,20 @@ public class PatientControllerTest {
 	public void callUpdateShouldBeStatusOk() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 
 		// given
-		given(patientService.findById(1L)).willReturn(mockPatientDTO());
-		given(patientService.save(mockPatientDTO())).willReturn(mockPatientDTO());
+		given(patientService.findById(anyLong())).willReturn(mockPatientSave());
+		given(patientService.save(mockPatientSave())).willReturn(mockPatientSave());
 
 		// when
-		PatientDTO response = patientController.update(mockPatientDTO());
+		PatientDTO response = patientController.update(mockPatientSave());
 
 		// then
 		Assert.assertNotNull(response);
+	}
+
+	private PatientDTO mockPatientSave() {
+		PatientDTO patientDTO = new PatientDTO();
+		patientDTO.setId(1L);
+		return patientDTO;
 	}
 
 	@Test
@@ -151,10 +156,7 @@ public class PatientControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callUpdateShouldThrowException() throws Exception {
 		// given
-		given(patientService.findById(1L)).willReturn(new PatientDTO());
-
-		// given
-		given(patientService.save(mockPatientDTO())).willThrow(new ServiceException("Error: Too much pathologies"));
+		given(patientService.findById(anyLong())).willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
 		patientController.update(mockPatientDTO());
