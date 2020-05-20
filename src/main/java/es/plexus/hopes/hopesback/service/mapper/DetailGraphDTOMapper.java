@@ -22,7 +22,7 @@ public interface DetailGraphDTOMapper {
 				+ " " + patientTreatment.getPatient().getFirstSurname() 
 				+ " " + patientTreatment.getPatient().getLastSurname());
 		detailGraphDTO.setIndication(patientTreatment.getIndication()); 
-		detailGraphDTO.setDiagnostig(patientTreatment.getPatientDiagnose().getIndication().getDescripcion()); 
+		detailGraphDTO.setDiagnostig(patientTreatment.getPatientDiagnose().getIndication()); 
 		detailGraphDTO.setTreatment(patientTreatment.getMedicine().getActIngredients()); 
 		
 		return detailGraphDTO;

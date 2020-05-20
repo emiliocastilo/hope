@@ -1,6 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import lombok.Getter;
+import java.time.LocalDateTime;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,7 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+
+import lombok.Getter;
 
 @Getter
 @Entity
@@ -27,9 +28,9 @@ public class PatientDiagnose {
 	@JoinColumn(name = "pdg_pac_id", referencedColumnName = "pac_id")
 	private Patient patient;
     
-    @ManyToOne
-	@JoinColumn(name = "pdg_ind_code", referencedColumnName = "ind_code")
-	private Indication indication;
+    @Basic
+    @Column(name = "pdg_indication", nullable = false, length = 50)
+    private String indication;
 
     @Basic
     @Column(name = "pdg_cie9_code", nullable = false, length = 50)
