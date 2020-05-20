@@ -1,11 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
-import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
+import static java.util.stream.Collectors.groupingBy;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +9,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.groupingBy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
+import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
+import es.plexus.hopes.hopesback.repository.model.Medicine;
+import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
@@ -24,6 +30,7 @@ public class PatientTreatmentService {
 	private static final String CALLING_DB = "Calling DB...";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
+	private final HealthOutcomeRepository healthOutcomeRepository;
 
 	public  Map<String, Long> findPatientTreatmentByTreatment() {
 		log.debug(CALLING_DB);
@@ -78,6 +85,43 @@ public class PatientTreatmentService {
 		return result;
 	}
 
+	public Map<String, Long> findPatientsUnderTreatment(String type, String indication) {
+		log.debug(CALLING_DB);
+		Map<String, Long> result = fillPatientsUnderTreatment(type, indication);
+		return result;
+	}
+	
+	public Map<String, Long> findInfoPatientsDoses() {
+		log.debug(CALLING_DB);
+		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
+		for (PatientTreatment pt : infoPatientsDosesList) {
+			if(pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen("Sin régimen");
+		}
+		return infoPatientsDosesList
+				.stream()
+				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
+	}
+	
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication, final Pageable pageable) {
+		log.debug(CALLING_DB);
+		return patientTreatmentRepository.getDetailPatientsUnderTreatment(type, indication, pageable);		
+	}
+	
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication) {
+		log.debug(CALLING_DB);
+		return patientTreatmentRepository.getDetailPatientsUnderTreatment(type, indication);		
+	}
+	
+	public Page<GraphPatientDetailDTO> getDetailPatientsPerDoses(final Pageable pageable) {
+		log.debug(CALLING_DB);
+		return patientTreatmentRepository.getDetailPatientsPerDoses(pageable);		
+	}
+	
+	public List<GraphPatientDetailDTO> getDetailPatientsPerDoses() {
+		log.debug(CALLING_DB);
+		return patientTreatmentRepository.getDetailPatientsPerDoses();		
+	}
+	
 	private List<PatientTreatment> fillPatientTreatmentListByTreatmentType() {
 		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByTreatment();
 		List<PatientTreatment> patientWithoutTreatmentList = patientTreatmentRepository.findPatientTreatmentByWithoutTreatment();
@@ -119,5 +163,18 @@ public class PatientTreatmentService {
 		});
 		return result;
 	}
+	
+	private Map<String, Long> fillPatientsUnderTreatment(String type, String indication) {
+		List<PatientTreatment> patientPatientTreatmentList = patientTreatmentRepository.findPatientsUnderTreatment(type, indication);
+		Map<Medicine, Long> map = patientPatientTreatmentList.stream().collect(groupingBy(
+				PatientTreatment::getMedicine, 
+				Collectors.counting()));
+		Map<String, Long> result = new HashMap<>();
+		map.entrySet().stream().forEach(m -> {			
+			result.put(m.getKey().getActIngredients(), m.getValue());
+		});
+		return result;
+	}
+	
 
 }

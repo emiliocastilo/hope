@@ -31,7 +31,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"patient\",\n    \"firstSurname\": \"numero\",\n    \"lastSurname\": \"45\",\n    \"nhc\": \"MDMD210604237712\",\n    \"healthCard\": \"2112375698\",\n    \"dni\": \"94736562J\",\n    \"address\": \"Calle 21, 24, Segovia, Segovia, España CP: 28080\",\n    \"phone\":\"+34668795263\",\n    \"email\":\"patient.numero.cinco@hopes.com\",\n    \"birthDate\": \"01-01-1981 00:00:00\",\n    \"hospital\":{\n    \t\"id\":\"1\"\n    },\n    \"genderCode\":\"F\",\n    \"pathologies\":[\n    \t{\"id\":\"1\"}\n    ]\n}",
+							"raw": "{\n    \"name\": \"patient\",\n    \"firstSurname\": \"numero\",\n    \"lastSurname\": \"45\",\n    \"nhc\": \"MDMD210604237712\",\n    \"healthCard\": \"2112375698\",\n    \"dni\": \"94736562J\",\n    \"address\": \"Calle 21, 24, Segovia, Segovia, España CP: 28080\",\n    \"phone\":\"+34668795263\",\n    \"email\":\"patient.numero.cinco@hopes.com\",\n    \"birthDate\": \"1981-01-01T00:00:00Z\",\n    \"hospital\":{\n    \t\"id\":\"1\"\n    },\n    \"genderCode\":\"F\",\n    \"pathologies\":[\n    \t{\"id\":\"1\"}\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -230,7 +230,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \"id\": 1,\r\n        \"name\": \"patient\",\r\n        \"firstSurname\": \"asdf\",\r\n        \"lastSurname\": \"45\",\r\n        \"nhc\": \"MDMD210604237712\",\r\n        \"healthCard\": \"2112375698\",\r\n        \"dni\": \"94736562J\",\r\n        \"address\": \"Calle 21, 24, Segovia, Segovia, EspaÃ±a CP: 28080\",\r\n        \"phone\": \"+34668795263\",\r\n        \"email\": \"patient.numero.cinco@hopes.com\",\r\n        \"birthDate\": \"1981-01-01\",\r\n        \"hospital\": {\r\n            \"id\": 1,\r\n            \"name\": \"Hospital Perpetuo Confinamiento\",\r\n            \"pathologies\": []\r\n        },\r\n        \"genderCode\": \"F\",\r\n        \"pathologies\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"ReumatologÃ­a\",\r\n                \"description\": \"Patologia ReumatologÃ­a\"\r\n            }\r\n        ]\r\n    }",
+							"raw": "    {\r\n        \"id\": 1,\r\n        \"name\": \"patient\",\r\n        \"firstSurname\": \"asdf\",\r\n        \"lastSurname\": \"45\",\r\n        \"nhc\": \"MDMD210604237712\",\r\n        \"healthCard\": \"2112375698\",\r\n        \"dni\": \"94736562J\",\r\n        \"address\": \"Calle 21, 24, Segovia, Segovia, EspaÃ±a CP: 28080\",\r\n        \"phone\": \"+34668795263\",\r\n        \"email\": \"patient.numero.cinco@hopes.com\",\r\n        \"birthDate\": \"1981-01-01T00:00:00Z\",\r\n        \"hospital\": {\r\n            \"id\": 1,\r\n            \"name\": \"Hospital Perpetuo Confinamiento\",\r\n            \"pathologies\": []\r\n        },\r\n        \"genderCode\": \"F\",\r\n        \"pathologies\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"ReumatologÃ­a\",\r\n                \"description\": \"Patologia ReumatologÃ­a\"\r\n            }\r\n        ]\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1375,7 +1375,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"date\": \"13-05-2020 16:21:00\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 2\r\n    }\r\n}",
+							"raw": "{\r\n\t\"date\": \"2020-05-13T16:21:00Z\",\r\n    \"nhc\": \"MDMD259986542\",\r\n    \"code\": \"NH0885\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 2\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1527,7 +1527,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 35,\r\n    \"date\": \"2020-01-22T00:00:00\",\r\n    \"nhc\": \"MDMD2599636542\",\r\n    \"code\": \"NH0895\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 1,\r\n        \"date\": null,\r\n        \"startPeriod\": null,\r\n        \"endPeriod\": null,\r\n        \"numRecords\": 0\r\n    }\r\n}",
+							"raw": "{\r\n    \"id\": 35,\r\n    \"date\": \"2020-05-13T16:21:00Z-01-01T00:00:00Z\",\r\n    \"nhc\": \"MDMD2599636542\",\r\n    \"code\": \"NH0895\",\r\n    \"nationalCode\": 7899836,\r\n    \"description\": \"Medicacion a prueba\",\r\n    \"quantity\": \"2mg\",\r\n    \"amount\": 2334.86,\r\n    \"daysDispensation\": 7,\r\n    \"dispensation\": {\r\n        \"id\": 1,\r\n        \"date\": null,\r\n        \"startPeriod\": null,\r\n        \"endPeriod\": null,\r\n        \"numRecords\": 0\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1687,13 +1687,13 @@
 								},
 								{
 									"key": "startPeriod",
-									"value": "01-03-2020 00:00:00",
+									"value": "1981-01-01T00:00:00Z",
 									"contentType": "",
 									"type": "text"
 								},
 								{
 									"key": "endPeriod",
-									"value": "01-03-2020 00:00:00",
+									"value": "1981-01-01T00:00:00Z",
 									"type": "text"
 								}
 							],
@@ -2839,10 +2839,10 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Graphs",
+			"name": "PatientTreatments",
 			"item": [
 				{
-					"name": "Patients Under Treatment",
+					"name": "/patients-treatments/find-patients-under-treatment",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2857,19 +2857,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/graphs/patients-under-treatment?type=BIOLOGICOS",
+							"raw": "{{dev}}/v1/patients-treatments/find-patients-under-treatment?type=Biologico&indication=\"r\"",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"graphs",
-								"patients-under-treatment"
+								"patients-treatments",
+								"find-patients-under-treatment"
 							],
 							"query": [
 								{
 									"key": "type",
-									"value": "BIOLOGICOS"
+									"value": "Biologico"
+								},
+								{
+									"key": "indication",
+									"value": "\"r\""
 								}
 							]
 						}
@@ -2877,7 +2881,7 @@
 					"response": []
 				},
 				{
-					"name": "Health Outcomes By Types",
+					"name": "/patients-treatments/find-info-patients-doses",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2892,18 +2896,251 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/graphs/health-outcomes-by-types?type=PASI",
+							"raw": "{{dev}}/v1/patients-treatments/find-info-patients-doses",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"graphs",
-								"health-outcomes-by-types"
+								"patients-treatments",
+								"find-info-patients-doses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-treatments/get-detail-patients-under-treatment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-under-treatment?type=BIOLOGICO",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-treatments",
+								"get-detail-patients-under-treatment"
 							],
 							"query": [
 								{
 									"key": "type",
+									"value": "BIOLOGICO"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-treatments/get-detail-patients-under-treatment-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-under-treatment-export?type=BIOLOGICO",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-treatments",
+								"get-detail-patients-under-treatment-export"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "BIOLOGICO"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-treatments/get-detail-patients-per-doses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-per-doses",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-treatments",
+								"get-detail-patients-per-doses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-treatments/get-detail-patients-per-doses-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-per-doses-export",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-treatments",
+								"get-detail-patients-per-doses-export"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "HealOutcomes",
+			"item": [
+				{
+					"name": "/health-outcomes/find-results-by-types",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/health-outcomes/find-results-by-types?type=PASI",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"health-outcomes",
+								"find-results-by-types"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "PASI"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/health-outcomes/get-detail-results-by-type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type?indexType=PASI",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"health-outcomes",
+								"get-detail-results-by-type"
+							],
+							"query": [
+								{
+									"key": "indexType",
+									"value": "PASI"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/health-outcomes/get-detail-results-by-type-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type-export?indexType=PASI",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"health-outcomes",
+								"get-detail-results-by-type-export"
+							],
+							"query": [
+								{
+									"key": "indexType",
 									"value": "PASI"
 								}
 							]

@@ -1,10 +1,15 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.service.PatientService;
-import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,15 +24,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
+import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDTO;
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.service.PatientService;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientControllerTest {
@@ -166,7 +167,7 @@ public class PatientControllerTest {
 		PatientDTO patientDto = new PatientDTO();
 
 		patientDto.setAddress("Calle Falsa, 1");
-		patientDto.setBirthDate(LocalDate.now());
+		patientDto.setBirthDate(LocalDateTime.now());
 		patientDto.setDni("012345678W");
 		patientDto.setEmail("email@hopes.com");
 		patientDto.setId(1L);
