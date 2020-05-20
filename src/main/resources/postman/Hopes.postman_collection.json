@@ -2881,7 +2881,7 @@
 					"response": []
 				},
 				{
-					"name": "Detail Info Tratamientos",
+					"name": "/patients-treatments/get-detail-patients-under-treatment",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2896,20 +2896,49 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/graphs/details-graphs?type=BIOLOGICOS",
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-under-treatment?type=BIOLOGICO",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"graphs",
-								"details-graphs"
+								"patients-treatments",
+								"get-detail-patients-under-treatment"
 							],
 							"query": [
 								{
 									"key": "type",
-									"value": "BIOLOGICOS"
+									"value": "BIOLOGICO"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-treatments/get-detail-patients-per-doses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-per-doses",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-treatments",
+								"get-detail-patients-per-doses"
 							]
 						}
 					},
@@ -2957,7 +2986,7 @@
 					"response": []
 				},
 				{
-					"name": "Detail Results",
+					"name": "/health-outcomes/get-detail-results-by-type",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2972,18 +3001,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/details-results?type=PASI",
+							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type?indexType=PASI",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"health-outcomes",
-								"details-results"
+								"get-detail-results-by-type"
 							],
 							"query": [
 								{
-									"key": "type",
+									"key": "indexType",
 									"value": "PASI"
 								}
 							]
