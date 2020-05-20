@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -39,6 +41,13 @@ public class RoleService {
 		Page<Role> roles = roleRepository.findAll(pageable);
 
 		return roles.map(roleMapper::roleToRoleDTOConverter);
+	}
+
+	public List<RoleDTO> getAllRoles() {
+		log.debug("Calling BD. Obtener todos los roles...");
+		List<Role> roles = roleRepository.findAll();
+
+		return roles.stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
 	}
 
 	public RoleDTO getOneRoleById(final Long id) {

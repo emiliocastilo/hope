@@ -26,14 +26,12 @@ import javax.validation.Valid;
 @RequestMapping(DataController.DATA_MAPPING)
 public class DataController {
 
-	static final String DATA_MAPPING = "/datas";
+	static final String DATA_MAPPING = "/forms";
 
 	private final FormService formService;
-    private final FormMongoRepository formMongoRepository;
 
 	public DataController(FormService formService, FormMongoRepository formMongoRepository) {
 		this.formService = formService;
-        this.formMongoRepository = formMongoRepository;
 	}
 
 	@ApiOperation("Guardar los datos de los formularios")
