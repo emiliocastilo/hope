@@ -1,13 +1,15 @@
 package es.plexus.hopes.hopesback.service;
 
-import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
-import es.plexus.hopes.hopesback.repository.DispensationDetailRepository;
-import es.plexus.hopes.hopesback.repository.model.Dispensation;
-import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
-import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
-import es.plexus.hopes.hopesback.service.utils.CsvUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import java.text.DateFormatSymbols;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.apache.commons.csv.CSVRecord;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.data.domain.Example;
@@ -17,10 +19,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
+import es.plexus.hopes.hopesback.repository.DispensationDetailRepository;
+import es.plexus.hopes.hopesback.repository.model.Dispensation;
+import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
+import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
+import es.plexus.hopes.hopesback.service.utils.CsvUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
@@ -28,6 +34,8 @@ import java.util.stream.Collectors;
 public class DispensationDetailService {
 
 	private static final String CALLING_DB = "Llamando a la DB...";
+    private static final DateFormatSymbols MONTHS_OF_YEAR = new DateFormatSymbols(Locale.getDefault());
+	
 	private final DispensationDetailRepository dispensationDetailRepository;
 
 	public DispensationDetailDTO save(DispensationDetailDTO dispensationDTO) {
@@ -110,5 +118,15 @@ public class DispensationDetailService {
 		return ExampleMatcher.matchingAll().
 				withIgnoreCase(true)
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+	}
+	
+	public void xxx() {
+		String[] months = MONTHS_OF_YEAR.getMonths();
+		for (String month : months) {
+			//LocalDate.of(2020, month, 1);
+			LocalDateTime end = LocalDateTime.now().with(TemporalAdjusters.firstDayOfNextMonth());
+			dispensationDetailRepository.findResultsAllPatiensByMonth(month);
+		}
+		
 	}
 }

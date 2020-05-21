@@ -120,5 +120,8 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_CIE10 =
 			QUERY_PATIENTS_GRAPH_DETAILS + 	"and pdg.cie10Desc = :cie10 ";
+	
+	// ----------------------- DATOS FARMA-ECONOMICOS ---------------------------------
+	public static final String QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH = "";
 
 }
