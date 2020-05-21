@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -406,6 +407,131 @@ public class PatientDiagnosisControllerTest {
 
 		// when
 		patientDiagnosisController.findGraphPatientsDetailsByCie10("Psoriasis pustulosa");
+	}
+
+	@Test
+	public void callFindGraphPatientsDetailsByTypeTreatmentShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByTypeTreatment("Psoriasis pustulosa"))
+				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+
+		// when
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByTypeTreatment("Psoriasis pustulosa");
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
+	@Test(expected = ServiceException.class)
+	public void callFindGraphPatientsDetailsByTypeTreatmentThrowException() throws ServiceException {
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByTypeTreatment(anyString()))
+				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
+
+		// when
+		patientDiagnosisController.findGraphPatientsDetailsByTypeTreatment("Psoriasis pustulosa");
+	}
+
+	@Test
+	public void callFindGraphPatientsDetailsByEndCauseBiologicTreatmentShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis pustulosa", "reason"))
+				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+
+		// when
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis pustulosa", "reason");
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
+	@Test(expected = ServiceException.class)
+	public void callFindGraphPatientsDetailsByEndCauseBiologicTreatmentThrowException() throws ServiceException {
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatment(anyString(), anyString()))
+				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
+
+		// when
+		patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis pustulosa", "reason");
+	}
+
+	@Test
+	public void callFindGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYearsShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis pustulosa", "reason", 2))
+				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+
+		// when
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis pustulosa", "reason", 2);
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
+	@Test(expected = ServiceException.class)
+	public void callFindGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYearsThrowException() throws ServiceException {
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears(anyString(), anyString(), anyInt()))
+				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
+
+		// when
+		patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis pustulosa", "reason", 2);
+	}
+
+	@Test
+	public void callFindGraphPatientsDetailsByNumberChangesShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(2))
+				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+
+		// when
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( 2);
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
+	@Test(expected = ServiceException.class)
+	public void callFindGraphPatientsDetailsByNumberChangesThrowException() throws ServiceException {
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(anyInt()))
+				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
+
+		// when
+		patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( 2);
+	}
+
+	@Test
+	public void callFindGraphPatientsDetailsByCombinedTreatmentShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByCombiendTreatment("Combined"))
+				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+
+		// when
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCombinedTreatment("Combined");
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
+	@Test(expected = ServiceException.class)
+	public void callFindGraphPatientsDetailsByCombinedTreatmentThrowException() throws ServiceException {
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByCombiendTreatment(anyString()))
+				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
+
+		// when
+		patientDiagnosisController.findGraphPatientsDetailsByCombinedTreatment("Combined");
 	}
 
 	//Mocks mockMap
