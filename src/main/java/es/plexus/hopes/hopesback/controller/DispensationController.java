@@ -1,13 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.DispensationDTO;
-import es.plexus.hopes.hopesback.controller.model.FormDispensationDTO;
-import es.plexus.hopes.hopesback.service.DispensationService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,8 +12,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import es.plexus.hopes.hopesback.controller.model.DispensationDTO;
+import es.plexus.hopes.hopesback.controller.model.FormDispensationDTO;
+import es.plexus.hopes.hopesback.service.DispensationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Api(value = "Controlador de dispensaciones", tags = "dispensation")
 @Log4j2
@@ -29,7 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class DispensationController {
 
 	static final String DISPENSATION_MAPPING = "/dispensations";
-	private static final String CALLING_SERVICE = "Llamando al servicio...";
+	static final String FIND_MONTHLY_CONSUME = "/findMonthlyConsume";
+	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final DispensationService dispensationService;
 
@@ -63,6 +68,18 @@ public class DispensationController {
 	public Page<DispensationDTO> findAll(@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return dispensationService.findAll(pageable);
+	}
+	
+	@ApiOperation("Consumo mensual en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME)
+	public Map<String, Map<String, String>> findMonthlyConsume(
+			@ApiParam(value = "Préfijo ATC")
+			@RequestParam(value = "code", required = true, defaultValue = "") final String code,
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
+		return dispensationService.findMonthlyConsume(code, lastYears);
 	}
 
 }

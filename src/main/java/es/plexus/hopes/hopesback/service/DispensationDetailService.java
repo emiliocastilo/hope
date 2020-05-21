@@ -120,13 +120,4 @@ public class DispensationDetailService {
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 	}
 	
-	public void xxx() {
-		String[] months = MONTHS_OF_YEAR.getMonths();
-		for (String month : months) {
-			//LocalDate.of(2020, month, 1);
-			LocalDateTime end = LocalDateTime.now().with(TemporalAdjusters.firstDayOfNextMonth());
-			dispensationDetailRepository.findResultsAllPatiensByMonth(month);
-		}
-		
-	}
 }

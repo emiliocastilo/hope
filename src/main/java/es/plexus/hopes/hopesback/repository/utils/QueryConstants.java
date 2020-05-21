@@ -122,6 +122,26 @@ public class QueryConstants {
 			QUERY_PATIENTS_GRAPH_DETAILS + 	"and pdg.cie10Desc = :cie10 ";
 	
 	// ----------------------- DATOS FARMA-ECONOMICOS ---------------------------------
-	public static final String QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH = "";
-
+	public static final String SELECT_FIND_ECONOMIC_RESULTS = 
+			"select " +
+			"coalesce(sum(dd.amount),0) as total from Dispensation d " + 
+			"join DispensationDetail dd on d.id = dd.dispensation.id ";
+	
+	public static final String WHERE_FIND_ECONOMIC_RESULTS = 
+			"where dd.date between :dateStart and :dateEnd " + 
+			"and dd.code like CONCAT(LOWER(:code),'%')";
+	
+	public static final String QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH = 
+			SELECT_FIND_ECONOMIC_RESULTS +
+			WHERE_FIND_ECONOMIC_RESULTS;
+	
+	public static final String QUERY_PATIENTS_WITH_PASI =
+			SELECT_HO_FROM_HEALTHOUTCOME_HO +
+			"where ho.date > :date"; 			
+	
+	public static final String QUERY_FIND_RESULTS_PASI_PATIENTS_BY_MONTH = 
+			SELECT_FIND_ECONOMIC_RESULTS +
+			"left join HealthOutcome hou on hou.patient.id = :patient " +
+			WHERE_FIND_ECONOMIC_RESULTS;
+	
 }

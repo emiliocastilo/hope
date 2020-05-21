@@ -31,7 +31,4 @@ public interface DispensationDetailRepository extends JpaRepository<Dispensation
 			+ " OR CAST(dd.amount as text) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR CAST(dd.daysDispensation as text) like CONCAT('%',LOWER(:search),'%') ")
 	Page<DispensationDetail> findDispensationDetailBySearch(@Param("search")String search, Pageable pageable);
-	
-	@Query(QueryConstants.QUERY_FIND_RESULTS_BY_TYPES)
-	List<HealthOutcome> findResultsAllPatiensByMonth(@Param("month")String month);
 }

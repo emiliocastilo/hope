@@ -1829,6 +1829,41 @@
 						"description": "delete"
 					},
 					"response": []
+				},
+				{
+					"name": "dispensations/findMonthlyConsume",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensations/findMonthlyConsume?code=XXX",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensations",
+								"findMonthlyConsume"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "XXX"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
