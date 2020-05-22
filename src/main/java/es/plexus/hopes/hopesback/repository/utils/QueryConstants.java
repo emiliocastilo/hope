@@ -4,29 +4,25 @@ public class QueryConstants {
 	public static final String SELECT_PT_FROM_PATIENT_TREATMENT_PT = "select pt from PatientTreatment pt ";
 	public static final String SELECT_HO_FROM_HEALTHOUTCOME_HO = "select ho from HealthOutcome ho ";
 
-	public static final String QUERY_PATIENTS_GRAPH_DETAILS =
+	public static final String SELECT_PATIENTS_GRAPH_DETAILS_DTO =
 			"select new es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO(" +
-			"pat.id , " +
-			"pat.nhc , " +
-			"pat.healthCard, " +
-			"concat(pat.name, ' ', pat.firstSurname, ' ', pat.lastSurname) as fullName, " +
-			"pdg.indication , " +
-			"concat(pdg.cie9Code, ' ', pdg.cie9Desc), " +
-			"concat(pdg.cie10Code, ' ', pdg.cie10Desc), " +
-			"med.actIngredients, " +
-			"case hou.indexType when 'PASI' then hou.result else '' end, " +
-			"case hou.indexType when 'PASI' then hou.date else null end , " +
-			"case hou.indexType when 'DLQI' then hou.result else '' end, " +
-			"case hou.indexType when 'DLQI' then hou.date else null end) " +
-			"from Patient pat " +
-			"join PatientTreatment ptr on ptr.patient.id = pat.id " +
-			"join PatientDiagnose pdg on ptr.patientDiagnose.id = pdg.id and ptr.patient.id = pdg.patient.id " +
-			"left join Medicine med on ptr.medicine.id = med.id " +
-			"left join HealthOutcome hou on pat.id = hou.patient.id " +
-			"where lower(ptr.type) = 'biologico' " +
-			"and ptr.active = true " +
-			"and (hou.date = " +
-			"(select max(h.date) as maxDate  from HealthOutcome h where h.patient.id = pat.id)) ";
+				"pat.id , " +
+				"pat.nhc , " +
+				"pat.healthCard, " +
+				"concat(pat.name, ' ', pat.firstSurname, ' ', pat.lastSurname) as fullName, " +
+				"pdg.indication , " +
+				"concat(pdg.cie9Code, ' ', pdg.cie9Desc), " +
+				"concat(pdg.cie10Code, ' ', pdg.cie10Desc), " +
+				"med.actIngredients, " +
+				"case hou.indexType when 'PASI' then hou.result else '' end, " +
+				"case hou.indexType when 'PASI' then hou.date else null end , " +
+				"case hou.indexType when 'DLQI' then hou.result else '' end, " +
+				"case hou.indexType when 'DLQI' then hou.date else null end) " +
+			"from PatientTreatment ptr " +
+				"join Patient pat on ptr.patient.id = pat.id " +
+				"join PatientDiagnose pdg on ptr.patientDiagnose.id = pdg.id and ptr.patient.id = pdg.patient.id " +
+				"left join Medicine med on ptr.medicine.id = med.id " +
+				"left join HealthOutcome hou on pat.id = hou.patient.id ";
 
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_NO_TYPE =
 			"select new es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO(" +
@@ -48,9 +44,16 @@ public class QueryConstants {
 			"left join Medicine med on ptr.medicine.id = med.id " +
 			"left join HealthOutcome hou on pat.id = hou.patient.id " +
 			"where ptr.active = true " +
-			"and (hou.date = " +
-			"(select max(h.date) as maxDate  from HealthOutcome h where h.patient.id = pat.id)) ";
-	
+			"and (hou.date is null or hou.date = " +
+			"(select max(h.date) from HealthOutcome h where h.patient.id = pat.id)) ";
+
+	public static final String QUERY_PATIENTS_GRAPH_DETAILS =
+			SELECT_PATIENTS_GRAPH_DETAILS_DTO +
+					"where lower(ptr.type) = 'biologico' " +
+					"and ptr.active = true " +
+					"and (hou.date is null or hou.date = " +
+					"(select max(h.date) from HealthOutcome h where h.patient.id = pat.id)) ";
+
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where pt.active = true " +
@@ -92,13 +95,22 @@ public class QueryConstants {
 			"where LOWER(pt.type) = 'biologico' " +
 			"and LOWER(pt.endCause) = 'cambio' " +
 			"group by pt.id, pt.patient";
-	
-	public static final String QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION =		
+
+	public static final String QUERY_PATIENTS_DIAGNOSES_BY_NO_CHANGES_BIOLOGICAL_TREATMENT =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+					"where LOWER(pt.type) = 'biologico' " +
+					"and LOWER(pt.endCause) <> 'cambio' " +
+					"and pt.patient.id not in (select ptr.patient.id from PatientTreatment ptr " +
+												"where LOWER(ptr.type) = 'biologico' " +
+												"and LOWER(ptr.endCause) = 'cambio') " +
+					"group by pt.id, pt.patient";
+
+	public static final String QUERY_PATIENTS_TREAMENT_BY_TYPE_AND_INDICATION =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where LOWER(pt.type) = LOWER(:type) " +
 			"and (:indication is null or pt.indication = :indication)";
 	
-	public static final String QUERY_PATIENTS_TREAMENT_PER_DOSES =			
+	public static final String QUERY_PATIENTS_TREAMENT_PER_DOSES =
 			QUERY_PATIENTS_GRAPH_DETAILS_NO_TYPE + " and hou.indexType in ('PASI','DLQI') ";
 	
 	public static final String QUERY_FIND_RESULTS_BY_TYPES = 
@@ -113,12 +125,63 @@ public class QueryConstants {
 			QUERY_PATIENTS_GRAPH_DETAILS_NO_TYPE + "and hou.indexType = :indexType ";
 	
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_INDICATIONS =
-			QUERY_PATIENTS_GRAPH_DETAILS + 	"and pdg.indication = :indication ";
+			QUERY_PATIENTS_GRAPH_DETAILS + "and pdg.indication = :indication ";
 
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_CIE9 =
-			QUERY_PATIENTS_GRAPH_DETAILS +  "and pdg.cie9Desc = :cie9 ";
+			QUERY_PATIENTS_GRAPH_DETAILS + "and pdg.cie9Desc = :cie9 ";
 
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_CIE10 =
-			QUERY_PATIENTS_GRAPH_DETAILS + 	"and pdg.cie10Desc = :cie10 ";
+			QUERY_PATIENTS_GRAPH_DETAILS + "and pdg.cie10Desc = :cie10 ";
 
+	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_TREATMENT_TYPE =
+			SELECT_PATIENTS_GRAPH_DETAILS_DTO +
+			"where " +
+				"lower(ptr.type) = lower(:treatmentType) " +
+				"and ptr.active = true " +
+				"and (hou.date is null or hou.date = " +
+				"(select max(h.date) from HealthOutcome h where h.patient.id = pat.id)) ";
+
+	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_END_CAUSE =
+			SELECT_PATIENTS_GRAPH_DETAILS_DTO +
+			"where " +
+				"ptr.active = false " +
+				"and LOWER(ptr.type) = 'biologico' " +
+				"and (hou.date is null or hou.date = " +
+					"(select max(h.date) from HealthOutcome h where h.patient.id = pat.id)) " +
+				"and LOWER(ptr.endCause) = LOWER(:endCause) " +
+				"and LOWER(ptr.reason) = LOWER(:reason) " +
+				"and ptr.initDate = " +
+					"(select max(p.initDate) " +
+					"from PatientTreatment p " +
+					"where p.patient.id=ptr.patient.id " +
+					"and p.active = false)";
+
+	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_END_CAUSE_IN_LAST_YEARS =
+			QUERY_PATIENTS_GRAPH_DETAILS_BY_END_CAUSE
+					+ "and ptr.initDate > :initDate ";
+
+	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_PATIENTS_ID =
+			SELECT_PATIENTS_GRAPH_DETAILS_DTO +
+					"where " +
+					"(hou.date is null or hou.date = " +
+					"(select max(h.date) from HealthOutcome h where h.patient.id = ptr.patient.id)) " +
+					"and ptr.initDate = " +
+					"(select max(p.initDate) " +
+					"from PatientTreatment p " +
+					"where p.patient.id=ptr.patient.id)" +
+					"and ptr.patient.id in (:patientsIds)";
+
+	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_COMBINED_TREATMENT =
+			SELECT_PATIENTS_GRAPH_DETAILS_DTO +
+				"where ptr.active = true " +
+					"and (hou.date is null or hou.date = " +
+						"(select max(h.date) from HealthOutcome h where h.patient.id = ptr.patient.id)) " +
+					"and ptr.initDate = " +
+							"(select max(p.initDate) " +
+							"from PatientTreatment p " +
+							"where p.patient.id=ptr.patient.id " +
+							"and p.active = true) " +
+					"and ptr.patient in (select pt2.patient from PatientTreatment pt2 " +
+										"where pt2.active = true group by pt2.patient having count(*)>=2) " +
+					"order by ptr.patient";
 }
