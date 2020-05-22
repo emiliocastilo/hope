@@ -40,6 +40,7 @@ public class PatientDiagnosisControllerTest {
 	@InjectMocks
 	private PatientDiagnosisController patientDiagnosisController;
 
+	private final PageRequest mockPageRequest = PageRequest.of(1, 5, Sort.by("patient"));
 	@Test
 	public void callFindPatientsDiagnosesByIndicationsShouldBeStatusOk() throws ServiceException {
 
@@ -424,6 +425,21 @@ public class PatientDiagnosisControllerTest {
 		Assert.assertFalse(response.isEmpty());
 	}
 
+	@Test
+	public void callFindGraphPatientsDetailsPageByTypeTreatmentShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByTypeTreatment("Psoriasis", mockPageRequest))
+				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+
+		// when
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByTypeTreatment("Psoriasis", mockPageRequest);
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
 	@Test(expected = ServiceException.class)
 	public void callFindGraphPatientsDetailsByTypeTreatmentThrowException() throws ServiceException {
 		// given
@@ -443,6 +459,21 @@ public class PatientDiagnosisControllerTest {
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis pustulosa", "reason");
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
+	@Test
+	public void callFindGraphPatientsDetailsPageByEndCauseBiologicTreatmentShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis", "reason", mockPageRequest))
+				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+
+		// when
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis", "reason", mockPageRequest);
 
 		// then
 		Assert.assertNotNull(response);
@@ -474,6 +505,21 @@ public class PatientDiagnosisControllerTest {
 		Assert.assertFalse(response.isEmpty());
 	}
 
+	@Test
+	public void callFindGraphPatientsDetailsPageByEndCauseBiologicTreatmentInLastYearsShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis", "reason", 5, mockPageRequest))
+				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+
+		// when
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis", "reason", 5, mockPageRequest);
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
 	@Test(expected = ServiceException.class)
 	public void callFindGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYearsThrowException() throws ServiceException {
 		// given
@@ -493,6 +539,21 @@ public class PatientDiagnosisControllerTest {
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( 2);
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
+	@Test
+	public void callFindGraphPatientsDetailsPageByNumberChangesShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(2, mockPageRequest))
+				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+
+		// when
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges(2, mockPageRequest);
 
 		// then
 		Assert.assertNotNull(response);
@@ -524,6 +585,21 @@ public class PatientDiagnosisControllerTest {
 		Assert.assertFalse(response.isEmpty());
 	}
 
+	@Test
+	public void callFindGraphPatientsDetailsPageByCombinedTreatmentShouldBeStatusOk() {
+
+		// given
+		given(patientTreatmentService.findGraphPatientsDetailsByCombiendTreatment("Combined", mockPageRequest))
+				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+
+		// when
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCombinedTreatment("Combined", mockPageRequest);
+
+		// then
+		Assert.assertNotNull(response);
+		Assert.assertFalse(response.isEmpty());
+	}
+
 	@Test(expected = ServiceException.class)
 	public void callFindGraphPatientsDetailsByCombinedTreatmentThrowException() throws ServiceException {
 		// given
@@ -549,8 +625,7 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
-		GraphPatientDetailDTO graphPatientDetailDTO =
-				new GraphPatientDetailDTO(1L,
+		return	new GraphPatientDetailDTO(1L,
 						"NOHC0001",
 						"HC0001",
 						"Nombre completo",
@@ -563,13 +638,11 @@ public class PatientDiagnosisControllerTest {
 						"DLQI Result",
 						LocalDateTime.now());
 
-		return graphPatientDetailDTO;
 	}
 
 	private PageImpl<GraphPatientDetailDTO> getPageableGraphPatientDetail(PageRequest pageRequest) {
 		return new PageImpl<>(Collections.singletonList(mockGraphPatientDetailsDTO()), pageRequest, 1);
 	}
-
 
 }
 

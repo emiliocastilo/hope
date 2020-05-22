@@ -27,6 +27,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class PatientTreatmentService {
 
 	private static final String CALLING_DB = "Calling DB...";
+	public static final String COMBINED_TYPE_TREATMENT = "combinado";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
 
@@ -119,21 +120,33 @@ public class PatientTreatmentService {
 		return patientTreatmentRepository.getDetailPatientsPerDoses();		
 	}
 
-	/**
-	 * Method that it return a list pageable the patient details by Treatment Type in the Patient Diagnose Section
-	 * @return
-	 */
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByTypeTreatment(String treatmentType, Pageable pageable) {
 		log.debug(CALLING_DB);
-		return patientTreatmentRepository .findPatientDetailsGraphsByTypeTreatment(treatmentType, pageable);
+		List<GraphPatientDetailDTO> combinedTreatmentPatients = findGraphPatientsDetailsByTypeTreatment(treatmentType);
+		return new PageImpl(combinedTreatmentPatients, pageable, combinedTreatmentPatients.size());
 	}
 
-	/**
-	 * Method that it return a list the patient details by Treatment Type in the Patient Diagnose Section
-	 * @return
-	 */
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByTypeTreatment(final String treatmentType) {
-		return patientTreatmentRepository.findPatientDetailsGraphsByTypeTreatment(treatmentType);
+		List<GraphPatientDetailDTO> combinedTreatmentPatients;
+		if(COMBINED_TYPE_TREATMENT.equalsIgnoreCase(treatmentType)){
+			combinedTreatmentPatients = patientTreatmentRepository.findPatientGraphDetailsByCombinedTreatment();
+			removeRepeatElementOfGraphPatientsDetailList(combinedTreatmentPatients);
+
+		} else{
+			combinedTreatmentPatients = patientTreatmentRepository.findPatientDetailsGraphsByTypeTreatment(treatmentType);
+		}
+		return combinedTreatmentPatients;
+	}
+
+	private void removeRepeatElementOfGraphPatientsDetailList(List<GraphPatientDetailDTO> combinedTreatmentPatients) {
+		Map<Long, GraphPatientDetailDTO> mapGraphPatientDetail = new HashMap<>();
+		combinedTreatmentPatients.forEach(gp ->{
+			if(!mapGraphPatientDetail.containsKey(gp.getId())){
+				mapGraphPatientDetail.put(gp.getId(), gp);
+			}
+		});
+		combinedTreatmentPatients.clear();
+		combinedTreatmentPatients.addAll(mapGraphPatientDetail.entrySet().stream().map(m -> m.getValue()).collect(Collectors.toList()));
 	}
 
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByEndCauseBiologicTreatment(
@@ -178,14 +191,7 @@ public class PatientTreatmentService {
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCombiendTreatment(String combinedTreatment) {
 		List<Long> patientsIds = obtainsPatientsIdsByCombinedTreatment(combinedTreatment.replace(" ", " + "));
 		List<GraphPatientDetailDTO> listGraphPatientDetailDTO = patientTreatmentRepository.findGraphPatientsDetailsByPatientsIds(patientsIds);
-		Map<Long, GraphPatientDetailDTO> mapGraphPatientDetail = new HashMap<>();
-		listGraphPatientDetailDTO.stream().forEach(gp ->{
-			if(!mapGraphPatientDetail.containsKey(gp.getId())){
-				mapGraphPatientDetail.put(gp.getId(), gp);
-			}
-		});
-		listGraphPatientDetailDTO.clear();
-		listGraphPatientDetailDTO.addAll(mapGraphPatientDetail.entrySet().stream().map(m -> m.getValue()).collect(Collectors.toList()));
+		removeRepeatElementOfGraphPatientsDetailList(listGraphPatientDetailDTO);
 		return listGraphPatientDetailDTO;
 	}
 
@@ -241,7 +247,7 @@ public class PatientTreatmentService {
 		Map<Patient, Long> patientsMaps = patientTreatmentList.stream()
 				.collect(groupingBy(PatientTreatment::getPatient, Collectors.counting()));
 		List<PatientTreatment> patientTreatmentWithoutChangesList = patientTreatmentRepository.findPatientTreatmentByNoChangesBiologicTreatment();
-		patientTreatmentWithoutChangesList.stream().forEach(pt -> {
+		patientTreatmentWithoutChangesList.forEach(pt -> {
 			if(!patientsMaps.containsKey(pt.getPatient())) {
 				patientsMaps.put(pt.getPatient(),0L);
 			}
@@ -251,7 +257,7 @@ public class PatientTreatmentService {
 
 	private Map<Long, Integer> buildMapPatientsByNumberChangesOfBiologicalTreatment(Map<Patient, Long> map) {
 		Map<Long, Integer> result = new HashMap<>();
-		map.entrySet().stream().forEach(m -> {
+		map.entrySet().forEach(m -> {
 			if(result.containsKey(m.getValue())){
 				result.replace(m.getValue(), result.get(m.getValue())+1);
 			}else{
@@ -269,7 +275,7 @@ public class PatientTreatmentService {
 				PatientTreatment::getMedicine, 
 				Collectors.counting()));
 		Map<String, Long> result = new HashMap<>();
-		map.entrySet().stream().forEach(m -> result.put(m.getKey().getActIngredients(), m.getValue()));
+		map.entrySet().forEach(m -> result.put(m.getKey().getActIngredients(), m.getValue()));
 		return result;
 	}
 

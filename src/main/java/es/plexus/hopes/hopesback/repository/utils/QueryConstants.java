@@ -171,4 +171,17 @@ public class QueryConstants {
 					"where p.patient.id=ptr.patient.id)" +
 					"and ptr.patient.id in (:patientsIds)";
 
+	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_COMBINED_TREATMENT =
+			SELECT_PATIENTS_GRAPH_DETAILS_DTO +
+				"where ptr.active = true " +
+					"and (hou.date is null or hou.date = " +
+						"(select max(h.date) from HealthOutcome h where h.patient.id = ptr.patient.id)) " +
+					"and ptr.initDate = " +
+							"(select max(p.initDate) " +
+							"from PatientTreatment p " +
+							"where p.patient.id=ptr.patient.id " +
+							"and p.active = true) " +
+					"and ptr.patient in (select pt2.patient from PatientTreatment pt2 " +
+										"where pt2.active = true group by pt2.patient having count(*)>=2) " +
+					"order by ptr.patient";
 }

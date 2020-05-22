@@ -90,5 +90,7 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	List<GraphPatientDetailDTO> findGraphPatientsDetailsByPatientsIds(
 			@Param("patientsIds")Collection<Long> patientsIds);
 
+	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_BY_COMBINED_TREATMENT)
+	List<GraphPatientDetailDTO> findPatientGraphDetailsByCombinedTreatment();
 }
 
