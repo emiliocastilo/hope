@@ -91,7 +91,7 @@ public class PhotoController {
 
 	@ApiOperation("Generar código QR")
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(value = "/qr")
+	@GetMapping(value = "/qr")
 	public OutputStream generateQR(@ApiParam(value = "identificador paciente", required = true) @RequestParam("pac") Long pacId,
 								   @ApiParam(value = "identificador patologia", required = true) @RequestParam("pth") Long pthId,
 								   @RequestHeader(name = "Authorization") final String token,
