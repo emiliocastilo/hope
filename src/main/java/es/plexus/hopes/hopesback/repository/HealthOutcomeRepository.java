@@ -24,5 +24,8 @@ public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Lo
 	
 	@Query(QueryConstants.QUERY_GET_DETAIL_RESULTS_BY_TYPE)
 	List<GraphPatientDetailDTO> getDetailsResultsByType(@Param("indexType")String indexType);
+	
+	@Query(QueryConstants.QUERY_ALL_PATIENTS_HEALHT_OUTCOME)
+	List<Long> getAllPatientsId();
 }
 

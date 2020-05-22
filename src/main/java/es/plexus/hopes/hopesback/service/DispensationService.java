@@ -5,15 +5,12 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
-import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.data.domain.Page;
@@ -24,8 +21,6 @@ import es.plexus.hopes.hopesback.controller.model.DispensationDTO;
 import es.plexus.hopes.hopesback.controller.model.FormDispensationDTO;
 import es.plexus.hopes.hopesback.repository.DispensationRepository;
 import es.plexus.hopes.hopesback.repository.model.Dispensation;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
-import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.service.mapper.DispensationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,7 +36,8 @@ public class DispensationService {
 	
 	private final DispensationRepository dispensationRepository;
 	private final DispensationDetailService dispensationDetailService;
-
+	private final HealthOutcomeService healthOutcomeService;
+	
 	public DispensationDTO save(FormDispensationDTO dispensationDTO) {
 		if(Objects.nonNull(dispensationDTO)){
 			log.debug(CALLING_DB);
@@ -79,55 +75,65 @@ public class DispensationService {
 		log.debug(CALLING_DB);
 		
 		Map<String, Map<String, String>> result = new HashMap<>();		
-		LocalDateTime firstDayOfMonth = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
+		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
+		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
 		
-		for (int i = 0; i < (MONTHS_OF_YEAR.length -1) * lastYears; i++) {
-			LocalDateTime firtstDayOfNextMonth = firstDayOfMonth.with(TemporalAdjusters.firstDayOfNextMonth());
-			
-			if(!result.containsKey(MONTHS_OF_YEAR[i%NUM_MONTHS_OF_YEAR])) {
-				result.put(MONTHS_OF_YEAR[i%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
-			}
-			
-			if(firtstDayOfNextMonth.isAfter(LocalDateTime.now())) {			
-				result.get(MONTHS_OF_YEAR[i%NUM_MONTHS_OF_YEAR]).put(
-						firstDayOfMonth.getYear() + " - Todos los pacientes", "-");
-				result.get(MONTHS_OF_YEAR[i%NUM_MONTHS_OF_YEAR]).put(
-						firstDayOfMonth.getYear() + " - Pacientes Controlados ", "-");
-			} else {
-
-				// Consumo de todos los pacientes separado por meses
-				Double consumeByMonth = dispensationRepository.findResultsAllPatiensByMonth(firstDayOfMonth, firtstDayOfNextMonth, code);			
-				result.get(MONTHS_OF_YEAR[i%NUM_MONTHS_OF_YEAR]).put(
-						firstDayOfMonth.getYear() + " - Todos los pacientes", consumeByMonth.toString());
-				
-				//Consumo de todos los pacientes controlados (PASI=0) separado por meses
-				Double consumeByPasi = 0.0;
-				
-				List<HealthOutcome> patiensWithPasiList = dispensationRepository.findPatiensWithPasi(LocalDateTime.now().plusYears(-3));
-				
-				Map<Patient, DoubleSummaryStatistics> patientMap = patiensWithPasiList.stream().collect(Collectors.groupingBy(
-						ho -> ho.getPatient(),
-						Collectors.summarizingDouble(ho -> Double.parseDouble(ho.getValue()))
-				));
-				
-
-				for (Entry<Patient, DoubleSummaryStatistics> me : patientMap.entrySet()) {
-					if(me.getValue().getSum() <= 3) {
-						Long patient = (me.getKey()).getId();
-						consumeByPasi += 
-								dispensationRepository.findResultsAllPasiPatiensByMonth(
-										firstDayOfMonth, firtstDayOfNextMonth, code, patient);
-					}
-		        }
-				
-				result.get(MONTHS_OF_YEAR[i%NUM_MONTHS_OF_YEAR]).put(
-						firstDayOfMonth.getYear() + " - Pacientes Controlados", consumeByPasi.toString());			
-			}
-			
-			firstDayOfMonth = firtstDayOfNextMonth;
-						
+		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
+			LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());			
+			fillMonthlyConsume(index, code, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, result);
+			dateStartPeriod = dateStopPeriod;				
 		}
 		
 		return result;
+	}
+	
+	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(String code, Integer lastYears) {
+		log.debug(CALLING_DB);
+		
+		Map<String, Map<String, String>> result = new HashMap<>();		
+		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
+		LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
+		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
+		
+		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
+			fillMonthlyConsume(index, code, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, result);	
+			dateStopPeriod = dateStopPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
+		}
+		
+		return result;
+	}
+
+	private void fillMonthlyConsume(int index, String code,
+			LocalDateTime dateStartPeriod, LocalDateTime dateStopPeriod,
+			List<Long> listPatients, Map<String, Map<String, String>> result) {
+		
+		if(!result.containsKey(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR])) {
+			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
+		}
+		
+		if(dateStopPeriod.isAfter(LocalDateTime.now())) {			
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Todos los pacientes", "-");
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Pacientes Controlados ", "-");
+		} else {
+
+			// Consumo de todos los pacientes separado por meses
+			Double consumeByMonth = dispensationRepository.findResultsAllPatiensByMonth(dateStartPeriod, dateStopPeriod, code);			
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Todos los pacientes", consumeByMonth.toString());
+			
+			//Consumo de todos los pacientes controlados (PASI=0) separado por meses
+			Double consumeByPasi = 0.0;
+						
+			for (Long patient : listPatients) {
+				consumeByPasi += 
+						dispensationRepository.findResultsAllPasiPatiensByMonth(LocalDateTime.now().plusMonths(-6),
+								dateStartPeriod, dateStopPeriod, code, patient);
+			}
+			
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Pacientes Controlados", consumeByPasi.toString());			
+		}
 	}
 }

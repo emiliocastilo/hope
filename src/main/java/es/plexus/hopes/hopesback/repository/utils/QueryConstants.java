@@ -129,19 +129,22 @@ public class QueryConstants {
 	
 	public static final String WHERE_FIND_ECONOMIC_RESULTS = 
 			"where dd.date between :dateStart and :dateEnd " + 
-			"and dd.code like CONCAT(LOWER(:code),'%')";
+			"and LOWER(dd.code) like CONCAT(LOWER(:code),'%')";
 	
 	public static final String QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH = 
 			SELECT_FIND_ECONOMIC_RESULTS +
 			WHERE_FIND_ECONOMIC_RESULTS;
 	
-	public static final String QUERY_PATIENTS_WITH_PASI =
-			SELECT_HO_FROM_HEALTHOUTCOME_HO +
-			"where ho.date > :date"; 			
-	
 	public static final String QUERY_FIND_RESULTS_PASI_PATIENTS_BY_MONTH = 
 			SELECT_FIND_ECONOMIC_RESULTS +
-			"left join HealthOutcome hou on hou.patient.id = :patient " +
-			WHERE_FIND_ECONOMIC_RESULTS;
+			WHERE_FIND_ECONOMIC_RESULTS +
+			" and (select " +
+			"sum(cast(ho.value as double)) as total from HealthOutcome ho " + 
+			"where ho.date > :date " +
+			"and ho.patient.id = :patient )  <=3";
+	
+	public static final String QUERY_ALL_PATIENTS_HEALHT_OUTCOME =
+			"select ho.patient.id from HealthOutcome ho " +
+			"group by ho.patient.id";
 	
 }

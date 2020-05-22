@@ -34,6 +34,7 @@ public class DispensationController {
 
 	static final String DISPENSATION_MAPPING = "/dispensations";
 	static final String FIND_MONTHLY_CONSUME = "/findMonthlyConsume";
+	static final String FIND_MONTHLY_CONSUME_ACCUMULATED = "/findMonthlyConsumeAccumulated";
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final DispensationService dispensationService;
@@ -80,6 +81,18 @@ public class DispensationController {
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
 		return dispensationService.findMonthlyConsume(code, lastYears);
+	}
+	
+	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED)
+	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(
+			@ApiParam(value = "Préfijo ATC")
+			@RequestParam(value = "code", required = true, defaultValue = "") final String code,
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
+		return dispensationService.findMonthlyConsumeAcumulated(code, lastYears);
 	}
 
 }
