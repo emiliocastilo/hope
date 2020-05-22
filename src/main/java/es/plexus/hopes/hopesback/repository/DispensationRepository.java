@@ -14,12 +14,12 @@ import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 public interface DispensationRepository extends JpaRepository<Dispensation, Long> {
 
 	@Query(QueryConstants.QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH)
-	Double findResultsAllPatiensByMonth(@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd, @Param("code")String code);
+	Double findResultsAllPatiensByMonth(@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);
 	
 	@Query(QueryConstants.QUERY_FIND_RESULTS_PASI_PATIENTS_BY_MONTH)
 	Double findResultsAllPasiPatiensByMonth(@Param("date")LocalDateTime date,
 			@Param("dateStart")LocalDateTime dateStart, 
-			@Param("dateEnd")LocalDateTime dateEnd, @Param("code")String code, @Param("patient")Long patient);
+			@Param("dateEnd")LocalDateTime dateEnd, @Param("patient")Long patient);
 	
 }
 

@@ -1,10 +1,890 @@
 {
 	"info": {
-		"_postman_id": "7d5f323b-05fb-48a0-9391-d6695518295c",
+		"_postman_id": "605207d8-0da1-470a-b9bd-3738e1142ab2",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "PatientDiagnoses",
+			"item": [
+				{
+					"name": "/patients-diagnoses/indications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/indications",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"indications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/indications/patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/indications/patients?indication=Psoriasis pustulosa",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"indications",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "indication",
+									"value": "Psoriasis pustulosa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/indications/patients-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/indications/patients-export?indication=Psoriasis pustulosa",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"indications",
+								"patients-export"
+							],
+							"query": [
+								{
+									"key": "indication",
+									"value": "Psoriasis pustulosa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/treatments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/treatments",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"treatments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/treatments/patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"treatments",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "treatmentType",
+									"value": "biologico"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/treatments/patients-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/treatments/patients-export?treatmentType=biologico",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"treatments",
+								"patients-export"
+							],
+							"query": [
+								{
+									"key": "treatmentType",
+									"value": "biologico"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/combined-treatments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"combined-treatments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/combined-treatments/patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments/patients",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"combined-treatments",
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/combined-treatments/patients-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments/patients-export?combinedTreatment=Biologico+Quimico",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"combined-treatments",
+								"patients-export"
+							],
+							"query": [
+								{
+									"key": "combinedTreatment",
+									"value": "Biologico+Quimico"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie9",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie9",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie9/patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ornare, elit ,",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie9",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "cie9",
+									"value": "ornare, elit ,"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie9/patients-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ornare, elit ,",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie9",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "cie9",
+									"value": "ornare, elit ,"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie10",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie10",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie10/patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients?cie10=at, libero. Morbi",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie10",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "cie10",
+									"value": "at, libero. Morbi"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/cie10/patients-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients-export?cie10=at, libero. Morbi",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"cie10",
+								"patients-export"
+							],
+							"query": [
+								{
+									"key": "cie10",
+									"value": "at, libero. Morbi"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes?endCause=Cambio",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes"
+							],
+							"query": [
+								{
+									"key": "endCause",
+									"value": "Cambio"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes/patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes/patients?endCause=cambio&reason=blanqueamiento",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "endCause",
+									"value": "cambio"
+								},
+								{
+									"key": "reason",
+									"value": "blanqueamiento"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes/patient-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes/patients-export?endCause=Cambio&reason=ineficacia",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes",
+								"patients-export"
+							],
+							"query": [
+								{
+									"key": "endCause",
+									"value": "Cambio"
+								},
+								{
+									"key": "reason",
+									"value": "ineficacia"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes-last-years",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years?endCause=cambio",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes-last-years"
+							],
+							"query": [
+								{
+									"key": "endCause",
+									"value": "cambio"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes-last-years/patient",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years/patients?endCause=cambio&reason=blanqueamiento&years=2",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes-last-years",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "endCause",
+									"value": "cambio"
+								},
+								{
+									"key": "reason",
+									"value": "blanqueamiento"
+								},
+								{
+									"key": "years",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/end-causes-last-years/patient-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years/patients-export?endCause=cambio&reason=ineficacia&years=2",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"end-causes-last-years",
+								"patients-export"
+							],
+							"query": [
+								{
+									"key": "endCause",
+									"value": "cambio"
+								},
+								{
+									"key": "reason",
+									"value": "ineficacia"
+								},
+								{
+									"key": "years",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/number-changes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/number-changes",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"number-changes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/number-changes/patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/number-changes/patients?numberChanges=3",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"number-changes",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "numberChanges",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/patients-diagnoses/number-changes/patients-export",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/number-changes/patients-export?numberChanges=3",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"number-changes",
+								"patients-export"
+							],
+							"query": [
+								{
+									"key": "numberChanges",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{dev}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-diagnoses",
+								"treatments",
+								"patients"
+							],
+							"query": [
+								{
+									"key": "treatmentType",
+									"value": "biologico"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
 		{
 			"name": "Patients",
 			"item": [
@@ -65,7 +945,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1f9d6cd3-8dcc-4c31-8454-d202fe0f5a92",
+								"id": "00618c62-20ba-44cb-8844-f439ba0267bd",
 								"exec": [
 									""
 								],
@@ -345,7 +1225,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d5a4790a-89e0-4187-afeb-b6759aaf6207",
+								"id": "f1918981-c811-45b2-89af-1e6b6da2d026",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -390,7 +1270,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8bc313ec-ab17-4fe3-85ae-c1bb0cd9dc86",
+								"id": "5bfc51a9-ea04-4332-9f0e-f55cf98c42cd",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1409,7 +2289,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fdcfe998-2865-4085-8e0a-df2db25602a4",
+								"id": "7c03966c-e225-49eb-b92b-55dbe11fe075",
 								"exec": [
 									""
 								],
@@ -1735,7 +2615,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3fdbf86b-91d0-44c0-85db-a4e65b083223",
+								"id": "e3cb74bf-ade0-44de-97f1-66d02127a493",
 								"exec": [
 									""
 								],
@@ -1864,6 +2744,41 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "dispensations/findMonthlyConsume",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensations/findMonthlyConsumeAccumulated?code=XXX",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensations",
+								"findMonthlyConsumeAccumulated"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "XXX"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -1928,7 +2843,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "64fa9ca0-c046-4eda-92bc-b4994f9b3c56",
+								"id": "6cc0eb66-887c-4fd7-b9d6-7c6b58c0eb79",
 								"exec": [
 									""
 								],
@@ -2169,7 +3084,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bd5576de-5de3-4937-b715-d7fa0ab858c2",
+								"id": "cab69c26-879b-427e-a5d4-ffcb21a78afa",
 								"exec": [
 									""
 								],
@@ -2566,7 +3481,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "127b0869-1720-4e7d-82ec-9b1cf982132c",
+								"id": "bd0aa1a4-a552-419e-872a-e37b96037e0c",
 								"exec": [
 									""
 								],
@@ -2673,7 +3588,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "714a092f-b6a1-49b1-b721-04feb4947d7d",
+						"id": "ca676bd7-dd76-46b1-8d49-fb28e04195d3",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -2683,7 +3598,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b910c8ed-8f03-4f29-8a35-5b01c065ba3d",
+						"id": "f8b7fd3f-2ad6-44b7-b733-0f49f70d9abf",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3178,460 +4093,6 @@
 									"key": "indexType",
 									"value": "PASI"
 								}
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "PatientDiagnoses",
-			"item": [
-				{
-					"name": "/patients-diagnoses/indications",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/indications",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"indications"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/indications/patients",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/indications/patients?indication=Psoriasis pustulosa",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"indications",
-								"patients"
-							],
-							"query": [
-								{
-									"key": "indication",
-									"value": "Psoriasis pustulosa"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/indications/patients-export",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/indications/patients-export?indication=Psoriasis pustulosa",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"indications",
-								"patients-export"
-							],
-							"query": [
-								{
-									"key": "indication",
-									"value": "Psoriasis pustulosa"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/treatments",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/treatments",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"treatments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/combined-treatments",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"combined-treatments"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie9",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie9"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie9/patients",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ante lectus convallis est, ",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie9",
-								"patients"
-							],
-							"query": [
-								{
-									"key": "cie9",
-									"value": "ante lectus convallis est, "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie9/patients-export",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ante lectus convallis est, ",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie9",
-								"patients"
-							],
-							"query": [
-								{
-									"key": "cie9",
-									"value": "ante lectus convallis est, "
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10/patients",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10",
-								"patients"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10/patients-export",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients-export",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10",
-								"patients-export"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/end-causes",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes?endCause=Cambio",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"end-causes"
-							],
-							"query": [
-								{
-									"key": "endCause",
-									"value": "Cambio"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/end-causes-last-years",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years?endCause=cambio",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"end-causes-last-years"
-							],
-							"query": [
-								{
-									"key": "endCause",
-									"value": "cambio"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/number-changes",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/number-changes",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"number-changes"
 							]
 						}
 					},

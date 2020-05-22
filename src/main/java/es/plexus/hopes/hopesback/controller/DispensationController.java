@@ -35,6 +35,8 @@ public class DispensationController {
 	static final String DISPENSATION_MAPPING = "/dispensations";
 	static final String FIND_MONTHLY_CONSUME = "/findMonthlyConsume";
 	static final String FIND_MONTHLY_CONSUME_ACCUMULATED = "/findMonthlyConsumeAccumulated";
+	static final String FIND_MONTHLY_CONSUME_AVG = "/findMonthlyConsumeAvg";
+	static final String FIND_MONTHLY_CONSUME_ACCUMULATED_AVG = "/findMonthlyConsumeAccumulatedAvg";
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final DispensationService dispensationService;
@@ -75,24 +77,39 @@ public class DispensationController {
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_MONTHLY_CONSUME)
 	public Map<String, Map<String, String>> findMonthlyConsume(
-			@ApiParam(value = "Préfijo ATC")
-			@RequestParam(value = "code", required = true, defaultValue = "") final String code,
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
-		return dispensationService.findMonthlyConsume(code, lastYears);
+		return dispensationService.findMonthlyConsume(lastYears, false);
 	}
 	
 	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED)
 	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(
-			@ApiParam(value = "Préfijo ATC")
-			@RequestParam(value = "code", required = true, defaultValue = "") final String code,
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
-		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
-		return dispensationService.findMonthlyConsumeAcumulated(code, lastYears);
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED);
+		return dispensationService.findMonthlyConsumeAcumulated(lastYears, false);
 	}
 
+	@ApiOperation("Consumo mensual medio en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME_AVG)
+	public Map<String, Map<String, String>> findMonthlyConsumeAvg(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_AVG);
+		return dispensationService.findMonthlyConsume(lastYears, true);
+	}
+	
+	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED_AVG)
+	public Map<String, Map<String, String>> findMonthlyConsumeAcumulatedAvg(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED_AVG);
+		return dispensationService.findMonthlyConsumeAcumulated(lastYears, true);
+	}
 }

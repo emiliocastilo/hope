@@ -1,9 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import java.text.DateFormatSymbols;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -120,4 +118,10 @@ public class DispensationDetailService {
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 	}
 	
+	public List<String> findPatiensMonth(LocalDateTime dateStart, LocalDateTime dateEnd) {
+		log.debug(CALLING_DB);
+		List<String> listPatients = dispensationDetailRepository.findPatiensMonth(dateStart, dateEnd);
+
+		return listPatients;
+	}
 }

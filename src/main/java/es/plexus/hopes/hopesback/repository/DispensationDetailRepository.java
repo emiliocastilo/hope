@@ -1,8 +1,7 @@
 package es.plexus.hopes.hopesback.repository;
 
-import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
-import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
+import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 
 @Repository
 public interface DispensationDetailRepository extends JpaRepository<DispensationDetail, Long> {
@@ -31,4 +31,7 @@ public interface DispensationDetailRepository extends JpaRepository<Dispensation
 			+ " OR CAST(dd.amount as text) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR CAST(dd.daysDispensation as text) like CONCAT('%',LOWER(:search),'%') ")
 	Page<DispensationDetail> findDispensationDetailBySearch(@Param("search")String search, Pageable pageable);
+	
+	@Query(QueryConstants.QUERY_NUMBER_PATIENTS_MONTH)
+	List<String> findPatiensMonth(@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);
 }
