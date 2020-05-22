@@ -148,7 +148,7 @@ public class UserService {
 		return user;
 	}
 
-	private Optional<User> getOneUserCommon(Long id) {
+	Optional<User> getOneUserCommon(Long id) {
 		return userRepository.findById(id);
 	}
 
@@ -265,11 +265,11 @@ public class UserService {
 			if (checkIfValidOldPassword(user.get(), passwordDTO.getPassword())) {
 				changeUserPassword(user.get(), passwordDTO.getNewPassword());
 			} else {
-				throw ServiceExceptionCatalog.INVALID_LOGIN
+				throw ServiceExceptionCatalog.INVALID_LOGIN_EXCEPTION
 						.exception("Error: Invalid password");
 			}
 		} else {
-			throw ServiceExceptionCatalog.INVALID_LOGIN
+			throw ServiceExceptionCatalog.INVALID_LOGIN_EXCEPTION
 					.exception("Error: Username not found while requesting password change");
 		}
 

@@ -37,15 +37,18 @@ public class PatientService {
 	}
 
 	public PatientDTO findById(Long id) throws ServiceException {
+		Optional<Patient> patientEntity = getEntityPatientById(id);
+		return PatientMapper.INSTANCE.entityToDto(patientEntity.get());
+	}
 
+	Optional<Patient> getEntityPatientById(Long id) throws ServiceException {
 		Optional<Patient> patientEntity = patientRepository.findById(id);
 		if (!patientEntity.isPresent()) {
 			log.error("Id " + id + " no existe");
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
-					.exception("No se ha encontrado el paciente con el id: "+ id);
+					.exception("No se ha encontrado el paciente con el id: " + id);
 		}
-
-		return PatientMapper.INSTANCE.entityToDto(patientEntity.get());
+		return patientEntity;
 	}
 
 	public PatientDTO save(PatientDTO patient) throws ServiceException {
