@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "605207d8-0da1-470a-b9bd-3738e1142ab2",
-		"name": "Hopes copy",
+		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2515,6 +2515,262 @@
 								{
 									"key": "search",
 									"value": "NH098"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-monthly-consumes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/find-monthly-consumes",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"find-monthly-consumes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-monthly-consumes-accumulated",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensations/findMonthlyConsumeAccumulated",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensations",
+								"findMonthlyConsumeAccumulated"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-monthly-consumes-avg",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensations/findMonthlyConsumeAvg",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensations",
+								"findMonthlyConsumeAvg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-monthly-consumes-accumulated-avg",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/find-monthly-consumes-accumulated-avg",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"find-monthly-consumes-accumulated-avg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-total-cost-treatments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/find-total-cost-treatments?code=D11AH05",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"find-total-cost-treatments"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "D11AH05"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-total-cost-treatments-accumulated",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/findTotalCostTreatment?code=D11AH05",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"findTotalCostTreatment"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "D11AH05"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-total-cost-treatments-avg",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/findTotalCostTreatment?code=D11AH05",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"findTotalCostTreatment"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "D11AH05"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dispensation-details/find-total-cost-treatments-accumulated-avg",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/dispensation-details/find-total-cost-treatments-accumulated-avg?code=D11AH05",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"dispensation-details",
+								"find-total-cost-treatments-accumulated-avg"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "D11AH05"
 								}
 							]
 						}

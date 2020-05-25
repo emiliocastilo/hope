@@ -1,5 +1,13 @@
 package es.plexus.hopes.hopesback.service;
 
+import java.util.Objects;
+import java.util.Optional;
+
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import es.plexus.hopes.hopesback.controller.model.DispensationDTO;
 import es.plexus.hopes.hopesback.controller.model.FormDispensationDTO;
 import es.plexus.hopes.hopesback.repository.DispensationRepository;
@@ -7,22 +15,18 @@ import es.plexus.hopes.hopesback.repository.model.Dispensation;
 import es.plexus.hopes.hopesback.service.mapper.DispensationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.service.spi.ServiceException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.Objects;
-import java.util.Optional;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class DispensationService {
-	private static final String CALLING_DB = "Llamando a la DB...";
+	private static final String CALLING_DB = "Calling BD...";
+	
+	
 	private final DispensationRepository dispensationRepository;
 	private final DispensationDetailService dispensationDetailService;
-
+	
+	
 	public DispensationDTO save(FormDispensationDTO dispensationDTO) {
 		if(Objects.nonNull(dispensationDTO)){
 			log.debug(CALLING_DB);
@@ -55,4 +59,6 @@ public class DispensationService {
 		Page<Dispensation> page = dispensationRepository. findAll(pageable);
 		return page.map(DispensationMapper.INSTANCE::entityToDto);
 	}
+	
+	
 }
