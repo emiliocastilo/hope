@@ -189,7 +189,7 @@ public class PhotoService {
 									  final HttpServletResponse response) throws Exception {
 
 		//ToDO: llamar al servicio para generar el nuevo token con los id's configurados
-		final String endPoint = imageGalleryUrl.concat("?token=").concat(token.replace("Bearer ", ""));
+		final String endPoint = imageGalleryUrl.concat("/?token=").concat(token.replace("Bearer ", ""));
 
 		final ByteArrayOutputStream byteArrayOutputStream = generateQR(endPoint);
 		byteArrayOutputStream.flush();
