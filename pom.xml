@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.plexus.hopes</groupId>
     <artifactId>hopes-back</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>hopes-back</name>
     <description>Hopes Back</description>
 
