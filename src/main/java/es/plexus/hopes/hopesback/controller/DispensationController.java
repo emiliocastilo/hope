@@ -1,7 +1,5 @@
 package es.plexus.hopes.hopesback.controller;
 
-import java.util.Map;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,10 +30,7 @@ import lombok.extern.log4j.Log4j2;
 public class DispensationController {
 
 	static final String DISPENSATION_MAPPING = "/dispensations";
-	static final String FIND_MONTHLY_CONSUME = "/findMonthlyConsume";
-	static final String FIND_MONTHLY_CONSUME_ACCUMULATED = "/findMonthlyConsumeAccumulated";
-	static final String FIND_MONTHLY_CONSUME_AVG = "/findMonthlyConsumeAvg";
-	static final String FIND_MONTHLY_CONSUME_ACCUMULATED_AVG = "/findMonthlyConsumeAccumulatedAvg";
+	
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final DispensationService dispensationService;
@@ -73,43 +67,4 @@ public class DispensationController {
 		return dispensationService.findAll(pageable);
 	}
 	
-	@ApiOperation("Consumo mensual en euros (Biolgicos)")
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(FIND_MONTHLY_CONSUME)
-	public Map<String, Map<String, String>> findMonthlyConsume(
-			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
-		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
-		return dispensationService.findMonthlyConsume(lastYears, false);
-	}
-	
-	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED)
-	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(
-			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
-		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED);
-		return dispensationService.findMonthlyConsumeAcumulated(lastYears, false);
-	}
-
-	@ApiOperation("Consumo mensual medio en euros (Biolgicos)")
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(FIND_MONTHLY_CONSUME_AVG)
-	public Map<String, Map<String, String>> findMonthlyConsumeAvg(
-			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
-		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_AVG);
-		return dispensationService.findMonthlyConsume(lastYears, true);
-	}
-	
-	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED_AVG)
-	public Map<String, Map<String, String>> findMonthlyConsumeAcumulatedAvg(
-			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
-		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED_AVG);
-		return dispensationService.findMonthlyConsumeAcumulated(lastYears, true);
-	}
 }

@@ -34,4 +34,15 @@ public interface DispensationDetailRepository extends JpaRepository<Dispensation
 	
 	@Query(QueryConstants.QUERY_NUMBER_PATIENTS_MONTH)
 	List<String> findPatiensMonth(@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);
+	
+	/*@Query(QueryConstants.QUERY_FIND_RESULTS_ECO_TREATMENT_BY_MONTH)
+	Double findResultsAllPatiensByMonth(@Param("code")String code, @Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);*/
+	
+	@Query(QueryConstants.QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH)
+	Double findResultsAllPatiensByMonth(@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd, @Param("code")String code);
+	
+	@Query(QueryConstants.QUERY_FIND_RESULTS_PASI_PATIENTS_BY_MONTH)
+	Double findResultsAllPasiPatiensByMonth(@Param("date")LocalDateTime date,
+			@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd,
+			@Param("patient")Long patient,  @Param("code")String code);
 }

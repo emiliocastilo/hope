@@ -186,23 +186,24 @@ public class QueryConstants {
 					"order by ptr.patient";
 	
 	// ----------------------- DATOS FARMA-ECONOMICOS ---------------------------------
-	public static final String SELECT_FIND_ECONOMIC_RESULTS = 
+	public static final String SELECT_FIND_BIO_ECONOMIC_RESULTS = 
 			"select " +
 			"coalesce(sum(dd.amount),0) as total from Dispensation d " + 
 			"join DispensationDetail dd on d.id = dd.dispensation.id " +
 			"join Medicine me on dd.code = me.codeAct " + 
-			"and me.biologic = true ";
+			"and me.biologic = true " +
+			"and (:code is null or dd.code = :code)";;
 	
-	public static final String WHERE_FIND_ECONOMIC_RESULTS = 
+	public static final String WHERE_FIND_BIO_ECONOMIC_RESULTS = 
 			"where dd.date between :dateStart and :dateEnd "; 
 	
 	public static final String QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH = 
-			SELECT_FIND_ECONOMIC_RESULTS +
-			WHERE_FIND_ECONOMIC_RESULTS;
+			SELECT_FIND_BIO_ECONOMIC_RESULTS +
+			WHERE_FIND_BIO_ECONOMIC_RESULTS;
 	
 	public static final String QUERY_FIND_RESULTS_PASI_PATIENTS_BY_MONTH = 
-			SELECT_FIND_ECONOMIC_RESULTS +
-			WHERE_FIND_ECONOMIC_RESULTS +
+			SELECT_FIND_BIO_ECONOMIC_RESULTS +
+			WHERE_FIND_BIO_ECONOMIC_RESULTS +
 			" and (select " +
 			"sum(cast(ho.value as double)) as total from HealthOutcome ho " + 
 			"where ho.date > :date " +
@@ -216,4 +217,9 @@ public class QueryConstants {
 			"select dd.nhc from DispensationDetail dd " +
 			"where dd.date between :dateStart and :dateEnd " + 
 			"group by dd.nhc";
+	
+	/*public static final String QUERY_FIND_RESULTS_ECO_TREATMENT_BY_MONTH = 
+			SELECT_FIND_BIO_ECONOMIC_RESULTS +
+			WHERE_FIND_BIO_ECONOMIC_RESULTS +
+			"and dd.code = :code";*/
 }

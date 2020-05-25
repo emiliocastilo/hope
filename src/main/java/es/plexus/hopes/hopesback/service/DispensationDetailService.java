@@ -2,8 +2,13 @@ package es.plexus.hopes.hopesback.service;
 
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.temporal.TemporalAdjusters;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,9 +37,12 @@ import lombok.extern.log4j.Log4j2;
 public class DispensationDetailService {
 
 	private static final String CALLING_DB = "Llamando a la DB...";
-    private static final DateFormatSymbols MONTHS_OF_YEAR = new DateFormatSymbols(Locale.getDefault());
+	private static final String[] MONTHS_OF_YEAR = (new DateFormatSymbols(Locale.getDefault()).getShortMonths());
+    private static final LocalDateTime FIRST_DAY_OF_CURRENT_YEAR = LocalDateTime.of(Calendar.getInstance().get(Calendar.YEAR), Month.JANUARY, 1, 0, 0);
+    private static final Integer NUM_MONTHS_OF_YEAR = 12;
 	
 	private final DispensationDetailRepository dispensationDetailRepository;
+	private final HealthOutcomeService healthOutcomeService;
 
 	public DispensationDetailDTO save(DispensationDetailDTO dispensationDTO) {
 		if(Objects.nonNull(dispensationDTO)){
@@ -118,10 +126,94 @@ public class DispensationDetailService {
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 	}
 	
-	public List<String> findPatiensMonth(LocalDateTime dateStart, LocalDateTime dateEnd) {
+	public Map<String, Map<String, String>> findMonthlyConsume(Integer lastYears, Boolean isAvg, String code) {
 		log.debug(CALLING_DB);
-		List<String> listPatients = dispensationDetailRepository.findPatiensMonth(dateStart, dateEnd);
+		
+		Map<String, Map<String, String>> result = new HashMap<>();		
+		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
+		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
+		
+		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
+			LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());			
+			fillMonthlyConsume(index, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, isAvg, code, result);
+			dateStartPeriod = dateStopPeriod;				
+		}
+		
+		return result;
+	}
+	
+	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(Integer lastYears, Boolean isAvg, String code) {
+		log.debug(CALLING_DB);
+		
+		Map<String, Map<String, String>> result = new HashMap<>();		
+		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
+		LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
+		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
+		
+		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
+			fillMonthlyConsume(index, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, isAvg, code, result);	
+			dateStopPeriod = dateStopPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
+		}
+		
+		return result;
+	}
+	
+	private void fillMonthlyConsume(int index,
+			LocalDateTime dateStartPeriod, LocalDateTime dateStopPeriod,
+			List<Long> listPatients, Boolean isAvg, String code,
+			Map<String, Map<String, String>> result) {
+		
 
-		return listPatients;
+		String resultAllPatients = "-";
+		String resultAllPatientsContolled = "-";
+		
+		if(!result.containsKey(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR])) {
+			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
+		}
+		
+		if(dateStopPeriod.isAfter(LocalDateTime.now())) {			
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Todos los pacientes", resultAllPatients);
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Pacientes Controlados ", resultAllPatientsContolled);
+		} else {
+			
+			// Consumo de todos los pacientes separado por meses
+			Double consumeByMonth = dispensationDetailRepository.findResultsAllPatiensByMonth(
+					dateStartPeriod, dateStopPeriod, code);			
+			
+			
+			//Consumo de todos los pacientes controlados (PASI=0) separado por meses
+			Double consumeByPasi = 0.0;
+						
+			for (Long patient : listPatients) {
+				consumeByPasi += 
+						dispensationDetailRepository.findResultsAllPasiPatiensByMonth(LocalDateTime.now().plusMonths(-6),
+								dateStartPeriod, dateStopPeriod, patient, code);
+			}
+			
+			if(isAvg) {
+				if(consumeByMonth > 0) {
+					List<String> listPatientsForAvg = dispensationDetailRepository.findPatiensMonth(
+							dateStopPeriod.plusMonths(-3), dateStopPeriod.plusSeconds(-1));
+					if(listPatientsForAvg.size() > 0) {
+						consumeByMonth /= listPatientsForAvg.size();
+						resultAllPatients = consumeByMonth.toString();
+						consumeByPasi /= listPatientsForAvg.size();
+						resultAllPatientsContolled = consumeByPasi.toString();
+					}
+				} else {
+					resultAllPatients = "0.0";
+					resultAllPatientsContolled = "0.0";
+				}
+			}
+			
+			// Set result in current month
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Todos los pacientes", consumeByMonth.toString());
+			
+			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
+					dateStopPeriod.getYear() + " - Pacientes Controlados", consumeByPasi.toString());			
+		}
 	}
 }
