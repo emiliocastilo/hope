@@ -191,11 +191,11 @@ public class QueryConstants {
 			"coalesce(sum(dd.amount),0) as total from Dispensation d " + 
 			"join DispensationDetail dd on d.id = dd.dispensation.id " +
 			"join Medicine me on dd.code = me.codeAct " + 
-			"and me.biologic = true " +
-			"and (:code is null or dd.code = :code)";;
+			"and me.biologic = true ";
 	
 	public static final String WHERE_FIND_BIO_ECONOMIC_RESULTS = 
-			"where dd.date between :dateStart and :dateEnd "; 
+			"where dd.date between :dateStart and :dateEnd " +
+			"and (:code is null or dd.code = :code)"; 
 	
 	public static final String QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH = 
 			SELECT_FIND_BIO_ECONOMIC_RESULTS +
@@ -218,8 +218,4 @@ public class QueryConstants {
 			"where dd.date between :dateStart and :dateEnd " + 
 			"group by dd.nhc";
 	
-	/*public static final String QUERY_FIND_RESULTS_ECO_TREATMENT_BY_MONTH = 
-			SELECT_FIND_BIO_ECONOMIC_RESULTS +
-			WHERE_FIND_BIO_ECONOMIC_RESULTS +
-			"and dd.code = :code";*/
 }
