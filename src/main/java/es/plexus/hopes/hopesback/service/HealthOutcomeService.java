@@ -44,6 +44,11 @@ public class HealthOutcomeService {
 		return  healthOutcomeRepository.getDetailsResultsByType(indexType);	
 	}
 	
+	public List<Long> getAllPatientsId() {
+		log.debug(CALLING_DB);		
+		return  healthOutcomeRepository.getAllPatientsId();	
+	}
+	
 	private Map<String, Long> fillResultsByTypes(String type) {
 		Map<String, Long> result = new HashMap<>();
 		
@@ -62,9 +67,6 @@ public class HealthOutcomeService {
 				.count();
 			result.put(m.getValue().getResult(), count);
 		});
-		
-		
-		
 		
 		return result;
 	}

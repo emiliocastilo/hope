@@ -57,5 +57,9 @@ public class Medicine extends AbstractAudit {
     @Basic
     @Column(name = "med_commercialization", nullable = false)
     private boolean commercialization;
+    
+    @Basic
+    @Column(name = "med_biologic", nullable = false)
+    private boolean biologic;
 
 }

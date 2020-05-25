@@ -1,12 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
-import es.plexus.hopes.hopesback.service.DispensationDetailService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,6 +17,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
+import es.plexus.hopes.hopesback.service.DispensationDetailService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
 @Api(value = "Controlador para recuperar los detalles de las dispensaciones", tags = "dispensation-detail")
 @Log4j2
 @RestController
@@ -30,7 +33,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class DispensationDetailController {
 
 	static final String DISPENSATION_DETAILS_MAPPING = "/dispensation-details";
-	private static final String CALLING_SERVICE = "Llamando al servicio...";
+	static final String FIND_MONTHLY_CONSUME = "/find-monthly-consumes";
+	static final String FIND_MONTHLY_CONSUME_ACCUMULATED = "/find-monthly-consumes-accumulated";
+	static final String FIND_MONTHLY_CONSUME_AVG = "/find-monthly-consumes-avg";
+	static final String FIND_MONTHLY_CONSUME_ACCUMULATED_AVG = "/find-monthly-consumes-accumulated-avg";
+	static final String FIND_TOTAL_MONTHLY_COST_TRATMENT = "/find-total-cost-treatments";
+	static final String FIND_TOTAL_MONTHLY_COST_TRATMENT_ACCUMULATED = "/find-total-cost-treatments-accumulated";
+	static final String FIND_TOTAL_MONTHLY_COST_TRATMENT_AVG = "/find-total-cost-treatments-avg";
+	static final String FIND_TOTAL_MONTHLY_COST_TRATMENT_ACCUMULATED_AVG = "/find-total-cost-treatments-accumulated-avg";
+	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final DispensationDetailService dispensationDetailService;
 
@@ -98,4 +109,91 @@ public class DispensationDetailController {
 		return dispensationDetailService.filterDispensationDetails(dispensation, pageable);
 	}
 
+	@ApiOperation("Consumo mensual en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME)
+	public Map<String, Map<String, String>> findMonthlyConsume(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
+		return dispensationDetailService.findMonthlyConsume(lastYears, false, null);
+	}
+	
+	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED)
+	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, false, null);
+	}
+
+	@ApiOperation("Consumo mensual medio en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME_AVG)
+	public Map<String, Map<String, String>> findMonthlyConsumeAvg(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_AVG);
+		return dispensationDetailService.findMonthlyConsume(lastYears, true, null);
+	}
+	
+	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED_AVG)
+	public Map<String, Map<String, String>> findMonthlyConsumeAcumulatedAvg(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED_AVG);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, true, null);
+	}
+	
+	@ApiOperation("Coste Total por tratamiento Biolgico")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT)
+	public Map<String, Map<String, String>> findTotalCostTreatment(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@ApiParam(value = "Código ATC del medicamento")
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
+		return dispensationDetailService.findMonthlyConsume(lastYears, false, code);
+	}
+	
+	@ApiOperation("Coste Total acumulado por tratamiento Biolgico")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT_ACCUMULATED)
+	public Map<String, Map<String, String>> findTotalCostTreatmentAcumulated(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@ApiParam(value = "Código ATC del medicamento")
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, false, code);
+	}
+
+	@ApiOperation("Coste Total medio por tratamiento Biolgico")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT_AVG)
+	public Map<String, Map<String, String>> findTotalCostTreatmentAvg(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@ApiParam(value = "Código ATC del medicamento")
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_AVG);
+		return dispensationDetailService.findMonthlyConsume(lastYears, true, code);
+	}
+	
+	@ApiOperation("Coste Total por tratamiento Biolgico")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT_ACCUMULATED_AVG)
+	public Map<String, Map<String, String>> findTotalCostTreatmentAcumulatedAvg(
+			@ApiParam(value = "Años atrás")
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@ApiParam(value = "Código ATC del medicamento")
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED_AVG);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, true, code);
+	}
 }

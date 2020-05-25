@@ -184,4 +184,38 @@ public class QueryConstants {
 					"and ptr.patient in (select pt2.patient from PatientTreatment pt2 " +
 										"where pt2.active = true group by pt2.patient having count(*)>=2) " +
 					"order by ptr.patient";
+	
+	// ----------------------- DATOS FARMA-ECONOMICOS ---------------------------------
+	public static final String SELECT_FIND_BIO_ECONOMIC_RESULTS = 
+			"select " +
+			"coalesce(sum(dd.amount),0) as total from Dispensation d " + 
+			"join DispensationDetail dd on d.id = dd.dispensation.id " +
+			"join Medicine me on dd.code = me.codeAct " + 
+			"and me.biologic = true ";
+	
+	public static final String WHERE_FIND_BIO_ECONOMIC_RESULTS = 
+			"where dd.date between :dateStart and :dateEnd " +
+			"and (:code is null or dd.code = :code)"; 
+	
+	public static final String QUERY_FIND_RESULTS_ALL_PATIENTS_BY_MONTH = 
+			SELECT_FIND_BIO_ECONOMIC_RESULTS +
+			WHERE_FIND_BIO_ECONOMIC_RESULTS;
+	
+	public static final String QUERY_FIND_RESULTS_PASI_PATIENTS_BY_MONTH = 
+			SELECT_FIND_BIO_ECONOMIC_RESULTS +
+			WHERE_FIND_BIO_ECONOMIC_RESULTS +
+			" and (select " +
+			"sum(cast(ho.value as double)) as total from HealthOutcome ho " + 
+			"where ho.date > :date " +
+			"and ho.patient.id = :patient )  <=3";
+	
+	public static final String QUERY_ALL_PATIENTS_HEALHT_OUTCOME =
+			"select ho.patient.id from HealthOutcome ho " +
+			"group by ho.patient.id";
+	
+	public static final String QUERY_NUMBER_PATIENTS_MONTH =
+			"select dd.nhc from DispensationDetail dd " +
+			"where dd.date between :dateStart and :dateEnd " + 
+			"group by dd.nhc";
+	
 }
