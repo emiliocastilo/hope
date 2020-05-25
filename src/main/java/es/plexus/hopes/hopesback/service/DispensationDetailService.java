@@ -173,9 +173,6 @@ public class DispensationDetailService {
 			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
 		}
 		
-		
-		
-		
 		if(ymStopPeriod.isAfter(ymNow)) {			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
 					dateStopPeriod.getYear() + " - Todos los pacientes", resultAllPatients);
@@ -186,7 +183,6 @@ public class DispensationDetailService {
 			// Consumo de todos los pacientes separado por meses
 			Double consumeByMonth = dispensationDetailRepository.findResultsAllPatiensByMonth(
 					dateStartPeriod, dateStopPeriod, code);			
-			
 			
 			//Consumo de todos los pacientes controlados (PASI=0) separado por meses
 			Double consumeByPasi = 0.0;
