@@ -110,12 +110,11 @@ public class PhotoControllerTest {
 	public void generateQRPhotosShouldBeStatusNoContent() throws Exception {
 		// given
 		HttpServletResponse response = mock(HttpServletResponse.class);
-		OutputStream os = mock(OutputStream.class);
 		given(photoService.generateQRCodeImage(anyLong(), anyLong(), anyString(), any(HttpServletResponse.class)))
-				.willReturn(os);
+				.willReturn("test");
 
 		// when
-		OutputStream outputStream = photoController.generateQR(1L, 1L, "test", response);
+		String outputStream = photoController.generateQR(1L, 1L, "test", response);
 
 		// then
 		assertNotNull(outputStream);

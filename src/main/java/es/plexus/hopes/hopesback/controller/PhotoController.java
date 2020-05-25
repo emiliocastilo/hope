@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
 import java.util.List;
 
 @Api(value = "Controlador de fotos", tags = "photo")
@@ -90,12 +89,12 @@ public class PhotoController {
 	}
 
 	@ApiOperation("Generar código QR")
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(value = "/qr")
-	public OutputStream generateQR(@ApiParam(value = "identificador paciente", required = true) @RequestParam("pac") Long pacId,
-								   @ApiParam(value = "identificador patologia", required = true) @RequestParam("pth") Long pthId,
-								   @RequestHeader(name = "Authorization") final String token,
-								   final HttpServletResponse response) throws Exception {
+	public String generateQR(@ApiParam(value = "identificador paciente", required = true) @RequestParam("pac") Long pacId,
+							 @ApiParam(value = "identificador patologia", required = true) @RequestParam("pth") Long pthId,
+							 @RequestHeader(name = "Authorization") final String token,
+							 final HttpServletResponse response) throws Exception {
 
 		return photoService.generateQRCodeImage(pacId, pthId, token, response);
 	}

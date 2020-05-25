@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -185,22 +185,21 @@ public class PhotoService {
 		}
 	}
 
-	public OutputStream generateQRCodeImage(final Long pacId, final Long pthId, final String token,
-											final HttpServletResponse response) throws Exception {
+	public String generateQRCodeImage(final Long pacId, final Long pthId, final String token,
+									  final HttpServletResponse response) throws Exception {
 
 		//ToDO: llamar al servicio para generar el nuevo token con los id's configurados
 		final String endPoint = imageGalleryUrl.concat("?token=").concat(token.replace("Bearer ", ""));
 
 		final ByteArrayOutputStream byteArrayOutputStream = generateQR(endPoint);
+		byteArrayOutputStream.flush();
 
-		final OutputStream outputStream = response.getOutputStream();
-		outputStream.write(byteArrayOutputStream.toByteArray());
-		outputStream.flush();
-		outputStream.close();
+		byte[] bytes = byteArrayOutputStream.toByteArray();
+		byteArrayOutputStream.close();
 
 		response.setContentType(MediaType.IMAGE_PNG_VALUE);
 
-		return outputStream;
+		return Base64.getEncoder().encodeToString(bytes);
 	}
 
 	private ByteArrayOutputStream generateQR(String endPoint) throws WriterException, IOException {

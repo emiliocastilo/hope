@@ -4473,7 +4473,10 @@
 					"response": []
 				},
 				{
-					"name": "Imagen QR",
+					"name": "QR",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -4485,26 +4488,36 @@
 								}
 							]
 						},
-						"method": "POST",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "https://es.pornhub.com/",
+							"raw": "",
 							"options": {
 								"raw": {
-									"language": "text"
+									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/photos/qrcode",
+							"raw": "{{dev}}/v1/photos/qr?pac=21&pth=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"photos",
-								"qrcode"
+								"qr"
+							],
+							"query": [
+								{
+									"key": "pac",
+									"value": "21"
+								},
+								{
+									"key": "pth",
+									"value": "1"
+								}
 							]
 						}
 					},
