@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.service;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -163,7 +164,8 @@ public class DispensationDetailService {
 			List<Long> listPatients, Boolean isAvg, String code,
 			Map<String, Map<String, String>> result) {
 		
-
+		YearMonth ymStopPeriod = YearMonth.from(dateStopPeriod);
+		YearMonth ymNow = YearMonth.from(LocalDateTime.now());
 		String resultAllPatients = "-";
 		String resultAllPatientsContolled = "-";
 		
@@ -171,7 +173,10 @@ public class DispensationDetailService {
 			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
 		}
 		
-		if(dateStopPeriod.isAfter(LocalDateTime.now())) {			
+		
+		
+		
+		if(ymStopPeriod.isAfter(ymNow)) {			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
 					dateStopPeriod.getYear() + " - Todos los pacientes", resultAllPatients);
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
