@@ -15,7 +15,6 @@ public interface PhotoMapper {
 	@Mappings({
 			@Mapping(target = "pathology", ignore = true),
 			@Mapping(target = "patient", ignore = true),
-			@Mapping(target = "userName", ignore = true)
 	})
 	Photo photoDTOToPhotoConverter(final PhotoDTO photoDTO);
 }

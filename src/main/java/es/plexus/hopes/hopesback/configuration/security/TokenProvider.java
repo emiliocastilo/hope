@@ -18,7 +18,13 @@ import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.AUTHORITIES_KEY;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.ISSUER_INFO;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.PATHOLOGY_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.PATIENT_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.QR_TOKEN_EXPIRATION_TIME;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.SECRET_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.SECRET_QR_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_HOPES_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.USERNAME_HOPES_KEY;
 
 public class TokenProvider {
 
@@ -76,4 +82,38 @@ public class TokenProvider {
 
 		return claimsJws.getBody().getSubject();
 	}
+
+	/**
+	 * Generate Token for the request the upload images by QR
+	 * @param token  -- Logged user token
+	 * @param pathId -- Pathology identifier
+	 * @param patId  -- Patient identifier
+	 * @return
+	 */
+	public static String generateQRToken(final String token, final Long pathId, final Long patId) {
+		String username = getUserName(token);
+		return Jwts.builder()
+				.setSubject(username)
+				.claim(USERNAME_HOPES_KEY, username)
+				.claim(PATHOLOGY_KEY, pathId)
+				.claim(PATIENT_KEY, patId)
+				.claim(TOKEN_HOPES_KEY, token)
+				.signWith(SignatureAlgorithm.HS256, SECRET_QR_KEY)
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setIssuer(ISSUER_INFO)
+				.setExpiration(new Date(System.currentTimeMillis() + QR_TOKEN_EXPIRATION_TIME * 1000))
+				.compact();
+	}
+
+	public static Jws<Claims> getClaimsByQrTokenAndKey(String token) {
+		return getClaimsByTokenAndKey(token, SECRET_QR_KEY);
+	}
+
+	private static Jws<Claims> getClaimsByTokenAndKey(String token, String secretQrKey) {
+		final JwtParser jwtParser = Jwts.parser().setSigningKey(secretQrKey);
+
+		return jwtParser.parseClaimsJws(token);
+
+	}
+
 }

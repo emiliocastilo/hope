@@ -15,5 +15,5 @@ public class PhotoDTO extends PhotoCommon {
 	private Long patientId;
 
 	@ApiModelProperty(position = 30, example = "1", value = "Identificador del usuario relacionado en BD")
-	private Long userId;
+	private String username;
 }

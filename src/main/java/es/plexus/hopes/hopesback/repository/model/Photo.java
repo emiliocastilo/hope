@@ -47,6 +47,6 @@ public class Photo extends AbstractAudit {
 	private Patient patient;
 
 	@Column(name = "user_updated")
-	private String userName;
+	private String username;
 
 }
