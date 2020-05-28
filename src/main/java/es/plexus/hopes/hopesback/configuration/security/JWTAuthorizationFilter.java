@@ -1,6 +1,9 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
 import es.plexus.hopes.hopesback.service.UserDetailsServiceImpl;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_HOPES_KEY;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
@@ -34,12 +39,25 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 			return;
 		}
 		final String token = authorizationHeader.replace(Constants.TOKEN_BEARER_PREFIX, "");
-
-		String userName = TokenProvider.getUserName(token);
-		UserDetails user = userDetailsService.loadUserByUsername(userName);
-
-		UsernamePasswordAuthenticationToken authenticationToken = TokenProvider.getAuthentication(token, user);
+		UsernamePasswordAuthenticationToken authenticationToken = fillAuthenticationToken(httpServletRequest, token);
 		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 		filterChain.doFilter(httpServletRequest, httpServletResponse);
+	}
+
+	private UsernamePasswordAuthenticationToken fillAuthenticationToken(final HttpServletRequest httpServletRequest, final String token) {
+		String tokenHopes = token;
+		if(isRequestPostPhoto(httpServletRequest)){
+			Jws<Claims> qrClaims = TokenProvider.getClaimsByQrTokenAndKey(token);
+			tokenHopes = qrClaims.getBody().get(TOKEN_HOPES_KEY, String.class)
+					.replace(Constants.TOKEN_BEARER_PREFIX, "");
+		}
+		String userName = TokenProvider.getUserName(tokenHopes);
+		UserDetails user = userDetailsService.loadUserByUsername(userName);
+		return TokenProvider.getAuthentication(tokenHopes, user);
+	}
+
+	private boolean isRequestPostPhoto(final HttpServletRequest httpServletRequest) {
+		return HttpMethod.POST.toString().equalsIgnoreCase(httpServletRequest.getMethod()) &&
+						  httpServletRequest.getRequestURI().endsWith(Constants.ADD_PHOTO_BY_QR_URL);
 	}
 }

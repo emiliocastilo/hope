@@ -5,13 +5,13 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.controller.model.photo.PhotoDTO;
 import es.plexus.hopes.hopesback.controller.model.photo.PhotoViewDTO;
 import es.plexus.hopes.hopesback.repository.PhotoRepository;
 import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.Photo;
-import es.plexus.hopes.hopesback.repository.model.User;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.PhotoMapper;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -111,10 +111,6 @@ public class PhotoService {
 			photo.setPatient(resolvePatient(photoDTO.getPatientId()));
 		}
 
-		if (photoDTO.getUserId() != null) {
-			photo.setUserName(resolveUser(photoDTO).getUsername());
-		}
-
 		log.debug("Llamando a la BD para guardar una nueva foto");
 		photo = photoRepository.save(photo);
 
@@ -129,11 +125,6 @@ public class PhotoService {
 	public Patient resolvePatient(Long id) throws ServiceException {
 		Optional<Patient> patient = patientService.getEntityPatientById(id);
 		return patient.orElse(null);
-	}
-
-	private User resolveUser(PhotoDTO photoDTO) {
-		Optional<User> user = userService.getOneUserCommon(photoDTO.getUserId());
-		return user.orElse(null);
 	}
 
 	@Transactional
@@ -168,10 +159,10 @@ public class PhotoService {
 			} else {
 				photo.setPatient(resolvePatient(photoDTO.getPatientId()));
 			}
-			if (photoDTO.getUserId() == null) {
-				photo.setUserName(storedPhoto.get().getUserName());
+			if (photoDTO.getUsername() == null) {
+				photo.setUsername(storedPhoto.get().getUsername());
 			} else {
-				photo.setUserName(resolveUser(photoDTO).getUsername());
+				photo.setUsername(photoDTO.getUsername());
 			}
 			if (photo.getName() == null) {
 				photo.setName(storedPhoto.get().getName());
@@ -185,22 +176,21 @@ public class PhotoService {
 		}
 	}
 
-	public OutputStream generateQRCodeImage(final Long pacId, final Long pthId, final String token,
-											final HttpServletResponse response) throws Exception {
+	public String generateQRCodeImage(final Long pacId, final Long pthId, final String token,
+									  final HttpServletResponse response) throws Exception {
 
-		//ToDO: llamar al servicio para generar el nuevo token con los id's configurados
-		final String endPoint = imageGalleryUrl.concat("?token=").concat(token.replace("Bearer ", ""));
+		String qrToken = TokenProvider.generateQRToken(token.replace("Bearer ", ""), pthId, pacId);
+		final String endPoint = imageGalleryUrl.concat("?token=").concat(qrToken.replace("Bearer ", ""));
 
 		final ByteArrayOutputStream byteArrayOutputStream = generateQR(endPoint);
+		byteArrayOutputStream.flush();
 
-		final OutputStream outputStream = response.getOutputStream();
-		outputStream.write(byteArrayOutputStream.toByteArray());
-		outputStream.flush();
-		outputStream.close();
+		byte[] bytes = byteArrayOutputStream.toByteArray();
+		byteArrayOutputStream.close();
 
 		response.setContentType(MediaType.IMAGE_PNG_VALUE);
 
-		return outputStream;
+		return Base64.getEncoder().encodeToString(bytes);
 	}
 
 	private ByteArrayOutputStream generateQR(String endPoint) throws WriterException, IOException {
