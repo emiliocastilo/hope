@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_HOPES_KEY;
 
+
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 	private UserDetailsServiceImpl userDetailsService;
@@ -46,12 +47,20 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 	private UsernamePasswordAuthenticationToken fillAuthenticationToken(final HttpServletRequest httpServletRequest, final String token) {
 		String tokenHopes = token;
-		if(isRequestPostPhoto(httpServletRequest)){
-			Jws<Claims> qrClaims = TokenProvider.getClaimsByQrTokenAndKey(token);
-			tokenHopes = qrClaims.getBody().get(TOKEN_HOPES_KEY, String.class)
-					.replace(Constants.TOKEN_BEARER_PREFIX, "");
+		String userName;
+
+
+		try {
+			userName = TokenProvider.getUserName(tokenHopes);
+		} catch (Exception e){
+			if(isRequestPostPhoto(httpServletRequest)){
+				Jws<Claims> qrClaims = TokenProvider.getClaimsByQrTokenAndKey(token);
+				tokenHopes = qrClaims.getBody().get(TOKEN_HOPES_KEY, String.class)
+						.replace(Constants.TOKEN_BEARER_PREFIX, "");
+			}
+			userName = TokenProvider.getUserName(tokenHopes);
 		}
-		String userName = TokenProvider.getUserName(tokenHopes);
+
 		UserDetails user = userDetailsService.loadUserByUsername(userName);
 		return TokenProvider.getAuthentication(tokenHopes, user);
 	}
