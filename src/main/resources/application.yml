@@ -6,7 +6,7 @@ plexus:
         default-sender: "no-reply@hopes.com"
         default-subject: "Reset your password"
         default-text: "Hopes password reset"
-        reset-password-url: "http://localhost:8080/user/reset_password?token="
+        reset-password-url: "http://192.168.110.45:8080/user/reset_password?token="
 
 # Server settings
 server:
