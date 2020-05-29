@@ -71,4 +71,4 @@ logging:
 
 # Image gallery
 imagegallery:
-  url: http://localhost:8081/v1
+  url: http://192.168.110.45:8081/v1
