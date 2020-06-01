@@ -1,37 +1,40 @@
 ---
 spring:
   profiles:
-    active: dev
+    active: pre
   liquibase:
     contexts: dev
   # Data base access configuration
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: "jdbc:postgresql://localhost:5432/hopes_back"
+    url: "jdbc:postgresql://192.168.110.45:5432/hopes_back"
     username: postgres
     password: postgres
   data:
     # Mongo
     mongodb:
       database: hopes_back
-      host: localhost
+      host: 192.168.110.45
       port: 27017
       username: root
       password: root
   # Mail
   mail:
-    host: "localhost"
-    port: 1025
-    username:
-    password:
+    host: "in-v3.mailjet.com"
+    port: 587
+    username: "cc2db7b964d9c29959b03d5f2dc690f5"
+    password: "24d9d686cb16587debf7a316f8a3e033"
     default-encoding: "UTF-8"
     protocol: smtp
     smtp:
-      auth: false
+      auth: true
+      connectiontimeout: 5000
+      timeout: 5000
+      writetimeout: 5000
       starttls:
-        enable: false
-    test-connection: false
+        enable: true
+    test-connection: true
 
 # Image gallery
 imagegallery:
-  url: http://localhost:8081/v1
+  url: http://192.168.110.45:8081/v1

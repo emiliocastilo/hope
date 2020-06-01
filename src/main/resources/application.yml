@@ -6,7 +6,7 @@ plexus:
         default-sender: "no-reply@hopes.com"
         default-subject: "Reset your password"
         default-text: "Hopes password reset"
-        reset-password-url: "http://192.168.110.45:8080/user/reset_password?token="
+        reset-password-url: "/user/reset_password?token="
 
 # Server settings
 server:
@@ -29,13 +29,7 @@ spring:
         default_schema: "hopes"
         #enable_lazy_load_no_trans: true
     open-in-view: false
-    show-sql: true
-  # Database
-  datasource:
-    driver-class-name: "org.postgresql.Driver"
-    url: "jdbc:postgresql://localhost:5432/hopes_back"
-    username: postgres
-    password: postgres
+    show-sql: false
   # Thymeleaf
   thymeleaf:
     cache: false
@@ -47,28 +41,9 @@ spring:
     enabled: true
     change-log: "classpath:db/changelog/db.changelog-master.yaml"
     liquibaseSchema: "hopes"
-  # Mail
-  mail:
-    host: "localhost"
-    port: 1025
-    username:
-    password:
-    default-encoding: "UTF-8"
-    protocol: smtp
-    smtp:
-      auth: false
-      starttls:
-        enable: false
 
-# Logging
-logging:
-  level:
-    root: INFO
-    liquibase: INFO
-    es:
-      plexus:
-        hopes: DEBUG
+management:
+  health:
+    mail:
+      enabled: true
 
-# Image gallery
-imagegallery:
-  url: http://192.168.110.45:8081/v1

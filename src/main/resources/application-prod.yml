@@ -18,3 +18,20 @@ spring:
       port: 27017
       username: root
       password: root
+  # Mail
+  mail:
+    host: "localhost"
+    port: 1025
+    username:
+    password:
+    default-encoding: "UTF-8"
+    protocol: smtp
+    smtp:
+      auth: false
+      starttls:
+        enable: false
+    test-connection: false
+
+# Image gallery
+imagegallery:
+  url: http://localhost:8081/v1
