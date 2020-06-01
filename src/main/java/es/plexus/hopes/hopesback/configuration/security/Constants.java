@@ -4,8 +4,8 @@ public class Constants {
 
 	public static final String LOGIN_URL = "/login";
 	public static final String REQUEST_PASSWORD_CHANGE_URL = "/users/request-password-changes";
-	public static final String RESET_PASSWORD_URL = "/users/reset-passwords";
-	public static final String SAVE_NEW_PASSWORD_URL = "/users/save-new-passwords";
+	public static final String RESET_PASS_URL = "/users/reset-passwords";
+	public static final String SAVE_NEW_PASS_URL = "/users/save-new-passwords";
 	public static final String ADD_PHOTO_BY_QR_URL = "/photos";
 
 	public static final String HEADER_AUTHORIZACION_KEY = "Authorization";
