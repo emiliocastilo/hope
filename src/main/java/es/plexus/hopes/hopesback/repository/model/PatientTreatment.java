@@ -23,20 +23,12 @@ public class PatientTreatment {
     private Long id;
 
     @ManyToOne
-	@JoinColumn(name = "ptr_pac_id", referencedColumnName = "pac_id")
-	private Patient patient;
-    
-    @ManyToOne
 	@JoinColumn(name = "ptr_pdg_id", referencedColumnName = "pdg_id")
 	private PatientDiagnose patientDiagnose;
-    
+
     @Basic
 	@Column(name = "ptr_active", nullable = false)
 	private boolean active;
-    
-    @Basic
-    @Column(name = "ptr_indication", nullable = false, length = 50)
-    private String indication;
 
     @Basic
     @Column(name = "ptr_type", nullable = false, length = 50)

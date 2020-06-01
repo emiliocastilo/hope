@@ -43,7 +43,7 @@ public class HealthOutcome {
     private String result;
     
     @Basic
-    @Column(name = "hou_date", nullable = true, columnDefinition = "TIMESTAMP")
+    @Column(name = "hou_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime date;
 
 }

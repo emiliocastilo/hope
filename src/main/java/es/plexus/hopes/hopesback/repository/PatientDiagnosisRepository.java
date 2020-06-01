@@ -15,17 +15,26 @@ import java.util.List;
 @Repository
 public interface PatientDiagnosisRepository extends JpaRepository<PatientDiagnose, Long> {
 
+	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_GROUP_BY_INDICATION)
+	List<PatientDiagnose> findPatientsDiagnosisGroupByIndication();
+
 	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_BY_INDICATIONS)
 	Page<GraphPatientDetailDTO> findPatientDetailsGraphsByIndication(@Param("indication") String indication, Pageable pageable);
 
 	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_BY_INDICATIONS)
 	List<GraphPatientDetailDTO> findPatientDetailsGraphsByIndication(@Param("indication") String indication);
 
+	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_GROUP_BY_CIE9)
+	List<PatientDiagnose> findPatientsDiagnosisGroupByCie9();
+
 	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_BY_CIE9)
 	Page<GraphPatientDetailDTO> findPatientDetailsGraphsByCie9(@Param("cie9") String cie9, Pageable pageable);
 
 	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_BY_CIE9)
 	List<GraphPatientDetailDTO> findPatientDetailsGraphsByCie9(@Param("cie9") String cie9);
+
+	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_GROUP_BY_CIE10)
+	List<PatientDiagnose> findPatientsDiagnosisGroupByCie10();
 
 	@Query(QueryConstants.QUERY_PATIENTS_GRAPH_DETAILS_BY_CIE10)
 	Page<GraphPatientDetailDTO> findPatientDetailsGraphsByCie10(@Param("cie10") String cie10, Pageable pageable);
