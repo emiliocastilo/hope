@@ -1,6 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,8 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import lombok.Getter;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -27,26 +26,18 @@ public class PatientDiagnose {
     @ManyToOne
 	@JoinColumn(name = "pdg_pac_id", referencedColumnName = "pac_id")
 	private Patient patient;
-    
-    @Basic
-    @Column(name = "pdg_indication", nullable = false, length = 50)
-    private String indication;
 
-    @Basic
-    @Column(name = "pdg_cie9_code", nullable = false, length = 50)
-    private String cie9Code;
+    @ManyToOne
+    @JoinColumn(name = "pdg_ind_id", referencedColumnName = "ind_id")
+    private Indication indication;
 
-    @Basic
-    @Column(name = "pdg_cie9_desc", length = 50)
-    private String cie9Desc;
+    @ManyToOne
+    @JoinColumn(name = "pdg_cin_id", referencedColumnName = "cin_id")
+    private Cie9 cie9;
 
-    @Basic
-    @Column(name = "pdg_cie10_code", nullable = false, length = 50)
-    private String cie10Code;
-
-    @Basic
-    @Column(name = "pdg_cie10_desc", nullable = false, length = 50)
-    private String cie10Desc;
+    @ManyToOne
+    @JoinColumn(name = "pdg_cid_id", referencedColumnName = "cid_id")
+    private Cie10 cie10;
 
     @Basic
     @Column(name = "pdg_others_indications", length = 50)

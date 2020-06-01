@@ -55,10 +55,10 @@ public class PatientTreatmentService {
 				patientTreatmentRepository.findPatientTreatmentByEndCauseBiologicTreatment(endCause);
 
 		for(PatientTreatment pt:patientTreatmentList){
-			if(idPatients.contains(pt.getPatient().getId())){
+			if(idPatients.contains(pt.getPatientDiagnose().getPatient().getId())){
 				removePatientTreatment.add(pt);
 			}else{
-				idPatients.add(pt.getPatient().getId());
+				idPatients.add(pt.getPatientDiagnose().getPatient().getId());
 			}
 		}
 
@@ -117,7 +117,7 @@ public class PatientTreatmentService {
 	
 	public List<GraphPatientDetailDTO> getDetailPatientsPerDoses() {
 		log.debug(CALLING_DB);
-		return patientTreatmentRepository.getDetailPatientsPerDoses();		
+		return patientTreatmentRepository.getDetailPatientsPerDoses();
 	}
 
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByTypeTreatment(String treatmentType, Pageable pageable) {
@@ -200,7 +200,7 @@ public class PatientTreatmentService {
 		List<PatientTreatment> patientTreatmentList = fillPatientTreamentListByCombinedTreament(combinedLabels);
 		return patientTreatmentList.stream()
 				.filter(pt -> pt.getType().contains(combinedTreatment))
-				.mapToLong(pt -> pt.getPatient().getId())
+				.mapToLong(pt -> pt.getPatientDiagnose().getPatient().getId())
 				.boxed()
 				.collect(Collectors.toList());
 	}
@@ -230,26 +230,27 @@ public class PatientTreatmentService {
 	private List<PatientTreatment> fillPatientTreamentListByCombinedTreament(Map<Long, String> combinedLabels) {
 		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByCombinedTreatment();
 		for(PatientTreatment pt:patientTreatmentList){
-			if(combinedLabels.containsKey(pt.getPatient().getId())){
-				String lbl = combinedLabels.get(pt.getPatient().getId()) + " + " + pt.getType();
-				combinedLabels.replace(pt.getPatient().getId(), lbl);
+			if(combinedLabels.containsKey(pt.getPatientDiagnose().getPatient().getId())){
+				String lbl = combinedLabels.get(pt.getPatientDiagnose().getPatient().getId()) + " + " + pt.getType();
+				combinedLabels.replace(pt.getPatientDiagnose().getPatient().getId(), lbl);
 			}else{
-				combinedLabels.put(pt.getPatient().getId(), pt.getType());
+				combinedLabels.put(pt.getPatientDiagnose().getPatient().getId(), pt.getType());
 			}
 		}
-		patientTreatmentList.forEach(pt -> pt.setType(combinedLabels.get(pt.getPatient().getId())));
+		patientTreatmentList.forEach(pt -> pt.setType(combinedLabels.get(pt.getPatientDiagnose().getPatient().getId())));
 		return patientTreatmentList;
 	}
 
 	private Map<Patient, Long> fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment() {
 		List<PatientTreatment> patientTreatmentList =
 				patientTreatmentRepository.findPatientTreatmentByNumberChangesOfBiologicTreatment();
-		Map<Patient, Long> patientsMaps = patientTreatmentList.stream()
-				.collect(groupingBy(PatientTreatment::getPatient, Collectors.counting()));
+		Map<Patient, Long> patientsMaps = new HashMap<>();
+				//patientTreatmentList.stream()
+				//.collect(groupingBy(PatientTreatment::getPatientDiagnose, Collectors.counting()));
 		List<PatientTreatment> patientTreatmentWithoutChangesList = patientTreatmentRepository.findPatientTreatmentByNoChangesBiologicTreatment();
 		patientTreatmentWithoutChangesList.forEach(pt -> {
-			if(!patientsMaps.containsKey(pt.getPatient())) {
-				patientsMaps.put(pt.getPatient(),0L);
+			if(!patientsMaps.containsKey(pt.getPatientDiagnose().getPatient())) {
+				patientsMaps.put(pt.getPatientDiagnose().getPatient(),0L);
 			}
 		});
 		return patientsMaps;

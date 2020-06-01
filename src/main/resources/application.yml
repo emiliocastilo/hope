@@ -13,7 +13,8 @@ server:
   port: 8080
   servlet:
     context-path: "/v1"
-
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   profiles:
     active: @spring.profiles.active@
@@ -41,4 +42,32 @@ spring:
     enabled: true
     change-log: "classpath:db/changelog/db.changelog-master.yaml"
     liquibaseSchema: "hopes"
+  # Mail
+  mail:
+    host: "localhost"
+    port: 1025
+    username:
+    password:
+    default-encoding: "UTF-8"
+    protocol: smtp
+    smtp:
+      auth: false
+      starttls:
+        enable: false
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+# Logging
+logging:
+  level:
+    root: INFO
+    liquibase: INFO
+    es:
+      plexus:
+        hopes: DEBUG
 
+# Image gallery
+imagegallery:
+  url: http://localhost:8081/v1

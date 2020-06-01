@@ -15,14 +15,15 @@ import javax.persistence.Table;
 @Table(name = "indications")
 public class Indication {
     @Id
-    @Column(name = "ind_code", nullable = false, length = 3)
+    @Column(name = "ind_id", nullable = false, length = 3)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String code;
+    private Long id;
 
     @Basic
     @Column(name = "ind_description", nullable = false, length = 50)
-    private String descripcion;
+    private String description;
 
-
-
+    @Basic
+    @Column(name = "ind_pth_id", nullable = false)
+    private Long pathologyId;
 }
