@@ -46,10 +46,10 @@ public class PatientDiagnosisControllerTest {
 
 		// given
 		given(patientDiagnosisService.findPatientsByIndication())
-				.willReturn(mockMapStringLong());
+				.willReturn(mockMapStringBooleanInteger());
 
 		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByIndications();
+		Map<String, Map<Boolean,Integer>> response = patientDiagnosisController.findPatientsDiagnosesByIndications();
 
 		// then		
 		Assert.assertNotNull(response);
@@ -614,6 +614,15 @@ public class PatientDiagnosisControllerTest {
 	private Map<String, Long> mockMapStringLong() {
 		Map<String, Long> map = new HashMap<>();
 		map.put("Type", 3L);
+		return map;
+	}
+
+	//Mocks mockMap
+	private Map<String, Map<Boolean,Integer>> mockMapStringBooleanInteger() {
+		Map<String, Map<Boolean,Integer>> map = new HashMap<>();
+		Map<Boolean, Integer> mapBooleanInteger = new HashMap<>();
+		mapBooleanInteger.put(true, 3);
+		map.put("Type", mapBooleanInteger);
 		return map;
 	}
 

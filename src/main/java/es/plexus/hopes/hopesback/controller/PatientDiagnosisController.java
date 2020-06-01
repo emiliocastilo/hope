@@ -58,7 +58,7 @@ public class PatientDiagnosisController {
 	@ApiOperation("Gráfico/Tabla de Pacientes por Indicacion - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(PATIENT_DIAGNOSE_INDICATIONS)
-	public Map<String, Long> findPatientsDiagnosesByIndications() {
+	public Map<String, Map<Boolean, Integer>> findPatientsDiagnosesByIndications() {
 		log.debug(CALLING_SERVICE);
 		return patientDiagnosisService.findPatientsByIndication();
 	}

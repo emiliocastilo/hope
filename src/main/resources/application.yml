@@ -13,7 +13,8 @@ server:
   port: 8080
   servlet:
     context-path: "/v1"
-
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   profiles:
     active: @spring.profiles.active@
@@ -59,7 +60,11 @@ spring:
       auth: false
       starttls:
         enable: false
-
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 # Logging
 logging:
   level:
@@ -72,3 +77,5 @@ logging:
 # Image gallery
 imagegallery:
   url: http://localhost:8081/v1
+
+
