@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.LOGIN_URL;
-import static es.plexus.hopes.hopesback.configuration.security.Constants.REQUEST_PASSWORD_CHANGE_URL;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.REQUEST_PASS_CHANGE_URL;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.RESET_PASS_URL;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.SAVE_NEW_PASS_URL;
 
@@ -57,7 +57,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/actuator/**", "/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
 				.antMatchers(HttpMethod.POST, LOGIN_URL).permitAll()
-				.antMatchers(HttpMethod.POST, REQUEST_PASSWORD_CHANGE_URL).permitAll()
+				.antMatchers(HttpMethod.POST, REQUEST_PASS_CHANGE_URL).permitAll()
 				.antMatchers(HttpMethod.GET, RESET_PASS_URL).permitAll()
 				.antMatchers(HttpMethod.POST, SAVE_NEW_PASS_URL).permitAll()
 				.anyRequest().authenticated().and()
