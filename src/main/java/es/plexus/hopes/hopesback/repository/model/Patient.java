@@ -1,8 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.Data;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,8 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
-
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,7 +40,7 @@ public class Patient {
     private String firstSurname;
 
     @Basic
-    @Column(name = "pac_last_surname", nullable = true, length = 50)
+    @Column(name = "pac_last_surname",  length = 50)
     private String lastSurname;
 
     @Basic
@@ -53,24 +52,24 @@ public class Patient {
     private String healthCard;
 
     @Basic
-    @Column(name = "pac_dni", nullable = true, length = 9)
+    @Column(name = "pac_dni",  length = 9)
     private String dni;
 
     @Basic
-    @Column(name = "pac_address", nullable = true, length = 200)
+    @Column(name = "pac_address",  length = 200)
     private String address;
 
     @Basic
-    @Column(name = "pac_phone", nullable = true, length = 15)
+    @Column(name = "pac_phone",  length = 15)
     private String phone;
 
     @Basic
-    @Column(name = "pac_email", nullable = true, length = 50)
+    @Column(name = "pac_email",  length = 50)
     @Email
     private String email;
 
     @Basic
-    @Column(name = "pac_birth_date", nullable = true, columnDefinition = "TIMESTAMP")
+    @Column(name = "pac_birth_date",  columnDefinition = "TIMESTAMP")
     private LocalDateTime birthDate;
 
     @ManyToOne
