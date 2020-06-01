@@ -38,7 +38,7 @@ public class PatientService {
 
 	public PatientDTO findById(Long id) throws ServiceException {
 		Optional<Patient> patientEntity = getEntityPatientById(id);
-		return PatientMapper.INSTANCE.entityToDto(patientEntity.get());
+		return PatientMapper.INSTANCE.entityToDto(patientEntity.orElse(null));
 	}
 
 	Optional<Patient> getEntityPatientById(Long id) throws ServiceException {

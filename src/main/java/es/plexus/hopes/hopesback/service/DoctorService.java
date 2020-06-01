@@ -125,7 +125,7 @@ public class DoctorService {
 	public DoctorViewDTO updateDoctor(final DoctorUpdateDTO doctorDTO) throws ServiceException {
 		checkServiceExistence(doctorDTO.getServiceDTO());
 
-		final Doctor storedDoctor = getOneDoctorCommon(doctorDTO.getId()).get();
+		final Doctor storedDoctor = getOneDoctorCommon(doctorDTO.getId()).orElse(null);
 
 		Doctor doctor = doctorMapper.doctorUpdateDTOToDoctorConverter(doctorDTO);
 		checkDoctorChanges(doctorDTO, storedDoctor, doctor);
@@ -198,7 +198,7 @@ public class DoctorService {
 		if (doctorUpdateDTO.getServiceDTO() == null) {
 			doctor.setService(storedDoctor.getService());
 		}else{
-			doctor.setService(serviceService.getOneServiceById(doctorUpdateDTO.getServiceDTO().getId()).get());
+			doctor.setService(serviceService.getOneServiceById(doctorUpdateDTO.getServiceDTO().getId()).orElse(null));
 		}
 	}
 }
