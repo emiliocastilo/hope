@@ -127,6 +127,12 @@ public class DoctorService {
 
 		final Doctor storedDoctor = getOneDoctorCommon(doctorDTO.getId()).orElse(null);
 
+		if (storedDoctor == null) {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+					String.format("Servicio con el id %d no encontrado.",
+							doctorDTO.getId()));
+		}
+
 		Doctor doctor = doctorMapper.doctorUpdateDTOToDoctorConverter(doctorDTO);
 		checkDoctorChanges(doctorDTO, storedDoctor, doctor);
 		checkRelationshipData(doctorDTO, storedDoctor, doctor);
