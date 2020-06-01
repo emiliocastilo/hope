@@ -42,8 +42,3 @@ spring:
     change-log: "classpath:db/changelog/db.changelog-master.yaml"
     liquibaseSchema: "hopes"
 
-management:
-  health:
-    mail:
-      enabled: true
-
