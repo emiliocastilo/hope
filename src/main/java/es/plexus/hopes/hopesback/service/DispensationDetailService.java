@@ -1,5 +1,23 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
+import es.plexus.hopes.hopesback.repository.DispensationDetailRepository;
+import es.plexus.hopes.hopesback.repository.model.Dispensation;
+import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
+import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
+import es.plexus.hopes.hopesback.service.utils.CsvUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.csv.CSVRecord;
+import org.hibernate.service.spi.ServiceException;
+import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -13,24 +31,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.apache.commons.csv.CSVRecord;
-import org.hibernate.service.spi.ServiceException;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
-import es.plexus.hopes.hopesback.repository.DispensationDetailRepository;
-import es.plexus.hopes.hopesback.repository.model.Dispensation;
-import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
-import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
-import es.plexus.hopes.hopesback.service.utils.CsvUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
@@ -158,7 +158,13 @@ public class DispensationDetailService {
 		
 		return result;
 	}
-	
+
+	public List<DispensationDetailDTO> findDispensationDetailByPatientId(Long id) {
+		List<DispensationDetail> dispensationDetailsList = dispensationDetailRepository.findDispensationDetailByPatientId(id);
+		return dispensationDetailsList.stream()
+				.map(Mappers.getMapper(DispensationDetailMapper.class)::entityToDto)
+				.collect(Collectors.toList());
+	}
 	private void fillMonthlyConsume(int index,
 			LocalDateTime dateStartPeriod, LocalDateTime dateStopPeriod,
 			List<Long> listPatients, Boolean isAvg, String code,

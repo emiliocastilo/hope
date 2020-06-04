@@ -1,0 +1,1 @@
+﻿ALTER TABLE hopes.health_outcomes ALTER COLUMN hou_value type decimal(4,2);

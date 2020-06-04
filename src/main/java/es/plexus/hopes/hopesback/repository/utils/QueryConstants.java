@@ -230,6 +230,10 @@ public class QueryConstants {
 			"where dd.date between :dateStart and :dateEnd " + 
 			"group by dd.nhc";
 
+	public static final String QUERY_VALUES_HEALHT_OUTCOME_BY_INDEX_TYPE_PATIENT_ID =
+			"select hou from HealthOutcome hou " +
+			"where hou.indexType = :indexType and hou.patient.id = :patId " +
+			"order by hou.date asc";
 
 	// PATHOLOGY DASHBOARD: PATIENT DIAGNOSES - PATIENTS GROUP BY INDICATION
 
@@ -256,5 +260,23 @@ public class QueryConstants {
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
 					"join Cie10 c on c.id = pdg.cie10.id ";
 
+	public static final String ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT = "order by pt.initDate ";
+
+	public static final String QUERY_ACTUAL_TREATMENTS_BY_PATIENT_ID =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+				"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+			WHERE_PT_ACTIVE_TRUE +
+			"and pd.patient.id = :patId " +
+			ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
+
+	public static final String QUERY_FIND_DISPENSATION_DETAILS_BY_PATIENT_ID =
+			"select dd " +
+			"from DispensationDetail dd " +
+				"join Patient p on p.nhc = dd.nhc " +
+				"join PatientDiagnose pd on pd.patient.id = p.id " +
+				"join PatientTreatment pt on pt.patientDiagnose.id = pd.id " +
+				"join Medicine m on m.id = pt.medicine.id and m.nationalCode = CAST(dd.nationalCode as text) " +
+			WHERE_PT_ACTIVE_TRUE +
+				"and p.id = :patId ";
 
 }
