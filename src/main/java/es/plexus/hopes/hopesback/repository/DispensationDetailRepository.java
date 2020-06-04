@@ -1,8 +1,7 @@
 package es.plexus.hopes.hopesback.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
+import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
-import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface DispensationDetailRepository extends JpaRepository<DispensationDetail, Long> {
@@ -45,4 +44,7 @@ public interface DispensationDetailRepository extends JpaRepository<Dispensation
 	Double findResultsAllPasiPatiensByMonth(@Param("date")LocalDateTime date,
 			@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd,
 			@Param("patient")Long patient,  @Param("code")String code);
+
+	@Query(QueryConstants.QUERY_FIND_DISPENSATION_DETAILS_BY_PATIENT_ID)
+	List<DispensationDetail> findDispensationDetailByPatientId(@Param("patId")Long patId);
 }

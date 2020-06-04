@@ -1,12 +1,15 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -195,6 +198,13 @@ public class PatientTreatmentService {
 		return listGraphPatientDetailDTO;
 	}
 
+	public List<TreatmentDTO> findTreatmentsByPatientId(Long patId) {
+		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findTreatmentsByPatientId(patId);
+		return patientTreatmentList.stream()
+				.map(Mappers.getMapper(PatientTreatmentMapper.class)::entityToTreatmentDTO)
+				.collect(Collectors.toList());
+	}
+
 	private List<Long> obtainsPatientsIdsByCombinedTreatment(String combinedTreatment) {
 		Map<Long, String> combinedLabels = new HashMap<>();
 		List<PatientTreatment> patientTreatmentList = fillPatientTreamentListByCombinedTreament(combinedLabels);
@@ -242,11 +252,7 @@ public class PatientTreatmentService {
 	}
 
 	private Map<Patient, Long> fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment() {
-		List<PatientTreatment> patientTreatmentList =
-				patientTreatmentRepository.findPatientTreatmentByNumberChangesOfBiologicTreatment();
 		Map<Patient, Long> patientsMaps = new HashMap<>();
-				//patientTreatmentList.stream()
-				//.collect(groupingBy(PatientTreatment::getPatientDiagnose, Collectors.counting()));
 		List<PatientTreatment> patientTreatmentWithoutChangesList = patientTreatmentRepository.findPatientTreatmentByNoChangesBiologicTreatment();
 		patientTreatmentWithoutChangesList.forEach(pt -> {
 			if(!patientsMaps.containsKey(pt.getPatientDiagnose().getPatient())) {
@@ -279,5 +285,6 @@ public class PatientTreatmentService {
 		map.entrySet().forEach(m -> result.put(m.getKey().getActIngredients(), m.getValue()));
 		return result;
 	}
+
 
 }

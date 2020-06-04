@@ -1,5 +1,19 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
+import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.service.mapper.HealthOutcomeMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -7,17 +21,6 @@ import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
@@ -28,7 +31,6 @@ public class HealthOutcomeService {
 
 	private final HealthOutcomeRepository healthOutcomeRepository;
 
-	
 	public Map<String, Long> findResultsByTypes(final String type) {
 		log.debug(CALLING_DB);
 		return fillResultsByTypes(type);
@@ -51,7 +53,7 @@ public class HealthOutcomeService {
 	
 	private Map<String, Long> fillResultsByTypes(String type) {
 		Map<String, Long> result = new HashMap<>();
-		
+
 		List<HealthOutcome> healthoutcomeResultList = healthOutcomeRepository.findResultsByTypes(type);
 		
 		Map<Patient, HealthOutcome> mapPatientMaxDate = healthoutcomeResultList.stream()
@@ -69,5 +71,21 @@ public class HealthOutcomeService {
 		});
 		
 		return result;
+	}
+
+	public Map<String,List<GraphHealthOutcomeDTO>> findEvolutionClinicalIndicesByIndexTypeAndPatient(String indicesTypes, Long patId) {
+
+		Map <String,List<GraphHealthOutcomeDTO>> mapEvolutionIndicesGraph = new HashMap<>();
+
+		Arrays.stream(indicesTypes.replace(" ","").split(",")).forEach(indexType ->{
+
+			List<HealthOutcome> healthoutcomeResultList = healthOutcomeRepository
+					.findEvolutionClinicalIndicesByIndexTypeAndPatient(indexType, patId);
+			mapEvolutionIndicesGraph.put(indexType,healthoutcomeResultList.stream()
+					.map(Mappers.getMapper(HealthOutcomeMapper.class)::entityToGraphHealthOutcomeDto)
+					.collect(Collectors.toList()));
+		});
+
+		return mapEvolutionIndicesGraph;
 	}
 }
