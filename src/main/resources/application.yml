@@ -4,8 +4,6 @@ plexus:
     email:
       template:
         default-sender: "no-reply@hopes.com"
-        default-subject: "Reset your password"
-        default-text: "Hopes password reset"
         reset-password-url: "/user/reset_password?token="
 
 # Server settings
@@ -59,6 +57,8 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+  messages:
+    basename: i18n.messages
 # Logging
 logging:
   level:

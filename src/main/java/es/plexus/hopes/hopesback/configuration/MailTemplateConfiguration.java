@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("plexus.hopes.email.template")
 public class MailTemplateConfiguration {
     private String defaultSender;
-    private String defaultSubject;
-    private String defaultText;
     private String resetPasswordUrl;
+
 }
