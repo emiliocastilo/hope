@@ -80,7 +80,6 @@ public class UserControllerTest {
 		final UserDTO user = new UserDTO();
 		user.setId(1L);
 		user.setUsername("User Name");
-		user.setPassword("User password");
 		user.setEmail("User email");
 		user.setRoles(new HashSet<>(Arrays.asList(1L, 2L)));
 

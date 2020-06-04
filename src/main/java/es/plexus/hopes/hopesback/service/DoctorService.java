@@ -31,14 +31,16 @@ public class DoctorService {
 	private final DoctorMapper doctorMapper;
 	private final ServiceService serviceService;
 	private final DoctorRepository doctorRepository;
+	private final PasswordManagementService passwordManagementService;
 
 	@Autowired
 	public DoctorService(final UserService userService, final DoctorMapper doctorMapper, final ServiceService serviceService,
-						 final DoctorRepository doctorRepository) {
+						 final DoctorRepository doctorRepository, final PasswordManagementService passwordManagementService) {
 		this.userService = userService;
 		this.doctorMapper = doctorMapper;
 		this.serviceService = serviceService;
 		this.doctorRepository = doctorRepository;
+		this.passwordManagementService = passwordManagementService;
 	}
 
 	public Page<DoctorViewDTO> getAllDoctors(final Pageable pageable) {
@@ -100,10 +102,15 @@ public class DoctorService {
 		checkServiceExistence(doctorDTO.getServiceDTO());
 
 		Doctor doctor = doctorMapper.doctorDTOToDoctorConverter(doctorDTO);
-		doctor.setUser(userService.addUserAndReturnEntity(doctorDTO.getUserDTO()));
+
+		final User user = userService.addUserAndReturnEntity(doctorDTO.getUserDTO());
+		final String password = userService.setGeneratedPasswordForUser(user);
+		doctor.setUser(user);
 
 		log.debug("Llamando a la BD para añadir un nuevo registro de médico...");
 		doctor = doctorRepository.save(doctor);
+
+		userService.sendCredentialsEmail(user, password);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
 	}
@@ -181,10 +188,6 @@ public class DoctorService {
 
 			if (userUpdateDTO.getUsername() == null) {
 				user.setUsername(storedUser.getUsername());
-			}
-
-			if (userUpdateDTO.getPassword() == null) {
-				user.setPassword(storedUser.getPassword());
 			}
 
 			if (userUpdateDTO.getEmail() == null) {

@@ -26,6 +26,7 @@
         <jacoco.version>0.7.9</jacoco.version>
         <commons-io.version>1.3.2</commons-io.version>
         <com.google.version>3.4.0</com.google.version>
+        <passy.version>1.6.0</passy.version>
     </properties>
 
     <profiles>
@@ -292,6 +293,11 @@
             <version>${com.google.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.passay</groupId>
+            <artifactId>passay</artifactId>
+            <version>${passy.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

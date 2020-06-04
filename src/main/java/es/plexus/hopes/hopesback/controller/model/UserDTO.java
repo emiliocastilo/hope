@@ -17,10 +17,6 @@ public class UserDTO {
 	@ApiModelProperty(position = 20, example = "carlos.ruiz", value = "Nombre del usuario")
 	private String username;
 
-	//ToDo: Eliminar cuando implementemos el método para generar contraseña y enviarlo por e-mail.
-	@ApiModelProperty(position = 30, example = "password", value = "Contraseña del usuario")
-	private String password;
-
 	@ApiModelProperty(position = 40, example = "carlos.ruiz@hotmail.com", value = "Email relacionado al usuario")
 	@Email
 	private String email;
