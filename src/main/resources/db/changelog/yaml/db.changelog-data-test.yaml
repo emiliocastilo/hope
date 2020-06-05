@@ -6,8 +6,5 @@ databaseChangeLog:
     file: ../sql/data-test/002-configuration_sections_locale.sql
     relativeToChangelogFile: true
 - include:
-    file: ../sql/data-test/003-patients_treatments_graphs.sql
-    relativeToChangelogFile: true
-- include:
     file: ../sql/data-test/004-patients_treatments_graphs.sql
     relativeToChangelogFile: true
