@@ -1,5 +1,16 @@
 package es.plexus.hopes.hopesback.service;
 
+import static java.util.stream.Collectors.groupingBy;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
@@ -8,16 +19,6 @@ import es.plexus.hopes.hopesback.repository.model.PatientData;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Log4j2
 @Service
@@ -132,6 +133,11 @@ public class PatientDiagnosisService {
 		return patientDiagnosisRepository
 				.findPatientDetailsGraphsByCie10(cie10);
 	}
+	
+	public PatientDiagnose save(final PatientDiagnose patientDiagnose) {
+		log.debug(CALLING_DB);
+		return patientDiagnosisRepository.saveAndFlush(patientDiagnose);
+	}
 
 	/**
 	 * Method that build the map with the patients by indication and it having count the indicator artritis
@@ -169,4 +175,5 @@ public class PatientDiagnosisService {
 			}
 		});
 	}
+	
 }

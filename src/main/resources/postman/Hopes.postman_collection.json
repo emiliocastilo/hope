@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cf1ca5d5-ff22-4ac6-9272-822d00c04793",
+		"_postman_id": "e1de02bd-61e5-4319-9ae2-ea9c1cbf76ad",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -919,7 +919,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/patients",
+							"raw": "{{dev}}/v1/patients?",
 							"host": [
 								"{{dev}}"
 							],
@@ -2263,7 +2263,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details",
+							"raw": "{{dev}}/v1/dispensation-details?",
 							"host": [
 								"{{dev}}"
 							],
@@ -2838,7 +2838,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensations",
+							"raw": "{{dev}}/v1/dispensations?",
 							"host": [
 								"{{dev}}"
 							],
@@ -3001,7 +3001,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/medicines",
+							"raw": "{{dev}}/v1/medicines?",
 							"host": [
 								"{{dev}}"
 							],
@@ -3607,7 +3607,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/sections",
+							"raw": "{{dev}}/v1/sections?",
 							"host": [
 								"{{dev}}"
 							],
@@ -3810,7 +3810,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"template\": \"PLANTILLA_PRUEBA\",\n\t\"data\": [{ \"name\":\"a\", \"value\":\"aa\"}, { \"name\":\"b\", \"value\":\"bb\"}, { \"name\":\"c\", \"value\":\"cc\"}],\n\t\"patientId\": 1\n}",
+							"raw": "{\n\t\"template\": \"DIAGNOSTICO\",\n\t\"data\": [{ \"name\":\"psoriasisType\", \"value\":\"PALMOPLANTAR\"}, { \"name\":\"firstSymptomsDate\", \"value\":\"2020-06-09T15:00:12\"}, { \"name\":\"specialtyCareDate\", \"value\":\"2020-06-10T15:00:12\"}, { \"name\":\"mainDiagnosisDate\", \"value\":\"2020-06-08T15:00:12\"}],\n\t\"patientId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3818,13 +3818,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas",
+							"raw": "{{dev}}/v1/forms",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							]
 						}
 					},
@@ -3858,13 +3858,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{dev}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							],
 							"query": [
 								{
@@ -3908,13 +3908,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{dev}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							],
 							"query": [
 								{
@@ -3955,13 +3955,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas",
+							"raw": "{{dev}}/v1/forms",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							]
 						}
 					},

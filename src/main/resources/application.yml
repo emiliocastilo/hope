@@ -71,5 +71,9 @@ logging:
 # Image gallery
 imagegallery:
   url: http://localhost:8081/v1
+  
+# Cron Migration
+cronexpression:
+  diagnosis: 0 1 * * * ?  # everyday 1am. 0/30 * * * * ? each 30sg
 
 

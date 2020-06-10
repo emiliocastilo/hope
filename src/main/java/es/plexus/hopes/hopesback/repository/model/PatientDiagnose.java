@@ -1,6 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import lombok.Getter;
+import java.time.LocalDateTime;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,9 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
-@Getter
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "patients_diagnoses")
 public class PatientDiagnose {

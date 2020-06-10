@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class FormService {
@@ -43,6 +44,15 @@ public class FormService {
         FormDTO formDTO = formMapper.entityToDto(formMongo);
 
         return formDTO;
+    }
+    
+    public List<FormDTO> findByTemplate(String template) {
+
+        List<FormMongo> formsMongo = formMongoRepository.findByTemplate(template);
+
+        List<FormDTO> formsDTO = formMapper.listEntityToListDto(formsMongo);
+
+        return formsDTO;
     }
 
     public void updateData(FormDTO dto, String user) throws ServiceException {
