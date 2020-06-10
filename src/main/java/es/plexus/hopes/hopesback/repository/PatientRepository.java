@@ -21,5 +21,15 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 			+ " OR LOWER(pac.nhc) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(pac.healthCard) like CONCAT('%',LOWER(:search),'%')) ")
 	Page<Patient> findPatientBySearch(@Param("id")Long id, @Param("search")String search, Pageable pageable);
+
+	boolean existsByNhc(String nhc);
+
+	boolean existsByHealthCard(String healthCard);
+
+	boolean existsByDni(String dni);
+
+	boolean existsByEmail(String email);
+
+	boolean existsByPhone(String phone);
 }
 

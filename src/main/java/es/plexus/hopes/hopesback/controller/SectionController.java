@@ -57,12 +57,12 @@ public class SectionController {
 	}
 
 	@ApiOperation("Eliminar una seccion por identificador")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.OK)
 	@DeleteMapping("/{id}")
-	public SectionDTO delete(@ApiParam(value = "identificador", required = true)
+	public void delete(@ApiParam(value = "identificador", required = true)
 							 @PathVariable final Long id) throws ServiceException {
 		log.debug(CALLING_SERVICE);
-		return sectionService.deleteById(id);
+		sectionService.deleteById(id);
 	}
 
 	@ApiOperation("Recuperar todas las seccioens")

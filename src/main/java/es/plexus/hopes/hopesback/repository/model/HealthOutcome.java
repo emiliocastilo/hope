@@ -27,9 +27,9 @@ public class HealthOutcome {
     private Long id;
 
     @ManyToOne
-	@JoinColumn(name = "hou_pac_id", referencedColumnName = "pac_id")
-	private Patient patient;
-    
+    @JoinColumn(name = "hou_pac_id", referencedColumnName = "pac_id")
+    private Patient patient;
+
     @Basic
     @Column(name = "hou_index_type", nullable = false, length = 50)
     private String indexType;
@@ -37,11 +37,11 @@ public class HealthOutcome {
     @Basic
     @Column(name = "hou_value", nullable = false, length = 50)
     private String value;
-    
+
     @Basic
     @Column(name = "hou_result", nullable = false, length = 50)
     private String result;
-    
+
     @Basic
     @Column(name = "hou_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime date;
