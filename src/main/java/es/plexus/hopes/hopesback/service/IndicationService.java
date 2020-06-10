@@ -3,7 +3,6 @@
  */
 package es.plexus.hopes.hopesback.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.plexus.hopes.hopesback.repository.IndicationRepository;
@@ -22,7 +21,6 @@ public class IndicationService {
 	
 	private static final String CALLING_DB = "Llamando a la DB...";
 
-	@Autowired
 	private final IndicationRepository indicationRepository;
 	
 	public Indication getIndicationByDescription(final String description) {

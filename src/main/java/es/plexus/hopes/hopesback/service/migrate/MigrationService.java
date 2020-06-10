@@ -53,10 +53,6 @@ public class MigrationService {
 	@Autowired
 	private final IndicationService indicationService;
 	
-	@Autowired
-	private final PatientMapper patientMapper;
-	
-	
 	@Scheduled(cron = "${cronexpression.diagnosis}")
 	public void migrationDataDiagnosisFromNoRelationalToRelational() {
 		log.debug(START_DIAGNOSIS);
@@ -65,7 +61,7 @@ public class MigrationService {
 		formsDTO.stream()
 		.forEach(f -> {
 			PatientDiagnose patientDiagnose = new PatientDiagnose();
-			patientDiagnose.setPatient(patientMapper.dtoToEntity(patientService.findById(f.getPatientId().longValue())));
+			patientDiagnose.setPatient(PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue())));
 			patientDiagnose.setIndication(indicationService.getIndicationByDescription(getValueByTagNameFromForm(f, TAGNAME_PSORIASIS_TYPE)));
 			patientDiagnose.setInitDate(obtainLocalDateTime(f, TAGNAME_MAIN_DIAGNOSIS_DATE));
 			patientDiagnose.setSymptomsDate(obtainLocalDateTime(f, TAGNAME_SPECIALTY_CARE_DATE));
