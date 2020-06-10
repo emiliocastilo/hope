@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION;
@@ -32,14 +33,14 @@ public class PatientService {
 
 	private final PatientRepository patientRepository;
 
-	public Page<PatientDTO> findPatientsByPathology(Long id, final Pageable pageable) {
-		Page<Patient> patientList = patientRepository.findByPathologies(id, pageable);
+	public Page<PatientDTO> findPatientsByPathology(List<Long> patholoies, final Pageable pageable) {
+		Page<Patient> patientList = patientRepository.findByPathologies(patholoies, pageable);
 
 		return patientList.map(PatientMapper.INSTANCE::entityToDto);
 	}
 
-	public Page<PatientDTO> findPatientBySearch(Long pth, String search, final Pageable pageable) {
-		Page<Patient> patientList = patientRepository.findPatientBySearch(pth, search, pageable);
+	public Page<PatientDTO> findPatientBySearch(List<Long> pathologies, String search, final Pageable pageable) {
+		Page<Patient> patientList = patientRepository.findPatientBySearch(pathologies, search, pageable);
 
 		return patientList.map(PatientMapper.INSTANCE::entityToDto);
 	}

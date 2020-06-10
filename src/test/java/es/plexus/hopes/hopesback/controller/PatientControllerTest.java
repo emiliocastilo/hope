@@ -42,11 +42,11 @@ public class PatientControllerTest {
 	public void callFindAllShouldBeStatusOk() {
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("id"));
 		// given
-		given(patientService.findPatientsByPathology(anyLong(), any(Pageable.class)))
+		given(patientService.findPatientsByPathology(Collections.singletonList(1L), pageRequest))
 				.willReturn(getPageablePatient(pageRequest));
 
 		// when
-		Page<PatientDTO> response = patientController.findAll(1L, pageRequest);
+		Page<PatientDTO> response = patientController.findAll(Collections.singletonList(1L), pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -57,11 +57,11 @@ public class PatientControllerTest {
 	public void callFindAllShouldThrowException() throws Exception {
 		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
 		// given
-		given(patientService.findPatientsByPathology(anyLong(), any(Pageable.class)))
+		given(patientService.findPatientsByPathology(Collections.singletonList(0L), pageRequest))
 				.willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		Page<PatientDTO> response = patientController.findAll(0L, pageRequest);
+		Page<PatientDTO> response = patientController.findAll(Collections.singletonList(0L), pageRequest);
 
 	}
 
