@@ -52,7 +52,7 @@ public class Patient {
     private String healthCard;
 
     @Basic
-    @Column(name = "pac_dni",  length = 9)
+    @Column(name = "pac_dni",  length = 9, unique = true)
     private String dni;
 
     @Basic
@@ -64,7 +64,7 @@ public class Patient {
     private String phone;
 
     @Basic
-    @Column(name = "pac_email",  length = 50)
+    @Column(name = "pac_email",  length = 50, unique = true)
     @Email
     private String email;
 

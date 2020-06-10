@@ -117,7 +117,7 @@ public class QueryConstants {
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"join PatientDiagnose pdg on pdg.id = pt.patientDiagnose.id " +
 			"where LOWER(pt.type) = LOWER(:type) " +
-			"and (:indication is null or pdg.indication = :indication)";
+			"and (:indication is null or pdg.indication.description = :indication)";
 	
 	public static final String QUERY_PATIENTS_TREAMENT_PER_DOSES =
 			QUERY_PATIENTS_GRAPH_DETAILS_NO_TYPE + " and hou.indexType in ('PASI','DLQI') ";

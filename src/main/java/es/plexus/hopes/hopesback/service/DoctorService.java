@@ -23,6 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.USERNAME_DUPLICATE_EXCEPTION;
+
 @Log4j2
 @Service
 public class DoctorService {
@@ -103,6 +109,7 @@ public class DoctorService {
 		doctor.setUser(userService.addUserAndReturnEntity(doctorDTO.getUserDTO()));
 
 		log.debug("Llamando a la BD para añadir un nuevo registro de médico...");
+		validateAddDoctor(doctor);
 		doctor = doctorRepository.save(doctor);
 
 		return doctorMapper.doctorToDoctorDTOConverter(doctor);
@@ -136,7 +143,7 @@ public class DoctorService {
 		Doctor doctor = doctorMapper.doctorUpdateDTOToDoctorConverter(doctorDTO);
 		checkDoctorChanges(doctorDTO, storedDoctor, doctor);
 		checkRelationshipData(doctorDTO, storedDoctor, doctor);
-
+		validateUpdateDoctor(storedDoctor, doctor);
 		log.debug("Llamando a la BD para actualizar un nuevo registro de médico...");
 		doctor = doctorRepository.save(doctor);
 
@@ -207,4 +214,55 @@ public class DoctorService {
 			doctor.setService(serviceService.getOneServiceById(doctorUpdateDTO.getServiceDTO().getId()).orElse(null));
 		}
 	}
+
+	private void validateAddDoctor(Doctor doctor) {
+
+		if (doctorRepository.existsByDni(doctor.getDni())){
+			throw ServiceExceptionCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION
+					.exception(DNI_VIOLATION_CONSTRAINT_EXCEPTION);
+		}
+
+		if(doctorRepository.existsByCollegeNumber(doctor.getCollegeNumber())) {
+			throw ServiceExceptionCatalog.COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION
+					.exception(COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION);
+		}
+
+		if(doctorRepository.existsByPhone(doctor.getPhone())) {
+			throw ServiceExceptionCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION
+					.exception(PHONE_VIOLATION_CONSTRAINT_EXCEPTION);
+		}
+	}
+
+	private void validateUpdateDoctor(Doctor storedDoctor, Doctor updatedoctor) {
+		if(!storedDoctor.getUser().getUsername().equals(updatedoctor.getUser().getUsername())
+				&& userService.existUsername(updatedoctor.getUser().getUsername())){
+			throw ServiceExceptionCatalog.USERNAME_DUPLICATE_EXCEPTION
+					.exception( USERNAME_DUPLICATE_EXCEPTION);
+		}
+
+		if(!storedDoctor.getUser().getEmail().equals(updatedoctor.getUser().getEmail())
+				&& userService.existUserEmail(updatedoctor.getUser().getEmail())){
+			throw ServiceExceptionCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION
+					.exception( EMAIL_VIOLATION_CONSTRAINT_EXCEPTION);
+		}
+
+		if (!storedDoctor.getDni().equals(updatedoctor.getDni())
+				&& doctorRepository.existsByDni(updatedoctor.getDni())){
+			throw ServiceExceptionCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION
+					.exception(DNI_VIOLATION_CONSTRAINT_EXCEPTION);
+		}
+
+		if(!storedDoctor.getCollegeNumber().equals(updatedoctor.getCollegeNumber())
+				&& doctorRepository.existsByCollegeNumber(updatedoctor.getCollegeNumber())) {
+			throw ServiceExceptionCatalog.COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION
+					.exception(COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION);
+		}
+
+		if(!storedDoctor.getPhone().equals(updatedoctor.getPhone())
+				&& doctorRepository.existsByPhone(updatedoctor.getPhone())) {
+			throw ServiceExceptionCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION
+					.exception(PHONE_VIOLATION_CONSTRAINT_EXCEPTION);
+		}
+	}
+
 }

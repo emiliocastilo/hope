@@ -78,16 +78,6 @@ public class SectionControllerTest {
 		verify(sectionService, times(1)).deleteById(anyLong());
 	}
 
-	@Test(expected = ServiceException.class)
-	public void callDeleteShouldThrowException() throws ServiceException {
-		// given
-		given(sectionService.deleteById(0L)).willThrow(ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception("No se encuentra el id"));
-
-		// when
-		sectionService.deleteById(0L);
-
-	}
-
 	@Test
 	public void callFindAllShouldBeStatusOk() throws ServiceException {
 		// given
