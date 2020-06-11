@@ -93,15 +93,15 @@ public class HealthOutcomeControllerTest {
 		Assert.assertNull(response);
 	}
 
-	public void callDetailsResultsExportShouldBeStatus() {
+	public void callDetailsResultsExportShouldBeStatusOk() {
 		// given
 		given(healthOutcomeService.getDetailsResultsByType(anyString(), anyString()))
 				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
 
 		// when
-		List<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", "");
+		List<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType(anyString(), anyString());
 
-		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertEquals(HttpStatus.OK,response);
 		Assert.assertNull(response);
 	}
 
