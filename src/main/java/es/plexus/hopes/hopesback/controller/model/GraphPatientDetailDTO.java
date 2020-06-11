@@ -3,10 +3,12 @@ package es.plexus.hopes.hopesback.controller.model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GraphPatientDetailDTO {
 	@ApiModelProperty(position = 10, example = "1L", value = "Id del paciente guardado en bbdd")
 	Long id;
