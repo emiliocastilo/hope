@@ -20,4 +20,7 @@ public class HospitalDTO {
 
 	@ApiModelProperty(position = 30, example = "['Servicio 1']", value = "Servicios asociados al Hospital")
 	private Set<ServiceDTO> serviceDTO;
+
+	@ApiModelProperty(position = 40, example = "['Pathology 1']", value = "Patologías asociadas al Hospital")
+	private Set<PathologyDTO> pathologies;
 }
