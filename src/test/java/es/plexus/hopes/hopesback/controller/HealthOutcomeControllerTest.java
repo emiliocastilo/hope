@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -91,7 +92,31 @@ public class HealthOutcomeControllerTest {
 		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
 		Assert.assertNull(response);
 	}
-	
+
+	public void callDetailsResultsExportShouldBeStatus() {
+		// given
+		given(healthOutcomeService.getDetailsResultsByType(anyString(), anyString()))
+				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+
+		// when
+		List<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", "");
+
+		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertNull(response);
+	}
+
+	@Test(expected = ServiceException.class)
+	public void callDetailsResultsExportThrowException() throws Exception {
+		// given
+		given(healthOutcomeService.getDetailsResultsByType(anyString(),  anyString()))
+				.willThrow(new ServiceException("Error: No contled error"));
+
+		// when
+		List<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", "");
+
+		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertNull(response);
+	}
 	
 	//Mocks
 	private Map<String, Long> mockMapStringLong() {
