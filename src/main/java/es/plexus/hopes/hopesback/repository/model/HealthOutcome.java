@@ -27,8 +27,8 @@ public class HealthOutcome {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "hou_pac_id", referencedColumnName = "pac_id")
-    private Patient patient;
+	@JoinColumn(name = "hou_pac_id", referencedColumnName = "pac_id")
+	private Patient patient;
 
     @Basic
     @Column(name = "hou_index_type", nullable = false, length = 50)
@@ -46,19 +46,4 @@ public class HealthOutcome {
     @Column(name = "hou_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime date;
 
-    public static int compareToDateAsc(HealthOutcome ho1, HealthOutcome ho2){
-        int result;
-        if (ho1 == null && ho2.getDate() != null) {
-            result = -1;
-        } else if (ho2.getDate() == null && ho1 != null) {
-            result = 1;
-        }else{
-            result = ho1.getDate().compareTo(ho2.getDate());
-        }
-        return result;
-    }
-
-    public static int compareToDateDesc(HealthOutcome ho1, HealthOutcome ho2){
-        return compareToDateAsc(ho2, ho1);
-    }
 }
