@@ -1,7 +1,8 @@
 package es.plexus.hopes.hopesback.repository;
 
-import java.util.List;
-
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,9 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
-import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
+import java.util.List;
 
 @Repository
 public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Long> {
@@ -20,10 +19,10 @@ public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Lo
 	List<HealthOutcome> findResultsByTypes(@Param("type")String type);
 	
 	@Query(QueryConstants.QUERY_GET_DETAIL_RESULTS_BY_TYPE)
-	Page<GraphPatientDetailDTO> getDetailsResultsByType(@Param("indexType")String indexType, Pageable pageable);
+	Page<GraphPatientDetailDTO> getDetailsResultsByType(@Param("indexType")String indexType, @Param("result") String result, Pageable pageable);
 	
 	@Query(QueryConstants.QUERY_GET_DETAIL_RESULTS_BY_TYPE)
-	List<GraphPatientDetailDTO> getDetailsResultsByType(@Param("indexType")String indexType);
+	List<GraphPatientDetailDTO> getDetailsResultsByType(@Param("indexType")String indexType, @Param("result") String result);
 	
 	@Query(QueryConstants.QUERY_ALL_PATIENTS_HEALHT_OUTCOME)
 	List<Long> getAllPatientsId();
