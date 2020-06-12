@@ -131,7 +131,7 @@ public class QueryConstants {
 					WHERE_PT_ACTIVE_TRUE;
 	
 	public static final String QUERY_GET_DETAIL_RESULTS_BY_TYPE = 
-			QUERY_PATIENTS_GRAPH_DETAILS_NO_TYPE + "and hou.indexType = :indexType ";
+			QUERY_PATIENTS_GRAPH_DETAILS_NO_TYPE + "and hou.indexType = :indexType and hou.result = :result";
 	
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_BY_INDICATIONS =
 			QUERY_PATIENTS_GRAPH_DETAILS + "and ind.description = :indication ";
