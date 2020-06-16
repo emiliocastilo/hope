@@ -41,6 +41,7 @@ public class PatientTreatmentService {
 	public static final String TREATMENT_TYPE_TOPICO_QUIMICO = "TÓPICO + QUÍMICO";
 	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA = "TÓPICO + FOTOTERAPIA";
 	public static final String TREATMENT_TYPE_BIOLOGICO = "BIOLÓGICO";
+	public static final String NO_REGIMEN = "Sin régimen";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
 	private final PatientRepository patientRepository;
@@ -99,9 +100,10 @@ public class PatientTreatmentService {
 	}
 
 	@Transactional
-	public Map<String, Long> findPatientsUnderTreatment(String type) {
+	public Map<String, Long> findPatientsUnderTreatment(String type, String indication) {
 		log.debug(CALLING_DB);
-		List<PatientTreatment> patientPatientTreatmentList = patientTreatmentRepository.findPatientsUnderTreatment(type);
+		List<PatientTreatment> patientPatientTreatmentList =StringUtils.isEmpty(indication)?
+				patientTreatmentRepository.findPatientsUnderTreatment(type):patientTreatmentRepository.findPatientsUnderTreatment(type, indication);
 		return patientPatientTreatmentList.stream().collect(groupingBy(functionDescriptionMedicineByTreatment(),
 				Collectors.counting()));
 	}
@@ -110,7 +112,7 @@ public class PatientTreatmentService {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
 		for (PatientTreatment pt : infoPatientsDosesList) {
-			if(pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen("Sin régimen");
+			if(pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
 		}
 		return infoPatientsDosesList
 				.stream()

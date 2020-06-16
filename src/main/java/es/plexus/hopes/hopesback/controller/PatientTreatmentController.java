@@ -36,9 +36,9 @@ public class PatientTreatmentController {
 	
 	@ApiOperation("Recuperar los pacientes bajo tratameinto (medicamento)")
 	@GetMapping(FIND_PATIENTS_UDER_TREATMENT)
-	public Map<String, Long> findPatientsUnderTreatment(@RequestParam(value = "type") String type) {
+	public Map<String, Long> findPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findPatientsUnderTreatment(type);
+		return patientTreatmentService.findPatientsUnderTreatment(type, indication);
 	}
 	
 	@ApiOperation("Recuperar los relacion de dosis - paciente")

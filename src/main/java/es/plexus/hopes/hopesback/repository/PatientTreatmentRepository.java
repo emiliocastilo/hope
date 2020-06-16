@@ -38,6 +38,9 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	@Query(QueryConstants.QUERY_PATIENTS_TREATMENTS_BY_TREATMENT_TYPE)
 	List<PatientTreatment> findPatientsUnderTreatment(@Param("type")String type);
 
+	@Query(QueryConstants.QUERY_PATIENTS_TREATMENTS_BY_TREATMENT_TYPE_AND_INDICATION)
+	List<PatientTreatment> findPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication);
+
 	@Query(QueryConstants.QUERY_FIND_INFO_PATIENTS_DOSES)
 	List<PatientTreatment> findInfoPatientsDoses();
 

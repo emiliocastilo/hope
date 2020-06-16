@@ -244,21 +244,24 @@ public class QueryConstants {
 					FILTER_PTR_ACTIVE_TRUE +
 				"and LOWER(ptr.regimen) = LOWER(:regimen) ";
 
+	public static final String JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID = "join fetch Indication ind on ind.id = pdg.indication.id ";
 	public static final String QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
 			JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
-			"join fetch Indication ind on ind.id = pdg.indication.id " +
+			JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID +
 			WHERE_CLAUSULE +
 			FILTER_PTR_ACTIVE_TRUE +
 			"and LOWER(ptr.type) = LOWER(:type) " +
 			"and LOWER(ind.description) = LOWER(:indication) ";
 
-	public static final String QUERY_PATIENTS_BY_TREATMENT_TYPE =
-			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
+	public static final String QUERY_PATIENTS_TREATMENTS_BY_TREATMENT_TYPE_AND_INDICATION =
+			SELECT_PATIENT_TREATMENT_JOIN_PATIENT_DIAGNOSE +
 			JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
+			JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID +
 			WHERE_CLAUSULE +
 			FILTER_PTR_ACTIVE_TRUE +
-			"and LOWER(ptr.type) = LOWER(:type) ";
+			"and LOWER(ptr.type) = LOWER(:type) " +
+			"and LOWER(ind.description) = LOWER(:indication) ";
 
 	public static final String QUERY_PATIENTS_TREATMENTS_BY_TREATMENT_TYPE =
 			SELECT_PATIENT_TREATMENT_JOIN_PATIENT_DIAGNOSE +

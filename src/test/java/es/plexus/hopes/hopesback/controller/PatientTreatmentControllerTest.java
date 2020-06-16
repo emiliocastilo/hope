@@ -38,11 +38,11 @@ public class PatientTreatmentControllerTest {
 	public void callFindPatientsUnderTreatmentShouldBeStatusOk() {
 
 		// given
-		given(patientTreatmentService.findPatientsUnderTreatment(anyString()))
+		given(patientTreatmentService.findPatientsUnderTreatment(anyString(),anyString()))
 				.willReturn(mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString());
+		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString(),anyString());
 
 		// then		
 		Assert.assertNotNull(response);
@@ -52,11 +52,11 @@ public class PatientTreatmentControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientsUnderTreatmentThrowException() throws Exception {
 		// given
-		given(patientTreatmentService.findPatientsUnderTreatment(anyString()))
+		given(patientTreatmentService.findPatientsUnderTreatment(anyString(), anyString()))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString());
+		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString(),anyString());
 
 		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
 		Assert.assertNull(response);
