@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "605207d8-0da1-470a-b9bd-3738e1142ab2",
+		"_postman_id": "1aa8e0d7-2efd-4207-8220-465efbbe5e60",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -945,7 +945,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "00618c62-20ba-44cb-8844-f439ba0267bd",
+								"id": "a93e0f72-0e9c-42cb-8028-e6b0a746e225",
 								"exec": [
 									""
 								],
@@ -1225,7 +1225,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f1918981-c811-45b2-89af-1e6b6da2d026",
+								"id": "35263648-8a28-45d2-9189-085c83d75646",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1270,7 +1270,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5bfc51a9-ea04-4332-9f0e-f55cf98c42cd",
+								"id": "04d58823-175b-41f3-aaa5-ca596ff81c7f",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1917,6 +1917,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "findByid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/hospitals",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"hospitals"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -2289,7 +2317,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7c03966c-e225-49eb-b92b-55dbe11fe075",
+								"id": "6007ece0-410a-4196-87f4-80a5ad1b4707",
 								"exec": [
 									""
 								],
@@ -2834,9 +2862,7 @@
 								}
 							],
 							"options": {
-								"raw": {
-									"language": "json"
-								}
+								"formdata": {}
 							}
 						},
 						"url": {
@@ -2871,7 +2897,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e3cb74bf-ade0-44de-97f1-66d02127a493",
+								"id": "3f1afb54-09fc-4655-8227-f28bba7e28d0",
 								"exec": [
 									""
 								],
@@ -3029,7 +3055,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6cc0eb66-887c-4fd7-b9d6-7c6b58c0eb79",
+								"id": "1b436d4b-29e6-476c-9c87-d4362e738ff1",
 								"exec": [
 									""
 								],
@@ -3270,7 +3296,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cab69c26-879b-427e-a5d4-ffcb21a78afa",
+								"id": "7e542c91-be70-4f9f-940a-023bb0b0d9d0",
 								"exec": [
 									""
 								],
@@ -3525,9 +3551,7 @@
 							"mode": "urlencoded",
 							"urlencoded": [],
 							"options": {
-								"raw": {
-									"language": "json"
-								}
+								"urlencoded": {}
 							}
 						},
 						"url": {
@@ -3667,7 +3691,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bd0aa1a4-a552-419e-872a-e37b96037e0c",
+								"id": "f75d72ca-8e8c-4126-99c9-df45dcacb9d6",
 								"exec": [
 									""
 								],
@@ -3774,7 +3798,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "ca676bd7-dd76-46b1-8d49-fb28e04195d3",
+						"id": "aecb7cbe-8110-489b-87e7-ee54a2e009e2",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3784,7 +3808,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "f8b7fd3f-2ad6-44b7-b733-0f49f70d9abf",
+						"id": "ae4a8aa4-269e-4e20-a34b-658fd3899a3b",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -4061,7 +4085,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-under-treatment?type=BIOLOGICO",
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-under-treatment?type=BIOLÓGICO&indication=EN PLACAS",
 							"host": [
 								"{{dev}}"
 							],
@@ -4073,7 +4097,11 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "BIOLOGICO"
+									"value": "BIOLÓGICO"
+								},
+								{
+									"key": "indication",
+									"value": "EN PLACAS"
 								}
 							]
 						}
@@ -4131,7 +4159,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-per-doses",
+							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-per-doses?regimen=INTENSIFICADA",
 							"host": [
 								"{{dev}}"
 							],
@@ -4139,6 +4167,12 @@
 								"v1",
 								"patients-treatments",
 								"get-detail-patients-per-doses"
+							],
+							"query": [
+								{
+									"key": "regimen",
+									"value": "INTENSIFICADA"
+								}
 							]
 						}
 					},
@@ -4230,7 +4264,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type?indexType=PASI",
+							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type?indexType=PASI&result=Prueba PASI 6",
 							"host": [
 								"{{dev}}"
 							],
@@ -4243,6 +4277,10 @@
 								{
 									"key": "indexType",
 									"value": "PASI"
+								},
+								{
+									"key": "result",
+									"value": "Prueba PASI 6"
 								}
 							]
 						}
@@ -4316,7 +4354,10 @@
 									"value": "",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"formdata": {}
+							}
 						},
 						"url": {
 							"raw": "{{dev}}/v1/photos?pac=1&pth=2",

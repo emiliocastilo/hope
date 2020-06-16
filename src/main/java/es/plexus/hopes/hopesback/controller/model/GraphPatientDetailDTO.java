@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,5 +46,7 @@ public class GraphPatientDetailDTO {
 
 	@ApiModelProperty(position = 120, example = "1981/02/02T00:00:00Z", value = "Fecha de la última DLQI")
 	LocalDateTime dlqiDate;
+
+
 
 }

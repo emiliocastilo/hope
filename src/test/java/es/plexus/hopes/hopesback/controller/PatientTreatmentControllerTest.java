@@ -1,14 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,8 +16,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.service.PatientTreatmentService;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientTreatmentControllerTest {
@@ -39,11 +38,11 @@ public class PatientTreatmentControllerTest {
 	public void callFindPatientsUnderTreatmentShouldBeStatusOk() {
 
 		// given
-		given(patientTreatmentService.findPatientsUnderTreatment(anyString(), anyString()))
+		given(patientTreatmentService.findPatientsUnderTreatment(anyString()))
 				.willReturn(mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString(), anyString());
+		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString());
 
 		// then		
 		Assert.assertNotNull(response);
@@ -53,13 +52,13 @@ public class PatientTreatmentControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientsUnderTreatmentThrowException() throws Exception {
 		// given
-		given(patientTreatmentService.findPatientsUnderTreatment(anyString(), anyString()))
+		given(patientTreatmentService.findPatientsUnderTreatment(anyString()))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString(), anyString());
+		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString());
 
-		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
 		Assert.assertNull(response);
 	}
 	
@@ -87,7 +86,7 @@ public class PatientTreatmentControllerTest {
 		// when
 		Map<String, Long> response = patientTreatmentController.findInfoPatientsDoses();
 
-		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
 		Assert.assertNull(response);
 	}
 
@@ -124,7 +123,7 @@ public class PatientTreatmentControllerTest {
 		// when
 		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", pageRequest);
 
-		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
 		Assert.assertNull(response);
 	}
 	
@@ -133,11 +132,11 @@ public class PatientTreatmentControllerTest {
 
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsPerDoses(any(Pageable.class)))
+		given(patientTreatmentService.getDetailPatientsPerDoses(anyString(),any(Pageable.class)))
 				.willReturn(getPageableGraphPatientDetail(pageRequest));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses(pageRequest);
+		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses("reg",pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -148,30 +147,32 @@ public class PatientTreatmentControllerTest {
 	public void callGetDetailPatientsPerDosesThrowException() throws Exception {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsPerDoses(any(Pageable.class)))
+		given(patientTreatmentService.getDetailPatientsPerDoses(anyString(), any(Pageable.class)))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses(pageRequest);
+		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses("regimen", pageRequest);
 
-		Assert.assertEquals(response, HttpStatus.BAD_REQUEST);
+		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
 		Assert.assertNull(response);
 	}
 	
 	private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
 		GraphPatientDetailDTO graphPatientDetailDTO =
-				new GraphPatientDetailDTO(1L,
-						"NOHC0001",
-						"HC0001",
-						"Nombre completo",
-						"Indication",
-						"Diagnose CIE 9",
-						"Diagnose cie 10",
-						"Treatment",
-						"PASI Result",
-						LocalDateTime.now(),
-						"DLQI Result",
-						LocalDateTime.now());
+				new GraphPatientDetailDTO();
+
+		graphPatientDetailDTO.setId(1L);
+		graphPatientDetailDTO.setNhc("NOHC0001");
+		graphPatientDetailDTO.setHealthCard("HC0001");
+		graphPatientDetailDTO.setFullName("Nombre completo");
+		graphPatientDetailDTO.setPrincipalIndication("Indication");
+		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE 9");
+		graphPatientDetailDTO.setPrincipalDiagnoseCie10("Diagnose cie 10");
+		graphPatientDetailDTO.setTreatment("Treatment");
+		graphPatientDetailDTO.setPasi("PASI Result");
+		graphPatientDetailDTO.setPasiDate(LocalDateTime.now());
+		graphPatientDetailDTO.setDlqi("DLQI Result");
+		graphPatientDetailDTO.setDlqiDate(LocalDateTime.now());
 
 		return graphPatientDetailDTO;
 	}

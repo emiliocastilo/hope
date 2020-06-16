@@ -251,7 +251,7 @@ public class PatientDiagnosisControllerTest {
 	@Test
 	public void callFindGraphPatientsDetailsByIndicationShouldBeStatusOk() {
 
-		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
+		final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id"));
 
 		// given
 		given(patientDiagnosisService.findGraphPatientsDetailsByIndication("Psoriasis pustulosa", pageRequest))
@@ -305,7 +305,7 @@ public class PatientDiagnosisControllerTest {
 	@Test
 	public void callFindGraphPatientsDetailsByCie9ShouldBeStatusOk() {
 
-		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
+		final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id"));
 
 		// given
 		given(patientDiagnosisService.findGraphPatientsDetailsByCie9("Psoriasis pustulosa", pageRequest))
@@ -634,18 +634,23 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
-		return	new GraphPatientDetailDTO(1L,
-						"NOHC0001",
-						"HC0001",
-						"Nombre completo",
-						"Indication",
-						"Diagnose CIE 9",
-						"Diagnose cie 10",
-						"Treatment",
-						"PASI Result",
-						LocalDateTime.now(),
-						"DLQI Result",
-						LocalDateTime.now());
+		GraphPatientDetailDTO graphPatientDetailDTO =
+				new GraphPatientDetailDTO();
+
+		graphPatientDetailDTO.setId(1L);
+		graphPatientDetailDTO.setNhc("NOHC0001");
+		graphPatientDetailDTO.setHealthCard("HC0001");
+		graphPatientDetailDTO.setFullName("Nombre completo");
+		graphPatientDetailDTO.setPrincipalIndication("Indication");
+		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE 9");
+		graphPatientDetailDTO.setPrincipalDiagnoseCie10("Diagnose cie 10");
+		graphPatientDetailDTO.setTreatment("Treatment");
+		graphPatientDetailDTO.setPasi("PASI Result");
+		graphPatientDetailDTO.setPasiDate(LocalDateTime.now());
+		graphPatientDetailDTO.setDlqi("DLQI Result");
+		graphPatientDetailDTO.setDlqiDate(LocalDateTime.now());
+
+		return graphPatientDetailDTO;
 
 	}
 
