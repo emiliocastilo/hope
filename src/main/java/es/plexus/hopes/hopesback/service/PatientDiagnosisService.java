@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.service;
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
+import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientData;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
@@ -11,22 +12,27 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
+import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
 import static java.util.stream.Collectors.groupingBy;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class PatientDiagnosisService {
-	
+
 	private static final String CALLING_DB = "Calling DB...";
 
+
 	private final PatientDiagnosisRepository patientDiagnosisRepository;
+	private final PatientRepository patientRepository;
 	private final PatientDataRepository patientDataRepository;
 
 	/**
@@ -77,60 +83,89 @@ public class PatientDiagnosisService {
 	 * Method that it return a list pageable with the patient details by indication in the Patient Diagnose Section
 	 * @return
 	 */
-	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByIndication(final String indication, final Pageable pageable){
+	@Transactional
+	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByIndication(final String indication, Pageable pageable){
 		log.debug(CALLING_DB);
-		return patientDiagnosisRepository
-				.findPatientDetailsGraphsByIndication(indication, pageable);
+		log.debug( "INIT: Query Patients By Indication");
+		List<Patient> patients = patientRepository.findPatientsByIndication(indication);
+		log.debug( "END: Query Patients By Indication");
+		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
+		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
+		return page;
 	}
+
 
 	/**
 	 * Method that it return a list with the patient details by indication in the Patient Diagnose Section
 	 * @return
 	 */
+
+	@Transactional
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByIndication(final String indication){
 		log.debug(CALLING_DB);
-		return patientDiagnosisRepository
-				.findPatientDetailsGraphsByIndication(indication);
+		log.debug( "INIT: Query Patients By Indication");
+		List<Patient> patients = patientRepository.findPatientsByIndication(indication);
+		log.debug( "END: Query Patients By Indication");
+		return fillGraphPatientDetailDtoList(patients);
 	}
+
+
+
 
 	/**
 	 * Method that it return a list pageable the patient details by CIE9 in the Patient Diagnose Section
 	 * @return
 	 */
+	@Transactional
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie9(final String cie9, final Pageable pageable){
 		log.debug(CALLING_DB);
-		return patientDiagnosisRepository
-				.findPatientDetailsGraphsByCie9(cie9, pageable);
+		log.debug( "INIT: Query Patients By Cie9");
+		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie9(cie9);
+		log.debug( "END: Query Patients By Cie9");
+		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
+		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
+		return page;
 	}
 
 	/**
 	 * Method that it return a list the patient details by CIE9 in the Patient Diagnose Section
 	 * @return
 	 */
+	@Transactional
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie9(final String cie9){
 		log.debug(CALLING_DB);
-		return  patientDiagnosisRepository
-				.findPatientDetailsGraphsByCie9(cie9);
+		log.debug( "INIT: Query Patients By Cie9");
+		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie9(cie9);
+		log.debug( "END: Query Patients By Cie9");
+		return fillGraphPatientDetailDtoList(patients);
 	}
 
 	/**
 	 * Method that it return a list pageable the patient details by CIE10 in the Patient Diagnose Section
 	 * @return
 	 */
+	@Transactional
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie10(final String cie10, final Pageable pageable){
 		log.debug(CALLING_DB);
-		return  patientDiagnosisRepository
-				.findPatientDetailsGraphsByCie10(cie10, pageable);
+		log.debug( "INIT: Query Patients By Cie10");
+		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie10(cie10);
+		log.debug( "END: Query Patients By Cie10");
+		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
+		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
+		return page;
 	}
 
 	/**
 	 * Method that it return a list the patient details by CIE10 in the Patient Diagnose Section
 	 * @return
 	 */
+	@Transactional
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie10(final String cie10){
 		log.debug(CALLING_DB);
-		return patientDiagnosisRepository
-				.findPatientDetailsGraphsByCie10(cie10);
+		log.debug( "INIT: Query Patients By Cie10");
+		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie10(cie10);
+		log.debug( "END: Query Patients By Cie10");
+		return fillGraphPatientDetailDtoList(patients);
 	}
 
 	/**

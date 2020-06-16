@@ -2,8 +2,10 @@ package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
+import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +16,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
@@ -23,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -32,7 +32,10 @@ public class HealthOutcomeServiceTest {
 
 	@Mock
 	private HealthOutcomeRepository healthOutcomeRepository;
-	
+
+	@Mock
+	private PatientRepository patientRepository;
+
 	@InjectMocks
 	private HealthOutcomeService healthOutcomeService;
 
@@ -57,9 +60,10 @@ public class HealthOutcomeServiceTest {
 	public void callDetailsResultsShouldBeStatusOk() {
 
 		// given
-		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(healthOutcomeRepository.getDetailsResultsByType(anyString(), anyString(), any(Pageable.class)))
-				.willReturn(getPageableGraphPatientDetail(pageRequest));
+		final PageRequest pageRequest = PageRequest.of(0, 5, Sort.by("patient"));
+		given(patientRepository.getDetailsResultsByType(anyString()
+				, anyString()))
+				.willReturn(Collections.singletonList(mockPatient()));
 
 		// when
 		Page<GraphPatientDetailDTO> response = healthOutcomeService.getDetailsResultsByType("PASI", "PASI", pageRequest);
@@ -68,12 +72,21 @@ public class HealthOutcomeServiceTest {
 		Assert.assertNotNull(response);
 		Assert.assertFalse(response.isEmpty());
 	}
-	
+
+	private Patient mockPatient() {
+		Patient patient = new Patient();
+		patient.setHealthOutcomes(Collections.singletonList(new HealthOutcome()));
+		patient.setName("name");
+		patient.setNhc("nhc");
+		patient.setDiagnoses(Collections.singletonList(new PatientDiagnose()));
+		return patient;
+	}
+
 	@Test(expected = ServiceException.class)
 	public void callDetailsResultsThrowException() throws ServiceException {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(healthOutcomeRepository.getDetailsResultsByType(anyString(),  anyString(), any(Pageable.class)))
+		given(patientRepository.getDetailsResultsByType(anyString(),  anyString()))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
@@ -87,7 +100,7 @@ public class HealthOutcomeServiceTest {
 	@Test(expected = ServiceException.class)
 	public void callDetailsResultsExportThrowException() throws ServiceException {
 		// given
-		given(healthOutcomeRepository.getDetailsResultsByType(anyString(),  anyString()))
+		given(patientRepository.getDetailsResultsByType(anyString(),  anyString()))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
