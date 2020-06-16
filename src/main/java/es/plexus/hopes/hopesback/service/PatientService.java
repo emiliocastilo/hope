@@ -156,7 +156,7 @@ public class PatientService {
 						|| (StringUtils.isEmpty(patientDTO.getPhone()) && !StringUtils.isEmpty(patient.getPhone()))
 						|| (!StringUtils.isEmpty(patientDTO.getPhone())
 						&& !StringUtils.isEmpty(patient.getPhone())
-						&& !patient.getEmail().equals(patientDTO.getPhone())));
+						&& !patient.getPhone().equals(patientDTO.getPhone())));
 	}
 
 	public void deleteById(Long id) {

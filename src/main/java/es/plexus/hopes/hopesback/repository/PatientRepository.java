@@ -9,12 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface PatientRepository extends JpaRepository<Patient, Long> {
+public interface PatientRepository extends JpaRepository<Patient, Long>,PatientRepositoryCustom {
 
 	@Query("select pac from Patient pac join pac.pathologies pat WHERE pat.id in (:pathologies)")
 	Page<Patient> findByPathologies(@Param("pathologies") Collection pathologies, Pageable pageable);
@@ -56,12 +55,6 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 	@Query(QueryConstants.QUERY_PATIENTS_BY_NO_TREATMENT)
 	List<Patient> findPatientGraphDetailsByNoTreatment();
 
-	List<Patient> findGraphPatientsDetailsByEndCauseBiologicTreatment(
-			String endCause, String reason);
-
-	List<Patient> findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears(
-			@Param("endCause")String endCause, @Param("reason")String reason, @Param("initDate") LocalDateTime initDate);
-
 	@Query(QueryConstants.QUERY_PATIENTS_BY_PATIENTS_ID)
 	List<Patient> findGraphPatientsDetailsByPatientsIds(@Param("patientsIds")Collection<Long> patientsIds);
 
@@ -75,6 +68,5 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_PER_DOSES)
 	List<Patient> getDetailPatientsPerDoses(@Param("regimen")String regimen);
 
-	List<Patient> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication);
 }
 
