@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -36,7 +38,7 @@ public class HealthOutcome {
 
     @Basic
     @Column(name = "hou_value", nullable = false, length = 50)
-    private String value;
+    private BigDecimal value;
     
     @Basic
     @Column(name = "hou_result", nullable = false, length = 50)

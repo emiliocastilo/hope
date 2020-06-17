@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e1de02bd-61e5-4319-9ae2-ea9c1cbf76ad",
+		"_postman_id": "aaf128ea-b4dc-45cc-b8dd-8c42b13a10e8",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -919,7 +919,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/patients?",
+							"raw": "{{dev}}/v1/patients",
 							"host": [
 								"{{dev}}"
 							],
@@ -945,7 +945,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a1be76ec-06a1-4c57-8214-4fe804fc9a12",
+								"id": "3e833ebe-e0cb-4d3d-9817-64eb6437f90b",
 								"exec": [
 									""
 								],
@@ -1225,7 +1225,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "92116858-b0b4-4171-86c4-15c938a9a34a",
+								"id": "d3bd996d-7c08-4b3b-bd6c-0643a7f7abd0",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1270,7 +1270,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d3e8424b-842d-4ab1-9fc2-e2a34e30daee",
+								"id": "a9ed016b-b869-4789-b831-dff27df6582b",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -2263,7 +2263,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details?",
+							"raw": "{{dev}}/v1/dispensation-details",
 							"host": [
 								"{{dev}}"
 							],
@@ -2289,7 +2289,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "96fa1fca-2455-432b-bb5d-777a72572f21",
+								"id": "04cc9681-0f4a-4653-a751-7955f78316b2",
 								"exec": [
 									""
 								],
@@ -2838,7 +2838,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensations?",
+							"raw": "{{dev}}/v1/dispensations",
 							"host": [
 								"{{dev}}"
 							],
@@ -2869,7 +2869,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "94afef8c-557e-4397-9bb3-287f87e1a435",
+								"id": "a12a8271-31d4-4e47-8413-202c24e1dd78",
 								"exec": [
 									""
 								],
@@ -3001,7 +3001,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/medicines?",
+							"raw": "{{dev}}/v1/medicines",
 							"host": [
 								"{{dev}}"
 							],
@@ -3027,7 +3027,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1e739c85-a14f-41b6-b6fc-9e2ca51465e2",
+								"id": "161fa73c-db71-4dfc-9b03-da2aad6839af",
 								"exec": [
 									""
 								],
@@ -3268,7 +3268,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fd942768-aa8f-4a24-ab74-000928faed32",
+								"id": "b8e75521-4f1d-4742-a749-5266b7cba0ab",
 								"exec": [
 									""
 								],
@@ -3607,7 +3607,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/sections?",
+							"raw": "{{dev}}/v1/sections",
 							"host": [
 								"{{dev}}"
 							],
@@ -3663,7 +3663,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "741a54fc-37d8-4a97-b7dc-6998cf4482d7",
+								"id": "141cc097-2af5-4dec-aae7-9581564b3ea2",
 								"exec": [
 									""
 								],
@@ -3770,7 +3770,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "bec23370-999e-4be6-891e-f5d8c4bc3efe",
+						"id": "f8c05840-3001-4691-84c0-b362d224724b",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3780,7 +3780,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "27279d3b-876e-4cb6-acc7-81069058429a",
+						"id": "ed1595e7-dab2-4533-b013-031d6f30846b",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -4205,6 +4205,44 @@
 									"key": "type",
 									"value": "PASI"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/health-outcomes/save-score-data-by-index-type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"NAPSI\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"EAV\",\n\t\"value\" : 20,\n\t\"result\" : \"Moderada\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"PGA\",\n\t\"value\" : 31.5,\n\t\"result\" : \"Severa\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"DLQI\",\n\t\"value\" : 36.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-12T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"BSA\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-11T12:10:03\"\n}]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/health-outcomes/save-score-data-by-index-type",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"health-outcomes",
+								"save-score-data-by-index-type"
 							]
 						}
 					},

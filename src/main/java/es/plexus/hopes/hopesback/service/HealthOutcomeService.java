@@ -1,18 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
-import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.service.mapper.HealthOutcomeMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.mapstruct.factory.Mappers;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,6 +10,21 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
+import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.service.mapper.HealthOutcomeMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+
 @Log4j2
 @Service
 @RequiredArgsConstructor
@@ -30,6 +33,8 @@ public class HealthOutcomeService {
 	private static final String CALLING_DB = "Calling DB...";
 
 	private final HealthOutcomeRepository healthOutcomeRepository;
+	
+	private final PatientService patientService;
 
 	public Map<String, Long> findResultsByTypes(final String type) {
 		log.debug(CALLING_DB);
@@ -87,5 +92,18 @@ public class HealthOutcomeService {
 		});
 
 		return mapEvolutionIndicesGraph;
+	}
+
+	public List<HealthOutcomeDTO> saveScoreDataByIndexType(List<HealthOutcomeDTO> healthOutcomeDtos) {
+		log.debug(CALLING_DB);		
+		List<HealthOutcome> healthOutcomesSaved = new ArrayList<>();
+		healthOutcomeDtos.stream().forEach(ho -> { 
+			HealthOutcome healthOutcome = HealthOutcomeMapper.INSTANCE.dtoToEntity(ho);
+			healthOutcome.setPatient(patientService.getEntityPatientById(ho.getPatientId()).orElse(null));
+			HealthOutcome entitySaved = healthOutcomeRepository.saveAndFlush(healthOutcome);
+			healthOutcomesSaved.add(entitySaved);
+		});
+		
+		return HealthOutcomeMapper.INSTANCE.entityToHealthOutcomeDtos(healthOutcomesSaved);
 	}
 }
