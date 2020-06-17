@@ -7,6 +7,7 @@ import lombok.Data;
 @ApiModel
 public class InputDTO {
 
+    private String type;
     private String name;
     private String value;
 }
