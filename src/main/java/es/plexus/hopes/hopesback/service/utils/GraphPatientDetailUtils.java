@@ -35,13 +35,13 @@ public final class GraphPatientDetailUtils {
         int end = (start + pageable.getPageSize()) > graphPatientDetailList.size() ?
                 graphPatientDetailList.size() : (start + pageable.getPageSize());
 
-        List<GraphPatientDetailDTO> resultList = graphPatientDetailList.subList(start, end);
+       // List<GraphPatientDetailDTO> resultList = graphPatientDetailList.subList(start, end);
 
         if (pageable.getSort().get().findFirst().isPresent()) {
-            orderGraphPatientDetailList(resultList, pageable.getSort());
+            orderGraphPatientDetailList(graphPatientDetailList, pageable.getSort());
         }
 
-        return new PageImpl<>(resultList, pageable, resultList.size());
+        return new PageImpl<>(graphPatientDetailList, pageable, graphPatientDetailList.size());
     }
 
     public static List<GraphPatientDetailDTO> fillGraphPatientDetailDtoList(List<Patient> patients) {
