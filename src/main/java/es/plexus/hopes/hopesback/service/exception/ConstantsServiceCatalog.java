@@ -10,5 +10,6 @@ public class ConstantsServiceCatalog {
 	public static final String COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION = "Ya existe el valor del campo número de colegiado";
 	public static final String PHONE_VIOLATION_CONSTRAINT_EXCEPTION = "Ya existe el valor del campo número de teléfono";
 	public static final String USERNAME_DUPLICATE_EXCEPTION  = "Nombre de usuario duplicado";
+	public static final String NOT_FOUND_FORM = "Formulario no encontrado";
 
 }
