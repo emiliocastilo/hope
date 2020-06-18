@@ -134,7 +134,7 @@ public final class GraphPatientDetailUtils {
                     graphPatientDetailList
                             .sort(obtainComparatorString(order, GraphPatientDetailDTO::getNhc));
                     break;
-
+                case "sip":
                 case "healthCard":
                     graphPatientDetailList
                             .sort(obtainComparatorString(order, GraphPatientDetailDTO::getHealthCard));
