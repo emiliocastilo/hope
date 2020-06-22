@@ -283,6 +283,22 @@ public class QueryConstants {
 					"and pd.patient.id = :patId " +
 					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
 
+	public static final String QUERY_ALL_BIOLOGICAL_TREATMENTS_BY_PATIENT_ID =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+					WHERE_CLAUSULE +
+					" pd.patient.id = :patId " +
+					"and LOWER(pt.type) = 'biológico' " +
+					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
+
+	public static final String QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+					WHERE_CLAUSULE +
+					" pd.patient.id = :patId " +
+					"and LOWER(pt.type) <> 'biológico' " +
+					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
+
 	public static final String QUERY_FIND_DISPENSATION_DETAILS_BY_PATIENT_ID =
 			"select dd " +
 					"from DispensationDetail dd " +

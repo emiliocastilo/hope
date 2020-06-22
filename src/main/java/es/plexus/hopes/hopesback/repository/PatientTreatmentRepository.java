@@ -46,5 +46,11 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 
 	@Query(QueryConstants.QUERY_ACTUAL_TREATMENTS_BY_PATIENT_ID)
 	List<PatientTreatment> findTreatmentsByPatientId(@Param("patId") Long patId);
+
+	@Query(QueryConstants.QUERY_ALL_BIOLOGICAL_TREATMENTS_BY_PATIENT_ID)
+	List<PatientTreatment> findBiologicalTreatmentsByPatientId(@Param("patId") Long patId);
+
+	@Query(QueryConstants.QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID)
+	List<PatientTreatment> findFameTreatmentsByPatientId(@Param("patId") Long patId);
 }
 
