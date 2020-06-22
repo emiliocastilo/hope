@@ -4566,6 +4566,81 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PatientDashboard",
+			"item": [
+				{
+					"name": "Cuadro de mandos del paciente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-dashboards/1",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-dashboards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Evolucion de indices del Paciente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/patients-dashboards/evolution-indices-clinical?indicesTypes=PASI,DLQI,BSA&patId=1",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"patients-dashboards",
+								"evolution-indices-clinical"
+							],
+							"query": [
+								{
+									"key": "indicesTypes",
+									"value": "PASI,DLQI,BSA"
+								},
+								{
+									"key": "patId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones que se realizan al PatientDashboardController y que validan la funcionalidad de la sección cuadro de mandos del paciente y sus subsecciones.",
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
