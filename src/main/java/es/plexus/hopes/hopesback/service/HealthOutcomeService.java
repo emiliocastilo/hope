@@ -6,6 +6,7 @@ import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.service.mapper.HealthOutcomeMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
