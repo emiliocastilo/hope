@@ -1,5 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
@@ -7,11 +8,13 @@ import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -79,5 +82,21 @@ public class HealthOutcomeService {
 		});
 		
 		return result;
+	}
+
+	public Map<String,List<GraphHealthOutcomeDTO>> findEvolutionClinicalIndicesByIndexTypeAndPatient(String indicesTypes, Long patId) {
+
+		Map <String,List<GraphHealthOutcomeDTO>> mapEvolutionIndicesGraph = new HashMap<>();
+
+		Arrays.stream(indicesTypes.replace(" ","").split(",")).forEach(indexType ->{
+
+			List<HealthOutcome> healthoutcomeResultList = healthOutcomeRepository
+					.findEvolutionClinicalIndicesByIndexTypeAndPatient(indexType, patId);
+			mapEvolutionIndicesGraph.put(indexType,healthoutcomeResultList.stream()
+					.map(Mappers.getMapper(HealthOutcomeMapper.class)::entityToGraphHealthOutcomeDto)
+					.collect(Collectors.toList()));
+		});
+
+		return mapEvolutionIndicesGraph;
 	}
 }

@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.Patient;
@@ -8,6 +9,7 @@ import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
+import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -257,6 +259,13 @@ public class PatientTreatmentService {
 		List<Patient> patients = patientRepository
 				.findGraphPatientsDetailsByCombinedTreatments(typesTreatmentsList, Long.valueOf(typesTreatmentsList.size()));
 		return fillGraphPatientDetailDtoList(patients);
+	}
+
+	public List<TreatmentDTO> findTreatmentsByPatientId(Long patId) {
+		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findTreatmentsByPatientId(patId);
+		return patientTreatmentList.stream()
+				.map(Mappers.getMapper(PatientTreatmentMapper.class)::entityToTreatmentDTO)
+				.collect(Collectors.toList());
 	}
 
 	private List<String> obtainTreatmentTypes(String combinedTreatment) {

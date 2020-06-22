@@ -102,6 +102,10 @@ public class QueryConstants {
 			"where dd.date between :dateStart and :dateEnd " + 
 			"group by dd.nhc";
 
+	public static final String QUERY_VALUES_HEALHT_OUTCOME_BY_INDEX_TYPE_PATIENT_ID =
+			"select hou from HealthOutcome hou " +
+			"where hou.indexType = :indexType and hou.patient.id = :patId " +
+			"order by hou.date asc";
 
 	// PATHOLOGY DASHBOARD: PATIENT DIAGNOSES - PATIENTS GROUP BY INDICATION
 
