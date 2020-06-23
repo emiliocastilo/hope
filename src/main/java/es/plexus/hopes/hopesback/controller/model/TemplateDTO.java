@@ -16,4 +16,8 @@ public class TemplateDTO {
     @IsValidJson
     @NotEmpty
     private String form;
+
+    @IsValidJson
+    @NotEmpty
+    private String buttons;
 }

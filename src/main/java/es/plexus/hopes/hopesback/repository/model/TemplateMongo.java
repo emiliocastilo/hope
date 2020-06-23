@@ -13,4 +13,6 @@ public class TemplateMongo {
 
     private String form;
 
+    private String buttons;
+
 }
