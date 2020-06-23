@@ -15,4 +15,6 @@ public class TemplateMongo {
 
     private String buttons;
 
+    private Boolean historify;
+
 }

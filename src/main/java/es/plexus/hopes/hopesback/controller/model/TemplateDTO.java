@@ -20,4 +20,6 @@ public class TemplateDTO {
     @IsValidJson
     @NotEmpty
     private String buttons;
+
+    private Boolean historify;
 }
