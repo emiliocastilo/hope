@@ -35,11 +35,12 @@ public final class GraphPatientDetailUtils {
         int end = (start + pageable.getPageSize()) > graphPatientDetailList.size() ?
                 graphPatientDetailList.size() : (start + pageable.getPageSize());
 
+        if (pageable.getSort().get().findFirst().isPresent()) {
+            orderGraphPatientDetailList(graphPatientDetailList, pageable.getSort());
+        }
+
         List<GraphPatientDetailDTO> resultList = graphPatientDetailList.subList(start, end);
 
-        if (pageable.getSort().get().findFirst().isPresent()) {
-            orderGraphPatientDetailList(resultList, pageable.getSort());
-        }
 
         return new PageImpl<>(resultList, pageable, graphPatientDetailList.size());
     }
