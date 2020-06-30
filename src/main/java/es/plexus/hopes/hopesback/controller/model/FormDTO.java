@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,4 +20,6 @@ public class FormDTO {
 
     @NotEmpty
     private List<InputDTO> data;
+
+    private Date dateTime;
 }

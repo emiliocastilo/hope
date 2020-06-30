@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @Document(collection = "form")
 @CompoundIndexes({
-        @CompoundIndex(name = "form_idx", def = "{'template': 1, 'patientId': 1}", unique = true)
+        @CompoundIndex(name = "form_idx", def = "{'template': 1, 'patientId': 1, 'dateTime':-1}", unique = true)
 })
 public class FormMongo {
 
