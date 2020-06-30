@@ -11,7 +11,8 @@ public enum ServiceExceptionCatalog {
 	USERNAME_DUPLICATE_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-003", "Nombre de usuario duplicado"),
 	TOO_MANY_ELEMENTS_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-004", "Se encontraron demasiados elementos"),
 	INVALID_LOGIN_EXCEPTION(HttpStatus.FORBIDDEN, "IE-005", "Nombre de usuario o contraseña no válidos"),
-	INVALID_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-006", "La petición no es correcta.");
+	INVALID_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-006", "La petición no es correcta."),
+	BAD_FILE_EXTENSION_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-015", "Extensión del fichero no válido (solo XLSX o XLS)");
 
 	private final HttpStatus httpStatus;
 	private final String errorCode;
