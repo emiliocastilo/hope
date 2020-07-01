@@ -1,5 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
+import com.google.common.base.Throwables;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
 import es.plexus.hopes.hopesback.repository.DoseRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
@@ -26,11 +27,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -56,124 +63,137 @@ public class MedicineService {
 		return MedicineMapper.INSTANCE.entityToDto(medicineRepository.save(medicine));
 	}
 
-	public void saveAll(MultipartFile multipartFile) throws ServiceException {
+	public void saveAll(MultipartFile multipartFile) {
 		log.debug(CALLING_DB);
 
 		Workbook workbook = validWorkbook(multipartFile);
 		Sheet sheetMedicine = workbook.getSheetAt(0);
 		Sheet sheetDose = workbook.getSheetAt(1);
 
-		// Fixme crear un fichero de log, para saber en que línea ha fallado, añadirlo en el mismo resource
-		readAndInsertMedicine(sheetMedicine);
-		readAndInsertDose(sheetDose);
+		// Creamos un fichero de errores
+		try {
+			Path newFolder = Paths.get("src", "main","resources", "logs","excel");
+			Files.createDirectories(newFolder);
+			File fileLog = new File(newFolder + "/medicineAndDoses-Log.txt");
+
+			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileLog));
+
+			for (Row row : sheetMedicine) {
+				readAndInsertMedicine(row, bufferedWriter);
+			}
+			for (Row row : sheetDose) {
+				readAndInsertDose(row, bufferedWriter);
+			}
+
+			bufferedWriter.close();
+		} catch (IOException e){
+			throw ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception(e.getMessage());
+		}
 
 	}
 
-	private void readAndInsertDose(Sheet sheetDose) {
-		for (Row row : sheetDose) {
-			try {
-				Dose dose = new Dose();
-				for (Cell cell : row) {
-					if (row.getRowNum() != 0) {
-						if (cell.getColumnIndex() == DoseExcelColumns.CODE_ACT.getNumber()) {
-							dose.setCodeAtc(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == DoseExcelColumns.DESCRIPTION.getNumber()) {
-							dose.setDescription(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == DoseExcelColumns.DOSE_INDICATED.getNumber()) {
-							dose.setDoseIndicated(cell.getStringCellValue());
-						}
+	private void readAndInsertDose(Row row, BufferedWriter bufferedWriter) throws IOException {
+		try {
+			Dose dose = new Dose();
+			for (Cell cell : row) {
+				if (row.getRowNum() != 0) {
+					if (cell.getColumnIndex() == DoseExcelColumns.CODE_ACT.getNumber()) {
+						dose.setCodeAtc(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == DoseExcelColumns.DESCRIPTION.getNumber()) {
+						dose.setDescription(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == DoseExcelColumns.DOSE_INDICATED.getNumber()) {
+						dose.setDoseIndicated(cell.getStringCellValue());
 					}
 				}
-				if (row.getRowNum() != 0) {
-					doseRepository.save(dose);
-				}
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
 			}
+			if (row.getRowNum() != 0) {
+				doseRepository.save(dose);
+			}
+		} catch (IllegalStateException e) {
+			bufferedWriter.write(LocalDateTime.now() + " ERROR " + getClass().getName() + " - En la fila del excel de Dosis: " + row.getRowNum() + " " + Throwables.getStackTraceAsString(e));
 		}
 	}
 
-	private void readAndInsertMedicine(Sheet sheetMedicine) {
+	private void readAndInsertMedicine(Row row, BufferedWriter bufferedWriter) throws IOException {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		for (Row row : sheetMedicine) {
-			Medicine medicine = new Medicine();
-			try {
+		Medicine medicine = new Medicine();
 
-				for (Cell cell : row) {
-					//Suponemos que nunca se cambiarán las columnas de sitio
-					if (row.getRowNum() != 0) {
-						if (cell.getColumnIndex() == MedicineExcelColumns.NATIONAL_CODE.getNumber()) {
-							medicine.setNationalCode(String.valueOf((int) cell.getNumericCellValue()));
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.ACT_INGREDIENTS.getNumber()) {
-							medicine.setActIngredients(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.ACRONYM.getNumber()) {
-							medicine.setAcronym(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.DESCRIPTION.getNumber()) {
-							medicine.setDescription(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.CONTENT.getNumber()) {
-							medicine.setContent(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.PRESENTATION.getNumber()) {
-							medicine.setPresentation(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.CODE_ACT.getNumber()) {
-							medicine.setCodeAct(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.AUTHORIZATION_DATE.getNumber()) {
-							if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
-								medicine.setAuthorizationDate(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
-							} else {
-								medicine.setAuthorizationDate(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-							}
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.AUTHORIZED.getNumber()) {
-							medicine.setAuthorized(cell.getNumericCellValue() > 0);
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.END_DATE_AUTHORIZATION.getNumber()) {
-							if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
-								medicine.setEndDateAuthorization(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
-							} else {
-								medicine.setEndDateAuthorization(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-							}
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.COMMERCIALIZATION.getNumber()) {
-							medicine.setCommercialization(cell.getNumericCellValue() > 0);
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.COMMERCIALIZATION_DATE.getNumber()) {
-							if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
-								medicine.setCommercializationDate(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
-							} else {
-								medicine.setCommercializationDate(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-							}
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.END_DATE_COMMERCIALIZATION.getNumber()) {
-							if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
-								medicine.setEndDateCommercialization(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
-							} else {
-								medicine.setEndDateCommercialization(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-							}
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.VIA_ADMINISTRATION.getNumber()) {
-							medicine.setViaAdministration(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.BRAND.getNumber()) {
-							medicine.setBrand(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.UNITS.getNumber()) {
-							medicine.setUnits(BigDecimal.valueOf(cell.getNumericCellValue()));
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.PVL.getNumber()) {
-							medicine.setPvl(BigDecimal.valueOf(cell.getNumericCellValue()));
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.PVP.getNumber()) {
-							medicine.setPvp(BigDecimal.valueOf(cell.getNumericCellValue()));
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.PATHOLOGY.getNumber()) {
-							medicine.setPathology(cell.getStringCellValue());
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.FAMILY.getNumber()) {
-							medicine.setFamily(cell.getStringCellValue());
-							medicine.setBiologic(medicine.getFamily().contains("BIOLÓGICO"));
-						} else if (cell.getColumnIndex() == MedicineExcelColumns.SUBFAMILY.getNumber()) {
-							medicine.setSubfamily(cell.getStringCellValue());
-						}
-					}
-				}
+		try {
+			for (Cell cell : row) {
+				//Suponemos que nunca se cambiarán las columnas de sitio
 				if (row.getRowNum() != 0) {
-					if (BigDecimal.ZERO.compareTo(medicine.getUnits()) != 0) {
-						medicine.setPvlUnitary(medicine.getPvl().divide(medicine.getUnits(), 2, RoundingMode.UP));
+					if (cell.getColumnIndex() == MedicineExcelColumns.NATIONAL_CODE.getNumber()) {
+						medicine.setNationalCode(String.valueOf((int) cell.getNumericCellValue()));
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.ACT_INGREDIENTS.getNumber()) {
+						medicine.setActIngredients(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.ACRONYM.getNumber()) {
+						medicine.setAcronym(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.DESCRIPTION.getNumber()) {
+						medicine.setDescription(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.CONTENT.getNumber()) {
+						medicine.setContent(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.PRESENTATION.getNumber()) {
+						medicine.setPresentation(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.CODE_ACT.getNumber()) {
+						medicine.setCodeAct(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.AUTHORIZATION_DATE.getNumber()) {
+						if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
+							medicine.setAuthorizationDate(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
+						} else {
+							medicine.setAuthorizationDate(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+						}
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.AUTHORIZED.getNumber()) {
+						medicine.setAuthorized(cell.getNumericCellValue() > 0);
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.END_DATE_AUTHORIZATION.getNumber()) {
+						if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
+							medicine.setEndDateAuthorization(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
+						} else {
+							medicine.setEndDateAuthorization(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+						}
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.COMMERCIALIZATION.getNumber()) {
+						medicine.setCommercialization(cell.getNumericCellValue() > 0);
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.COMMERCIALIZATION_DATE.getNumber()) {
+						if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
+							medicine.setCommercializationDate(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
+						} else {
+							medicine.setCommercializationDate(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+						}
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.END_DATE_COMMERCIALIZATION.getNumber()) {
+						if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
+							medicine.setEndDateCommercialization(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
+						} else {
+							medicine.setEndDateCommercialization(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+						}
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.VIA_ADMINISTRATION.getNumber()) {
+						medicine.setViaAdministration(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.BRAND.getNumber()) {
+						medicine.setBrand(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.UNITS.getNumber()) {
+						medicine.setUnits(BigDecimal.valueOf(cell.getNumericCellValue()));
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.PVL.getNumber()) {
+						medicine.setPvl(BigDecimal.valueOf(cell.getNumericCellValue()));
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.PVP.getNumber()) {
+						medicine.setPvp(BigDecimal.valueOf(cell.getNumericCellValue()));
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.PATHOLOGY.getNumber()) {
+						medicine.setPathology(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.FAMILY.getNumber()) {
+						medicine.setFamily(cell.getStringCellValue());
+						medicine.setBiologic(medicine.getFamily().contains("BIOLÓGICO"));
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.SUBFAMILY.getNumber()) {
+						medicine.setSubfamily(cell.getStringCellValue());
 					}
-
-					medicineRepository.save(medicine);
 				}
-			} catch (IllegalStateException| DateTimeParseException e) {
-				e.printStackTrace();
 			}
+			if (row.getRowNum() != 0) {
+				if (BigDecimal.ZERO.compareTo(medicine.getUnits()) != 0) {
+					medicine.setPvlUnitary(medicine.getPvl().divide(medicine.getUnits(), 2, RoundingMode.UP));
+				}
+
+				medicineRepository.findByNationalCode(medicine.getNationalCode()).ifPresent(medicineToUpdate -> medicine.setId(medicineToUpdate.getId()));
+				medicineRepository.save(medicine);
+			}
+		} catch (IllegalStateException | DateTimeParseException e) {
+			bufferedWriter.write(LocalDateTime.now() + " ERROR " + getClass().getName() + " - En la fila del excel de Medicamentos: " + row.getRowNum() + " " + Throwables.getStackTraceAsString(e));
 		}
 	}
 

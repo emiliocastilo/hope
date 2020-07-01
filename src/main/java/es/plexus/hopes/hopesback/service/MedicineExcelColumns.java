@@ -34,16 +34,4 @@ public enum MedicineExcelColumns {
         this.name = name;
         this.number = number;
     }
-
-    public void updateNumber (String name, int number) {
-        if (name.equals(NATIONAL_CODE.getName()) && number != NATIONAL_CODE.getNumber()){
-            int columnaAntigua = NATIONAL_CODE.getNumber();
-            NATIONAL_CODE.setNumber(number);
-            System.out.println("Número de columna cambiada oldColumn: "+ columnaAntigua + " a la columna: "+ NATIONAL_CODE.getNumber());
-        }
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
 }

@@ -45,10 +45,10 @@ public class MedicineController {
 		return medicineService.save(medicineDto);
 	}
 
-	@ApiOperation("Crear un nuevo medicamento")
+	@ApiOperation("Añadir nuevos medicamentos desde un fichero Excel")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("/createAll")
-	public void createAll(@ModelAttribute final MultipartFile multipartFile) throws ServiceException {
+	public void createAll(@ModelAttribute final MultipartFile multipartFile) {
 		log.debug(CALLING_SERVICE);
 		medicineService.saveAll(multipartFile);
 	}
