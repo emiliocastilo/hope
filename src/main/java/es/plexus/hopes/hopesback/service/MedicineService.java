@@ -1,7 +1,9 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
+import es.plexus.hopes.hopesback.repository.DoseRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
+import es.plexus.hopes.hopesback.repository.model.Dose;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Recommendation;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -25,13 +27,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -45,6 +47,7 @@ public class MedicineService {
 			"Recommendation not found. If checked Recommended field, Recommendation is mandatory for the medicine";
 
 	private final MedicineRepository medicineRepository;
+	private final DoseRepository doseRepository;
 	private final RecommendationService recommendationService;
 
 	public MedicineDTO save(MedicineDTO medicineDto) throws ServiceException {
@@ -59,10 +62,39 @@ public class MedicineService {
 		Workbook workbook = validWorkbook(multipartFile);
 		Sheet sheetMedicine = workbook.getSheetAt(0);
 		Sheet sheetDose = workbook.getSheetAt(1);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		Map<String, Integer> nameAndColumnMap = new HashMap<>();
 
 		// Fixme crear un fichero de log, para saber en que línea ha fallado, añadirlo en el mismo resource
+		readAndInsertMedicine(sheetMedicine);
+		readAndInsertDose(sheetDose);
+
+	}
+
+	private void readAndInsertDose(Sheet sheetDose) {
+		for (Row row : sheetDose) {
+			try {
+				Dose dose = new Dose();
+				for (Cell cell : row) {
+					if (row.getRowNum() != 0) {
+						if (cell.getColumnIndex() == DoseExcelColumns.CODE_ACT.getNumber()) {
+							dose.setCodeAtc(cell.getStringCellValue());
+						} else if (cell.getColumnIndex() == DoseExcelColumns.DESCRIPTION.getNumber()) {
+							dose.setDescription(cell.getStringCellValue());
+						} else if (cell.getColumnIndex() == DoseExcelColumns.DOSE_INDICATED.getNumber()) {
+							dose.setDoseIndicated(cell.getStringCellValue());
+						}
+					}
+				}
+				if (row.getRowNum() != 0) {
+					doseRepository.save(dose);
+				}
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void readAndInsertMedicine(Sheet sheetMedicine) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		for (Row row : sheetMedicine) {
 			Medicine medicine = new Medicine();
 			try {
@@ -126,7 +158,7 @@ public class MedicineService {
 							medicine.setPathology(cell.getStringCellValue());
 						} else if (cell.getColumnIndex() == MedicineExcelColumns.FAMILY.getNumber()) {
 							medicine.setFamily(cell.getStringCellValue());
-							medicine.setBiologic(medicine.getFamily().equals("TRATAMIENTO BIOLÓGICO"));
+							medicine.setBiologic(medicine.getFamily().contains("BIOLÓGICO"));
 						} else if (cell.getColumnIndex() == MedicineExcelColumns.SUBFAMILY.getNumber()) {
 							medicine.setSubfamily(cell.getStringCellValue());
 						}
@@ -134,14 +166,13 @@ public class MedicineService {
 				}
 				if (row.getRowNum() != 0) {
 					if (BigDecimal.ZERO.compareTo(medicine.getUnits()) != 0) {
-						medicine.setPvlUnitary(medicine.getPvl().divide(medicine.getUnits(), 2));
+						medicine.setPvlUnitary(medicine.getPvl().divide(medicine.getUnits(), 2, RoundingMode.UP));
 					}
 
 					medicineRepository.save(medicine);
 				}
-			} catch (Exception e) {
-				log.error(e.getMessage());
-				log.error(Arrays.toString(e.getStackTrace()));
+			} catch (IllegalStateException| DateTimeParseException e) {
+				e.printStackTrace();
 			}
 		}
 	}
