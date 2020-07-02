@@ -4637,6 +4637,124 @@
 			],
 			"description": "Peticiones que se realizan al PatientDashboardController y que validan la funcionalidad de la sección cuadro de mandos del paciente y sus subsecciones.",
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cie",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/cies?hospitalId=1&page=10",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"cies"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findCieBySearch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/cies/searches?hospitalId=2&search=B4&page=0&size=10&sort=code,desc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"cies",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "2"
+								},
+								{
+									"key": "search",
+									"value": "B4"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "code,desc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones que se realizan en el CieController",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5ede9119-521b-4959-8467-6759c975d2c2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "893def35-5f9c-42d0-8c68-a361aead44d6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
