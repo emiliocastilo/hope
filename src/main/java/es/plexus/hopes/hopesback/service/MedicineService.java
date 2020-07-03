@@ -6,7 +6,6 @@ import es.plexus.hopes.hopesback.repository.DoseRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
 import es.plexus.hopes.hopesback.repository.model.Dose;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
-import es.plexus.hopes.hopesback.repository.model.Recommendation;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.MedicineMapper;
@@ -55,10 +54,9 @@ public class MedicineService {
 
 	private final MedicineRepository medicineRepository;
 	private final DoseRepository doseRepository;
-	private final RecommendationService recommendationService;
 
 	public MedicineDTO save(MedicineDTO medicineDto) throws ServiceException {
-		Medicine medicine = addMedicineCommon(medicineDto);
+		Medicine medicine = MedicineMapper.INSTANCE.dtoToEntity(medicineDto);
 		log.debug(CALLING_DB);
 		return MedicineMapper.INSTANCE.entityToDto(medicineRepository.save(medicine));
 	}
@@ -103,6 +101,8 @@ public class MedicineService {
 						dose.setDescription(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == DoseExcelColumns.DOSE_INDICATED.getNumber()) {
 						dose.setDoseIndicated(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == DoseExcelColumns.RECOMMENDATION.getNumber()) {
+						dose.setRecommendation(cell.getStringCellValue());
 					}
 				}
 			}
@@ -260,26 +260,6 @@ public class MedicineService {
 		Page<Medicine> page = medicineRepository.findAll(example, pageable);
 
 		return page.map(MedicineMapper.INSTANCE::entityToDto);
-	}
-
-	private Medicine addMedicineCommon(MedicineDTO medicineDto) throws ServiceException {
-		Medicine medicine = MedicineMapper.INSTANCE.dtoToEntity(medicineDto);
-		if(medicineDto.isRecommended()){
-			if (Objects.isNull(medicineDto.getRecommendation())){
-				throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
-						.exception(DEVELOPER_MESSAGE_RECOMMENDATION_MANDATORY);
-			}
-
-			Optional<Recommendation> recommendation = recommendationService
-					.findById(medicineDto.getRecommendation().getId());
-			if (!recommendation.isPresent()){
-				throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
-						.exception(DEVELOPER_MESSAGE_RECOMMENDATION_MANDATORY);
-			}
-			medicine.setRecommendation(recommendation.get());
-		}
-
-		return medicine;
 	}
 
 	private ExampleMatcher exampleByFilter() {

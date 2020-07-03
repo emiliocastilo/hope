@@ -14,6 +14,9 @@ ALTER TABLE hopes.medicines ADD COLUMN med_pathology VARCHAR(150);
 ALTER TABLE hopes.medicines ADD COLUMN med_family VARCHAR(150);
 ALTER TABLE hopes.medicines ADD COLUMN med_subfamily VARCHAR(150);
 
+ALTER TABLE hopes.medicines DROP COLUMN med_recommendation_id;
+ALTER TABLE hopes.medicines DROP COLUMN med_recommended;
+
 -- object: hopes.doses | type: TABLE --
 DROP TABLE IF EXISTS hopes.doses CASCADE;
 CREATE TABLE hopes.doses (
@@ -21,12 +24,10 @@ CREATE TABLE hopes.doses (
 	dos_code_atc varchar(7) NOT NULL,
 	dos_description varchar(150),
 	dos_dose_indicated varchar(150),
-	dos_recommended boolean DEFAULT false,
-	dos_recommendation_id smallint,
+	dos_recommendation varchar(200),
     date_created timestamp,
     date_updated timestamp,
-	CONSTRAINT dos_id_pk PRIMARY KEY (dos_id),
-	CONSTRAINT dos_recommendation_id_fk FOREIGN KEY (dos_recommendation_id) REFERENCES hopes.recommendations(rec_id)
+	CONSTRAINT dos_id_pk PRIMARY KEY (dos_id)
 );
 -- COMENTARIOS
 COMMENT ON TABLE hopes.doses IS 'Tabla que representa la entidad hospitales';
@@ -34,7 +35,5 @@ COMMENT ON COLUMN hopes.doses.dos_id IS 'Columna con el id de base de datos de l
 COMMENT ON COLUMN hopes.doses.dos_code_atc IS 'Columna que contiene el código ATC';
 COMMENT ON COLUMN hopes.doses.dos_description IS 'Columna que contiene el nombre del hospital';
 COMMENT ON COLUMN hopes.doses.dos_dose_indicated IS 'Columna que contiene el nombre del hospital';
-COMMENT ON COLUMN hopes.doses.dos_recommended IS 'Columna que indica si es o no recomendado la dosis';
-COMMENT ON COLUMN hopes.doses.dos_recommendation_id IS 'Columna que contiene valor de la recomendación';
+COMMENT ON COLUMN hopes.doses.dos_recommendation IS 'Columna que contiene valor de la recomendación';
 COMMENT ON CONSTRAINT dos_id_pk ON hopes.doses IS 'pk de la tabla DOSES';
-COMMENT ON CONSTRAINT dos_recommendation_id_fk ON hopes.doses IS 'fk Relacion con la tabla recommendations';

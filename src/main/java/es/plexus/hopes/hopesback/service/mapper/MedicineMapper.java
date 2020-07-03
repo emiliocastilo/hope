@@ -7,17 +7,15 @@ import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import org.hibernate.service.spi.ServiceException;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {RecommendationMapper.class})
+@Mapper
 public interface MedicineMapper {
 
 	MedicineMapper INSTANCE = Mappers.getMapper(MedicineMapper.class);
 
 	MedicineDTO entityToDto(Medicine entity);
 
-	@Mapping(target = "recommendation", ignore = true)
 	Medicine dtoToEntity(MedicineDTO dto);
 
 	default Medicine jsonToEntity(String json) {

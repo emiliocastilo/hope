@@ -28,7 +28,7 @@ public enum MedicineExcelColumns {
     SUBFAMILY("SUBFAMILIA", 20);
 
     private final String name;
-    private int number;
+    private final int number;
 
     MedicineExcelColumns(String name, int number) {
         this.name = name;

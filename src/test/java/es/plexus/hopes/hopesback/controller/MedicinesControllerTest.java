@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
-import es.plexus.hopes.hopesback.repository.model.Recommendation;
 import es.plexus.hopes.hopesback.service.MedicineService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import org.junit.Assert;
@@ -146,8 +145,6 @@ public class MedicinesControllerTest {
 		medicineDTO.setDescription("Description");
 		medicineDTO.setNationalCode("NationalCode");
 		medicineDTO.setPresentation("Presentation");
-		medicineDTO.setRecommendation(new Recommendation());
-		medicineDTO.setRecommended(true);
 		medicineDTO.setCommercialization(true);
 		return medicineDTO;
 	}

@@ -31,4 +31,8 @@ public class Dose extends AbstractAudit {
     @Basic
     @Column(name = "dos_dose_indicated", length = 150)
     private String doseIndicated;
+
+    @Basic
+    @Column(name = "dos_recommendation", length = 200)
+    private String recommendation;
 }
