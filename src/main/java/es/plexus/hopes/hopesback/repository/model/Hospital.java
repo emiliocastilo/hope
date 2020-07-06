@@ -18,23 +18,27 @@ import java.util.Set;
 @Entity
 @Table(name = "hospitals", schema = "hopes", catalog = "hopes_back")
 public class Hospital {
-	@Id
-	@Column(name = "hos_id", nullable = false)
-	private Long id;
+    @Id
+    @Column(name = "hos_id", nullable = false)
+    private Long id;
 
-	@Basic
-	@Column(name = "hos_name", nullable = false, length = 100)
-	private String name;
+    @Basic
+    @Column(name = "hos_name", nullable = false, length = 100)
+    private String name;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "hospitals_pathologies",
-			joinColumns = @JoinColumn(name = "hsp_hos_id"),
-			inverseJoinColumns = @JoinColumn(name = "hsp_pth_id"))
-	private Set<Pathology> pathologies = new HashSet<>();
+    @Basic
+    @Column(name = "hos_cie", nullable = false, length = 100)
+    private String cie;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "hospitals_services", joinColumns = @JoinColumn(name = "hss_hos_id"),
-	inverseJoinColumns = @JoinColumn(name = "hss_srv_id"))
-	private Set<Service> services = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "hospitals_pathologies",
+            joinColumns = @JoinColumn(name = "hsp_hos_id"),
+            inverseJoinColumns = @JoinColumn(name = "hsp_pth_id"))
+    private Set<Pathology> pathologies = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "hospitals_services", joinColumns = @JoinColumn(name = "hss_hos_id"),
+            inverseJoinColumns = @JoinColumn(name = "hss_srv_id"))
+    private Set<Service> services = new HashSet<>();
 
 }

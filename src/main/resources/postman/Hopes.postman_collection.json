@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "aaf128ea-b4dc-45cc-b8dd-8c42b13a10e8",
+		"_postman_id": "2fde4a82-89b5-49d4-94f0-f6038889b03a",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -945,7 +945,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3e833ebe-e0cb-4d3d-9817-64eb6437f90b",
+								"id": "231169ce-df5d-497e-a0c2-7c21cbb90f87",
 								"exec": [
 									""
 								],
@@ -1225,7 +1225,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d3bd996d-7c08-4b3b-bd6c-0643a7f7abd0",
+								"id": "178774da-bce7-4b8d-a05d-2ef80d0dd35f",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1270,7 +1270,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a9ed016b-b869-4789-b831-dff27df6582b",
+								"id": "c2354bc2-b71d-4709-9413-f93e959108e5",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -2289,7 +2289,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "04cc9681-0f4a-4653-a751-7955f78316b2",
+								"id": "238efa09-78e1-41f1-bdbb-9f68189deceb",
 								"exec": [
 									""
 								],
@@ -2869,7 +2869,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a12a8271-31d4-4e47-8413-202c24e1dd78",
+								"id": "ee607252-5e18-43dd-99aa-f3dc10c597a2",
 								"exec": [
 									""
 								],
@@ -3097,7 +3097,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "161fa73c-db71-4dfc-9b03-da2aad6839af",
+								"id": "52b4257b-8fe4-4314-bded-33c4f07ea4fb",
 								"exec": [
 									""
 								],
@@ -3338,7 +3338,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b8e75521-4f1d-4742-a749-5266b7cba0ab",
+								"id": "1509e576-8a74-4d18-b35c-417291396530",
 								"exec": [
 									""
 								],
@@ -3733,7 +3733,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "141cc097-2af5-4dec-aae7-9581564b3ea2",
+								"id": "3305b7b6-f73a-4344-92f7-58b2b50d695d",
 								"exec": [
 									""
 								],
@@ -3840,7 +3840,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "f8c05840-3001-4691-84c0-b362d224724b",
+						"id": "1f11bd7d-28a5-44d7-a9ab-aec25252fd2e",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3850,7 +3850,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ed1595e7-dab2-4533-b013-031d6f30846b",
+						"id": "7218ec30-08b9-4673-8288-a0501c58cd46",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -4634,6 +4634,49 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Soporte",
+			"item": [
+				{
+					"name": "Enviar petición a soporte",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"perico@gmail.com\",\r\n    \"subject\": \"no me va la pagina\",\r\n    \"body\": \"entrando a la pagina X me da un pantallazo en blanco\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/support",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"support"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "PatientDashboard",
 			"item": [
 				{
@@ -4706,6 +4749,124 @@
 				}
 			],
 			"description": "Peticiones que se realizan al PatientDashboardController y que validan la funcionalidad de la sección cuadro de mandos del paciente y sus subsecciones.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cie",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/cies?hospitalId=1&page=10",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"cies"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findCieBySearch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/cies/searches?hospitalId=2&search=B4&page=0&size=10&sort=code,desc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"cies",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "2"
+								},
+								{
+									"key": "search",
+									"value": "B4"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "code,desc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones que se realizan en el CieController",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5ede9119-521b-4959-8467-6759c975d2c2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "893def35-5f9c-42d0-8c68-a361aead44d6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		}
 	],
