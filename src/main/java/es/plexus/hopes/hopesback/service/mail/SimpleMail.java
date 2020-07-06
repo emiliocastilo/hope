@@ -17,5 +17,5 @@ public class SimpleMail {
     private final boolean html;
     @Singular
     private final List<File> files;
-
+    private final String copy;
 }

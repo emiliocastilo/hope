@@ -12,5 +12,6 @@ import org.springframework.context.annotation.Configuration;
 public class MailTemplateConfiguration {
     private String defaultSender;
     private String resetPasswordUrl;
+    private String supportSender;
 
 }
