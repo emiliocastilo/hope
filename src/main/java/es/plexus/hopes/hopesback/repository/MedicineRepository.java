@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 	@Query("select m from Medicine m "
@@ -15,4 +17,6 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 			+ " OR LOWER(m.codeAct) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(m.acronym) like CONCAT('%',LOWER(:search),'%') ")
 	Page<Medicine> findMedicinesBySearch(@Param("search")String search, Pageable pageable);
+
+	Optional<Medicine> findByNationalCode(String nationalCode);
 }

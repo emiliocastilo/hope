@@ -1,7 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
+import es.plexus.hopes.hopesback.controller.model.DispensationDTO;
+import es.plexus.hopes.hopesback.controller.model.FormDispensationDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
-import es.plexus.hopes.hopesback.repository.model.Recommendation;
 import es.plexus.hopes.hopesback.service.MedicineService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import org.junit.Assert;
@@ -16,7 +17,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Collections;
 
 import static org.junit.Assert.assertNotNull;
@@ -136,6 +143,26 @@ public class MedicinesControllerTest {
 		assertNotNull(response);
 	}
 
+	@Test
+	public void callCreateAllShouldBeStatusOk() throws IOException {
+
+		FileInputStream fileInputStream = new FileInputStream(Paths.get("src/test/resources/Plantilla_BBDD_Medicamentos_Test.xlsx").toFile());
+		MockMultipartFile file = new MockMultipartFile("content"
+				, "Plantilla_BBDD_Medicamentos_Test.xlsx"
+				, "text/plain"
+				, fileInputStream);
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("id"));
+
+		// given
+		given(medicineService.filterMedicines(any(String.class),  any(Pageable.class))).willReturn(mockPageMedicine(pageRequest));
+
+		// when
+		medicineController.createAll(file);
+
+		// then
+		verify(medicineService, times(1)).saveAll(any());
+	}
+
 	//Mocks
 	private MedicineDTO mockMedicineDTO() {
 		MedicineDTO medicineDTO = new MedicineDTO();
@@ -146,8 +173,6 @@ public class MedicinesControllerTest {
 		medicineDTO.setDescription("Description");
 		medicineDTO.setNationalCode("NationalCode");
 		medicineDTO.setPresentation("Presentation");
-		medicineDTO.setRecommendation(new Recommendation());
-		medicineDTO.setRecommended(true);
 		medicineDTO.setCommercialization(true);
 		return medicineDTO;
 	}

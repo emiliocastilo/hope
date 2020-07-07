@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.controller.model;
 
 import es.plexus.hopes.hopesback.repository.model.AbstractAudit;
-import es.plexus.hopes.hopesback.repository.model.Recommendation;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,12 +21,6 @@ public class MedicineDTO extends AbstractAudit {
     @ApiModelProperty(position = 30, example = "J05A", value = "Principios activos del medicamento")
     @NotNull
     private String codeAct;
-
-    @ApiModelProperty(position = 40, example = "true", value = "Indicación de si está recomendado el medicamento")
-    private boolean recommended;
-
-    @ApiModelProperty(position = 50, example = "13", value = "Tipo de recomendación")
-    private Recommendation recommendation;
 
     @ApiModelProperty(position = 60, example = "AAS", value = "Acrónimo por el que es conocido el medicamento")
     @Pattern(regexp = "^[A-Z]$")
