@@ -23,11 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.USERNAME_DUPLICATE_EXCEPTION;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.COLLEGE_NUMBER_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.DNI_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.EMAIL_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.PHONE_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.USERNAME_DUPLICATE_MESSAGE;
 
 @Log4j2
 @Service
@@ -219,17 +219,17 @@ public class DoctorService {
 
 		if (doctorRepository.existsByDni(doctor.getDni())){
 			throw ServiceExceptionCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(DNI_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(DNI_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 
 		if(doctorRepository.existsByCollegeNumber(doctor.getCollegeNumber())) {
 			throw ServiceExceptionCatalog.COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(COLLEGE_NUMBER_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 
 		if(doctorRepository.existsByPhone(doctor.getPhone())) {
 			throw ServiceExceptionCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(PHONE_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(PHONE_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 	}
 
@@ -237,31 +237,31 @@ public class DoctorService {
 		if(!storedDoctor.getUser().getUsername().equals(updatedoctor.getUser().getUsername())
 				&& userService.existUsername(updatedoctor.getUser().getUsername())){
 			throw ServiceExceptionCatalog.USERNAME_DUPLICATE_EXCEPTION
-					.exception( USERNAME_DUPLICATE_EXCEPTION);
+					.exception(USERNAME_DUPLICATE_MESSAGE);
 		}
 
 		if(!storedDoctor.getUser().getEmail().equals(updatedoctor.getUser().getEmail())
 				&& userService.existUserEmail(updatedoctor.getUser().getEmail())){
 			throw ServiceExceptionCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception( EMAIL_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(EMAIL_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 
 		if (!storedDoctor.getDni().equals(updatedoctor.getDni())
 				&& doctorRepository.existsByDni(updatedoctor.getDni())){
 			throw ServiceExceptionCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(DNI_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(DNI_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 
 		if(!storedDoctor.getCollegeNumber().equals(updatedoctor.getCollegeNumber())
 				&& doctorRepository.existsByCollegeNumber(updatedoctor.getCollegeNumber())) {
 			throw ServiceExceptionCatalog.COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(COLLEGE_NUMBER_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(COLLEGE_NUMBER_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 
 		if(!storedDoctor.getPhone().equals(updatedoctor.getPhone())
 				&& doctorRepository.existsByPhone(updatedoctor.getPhone())) {
 			throw ServiceExceptionCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(PHONE_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(PHONE_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 	}
 

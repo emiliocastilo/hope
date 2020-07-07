@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.ROLE_NAME_VIOLATION_CONSTRAINT_EXCEPTION;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.ROLE_NAME_VIOLATION_CONSTRAINT_MESSAGE;
 
 @Log4j2
 @Service
@@ -88,7 +88,7 @@ public class RoleService {
 		boolean isExistName = roleRepository.existsByName(roleDTO.getName());
 		if(isExistName && (role == null || !roleDTO.getName().equals(role.getName()))){
 			throw ServiceExceptionCatalog.ROLE_NAME_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(ROLE_NAME_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(ROLE_NAME_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 
 	}

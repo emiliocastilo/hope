@@ -7,12 +7,12 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Document(collection = "form")
 @CompoundIndexes({
-        @CompoundIndex(name = "form_idx", def = "{'template': 1, 'patientId': 1, 'dateTime':-1}", unique = true)
+        @CompoundIndex(name = "form_idx", def = "{'template': 1, 'patientId': 1, 'dateTime': 1}", unique = true)
 })
 public class FormMongo {
 
@@ -27,6 +27,6 @@ public class FormMongo {
 
     private String user;
     private String data;
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
 }

@@ -19,11 +19,11 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.HEALTH_CARD_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.NHC_VIOLATION_CONSTRAINT_EXCEPTION;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.DNI_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.EMAIL_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.HEALTH_CARD_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.NHC_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.PHONE_VIOLATION_CONSTRAINT_MESSAGE;
 
 @Log4j2
 @Service
@@ -97,7 +97,7 @@ public class PatientService {
 		boolean isExistNhc = patientRepository.existsByNhc(patientDTO.getNhc());
 		if(isExistNhc && (patient == null || !patientDTO.getNhc().equals(patient.getNhc()))){
 			throw ServiceExceptionCatalog.NHC_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(NHC_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(NHC_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class PatientService {
 		boolean isExistHealthCard = patientRepository.existsByHealthCard(patientDTO.getHealthCard());
 		if(isExistHealthCard && (patient == null || !patientDTO.getHealthCard().equals(patient.getHealthCard()))){
 			throw ServiceExceptionCatalog.HEALTH_CARD_VIOLATION_CONSTRAINT_EXCEPTION
-				.exception(HEALTH_CARD_VIOLATION_CONSTRAINT_EXCEPTION);
+				.exception(HEALTH_CARD_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class PatientService {
 
 		if(isExistEmail && (isDistinctMail || (patient==null && !StringUtils.isEmpty(patientDTO.getEmail())))){
 			throw ServiceExceptionCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception( EMAIL_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(EMAIL_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class PatientService {
 		boolean isExistDni = patientRepository.existsByDni(patientDTO.getDni());
 		if (isExistDni && (patient == null || !patientDTO.getDni().equals(patient.getDni()))){
 			throw ServiceExceptionCatalog.DNI_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(DNI_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(DNI_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class PatientService {
 
 		if(isExistPhone && (isDistinctPhone || (patient==null && !StringUtils.isEmpty(patientDTO.getPhone())))) {
 			throw ServiceExceptionCatalog.PHONE_VIOLATION_CONSTRAINT_EXCEPTION
-					.exception(PHONE_VIOLATION_CONSTRAINT_EXCEPTION);
+					.exception(PHONE_VIOLATION_CONSTRAINT_MESSAGE);
 		}
 	}
 

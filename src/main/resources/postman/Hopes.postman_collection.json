@@ -3846,13 +3846,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas",
+							"raw": "{{dev}}/v1/forms",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							]
 						}
 					},
@@ -3886,13 +3886,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{dev}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							],
 							"query": [
 								{
@@ -3936,13 +3936,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{dev}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							],
 							"query": [
 								{
@@ -3983,13 +3983,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/datas",
+							"raw": "{{dev}}/v1/forms",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"datas"
+								"forms"
 							]
 						}
 					},
