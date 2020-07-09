@@ -30,7 +30,7 @@ public class QueryConstants {
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where pt.active = false " +
-			"and LOWER(pt.type) = 'biológico' " +
+			"and LOWER(pt.type) = 'biologico' " +
 			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'Otras') " +
 			"group by pt.id, pt.patientDiagnose " +
 			"order by pt.initDate desc";
@@ -38,22 +38,22 @@ public class QueryConstants {
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE_IN_LAST_5_YEARS =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where pt.active = false " +
-			"and LOWER(pt.type) = 'biológico' " +
+			"and LOWER(pt.type) = 'biologico' " +
 			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'otras') " +
 			"and pt.initDate > :initDate ";
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_NUMBER_CHANGES_OF_BIOLOGICAL_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
-			"where LOWER(pt.type) = 'biológico' " +
+			"where LOWER(pt.type) = 'biologico' " +
 			"and LOWER(pt.endCause) = 'cambio' " +
 			"group by pt.id, pt.patientDiagnose";
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_NO_CHANGES_BIOLOGICAL_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
-					"where LOWER(pt.type) = 'biológico' " +
+					"where LOWER(pt.type) = 'biologico' " +
 					"and LOWER(pt.endCause) <> 'cambio' " +
 					"and pt.patientDiagnose.id not in (select ptr.patientDiagnose.id from PatientTreatment ptr " +
-												"where LOWER(ptr.type) = 'biológico' " +
+												"where LOWER(ptr.type) = 'biologico' " +
 												"and LOWER(ptr.endCause) = 'cambio') " +
 					"group by pt.id, pt.patientDiagnose";
 
@@ -197,7 +197,7 @@ public class QueryConstants {
 
 	public static final String FILTER_ACTIVE_FALSE_AND_END_CAUSE_AND_REASON =
 			FILTER_PTR_ACTIVE_FALSE +
-			"and LOWER(ptr.type) = 'biológico' " +
+			"and LOWER(ptr.type) = 'biologico' " +
 			"and LOWER(ptr.endCause) = LOWER(:endCause) " +
 			"and LOWER(ptr.reason) = LOWER(:reason) ";
 
@@ -288,7 +288,7 @@ public class QueryConstants {
 					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
 					WHERE_CLAUSULE +
 					" pd.patient.id = :patId " +
-					"and LOWER(pt.type) = 'biológico' " +
+					"and LOWER(pt.type) = 'biologico' " +
 					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
 
 	public static final String QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID =
@@ -296,7 +296,7 @@ public class QueryConstants {
 					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
 					WHERE_CLAUSULE +
 					" pd.patient.id = :patId " +
-					"and LOWER(pt.type) <> 'biológico' " +
+					"and LOWER(pt.type) <> 'biologico' " +
 					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
 
 	public static final String QUERY_FIND_DISPENSATION_DETAILS_BY_PATIENT_ID =
