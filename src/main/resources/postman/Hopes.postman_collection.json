@@ -3295,7 +3295,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/searches?page=0&size=1&sort=id,asc&search=A",
+							"raw": "{{dev}}/v1/medicines/searches?page=0&size=10&sort=id,asc&search=ORENCIA",
 							"host": [
 								"{{dev}}"
 							],
@@ -3319,7 +3319,42 @@
 								},
 								{
 									"key": "search",
-									"value": "A"
+									"value": "ORENCIA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findDoseByMedicineId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/medicines/doses?medicineId=11",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"doses"
+							],
+							"query": [
+								{
+									"key": "medicineId",
+									"value": "11"
 								}
 							]
 						}

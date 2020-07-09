@@ -15,7 +15,8 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 	@Query("select m from Medicine m "
 			+ " WHERE LOWER(m.actIngredients) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(m.codeAct) like CONCAT('%',LOWER(:search),'%') "
-			+ " OR LOWER(m.acronym) like CONCAT('%',LOWER(:search),'%') ")
+			+ " OR LOWER(m.acronym) like CONCAT('%',LOWER(:search),'%') "
+			+ " OR LOWER(m.presentation) like CONCAT('%',LOWER(:search),'%') ")
 	Page<Medicine> findMedicinesBySearch(@Param("search")String search, Pageable pageable);
 
 	Optional<Medicine> findByNationalCode(String nationalCode);
