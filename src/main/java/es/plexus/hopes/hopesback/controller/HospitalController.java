@@ -2,11 +2,14 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.HospitalDTO;
 import es.plexus.hopes.hopesback.service.HospitalService;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +37,12 @@ public class HospitalController {
 		return hospitalService.getAllHospitals();
 	}
 
+	@ApiOperation("Buscar un hospital por el identificador")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/{id}")
+	public HospitalDTO findById(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) throws ServiceException  {
+		return hospitalService.findById(id);
+	}
 }
 
 

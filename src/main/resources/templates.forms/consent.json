@@ -1,0 +1,8 @@
+{
+    "key": "consent",
+    "form": "[{'type':'title','name':'CONSENTIMIENTO'}, {'type':'section','name':'Consentimiento'}, { 'type': 'checkbox', 'name': 'patientConsent', 'label': 'Consentimiento del paciente', 'disabled': false, 'placeholder': '' }, { 'type': 'checkbox', 'name': 'representativeConsent', 'label': 'Consentimiento del representante', 'disabled': false, 'placeholder': '' } , {'type':'section','name':'Conformidad'}, { 'type': 'checkbox', 'name': 'ordinarityConformity', 'label': 'Conformidad de carácter ordinario', 'disabled': false, 'placeholder': '' } , { 'type': 'checkbox', 'name': 'specialConformity', 'label': 'Conformidad de carácter especial', 'disabled': false, 'placeholder': '' }]",
+    "buttons": "['save']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}

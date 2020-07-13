@@ -13,11 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -52,7 +54,7 @@ public class Patient {
     private String healthCard;
 
     @Basic
-    @Column(name = "pac_dni",  length = 9)
+    @Column(name = "pac_dni",  length = 9, unique = true)
     private String dni;
 
     @Basic
@@ -64,7 +66,7 @@ public class Patient {
     private String phone;
 
     @Basic
-    @Column(name = "pac_email",  length = 50)
+    @Column(name = "pac_email",  length = 50, unique = true)
     @Email
     private String email;
 
@@ -86,4 +88,12 @@ public class Patient {
             inverseJoinColumns = @JoinColumn(name = "pcp_pth_id"))
     private Set<Pathology> pathologies = new HashSet<>();
 
+    @OneToMany(mappedBy = "patient")
+    private List<PatientDiagnose> diagnoses;
+
+    @OneToMany(mappedBy = "patient")
+    private List<PatientData> datas;
+
+    @OneToMany(mappedBy = "patient")
+    private List<HealthOutcome> healthOutcomes;
 }

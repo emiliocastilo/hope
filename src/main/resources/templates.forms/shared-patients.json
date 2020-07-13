@@ -1,0 +1,8 @@
+{
+    "key": "shared-patients",
+    "form": "[{'type':'title','name':'PACIENTE COMPARTIDO'}, {'type': 'checkbox', 'name': 'sharedAttention', 'label': '¿el paciente está recibiendo atención especializada compartida con otro servicio? ', 'disabled': false, 'placeholder': '' }, {'type': 'section','name':'Recibe atención especializada de otros servicios:'}, {'type': 'checkbox', 'name': 'rheumatology', 'label': 'Servicio de reumatología', 'disabled': false}, {'type': 'checkbox', 'name': 'gastroenterology', 'label': 'Servicio de gastroenterología', 'disabled': false, 'placeholder': '' }, {'type': 'checkbox', 'name': 'othersServices', 'label': 'Otros servicios', 'disabled': false, 'placeholder': '' }, {'type': 'input', 'label': 'Otro servicio:', 'name': 'anotherService', 'disabled': false, 'placeholder': 'otro servicio','enableWhen':['othersServices',true]}, {'type': 'checkbox', 'name': 'specializedHospitalAttention', 'label': 'Recibe atención especializada de otros hospitales:', 'disabled': false, 'placeholder': '' }]",
+    "buttons": "['save']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}

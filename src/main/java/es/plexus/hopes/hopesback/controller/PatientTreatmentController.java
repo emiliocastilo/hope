@@ -1,8 +1,11 @@
 package es.plexus.hopes.hopesback.controller;
 
-import java.util.List;
-import java.util.Map;
-
+import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.service.PatientTreatmentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -11,12 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.service.PatientTreatmentService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import java.util.List;
+import java.util.Map;
 
 @Api(value = "Controlador de Patients Treatments", tags = "patients-treatments")
 @Log4j2
@@ -37,7 +36,7 @@ public class PatientTreatmentController {
 	
 	@ApiOperation("Recuperar los pacientes bajo tratameinto (medicamento)")
 	@GetMapping(FIND_PATIENTS_UDER_TREATMENT)
-	public Map<String, Long> findPatientsUnderTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
+	public Map<String, Long> findPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientsUnderTreatment(type, indication);
 	}
@@ -51,29 +50,31 @@ public class PatientTreatmentController {
 	
 	@ApiOperation("Detalle de pacientes bajo tratamiento")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT)
-	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, pageable);
 	}
 	
 	@ApiOperation("Detalle de pacientes bajo tratamiento para exportar")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT_EXPORT)
-	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type", required = true) String type, @RequestParam(value = "indication", required = false) String indication) {
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication);
 	}
 	
 	@ApiOperation("Detalle de pacientes/dosis")
 	@GetMapping(GET_DETAIL_PATIENTS_PER_DOSES)
-	public Page<GraphPatientDetailDTO> getDetailPatientsPerDoses(@PageableDefault(size = 5) final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsPerDoses(
+			@RequestParam(value = "regimen")String regimen,
+			@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.getDetailPatientsPerDoses(pageable);
+		return patientTreatmentService.getDetailPatientsPerDoses(regimen, pageable);
 	}
 	
 	@ApiOperation("Detalle de pacientes/dosis para exportar")
 	@GetMapping(GET_DETAIL_PATIENTS_PER_DOSES_EXPORT)
-	public List<GraphPatientDetailDTO> getDetailPatientsPerDoses() {
+	public List<GraphPatientDetailDTO> getDetailPatientsPerDoses(@RequestParam(value = "regimen")String regimen) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.getDetailPatientsPerDoses();
+		return patientTreatmentService.getDetailPatientsPerDoses(regimen);
 	}
 }

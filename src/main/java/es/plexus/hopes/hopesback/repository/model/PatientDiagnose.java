@@ -1,6 +1,6 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import java.time.LocalDateTime;
+import lombok.Data;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -10,9 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -56,4 +57,6 @@ public class PatientDiagnose {
     @Column(name = "pdg_derivation_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime derivationDate;
 
+    @OneToMany(mappedBy = "patientDiagnose")
+    private List<PatientTreatment> treatments;
 }

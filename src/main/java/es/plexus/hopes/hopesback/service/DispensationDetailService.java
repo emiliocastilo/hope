@@ -8,6 +8,7 @@ import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.utils.CsvUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.csv.CSVRecord;
 import org.hibernate.service.spi.ServiceException;
 import org.mapstruct.factory.Mappers;
@@ -172,13 +173,13 @@ public class DispensationDetailService {
 		
 		YearMonth ymStopPeriod = YearMonth.from(dateStopPeriod);
 		YearMonth ymNow = YearMonth.from(LocalDateTime.now());
-		String resultAllPatients = "-";
-		String resultAllPatientsContolled = "-";
+		String resultAllPatients = "0,00";
+		String resultAllPatientsContolled = "0,00";
 		
 		if(!result.containsKey(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR])) {
 			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
 		}
-		
+
 		if(ymStopPeriod.isAfter(ymNow)) {			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
 					dateStopPeriod.getYear() + " - Todos los pacientes", resultAllPatients);
@@ -191,7 +192,7 @@ public class DispensationDetailService {
 					dateStartPeriod, dateStopPeriod, code);			
 			
 			//Consumo de todos los pacientes controlados (PASI=0) separado por meses
-			Double consumeByPasi = 0.0;
+			Double consumeByPasi = 0.00;
 						
 			for (Long patient : listPatients) {
 				consumeByPasi += 
@@ -199,28 +200,28 @@ public class DispensationDetailService {
 								dateStartPeriod, dateStopPeriod, patient, code);
 			}
 			
-			if(isAvg) {
+			if(Boolean.TRUE.equals(isAvg)) {
 				if(consumeByMonth > 0) {
 					List<String> listPatientsForAvg = dispensationDetailRepository.findPatiensMonth(
 							dateStopPeriod.plusMonths(-3), dateStopPeriod.plusSeconds(-1));
-					if(listPatientsForAvg.size() > 0) {
+					if(CollectionUtils.isNotEmpty(listPatientsForAvg)) {
 						consumeByMonth /= listPatientsForAvg.size();
-						resultAllPatients = consumeByMonth.toString();
+						resultAllPatients = String.format("%.2f", consumeByMonth);
 						consumeByPasi /= listPatientsForAvg.size();
-						resultAllPatientsContolled = consumeByPasi.toString();
+						resultAllPatientsContolled = String.format("%.2f", consumeByPasi);
 					}
 				} else {
-					resultAllPatients = "0.0";
-					resultAllPatientsContolled = "0.0";
+					resultAllPatients = "0,00";
+					resultAllPatientsContolled = "0,00";
 				}
 			}
-			
+
 			// Set result in current month
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Todos los pacientes", consumeByMonth.toString());
+					dateStopPeriod.getYear() + " - Todos los pacientes",consumeByMonth==null?"0,0":String.format("%.2f", consumeByMonth));
 			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Pacientes Controlados", consumeByPasi.toString());			
+					dateStopPeriod.getYear() + " - Pacientes Controlados", consumeByPasi==null?"0,0":String.format("%.2f", consumeByPasi));
 		}
 	}
 }

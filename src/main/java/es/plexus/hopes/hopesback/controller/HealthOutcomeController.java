@@ -20,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
 
 @Api(value = "Controlador de Healthoutcome", tags = "health-outcomes")
 @Log4j2
@@ -53,24 +52,29 @@ public class HealthOutcomeController {
 	public Page<GraphPatientDetailDTO> getDetailsResultsByType(
 			@ApiParam(value = "Índice clínico", example = "PASI", required = true)
 			@RequestParam(value = "indexType") String indexType,
+			@ApiParam(value = "Listado", required = true)
+			@RequestParam(value = "result") String result,
 			@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return healthOutcomeService.getDetailsResultsByType(indexType, pageable);
+		return healthOutcomeService.getDetailsResultsByType(indexType, result, pageable);
 	}
 	
 	@ApiOperation("Detalle de los resultados por tipo para exportar")
 	@GetMapping(GET_DETAIL_RESULTS_BY_TYPE_EXPORT)
 	public List<GraphPatientDetailDTO> getDetailsResultsByType(
 			@ApiParam(value = "Índice clínico", example = "PASI", required = true)
-			@RequestParam(value = "indexType") String indexType) {
+			@RequestParam(value = "indexType") String indexType,
+			@ApiParam(value = "Listado", required = true)
+			@RequestParam(value = "result") String result) {
 		log.debug(CALLING_SERVICE);
-		return healthOutcomeService.getDetailsResultsByType(indexType);
+		return healthOutcomeService.getDetailsResultsByType(indexType, result);
 	}
-	
+
 	@ApiOperation("Guardar los registros SCORE de los distintos índices")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping("save-score-data-by-index-type")
-	public List<HealthOutcomeDTO> saveScoreDataByIndexType(@RequestBody @Valid final List<HealthOutcomeDTO> healthOutcomes) {
+	public List<HealthOutcomeDTO> saveScoreDataByIndexType(
+			@RequestBody @Valid final List<HealthOutcomeDTO> healthOutcomes) {
 		log.debug(CALLING_SERVICE);
 		return healthOutcomeService.saveScoreDataByIndexType(healthOutcomes);
 	}

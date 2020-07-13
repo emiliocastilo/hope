@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 @Api(value = "Controlador de pacientes", tags = "patients")
@@ -41,7 +42,7 @@ public class PatientController {
 	@ApiOperation("Recuperar todos los pacientes")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public Page<PatientDTO> findAll(@ApiParam(value = "identificador patologia", required = true) @RequestParam final Long pth,
+	public Page<PatientDTO> findAll(@ApiParam(value = "identificador patologia", required = true) @RequestParam final List<Long> pth,
 									@PageableDefault(size = 5) final Pageable pageable) {
 		return patientService.findPatientsByPathology(pth, pageable);
 	}
@@ -58,7 +59,7 @@ public class PatientController {
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/searches")
 	public Page<PatientDTO> findPatientBySearch(
-			@ApiParam(value = "identificador patologia", required = true) @RequestParam(value = "pth") final Long pth,
+			@ApiParam(value = "identificador patologia", required = true) @RequestParam(value = "pth") final List<Long> pth,
 			@ApiParam(value = "buscador") @RequestParam(value = "search", required = false, defaultValue = "") final String search,
 			@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);

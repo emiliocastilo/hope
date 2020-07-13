@@ -22,7 +22,7 @@ public class SectionDTO {
 	private String title;
 
 	@ApiModelProperty(position = 30, example = "Sección", value = "Valor con el que aparecerá la sección")
-	@Column(name = "sec_description", nullable = true, length = 500)
+	@Column(name = "sec_description", length = 500)
 	private String description;
 
 	@ApiModelProperty(position = 40, example = "true", value = "Indicador de si está sección está activa")

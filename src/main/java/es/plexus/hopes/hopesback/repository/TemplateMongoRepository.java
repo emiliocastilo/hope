@@ -9,4 +9,6 @@ public interface TemplateMongoRepository extends MongoRepository<TemplateMongo, 
 
     @Query("{'key':'?0'}")
     TemplateMongo findByKey(String key);
+
+	boolean existsByKey(String key);
 }

@@ -30,4 +30,7 @@ public class TemplateService {
 
         templateMongoRepository.save(templateMongo);
     }
+    public boolean existsTemplateByKey(String key){
+        return templateMongoRepository.existsByKey(key);
+    }
 }
