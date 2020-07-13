@@ -173,13 +173,13 @@ public class DispensationDetailService {
 		
 		YearMonth ymStopPeriod = YearMonth.from(dateStopPeriod);
 		YearMonth ymNow = YearMonth.from(LocalDateTime.now());
-		String resultAllPatients = "0.00";
-		String resultAllPatientsContolled = "0.00";
+		String resultAllPatients = "0,00";
+		String resultAllPatientsContolled = "0,00";
 		
 		if(!result.containsKey(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR])) {
 			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
 		}
-		
+
 		if(ymStopPeriod.isAfter(ymNow)) {			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
 					dateStopPeriod.getYear() + " - Todos los pacientes", resultAllPatients);
@@ -211,17 +211,17 @@ public class DispensationDetailService {
 						resultAllPatientsContolled = String.format("%.2f", consumeByPasi);
 					}
 				} else {
-					resultAllPatients = "0.00";
-					resultAllPatientsContolled = "0.00";
+					resultAllPatients = "0,00";
+					resultAllPatientsContolled = "0,00";
 				}
 			}
 
 			// Set result in current month
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Todos los pacientes",consumeByMonth==null?"0.0":String.format("%.2f", consumeByMonth));
+					dateStopPeriod.getYear() + " - Todos los pacientes",consumeByMonth==null?"0,0":String.format("%.2f", consumeByMonth));
 			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Pacientes Controlados", consumeByPasi==null?"0.0":String.format("%.2f", consumeByPasi));
+					dateStopPeriod.getYear() + " - Pacientes Controlados", consumeByPasi==null?"0,0":String.format("%.2f", consumeByPasi));
 		}
 	}
 }
