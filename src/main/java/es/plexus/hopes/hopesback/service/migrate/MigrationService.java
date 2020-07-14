@@ -3,17 +3,9 @@
  */
 package es.plexus.hopes.hopesback.service.migrate;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
 import es.plexus.hopes.hopesback.controller.model.FormDTO;
 import es.plexus.hopes.hopesback.controller.model.InputDTO;
+import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.service.FormService;
 import es.plexus.hopes.hopesback.service.IndicationService;
@@ -22,6 +14,14 @@ import es.plexus.hopes.hopesback.service.PatientService;
 import es.plexus.hopes.hopesback.service.mapper.PatientMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author jose.estevezbarroso
@@ -34,12 +34,15 @@ public class MigrationService {
 	
 	private static final String START_DIAGNOSIS = "Starting migration diagnosis data";
 	private static final String END_DIAGNOSIS = "Finished migration diagnosis data";
-	private static final String TEMPLATE_DIAGNOSIS = "DIAGNOSTICO";
+	private static final String TEMPLATE_DIAGNOSIS = "principal-diagnosis";
 	
-	private static final String TAGNAME_MAIN_DIAGNOSIS_DATE = "mainDiagnosisDate";
-	private static final String TAGNAME_SPECIALTY_CARE_DATE = "specialtyCareDate";
-	private static final String TAGNAME_FIRST_SYMPTOMS_DATE = "firstSymptomsDate";
+	private static final String TAGNAME_DATE_PRINCIPAL_DIAGNOSES = "datePrincipalDiagnoses";
+	private static final String TAGNAME_DATE_SYMPTOM = "dateSymptom";
 	private static final String TAGNAME_PSORIASIS_TYPE = "psoriasisType";
+	private static final String TAGNAME_ANOTHER_PSORIASIS = "anotherPsoriasis";
+	private static final String TAGNAME_CIE_CODE = "cieCode";
+	private static final String TAGNAME_CIE_DESCRIPTION = "cieDescription";
+	private static final String TAGNAME_DATE_DERIVATION = "dateDerivation";
 	
 	@Autowired
 	private final FormService formService;
@@ -58,14 +61,18 @@ public class MigrationService {
 		log.debug(START_DIAGNOSIS);
 		List<FormDTO> formsDTO = formService.findByTemplate(TEMPLATE_DIAGNOSIS);
 		
-		formsDTO.stream()
+		formsDTO
 		.forEach(f -> {
-			PatientDiagnose patientDiagnose = new PatientDiagnose();
-			patientDiagnose.setPatient(PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue())));
+			Patient patient = PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue()));
+			PatientDiagnose patientDiagnose = patientDiagnosisService.findByPatient(patient);
+			patientDiagnose.setPatient(patient);
 			patientDiagnose.setIndication(indicationService.getIndicationByDescription(getValueByTagNameFromForm(f, TAGNAME_PSORIASIS_TYPE)));
-			patientDiagnose.setInitDate(obtainLocalDateTime(f, TAGNAME_MAIN_DIAGNOSIS_DATE));
-			patientDiagnose.setSymptomsDate(obtainLocalDateTime(f, TAGNAME_SPECIALTY_CARE_DATE));
-			patientDiagnose.setDerivationDate(obtainLocalDateTime(f, TAGNAME_FIRST_SYMPTOMS_DATE));
+			patientDiagnose.setOthersIndications(getValueByTagNameFromForm(f, TAGNAME_ANOTHER_PSORIASIS));
+			patientDiagnose.setInitDate(obtainLocalDateTime(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
+			patientDiagnose.setSymptomsDate(obtainLocalDateTime(f, TAGNAME_DATE_SYMPTOM));
+			patientDiagnose.setDerivationDate(obtainLocalDateTime(f, TAGNAME_DATE_DERIVATION));
+			patientDiagnose.setCieCode(getValueByTagNameFromForm(f, TAGNAME_CIE_CODE));
+			patientDiagnose.setCieDescription(getValueByTagNameFromForm(f, TAGNAME_CIE_DESCRIPTION));
 			patientDiagnosisService.save(patientDiagnose);
 		});
 		

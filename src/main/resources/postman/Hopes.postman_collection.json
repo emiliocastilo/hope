@@ -306,7 +306,7 @@
 					"response": []
 				},
 				{
-					"name": "/patients-diagnoses/cie9",
+					"name": "/patients-diagnoses/cie",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -321,21 +321,27 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9",
+							"raw": "{{dev}}/v1/patients-diagnoses/cie?hospitalId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"patients-diagnoses",
-								"cie9"
+								"cie"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "1"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "/patients-diagnoses/cie9/patients",
+					"name": "/patients-diagnoses/cie/patients",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -350,20 +356,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ornare, elit ,",
+							"raw": "{{dev}}/v1/patients-diagnoses/cie/patients?cieDescription=COLERA&hospitalId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"patients-diagnoses",
-								"cie9",
+								"cie",
 								"patients"
 							],
 							"query": [
 								{
-									"key": "cie9",
-									"value": "ornare, elit ,"
+									"key": "cieDescription",
+									"value": "COLERA"
+								},
+								{
+									"key": "hospitalId",
+									"value": "1"
 								}
 							]
 						}
@@ -371,7 +381,7 @@
 					"response": []
 				},
 				{
-					"name": "/patients-diagnoses/cie9/patients-export",
+					"name": "/patients-diagnoses/cie/patients-export",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -386,50 +396,25 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ornare, elit ,",
+							"raw": "{{dev}}/v1/patients-diagnoses/cie/patients-export?cieDescription=COLERA&hospitalId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"patients-diagnoses",
-								"cie9",
-								"patients"
+								"cie",
+								"patients-export"
 							],
 							"query": [
 								{
-									"key": "cie9",
-									"value": "ornare, elit ,"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+									"key": "cieDescription",
+									"value": "COLERA"
+								},
 								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
+									"key": "hospitalId",
+									"value": "1"
 								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10"
 							]
 						}
 					},

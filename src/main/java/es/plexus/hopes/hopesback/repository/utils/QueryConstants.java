@@ -26,8 +26,8 @@ public class QueryConstants {
 				"inner join PatientTreatment ptr on ptr.patientDiagnose.id = pdg.id " +
 				"left join Medicine med on ptr.medicine.id = med.id " +
 				"left join HealthOutcome hou on pat.id = hou.patient.id " +
-				"left join Cie9 c09 on pdg.cie9.id = c09.id " +
-				"left join Cie10 c10 on pdg.cie10.id = c10.id " +
+				"left join Cie9 c09 on pdg.cieCode = c09.code " +
+				"left join Cie10 c10 on pdg.cieCode = c10.code " +
 				"left join Indication ind on pdg.indication.id = ind.id ";
 
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_NO_TYPE =
@@ -49,8 +49,8 @@ public class QueryConstants {
 			"join PatientTreatment ptr on ptr.patientDiagnose.id = pdg.id " +
 			"left join Medicine med on ptr.medicine.id = med.id " +
 			"left join HealthOutcome hou on pat.id = hou.patient.id " +
-			"left join Cie9 c09 on pdg.cie9.id = c09.id " +
-			"left join Cie10 c10 on pdg.cie10.id = c10.id " +
+			"left join Cie9 c09 on pdg.cieCode = c09.code " +
+			"left join Cie10 c10 on pdg.cieCode = c10.code " +
 			"left join Indication ind on pdg.indication.id = ind.id " +
 			"where ptr.active = true " +
 					FILTER_DATE_OF_HEALTHOUTCOME_BY_PATIENT;
@@ -254,11 +254,11 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_GROUP_BY_CIE9 =
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
-			"join Cie9 c on c.id = pdg.cie9.id ";
+			"join Cie9 c on c.code = pdg.cieCode ";
 
 	public static final String QUERY_PATIENTS_GRAPH_DETAILS_GROUP_BY_CIE10 =
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
-					"join Cie10 c on c.id = pdg.cie10.id ";
+					"join Cie10 c on c.code = pdg.cieCode";
 
 	public static final String ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT = "order by pt.initDate ";
 
