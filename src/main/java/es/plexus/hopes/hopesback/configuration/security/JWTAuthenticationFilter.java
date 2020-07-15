@@ -2,6 +2,8 @@ package es.plexus.hopes.hopesback.configuration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.plexus.hopes.hopesback.controller.model.LoginDTO;
+import es.plexus.hopes.hopesback.controller.model.RoleDTO;
+import es.plexus.hopes.hopesback.service.RoleService;
 import es.plexus.hopes.hopesback.service.UserDetailsServiceImpl;
 import org.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,10 +31,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	private AuthenticationManager authenticationManager;
 	private UserDetailsServiceImpl userDetailsService;
+	private RoleService roleService;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager,
+								   UserDetailsService userDetailsService,
+								   RoleService roleService) {
 		this.authenticationManager = authenticationManager;
 		this.userDetailsService = (UserDetailsServiceImpl) userDetailsService;
+		this.roleService = roleService;
 	}
 
 	@Override
@@ -58,10 +64,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 
-		List<String> roles = new ArrayList<>();
+		List<RoleDTO> roles = new ArrayList<>();
 		if (!authorities.isEmpty()) {
 			for (GrantedAuthority authority : authorities) {
-				roles.add(authority.getAuthority());
+
+				RoleDTO roleDTO = this.roleService.getRoleByCode(authority.getAuthority());
+
+				if (roleDTO != null) {
+					roles.add(roleDTO);
+				}
 			}
 		}
 
