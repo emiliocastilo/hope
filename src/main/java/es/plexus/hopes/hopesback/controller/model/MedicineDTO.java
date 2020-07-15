@@ -38,11 +38,13 @@ public class MedicineDTO extends AbstractAudit {
 
     @ApiModelProperty(position = 80, example = "false", value = "Indicación de si se comercializa el medicamento")
     private boolean commercialization;
-    
+
     @ApiModelProperty(position = 90, example = "false", value = "Indicación de si el medicamento es biológico")
     private boolean biologic;
 
     @ApiModelProperty(position = 100, example = "oral", value = "Vía de administración")
     private String viaAdministration;
 
+    @ApiModelProperty(position = 110, example = "false", value = "Indicación de si se comercializa el medicamento")
+    private String family;
 }
