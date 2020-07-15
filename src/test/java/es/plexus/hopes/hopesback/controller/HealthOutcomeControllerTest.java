@@ -2,7 +2,6 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.service.HealthOutcomeService;
-import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class HealthOutcomeControllerTest {
 	}
 		
 	@Test(expected = ServiceException.class)
-	public void callFindResultsByTypesThrowException() throws Exception {
+	public void callFindResultsByTypesThrowException() throws ServiceException {
 		// given
 		given(healthOutcomeService.findResultsByTypes(anyString()))
 				.willThrow(new ServiceException("Error: No contled error"));
@@ -69,57 +68,56 @@ public class HealthOutcomeControllerTest {
 
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(healthOutcomeService.getDetailsResultsByType(anyString(), any(Pageable.class)))
+		given(healthOutcomeService.getDetailsResultsByType(anyString(), anyString(), any(Pageable.class)))
 				.willReturn(getPageableGraphPatientDetail(pageRequest));
 
 		// when
-		Page<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
+		Page<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", "PASI", pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);
 		Assert.assertTrue(!response.isEmpty());
 	}
-
+	
 	@Test(expected = ServiceException.class)
-	public void callDetailsResultsThrowException() throws Exception {
+	public void callDetailsResultsThrowException() throws ServiceException {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(healthOutcomeService.getDetailsResultsByType(anyString(), any(Pageable.class)))
+		given(healthOutcomeService.getDetailsResultsByType(anyString(),  anyString(), any(Pageable.class)))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		Page<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", pageRequest);
+		Page<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", "", pageRequest);
 
 		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
 		Assert.assertNull(response);
 	}
 
-	@Test
-	public void callDetailsResultsListByTypeShouldBeStatusOk() {
-
+	public void callDetailsResultsExportShouldBeStatusOk() {
 		// given
-		given(healthOutcomeService.getDetailsResultsByType(anyString()))
+		given(healthOutcomeService.getDetailsResultsByType(anyString(), anyString()))
 				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
 
-		List<GraphPatientDetailDTO> response = healthOutcomeController
-				.getDetailsResultsByType("PASI");
+		// when
+		List<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType(anyString(), anyString());
 
-		// then
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
+		Assert.assertEquals(HttpStatus.OK,response);
+		Assert.assertNull(response);
 	}
 
-	@Test(expected = es.plexus.hopes.hopesback.service.exception.ServiceException.class)
-	public void callDetailsResultsListByTypeThrowException() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
+	@Test(expected = ServiceException.class)
+	public void callDetailsResultsExportThrowException() throws ServiceException {
 		// given
-		given(healthOutcomeService.getDetailsResultsByType(anyString()))
-				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
+		given(healthOutcomeService.getDetailsResultsByType(anyString(),  anyString()))
+				.willThrow(new ServiceException("Error: No contled error"));
 
-		healthOutcomeController.getDetailsResultsByType("PASI");
+		// when
+		List<GraphPatientDetailDTO> response = healthOutcomeController.getDetailsResultsByType("PASI", "");
 
+		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
+		Assert.assertNull(response);
 	}
-
-
+	
 	//Mocks
 	private Map<String, Long> mockMapStringLong() {
 		Map<String, Long> map = new HashMap<>();
@@ -129,18 +127,19 @@ public class HealthOutcomeControllerTest {
 	
 	private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
 		GraphPatientDetailDTO graphPatientDetailDTO =
-				new GraphPatientDetailDTO(1L,
-						"NOHC0001",
-						"HC0001",
-						"Nombre completo",
-						"Indication",
-						"Diagnose CIE 9",
-						"Diagnose cie 10",
-						"Treatment",
-						"PASI Result",
-						LocalDateTime.now(),
-						"DLQI Result",
-						LocalDateTime.now());
+				new GraphPatientDetailDTO();
+
+		graphPatientDetailDTO.setId(1L);
+		graphPatientDetailDTO.setNhc("NOHC0001");
+		graphPatientDetailDTO.setHealthCard("HC0001");
+		graphPatientDetailDTO.setFullName("Nombre completo");
+		graphPatientDetailDTO.setPrincipalIndication("Indication");
+		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE");
+		graphPatientDetailDTO.setTreatment("Treatment");
+		graphPatientDetailDTO.setPasi("PASI Result");
+		graphPatientDetailDTO.setPasiDate(LocalDateTime.now());
+		graphPatientDetailDTO.setDlqi("DLQI Result");
+		graphPatientDetailDTO.setDlqiDate(LocalDateTime.now());
 
 		return graphPatientDetailDTO;
 	}
@@ -148,6 +147,5 @@ public class HealthOutcomeControllerTest {
 	private PageImpl<GraphPatientDetailDTO> getPageableGraphPatientDetail(PageRequest pageRequest) {
 		return new PageImpl<>(Collections.singletonList(mockGraphPatientDetailsDTO()), pageRequest, 1);
 	}
-
 }
 

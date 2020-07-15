@@ -45,20 +45,19 @@ public class SectionService {
 		return sectionDto;
 	}
 
-	public SectionDTO deleteById(Long id) throws ServiceException {
+	public void deleteById(Long id) throws ServiceException {
 		log.debug(CALLING_DB);
 		Optional<Section> section = sectionRepository.findById(id);
 		if(!section.isPresent()) {
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(NOT_FOUND_ID + id);
 		}
-		section.get().setActive(false);
-		return SectionMapper.INSTANCE.entityToDto(sectionRepository.save(section.get()));
+		sectionRepository.delete(section.get());
 	}
 
 	public MenuDTO findAllSections() throws ServiceException {
 		MenuDTO tree = new MenuDTO();
 
-		List<Section> sections = sectionRepository.findSectionsByName(ROLE_ADMIN);
+		List<Section> sections = sectionRepository.findSectionsByRolName(ROLE_ADMIN);
 
 		if (!sections.isEmpty()) {
 			MenuUtils.buildTree(sections, tree);

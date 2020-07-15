@@ -36,11 +36,11 @@ public class Doctor extends AbstractAudit {
 	private String phone;
 
 	@Basic
-	@Column(name = "dct_dni", nullable = false, length = 9)
+	@Column(name = "dct_dni", nullable = false, length = 9, unique = true)
 	private String dni;
 
 	@Basic
-	@Column(name = "dct_college_number", nullable = false)
+	@Column(name = "dct_college_number", nullable = false, unique = true)
 	private Long collegeNumber;
 
 	@Basic

@@ -66,39 +66,53 @@ public class MigrationService {
 			Patient patient = PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue()));
 			PatientDiagnose patientDiagnose = patientDiagnosisService.findByPatient(patient);
 			patientDiagnose.setPatient(patient);
-			patientDiagnose.setIndication(indicationService.getIndicationByDescription(getValueByTagNameFromForm(f, TAGNAME_PSORIASIS_TYPE)));
-			patientDiagnose.setOthersIndications(getValueByTagNameFromForm(f, TAGNAME_ANOTHER_PSORIASIS));
-			patientDiagnose.setInitDate(obtainLocalDateTime(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
-			patientDiagnose.setSymptomsDate(obtainLocalDateTime(f, TAGNAME_DATE_SYMPTOM));
-			patientDiagnose.setDerivationDate(obtainLocalDateTime(f, TAGNAME_DATE_DERIVATION));
-			patientDiagnose.setCieCode(getValueByTagNameFromForm(f, TAGNAME_CIE_CODE));
-			patientDiagnose.setCieDescription(getValueByTagNameFromForm(f, TAGNAME_CIE_DESCRIPTION));
+			patientDiagnose.setIndication(indicationService.getIndicationByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE)));
+			patientDiagnose.setOthersIndications(obtainStringValue(f, TAGNAME_ANOTHER_PSORIASIS));
+			patientDiagnose.setInitDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
+			patientDiagnose.setSymptomsDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_SYMPTOM));
+			patientDiagnose.setDerivationDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_DERIVATION));
+			patientDiagnose.setCieCode(obtainStringValue(f, TAGNAME_CIE_CODE));
+			patientDiagnose.setCieDescription(obtainStringValue(f, TAGNAME_CIE_DESCRIPTION));
 			patientDiagnosisService.save(patientDiagnose);
 		});
 		
 		log.debug(END_DIAGNOSIS);
 	}
 
-	private LocalDateTime obtainLocalDateTime(FormDTO form, String tagName) {
-		String result = getValueByTagNameFromForm(form, tagName);
+	private LocalDateTime obtainLocalDateTimeValue(FormDTO form, String tagName) {
+		Object result = getValueByTagNameFromForm(form, tagName);
 		try {
-			return Objects.nonNull(result) ? LocalDateTime.parse(result) : null;
+			return Objects.nonNull(result) ? LocalDateTime.parse(result.toString()) : null;
 		} catch (Exception e) {
 			// Don't stop the migration, just inform the problem related to date
-			log.error("Template: {} PatientId: {} TagName: {} . Error: {}", form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
+			log.error("Template: {} PatientId: {} TagName: {} . Error: {}",
+						form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
 			return null;
 		}
 	}
+	
+	private String obtainStringValue(FormDTO form, String tagName){
+		String valueString = null;
+		try {
+			Object value = getValueByTagNameFromForm(form, tagName);
+			valueString = value.toString();
+		} catch (Exception e){
+			log.error("Template: {} PatientId: {} TagName: {} . Error: {}",
+						form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
+		}
+		return valueString;
+	}
 
-	private String getValueByTagNameFromForm(FormDTO form, String tagName) {
+	private Object getValueByTagNameFromForm(FormDTO form, String tagName) {
 		Optional<InputDTO> result = form.getData().stream()
-				.filter(inputDTO -> inputDTO.getName().equals(tagName))
+				.filter(inputDTO -> tagName.equals(inputDTO.getName()))
 				.findFirst();
 		if (result.isPresent()) {
 			return result.get().getValue();
 		}
 		else {
-			log.error("Template: {} PatientId: {} Error: No se ha encontrado la etiqueta: {}", form.getTemplate(), form.getPatientId(), tagName);
+			log.error("Template: {} PatientId: {} Error: No se ha encontrado la etiqueta: {}",
+						form.getTemplate(), form.getPatientId(), tagName);
 			return null;
 		}
 	}

@@ -4,6 +4,7 @@ import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.repository.HospitalRepository;
 import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
+import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientData;
@@ -13,6 +14,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,17 +22,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
+import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
 import static java.util.stream.Collectors.groupingBy;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class PatientDiagnosisService {
-	
+
 	private static final String CALLING_DB = "Calling DB...";
 	public static final String CIE_9 = "CIE9";
 
+
 	private final PatientDiagnosisRepository patientDiagnosisRepository;
+	private final PatientRepository patientRepository;
 	private final PatientDataRepository patientDataRepository;
 	private final HospitalRepository hospitalRepository;
 
@@ -85,43 +91,61 @@ public class PatientDiagnosisService {
 	 * Method that it return a list pageable with the patient details by indication in the Patient Diagnose Section
 	 * @return
 	 */
-	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByIndication(final String indication, final Pageable pageable){
+	@Transactional
+	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByIndication(final String indication, Pageable pageable){
 		log.debug(CALLING_DB);
-		return patientDiagnosisRepository
-				.findPatientDetailsGraphsByIndication(indication, pageable);
+		log.debug( "INIT: Query Patients By Indication");
+		List<Patient> patients = patientRepository.findPatientsByIndication(indication);
+		log.debug( "END: Query Patients By Indication");
+		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
+		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
+		return page;
 	}
 
 	/**
 	 * Method that it return a list with the patient details by indication in the Patient Diagnose Section
 	 * @return
 	 */
+
+	@Transactional
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByIndication(final String indication){
 		log.debug(CALLING_DB);
-		return patientDiagnosisRepository
-				.findPatientDetailsGraphsByIndication(indication);
+		log.debug( "INIT: Query Patients By Indication");
+		List<Patient> patients = patientRepository.findPatientsByIndication(indication);
+		log.debug( "END: Query Patients By Indication");
+		return fillGraphPatientDetailDtoList(patients);
 	}
+
+
+
 
 	/**
 	 * Method that it return a list pageable the patient details by CIE in the Patient Diagnose Section
 	 *
 	 * @return
 	 */
+	@Transactional
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie(final String codeDescription, final Long hospitalId, final Pageable pageable) {
 		log.debug(CALLING_DB);
+
+		List<Patient> patients = null;
 		Optional<Hospital> hospital = hospitalRepository.findById(hospitalId);
-		Page<GraphPatientDetailDTO> graphPatientDetailDTOPage = null;
 
 		if (hospital.isPresent()) {
 			if (CIE_9.equalsIgnoreCase(hospital.get().getCie())) {
-				graphPatientDetailDTOPage = patientDiagnosisRepository
-						.findPatientDetailsGraphsByCie9(codeDescription, pageable);
+				log.debug( "INIT: Query Patients By Cie9");
+				patients = patientRepository.findPatientDetailsGraphsByCie9(codeDescription);
+				log.debug( "END: Query Patients By Cie9");
 			} else {
-				graphPatientDetailDTOPage = patientDiagnosisRepository
-						.findPatientDetailsGraphsByCie10(codeDescription, pageable);
+				log.debug( "INIT: Query Patients By Cie10");
+				patients = patientRepository.findPatientDetailsGraphsByCie10(codeDescription);
+				log.debug( "END: Query Patients By Cie10");
 			}
 		}
 
-		return graphPatientDetailDTOPage;
+		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
+
+		return doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 	}
 
 	/**
@@ -129,24 +153,27 @@ public class PatientDiagnosisService {
 	 *
 	 * @return
 	 */
+	@Transactional
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie(final String codeDescription, final Long hospitalId) {
 		log.debug(CALLING_DB);
+		List<Patient> patients = null;
 		Optional<Hospital> hospital = hospitalRepository.findById(hospitalId);
-		List<GraphPatientDetailDTO> graphPatientDetailDTOList = null;
 
 		if (hospital.isPresent()) {
 			if (CIE_9.equalsIgnoreCase(hospital.get().getCie())) {
-				graphPatientDetailDTOList = patientDiagnosisRepository
-						.findPatientDetailsGraphsByCie9(codeDescription);
+				log.debug( "INIT: Query Patients By Cie9");
+				patients = patientRepository.findPatientDetailsGraphsByCie9(codeDescription);
+				log.debug( "END: Query Patients By Cie9");
 			} else {
-				graphPatientDetailDTOList = patientDiagnosisRepository
-						.findPatientDetailsGraphsByCie10(codeDescription);
+				log.debug( "INIT: Query Patients By Cie10");
+				patients = patientRepository.findPatientDetailsGraphsByCie10(codeDescription);
+				log.debug( "END: Query Patients By Cie10");
 			}
 		}
 
-		return graphPatientDetailDTOList;
+		return fillGraphPatientDetailDtoList(patients);
 	}
-	
+
 	public PatientDiagnose save(final PatientDiagnose patientDiagnose) {
 		log.debug(CALLING_DB);
 		return patientDiagnosisRepository.saveAndFlush(patientDiagnose);
@@ -193,5 +220,4 @@ public class PatientDiagnosisService {
 			}
 		});
 	}
-
 }

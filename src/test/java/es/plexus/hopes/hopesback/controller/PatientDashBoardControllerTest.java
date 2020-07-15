@@ -93,7 +93,8 @@ public class PatientDashBoardControllerTest {
 		treatment.setMedicine(new MedicineDTO());
 		treatment.setType("type");
 		treatment.setFinalDate(LocalDateTime.now());
-		patientDashboardDetailDTO.setTreatments(Collections.singletonList(treatment));
+		Map<String, List<TreatmentDTO>> map = Collections.singletonMap("BIOLOGICAL", Collections.singletonList(treatment));
+		patientDashboardDetailDTO.setTreatments(map);
 
 		Map<String, List<GraphHealthOutcomeDTO>> indicesEvolution = new HashMap<>();
 		indicesEvolution.put("DLQI", Collections.singletonList(new GraphHealthOutcomeDTO()));

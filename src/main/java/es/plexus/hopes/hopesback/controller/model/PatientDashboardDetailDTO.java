@@ -16,6 +16,11 @@ public class PatientDashboardDetailDTO {
 	@ApiModelProperty(position = 20,
 			example = "{}",
 			value = "Lista de tratamientos del paciente")
-	List<TreatmentDTO> treatments;
+	Map<String, List<TreatmentDTO>> treatments;
+
+	@ApiModelProperty(position = 30,
+			example = "Object",
+			value = "Adherencia al tratamiento del paciente. Listado de veces que ha recogido la medicación")
+	List<AdherenceDTO> adherence;
 
 }

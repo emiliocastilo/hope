@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -31,19 +29,19 @@ public class HealthOutcome {
     @ManyToOne
 	@JoinColumn(name = "hou_pac_id", referencedColumnName = "pac_id")
 	private Patient patient;
-    
+
     @Basic
     @Column(name = "hou_index_type", nullable = false, length = 50)
     private String indexType;
 
     @Basic
     @Column(name = "hou_value", nullable = false, length = 50)
-    private BigDecimal value;
-    
+    private String value;
+
     @Basic
     @Column(name = "hou_result", nullable = false, length = 50)
     private String result;
-    
+
     @Basic
     @Column(name = "hou_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime date;

@@ -124,6 +124,7 @@ public class PatientDiagnosisController {
 		log.debug(CALLING_SERVICE);
 		return patientDiagnosisService.findGraphPatientsDetailsByIndication(indication, pageable);
 	}
+
 	@ApiOperation("Listado de pacientes por indicación - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(PATIENT_DIAGNOSE_INDICATIONS_PATIENTS_EXPORT)

@@ -9,5 +9,5 @@ public class InputDTO {
 
     private String type;
     private String name;
-    private String value;
+    private Object value;
 }

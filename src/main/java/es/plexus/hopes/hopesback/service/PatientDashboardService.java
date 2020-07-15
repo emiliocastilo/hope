@@ -3,15 +3,12 @@ package es.plexus.hopes.hopesback.service;
 import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientDashboardDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.service.mapper.DispensationDetailDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.collections.CollectionUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,13 +32,16 @@ public class PatientDashboardService {
 		patientDashboardDetailDto.setIndicesEvolution(indicesEvolutionMap);
 
 		// Fill the treatments
-		List<TreatmentDTO> treatmentPatientList = patientTreatmentService.findTreatmentsByPatientId(patId);
-		patientDashboardDetailDto.setTreatments(treatmentPatientList);
+		patientDashboardDetailDto.setTreatments(patientTreatmentService.findTreatmentsByPatientId(patId));
 
 		// Add the adherence
-		addAdherenceToTreatments(treatmentPatientList,
-									dispensationDetailServices.findDispensationDetailByPatientId(patId));
-
+		List<DispensationDetailDTO> dispensationsDetails = dispensationDetailServices
+																.findDispensationDetailByPatientId(patId);
+		patientDashboardDetailDto
+				.setAdherence(dispensationsDetails
+								.stream()
+								.map(Mappers.getMapper(DispensationDetailDTOMapper.class)::dispensationDetailDTOToAdherenceDTO)
+								.collect(Collectors.toList()));
 		return patientDashboardDetailDto;
 	}
 
@@ -49,33 +49,6 @@ public class PatientDashboardService {
 			String indicesTypes, Long patId) {
 
 		return healthOutcomeService.findEvolutionClinicalIndicesByIndexTypeAndPatient(indicesTypes, patId);
-
-	}
-
-	/**
-	 * Method that add the patient adherence to treatments
-	 * @param treatmentPatientList
-	 * @param dispensationDetailDTOList
-	 */
-	private void addAdherenceToTreatments(List<TreatmentDTO> treatmentPatientList,
-										  List<DispensationDetailDTO> dispensationDetailDTOList) {
-
-		if(CollectionUtils.isNotEmpty(treatmentPatientList)
-				&& CollectionUtils.isNotEmpty(dispensationDetailDTOList)) {
-
-			treatmentPatientList.forEach(tr -> {
-				List<DispensationDetailDTO> dispensations =
-						dispensationDetailDTOList.stream()
-								.filter(dd -> tr.getMedicine() != null && tr.getMedicine().getNationalCode()!=null
-											&& tr.getMedicine().getNationalCode().equals(String.valueOf(dd.getNationalCode())))
-								.collect(Collectors.toList());
-				dispensationDetailDTOList.sort(Comparator.comparing(o -> o.getDate()));
-				tr.setAdherence(dispensations.stream()
-						.map(Mappers.getMapper(DispensationDetailDTOMapper.class)::dispensationDetailDTOToAdherenceDTO)
-						.collect(Collectors.toList()));
-			});
-
-		}
 
 	}
 

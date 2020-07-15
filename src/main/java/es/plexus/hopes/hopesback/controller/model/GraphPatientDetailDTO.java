@@ -3,10 +3,13 @@ package es.plexus.hopes.hopesback.controller.model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-@AllArgsConstructor
+
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class GraphPatientDetailDTO {
 	@ApiModelProperty(position = 10, example = "1L", value = "Id del paciente guardado en bbdd")
 	Long id;
@@ -26,9 +29,6 @@ public class GraphPatientDetailDTO {
 	@ApiModelProperty(position = 60, example = "696.1 OTRA PSORIASIS", value = "Diagnóstico principal del paciente: CIE9code + spc +CIE9desc")
 	String principalDiagnose;
 
-	@ApiModelProperty(position = 70, example = "696.1 OTRA PSORIASIS", value = "Diagnóstico principal del paciente: CIE10code + spc +CIE10desc")
-	String principalDiagnoseCie10;
-
 	@ApiModelProperty(position = 80, example = "Apremilast", value = "Nombre de las medicaciones")
 	String treatment;
 
@@ -43,5 +43,7 @@ public class GraphPatientDetailDTO {
 
 	@ApiModelProperty(position = 120, example = "1981/02/02T00:00:00Z", value = "Fecha de la última DLQI")
 	LocalDateTime dlqiDate;
+
+
 
 }

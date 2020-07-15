@@ -3,8 +3,8 @@ plexus:
   hopes:
     email:
       template:
-        default-sender: "jordi.ripoll@plexus.es"
-        support-sender: "support@hopes.es"
+        default-sender: "support-hopes@plexus.services"
+        support-sender: "support-hopes@plexus.services"
         reset-password-url: "/user/reset_password?token="
 
 # Server settings
