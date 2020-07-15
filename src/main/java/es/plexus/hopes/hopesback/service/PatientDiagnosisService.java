@@ -181,7 +181,7 @@ public class PatientDiagnosisService {
 
 	public PatientDiagnose findByPatient(Patient patient) {
 		log.debug(CALLING_DB);
-		return patientDataRepository.findByPatient(patient);
+		return patientDiagnosisRepository.findByPatient(patient);
 	}
 
 	/**

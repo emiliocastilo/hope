@@ -19,6 +19,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -63,8 +66,14 @@ public class MigrationService {
 		
 		formsDTO
 		.forEach(f -> {
+
 			Patient patient = PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue()));
 			PatientDiagnose patientDiagnose = patientDiagnosisService.findByPatient(patient);
+
+			if (patientDiagnose == null) {
+				patientDiagnose = new PatientDiagnose();
+			}
+
 			patientDiagnose.setPatient(patient);
 			patientDiagnose.setIndication(indicationService.getIndicationByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE)));
 			patientDiagnose.setOthersIndications(obtainStringValue(f, TAGNAME_ANOTHER_PSORIASIS));
@@ -73,6 +82,7 @@ public class MigrationService {
 			patientDiagnose.setDerivationDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_DERIVATION));
 			patientDiagnose.setCieCode(obtainStringValue(f, TAGNAME_CIE_CODE));
 			patientDiagnose.setCieDescription(obtainStringValue(f, TAGNAME_CIE_DESCRIPTION));
+
 			patientDiagnosisService.save(patientDiagnose);
 		});
 		
@@ -82,7 +92,13 @@ public class MigrationService {
 	private LocalDateTime obtainLocalDateTimeValue(FormDTO form, String tagName) {
 		Object result = getValueByTagNameFromForm(form, tagName);
 		try {
-			return Objects.nonNull(result) ? LocalDateTime.parse(result.toString()) : null;
+			DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+					.appendPattern("yyyy-MM-dd[ HH:mm:ss]")
+					.parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+					.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+					.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+					.toFormatter();
+			return Objects.nonNull(result) ? LocalDateTime.parse(result.toString(), formatter) : null;
 		} catch (Exception e) {
 			// Don't stop the migration, just inform the problem related to date
 			log.error("Template: {} PatientId: {} TagName: {} . Error: {}",

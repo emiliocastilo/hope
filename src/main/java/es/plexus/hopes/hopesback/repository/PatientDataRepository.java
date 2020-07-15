@@ -17,7 +17,5 @@ public interface PatientDataRepository extends JpaRepository<PatientData, Long> 
 
 	@Query(QueryConstants.QUERY_PATIENTS_DATA_BY_PATIENTS_ID)
 	List<PatientData> findPatientsDatasByPatientsIds(@Param("patientsIds") Collection<Long> patientsIds);
-
-	PatientDiagnose findByPatient(Patient patient);
 }
 
