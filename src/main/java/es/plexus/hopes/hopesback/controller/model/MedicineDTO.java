@@ -45,6 +45,9 @@ public class MedicineDTO extends AbstractAudit {
     @ApiModelProperty(position = 100, example = "oral", value = "Vía de administración")
     private String viaAdministration;
 
-    @ApiModelProperty(position = 110, example = "false", value = "Familia/Tipo del medicamento")
+    @ApiModelProperty(position = 110, example = "Biologico", value = "Familia/Tipo del medicamento")
     private String family;
+
+    @ApiModelProperty(position = 120, example = "Iniston", value = "Marca del medicamento")
+    private String brand;
 }
