@@ -264,6 +264,12 @@
 								"patients-diagnoses",
 								"combined-treatments",
 								"patients"
+							],
+							"query": [
+								{
+									"key": "combinedTreatment",
+									"value": "Quimico-Biologico"
+								}
 							]
 						}
 					},
@@ -414,78 +420,6 @@
 								{
 									"key": "hospitalId",
 									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10/patients",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients?cie10=at, libero. Morbi",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10",
-								"patients"
-							],
-							"query": [
-								{
-									"key": "cie10",
-									"value": "at, libero. Morbi"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10/patients-export",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients-export?cie10=at, libero. Morbi",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10",
-								"patients-export"
-							],
-							"query": [
-								{
-									"key": "cie10",
-									"value": "at, libero. Morbi"
 								}
 							]
 						}
@@ -4431,7 +4365,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type-export?indexType=PASI",
+							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type-export?indexType=PASI&result=Prueba PASI 6",
 							"host": [
 								"{{dev}}"
 							],
@@ -4444,6 +4378,10 @@
 								{
 									"key": "indexType",
 									"value": "PASI"
+								},
+								{
+									"key": "result",
+									"value": "Prueba PASI 6"
 								}
 							]
 						}
