@@ -1,0 +1,10 @@
+{
+    "key": "napsi",
+    "form": "[{'type':'title','name':'NAPSI'}, {'type': 'datepicker','name':'evaluationDate', 'label':'Fecha de evaluación'}, {'type': 'input', 'name': 'napsiScore', 'label': ''}]",
+    "buttons": "['save', 'clean', 'graphsBack']",
+    "historify": true,
+    "nameHistoricalDate": "evaluationDate",
+    "fieldsToGraph": [
+        "napsiScore"
+    ]
+}
