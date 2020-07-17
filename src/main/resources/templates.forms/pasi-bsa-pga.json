@@ -1,6 +1,6 @@
 {
-    "key": "psa-bsa-pga",
-    "form": "[{'type':'title','name':'PASI, BSA y PGA'}, {'type': 'datepicker','name':'evaluationDate', 'label':'Fecha de evaluación'}, {'type': 'input', 'name': 'pasiScore', 'label': ''}, {'type': 'input', 'name': 'bsaScore', 'label': ''}, {'type': 'input', 'name': 'pga', 'label': ''}]",
+    "key": "pasi-bsa-pga",
+    "form": "[{'type':'title','name':'PASI, BSA y PGA'}, {'type': 'datepicker','name':'evaluationDate', 'label':'Fecha de evaluación'}, {'type': 'input', 'name': 'pasi', 'label': ''}, {'type': 'input', 'name': 'bsa', 'label': ''}, {'type': 'input', 'name': 'pga', 'label': ''}]",
     "buttons": "['save', 'clean', 'graphsBack']",
     "historify": true,
     "nameHistoricalDate": "evaluationDate",
