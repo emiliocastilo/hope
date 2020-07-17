@@ -33,13 +33,11 @@ public class PatientDiagnose {
     @JoinColumn(name = "pdg_ind_id", referencedColumnName = "ind_id")
     private Indication indication;
 
-    @ManyToOne
-    @JoinColumn(name = "pdg_cin_id", referencedColumnName = "cin_id")
-    private Cie9 cie9;
+    @Column(name = "pdg_cie_code")
+    private String cieCode;
 
-    @ManyToOne
-    @JoinColumn(name = "pdg_cid_id", referencedColumnName = "cid_id")
-    private Cie10 cie10;
+    @Column(name = "pdg_cie_description")
+    private String cieDescription;
 
     @Basic
     @Column(name = "pdg_others_indications", length = 50)

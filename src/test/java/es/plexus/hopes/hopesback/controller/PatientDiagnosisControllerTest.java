@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 
@@ -68,14 +69,14 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	@Test
-	public void callFindPatientsByCie9ShouldBeStatusOk() throws ServiceException {
+	public void callFindPatientsByCieShouldBeStatusOk() throws ServiceException {
 
 		// given
-		given(patientDiagnosisService.findPatientsByCie9())
+		given(patientDiagnosisService.findPatientsByCie(1L))
 				.willReturn(mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie9();
+		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie(anyLong());
 
 		// then
 		Assert.assertNotNull(response);
@@ -83,39 +84,14 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	@Test(expected = ServiceException.class)
-	public void callFindPatientsByCie9ThrowException() throws ServiceException {
+	public void callFindPatientsByCieThrowException() throws ServiceException {
 		// given
-		given(patientDiagnosisService.findPatientsByCie9())
+		given(patientDiagnosisService.findPatientsByCie(1L))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientsDiagnosesByCie9();
+		patientDiagnosisController.findPatientsDiagnosesByCie(anyLong());
 
-	}
-
-	@Test
-	public void callFindPatientsByCie10ShouldBeStatusOk() throws ServiceException {
-
-		// given
-		given(patientDiagnosisService.findPatientsByCie10())
-				.willReturn(mockMapStringLong());
-
-		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie10();
-
-		// then
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
-	}
-
-	@Test(expected = ServiceException.class)
-	public void callFindPatientsByCie10ThrowException() throws ServiceException {
-		// given
-		given(patientDiagnosisService.findPatientsByCie10())
-				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
-
-		// when
-		patientDiagnosisController.findPatientsDiagnosesByCie10();
 	}
 
 	@Test
@@ -303,16 +279,16 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	@Test
-	public void callFindGraphPatientsDetailsByCie9ShouldBeStatusOk() {
+	public void callFindGraphPatientsDetailsByCieShouldBeStatusOk() {
 
-		final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id"));
+		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
 
 		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie9("Psoriasis pustulosa", pageRequest))
+		given(patientDiagnosisService.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, pageRequest))
 				.willReturn(getPageableGraphPatientDetail(pageRequest));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie9("Psoriasis pustulosa", pageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", anyLong(), pageRequest);
 
 		// then
 		Assert.assertNotNull(response);
@@ -320,26 +296,26 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	@Test(expected = ServiceException.class)
-	public void callFindGraphPatientsDetailsByByCie9ThrowException() throws ServiceException {
+	public void callFindGraphPatientsDetailsByByCieThrowException() throws ServiceException {
 		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
 		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie9(anyString(), any(Pageable.class)))
+		given(patientDiagnosisService.findGraphPatientsDetailsByCie(anyString(), anyLong(), any(Pageable.class)))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findGraphPatientsDetailsByCie9("Psoriasis pustulosa", pageRequest);
+		patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, pageRequest);
 
 	}
 
 	@Test
-	public void callFindGraphPatientsDetailsListByByCie9ShouldBeStatusOk() {
+	public void callFindGraphPatientsDetailsListByByCieShouldBeStatusOk() {
 
 		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie9("Psoriasis pustulosa"))
+		given(patientDiagnosisService.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L))
 				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
 
 		// when
-		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie9("Psoriasis pustulosa");
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L);
 
 		// then
 		Assert.assertNotNull(response);
@@ -347,67 +323,13 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	@Test(expected = ServiceException.class)
-	public void callFindGraphPatientsDetailsListByByCie9ThrowException() throws ServiceException {
+	public void callFindGraphPatientsDetailsListByByCieThrowException() throws ServiceException {
 		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie9(anyString()))
+		given(patientDiagnosisService.findGraphPatientsDetailsByCie(anyString(), anyLong()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findGraphPatientsDetailsByCie9("Psoriasis pustulosa");
-	}
-
-	@Test
-	public void callFindGraphPatientsDetailsByCie10ShouldBeStatusOk() {
-
-		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
-
-		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie10("Psoriasis pustulosa", pageRequest))
-				.willReturn(getPageableGraphPatientDetail(pageRequest));
-
-		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie10("Psoriasis pustulosa", pageRequest);
-
-		// then
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
-	}
-
-	@Test(expected = ServiceException.class)
-	public void callFindGraphPatientsDetailsByByCie10ThrowException() throws ServiceException {
-		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
-		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie10(anyString(), any(Pageable.class)))
-				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
-
-		// when
-		patientDiagnosisController.findGraphPatientsDetailsByCie10("Psoriasis pustulosa", pageRequest);
-
-	}
-
-	@Test
-	public void callFindGraphPatientsDetailsListByByCie10ShouldBeStatusOk() {
-
-		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie10("Psoriasis pustulosa"))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
-
-		// when
-		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie10("Psoriasis pustulosa");
-
-		// then
-		Assert.assertNotNull(response);
-		Assert.assertFalse(response.isEmpty());
-	}
-
-	@Test(expected = ServiceException.class)
-	public void callFindGraphPatientsDetailsListByByCie10ThrowException() throws ServiceException {
-		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie10(anyString()))
-				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
-
-		// when
-		patientDiagnosisController.findGraphPatientsDetailsByCie10("Psoriasis pustulosa");
+		patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L);
 	}
 
 	@Test
@@ -642,8 +564,7 @@ public class PatientDiagnosisControllerTest {
 		graphPatientDetailDTO.setHealthCard("HC0001");
 		graphPatientDetailDTO.setFullName("Nombre completo");
 		graphPatientDetailDTO.setPrincipalIndication("Indication");
-		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE 9");
-		graphPatientDetailDTO.setPrincipalDiagnoseCie10("Diagnose cie 10");
+		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE");
 		graphPatientDetailDTO.setTreatment("Treatment");
 		graphPatientDetailDTO.setPasi("PASI Result");
 		graphPatientDetailDTO.setPasiDate(LocalDateTime.now());

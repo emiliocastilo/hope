@@ -99,21 +99,17 @@ public final class GraphPatientDetailUtils {
         log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PatientDiagnose"));
         if(CollectionUtils.isNotEmpty(patient.getDiagnoses())) {
             patient.getDiagnoses().forEach(patientDiagnose -> {
-                graphPatientDetailDTO.setPrincipalDiagnose(null!=patientDiagnose.getCie9()
-                        && !StringUtils.isEmpty(patientDiagnose.getCie9().getDescription())?
-                        patientDiagnose.getCie9().getDescription(): EMPTY_STRING);
+                graphPatientDetailDTO.setPrincipalDiagnose(null!=patientDiagnose.getCieCode()
+                        && !StringUtils.isEmpty(patientDiagnose.getCieDescription())?
+                        patientDiagnose.getCieDescription(): EMPTY_STRING);
                 graphPatientDetailDTO.setPrincipalIndication(null!=patientDiagnose.getIndication()
                         && !StringUtils.isEmpty(patientDiagnose.getIndication().getDescription())?
                         patientDiagnose.getIndication().getDescription(): EMPTY_STRING);
-                graphPatientDetailDTO.setPrincipalDiagnoseCie10(null!=patientDiagnose.getCie10()
-                        && !StringUtils.isEmpty(patientDiagnose.getCie10().getDescription())?
-                        patientDiagnose.getCie10().getDescription(): EMPTY_STRING);
                 fillPatientTreatmentInfoIntoGraphPatientDetailDTO(graphPatientDetailDTO, patientDiagnose);
             });
         }else{
             graphPatientDetailDTO.setPrincipalDiagnose(EMPTY_STRING);
             graphPatientDetailDTO.setPrincipalIndication(EMPTY_STRING);
-            graphPatientDetailDTO.setPrincipalDiagnoseCie10(EMPTY_STRING);
             graphPatientDetailDTO.setTreatment(EMPTY_STRING);
         }
         log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "END: Find PatientDiagnose"));
@@ -162,11 +158,6 @@ public final class GraphPatientDetailUtils {
                 case "principalDiagnose":
                     graphPatientDetailList
                             .sort(obtainComparatorString(order, GraphPatientDetailDTO::getPrincipalDiagnose));
-                    break;
-
-                case "principalDiagnoseCie10":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getPrincipalDiagnoseCie10));
                     break;
 
                 case "treatment":

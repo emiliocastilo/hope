@@ -27,19 +27,16 @@ import java.util.Map;
 public class PatientDiagnosisController {
 	static final String PATIENT_DIAGNOSE_MAPPING = "/patients-diagnoses";
 	static final String PATIENT_DIAGNOSE_INDICATIONS = "/indications";
-	static final String PATIENT_DIAGNOSE_CI9 = "/cie9";
-	static final String PATIENT_DIAGNOSE_CI10 = "/cie10";
+	static final String PATIENT_DIAGNOSE_CIE = "/cie";
 	static final String PATIENT_DIAGNOSE_TREATMENT = "/treatments";
 	static final String PATIENT_DIAGNOSE_COMBINED_TREATMENT = "/combined-treatments";
 	static final String PATIENT_DIAGNOSE_END_CAUSE = "/end-causes";
 	static final String PATIENT_DIAGNOSE_END_CAUSE_LAST_YEARS = "/end-causes-last-years";
 	static final String PATIENT_DIAGNOSE_NUMBER_CHANGES = "/number-changes";
 	static final String PATIENT_DIAGNOSE_INDICATIONS_PATIENTS = "/indications/patients";
-	static final String PATIENT_DIAGNOSE_CI9_PATIENTS = "/cie9/patients";
-	static final String PATIENT_DIAGNOSE_CI10_PATIENTS = "/cie10/patients";
+	static final String PATIENT_DIAGNOSE_CIE_PATIENTS = "/cie/patients";
 	static final String PATIENT_DIAGNOSE_INDICATIONS_PATIENTS_EXPORT = "/indications/patients-export";
-	static final String PATIENT_DIAGNOSE_CI9_PATIENTS_EXPORT = "/cie9/patients-export";
-	static final String PATIENT_DIAGNOSE_CI10_PATIENTS_EXPORT = "/cie10/patients-export";
+	static final String PATIENT_DIAGNOSE_CIE_PATIENTS_EXPORT = "/cie/patients-export";
 	static final String PATIENT_DIAGNOSE_TREATMENT_PATIENTS = "/treatments/patients";
 	static final String PATIENT_DIAGNOSE_TREATMENT_PATIENTS_EXPORT = "/treatments/patients-export";
 	static final String PATIENT_DIAGNOSE_COMBINED_TREATMENT_PATIENTS = "/combined-treatments/patients";
@@ -63,20 +60,14 @@ public class PatientDiagnosisController {
 		return patientDiagnosisService.findPatientsByIndication();
 	}
 
-	@ApiOperation("Gráfico/Tabla de Pacientes por diagnóstico CIE9 - Información Diagnóstico")
+	@ApiOperation("Gráfico/Tabla de Pacientes por diagnóstico CIE - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(PATIENT_DIAGNOSE_CI9)
-	public Map<String, Long> findPatientsDiagnosesByCie9(){
+	@GetMapping(PATIENT_DIAGNOSE_CIE)
+	public Map<String, Long> findPatientsDiagnosesByCie(
+			@ApiParam(value = "Identificador del hospital de la sesión", example = "1", required = true)
+			@RequestParam(value = "hospitalId") final Long hospitalId) {
 		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findPatientsByCie9();
-	}
-
-	@ApiOperation("Gráfico/Tabla de Pacientes por diagnóstico CIE10 - Información Diagnóstico")
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(PATIENT_DIAGNOSE_CI10)
-	public Map<String, Long> findPatientsDiagnosesByCie10(){
-		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findPatientsByCie10();
+		return patientDiagnosisService.findPatientsByCie(hospitalId);
 	}
 
 	@ApiOperation("Gráfico/Tabla de Pacientes por Tipo de Tratamiento - Información Diagnóstico")
@@ -144,46 +135,29 @@ public class PatientDiagnosisController {
 		return patientDiagnosisService.findGraphPatientsDetailsByIndication(indication);
 	}
 
-	@ApiOperation("Listado de pacientes por cie9 - Información Diagnóstico")
+	@ApiOperation("Listado de pacientes por cie del hospital - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(PATIENT_DIAGNOSE_CI9_PATIENTS)
-	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie9(
-			@ApiParam(value = "Descripción del CIE9 por la que filtrar", example = "Dermtitis" , required = true)
-			@RequestParam final String cie9,
+	@GetMapping(PATIENT_DIAGNOSE_CIE_PATIENTS)
+	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie(
+			@ApiParam(value = "Descripción del CIE por la que filtrar", example = "Dermtitis", required = true)
+			@RequestParam final String cieDescription,
+			@ApiParam(value = "Identificador del hospital de la sesión", example = "1", required = true)
+			@RequestParam(value = "hospitalId") final Long hospitalId,
 			@PageableDefault(size = 5) Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findGraphPatientsDetailsByCie9(cie9, pageable);
+		return patientDiagnosisService.findGraphPatientsDetailsByCie(cieDescription, hospitalId, pageable);
 	}
 
-	@ApiOperation("Listado de pacientes por cie9 - Información Diagnóstico")
+	@ApiOperation("Listado de pacientes por cie - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(PATIENT_DIAGNOSE_CI9_PATIENTS_EXPORT)
-	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie9(
-			@ApiParam(value = "Descripción del CIE9 por la que filtrar", example = "Dermtitis" , required = true)
-			@RequestParam final String cie9) {
+	@GetMapping(PATIENT_DIAGNOSE_CIE_PATIENTS_EXPORT)
+	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie(
+			@ApiParam(value = "Descripción del CIE por la que filtrar", example = "Dermtitis", required = true)
+			@RequestParam final String cieDescription,
+			@ApiParam(value = "Identificador del hospital de la sesión", example = "1", required = true)
+			@RequestParam(value = "hospitalId") final Long hospitalId) {
 		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findGraphPatientsDetailsByCie9(cie9);
-	}
-
-	@ApiOperation("Listado de pacientes por cie10 - Información Diagnóstico")
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(PATIENT_DIAGNOSE_CI10_PATIENTS)
-	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie10(
-			@ApiParam(value = "Descripción del CIE10 por la que filtrar", example = "Dermtitis", required = true)
-			@RequestParam final String cie10,
-			@PageableDefault(size = 5) Pageable pageable) {
-		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findGraphPatientsDetailsByCie10(cie10, pageable);
-	}
-
-	@ApiOperation("Listado de pacientes por cie10 - Información Diagnóstico")
-	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(PATIENT_DIAGNOSE_CI10_PATIENTS_EXPORT)
-	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie10(
-			@ApiParam(value = "Descripción del CIE10 por la que filtrar", example = "Dermtitis", required = true)
-			@RequestParam final String cie10) {
-		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findGraphPatientsDetailsByCie10(cie10);
+		return patientDiagnosisService.findGraphPatientsDetailsByCie(cieDescription, hospitalId);
 	}
 
 	@ApiOperation("Listado de pacientes por Tipo de tratamiento - Información Diagnóstico")
