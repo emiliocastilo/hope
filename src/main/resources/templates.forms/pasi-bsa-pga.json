@@ -5,8 +5,8 @@
     "historify": true,
     "nameHistoricalDate": "evaluationDate",
     "fieldsToGraph": [
-        "pasiScore",
-        "bsaScore",
+        "pasi",
+        "bsa",
         "pga"
     ]
 }
