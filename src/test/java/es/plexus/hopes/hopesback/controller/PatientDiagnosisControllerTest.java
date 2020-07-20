@@ -42,6 +42,7 @@ public class PatientDiagnosisControllerTest {
 	private PatientDiagnosisController patientDiagnosisController;
 
 	private final PageRequest mockPageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+
 	@Test
 	public void callFindPatientsDiagnosesByIndicationsShouldBeStatusOk() throws ServiceException {
 
@@ -76,7 +77,7 @@ public class PatientDiagnosisControllerTest {
 				.willReturn(mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie(anyLong());
+		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie(1L);
 
 		// then
 		Assert.assertNotNull(response);
@@ -84,13 +85,13 @@ public class PatientDiagnosisControllerTest {
 	}
 
 	@Test(expected = ServiceException.class)
-	public void callFindPatientsByCieThrowException() throws ServiceException {
+	public void callFindPatientsByCieThrowException() {
 		// given
 		given(patientDiagnosisService.findPatientsByCie(1L))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientsDiagnosesByCie(anyLong());
+		patientDiagnosisController.findPatientsDiagnosesByCie(1L);
 
 	}
 
@@ -288,7 +289,7 @@ public class PatientDiagnosisControllerTest {
 				.willReturn(getPageableGraphPatientDetail(pageRequest));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", anyLong(), pageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, pageRequest);
 
 		// then
 		Assert.assertNotNull(response);
@@ -534,7 +535,7 @@ public class PatientDiagnosisControllerTest {
 
 	//Mocks mockMap
 	private Map<String, Long> mockMapStringLong() {
-		Map<String, Long> map = new HashMap<>();
+		Map<String, Long> map = new HashMap();
 		map.put("Type", 3L);
 		return map;
 	}
