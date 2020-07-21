@@ -1,8 +1,11 @@
 {
     "key": "biological-drug-monitoring",
     "form": "[{'type':'title','name':'MONITORIZACION DE FÁRMACOS BIOLÓGICOS'}, {'type':'table', 'label':'Monitorización de fármacos biológicos', 'name':'biologicalDrugMonitoring', 'actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}], 'button':'add', 'columns':8, 'fields':[{'type':'datepicker','label':'Fecha','name':'analysisDate','disabled':false}, {'type':'select', 'label':'Monitorización', 'name':'monitoring', 'options':[{'name':'Niveles de fármaco', 'value':'Niveles de fármaco'}, {'name':'Niveles de anticuerpo', 'value':'Niveles de anticuerpo'}]}, {'type':'select', 'label':'Tratamiento biológico', 'name':'biologicalDrug', 'disabled': false, 'options':[{'name':'Adalimumab', 'value':'Adalimumab'}, {'name':'Etanercept', 'value':'Etanercept'}, {'name':'Golimumab', 'value':'Golimumab'}, {'name':'Infliximab', 'value':'Infliximab'}, {'name':'Rituximab', 'value':'Rituximab'}, {'name':'Secukinumab', 'value':'Secukinumab'}, {'name':'Ustekinumab', 'value':'Ustekinumab'}]}, {'type':'input','label': 'Sistema de monitorización','name': 'monitoringSystem','disabled': false,'placeholder': 'sistema de monitorizacion'}, {'type':'input','label': 'Referencia del anticuerpo','name': 'antibodyReference','disabled': false,'placeholder': 'referencia anticuerpo'}, {'type':'select', 'label':'Motivo del análisis', 'name':'analysisReason', 'disabled': false, 'options':[{'name':'Seguimiento rutinario', 'value':'Seguimiento rutinario'}, {'name':'Ineficacia', 'value':'Ineficacia'}, {'name':'Fallo primario (no se alcanzó nunca PASI 75)', 'value':'Fallo primario (no se alcanzó nunca PASI 75)'}, {'name':'Fallo secundario (pérdida de PASI 75)', 'value':'Fallo secundario (pérdida de PASI 75)'}, {'name':'Blanqueamiento', 'value':'Blanqueamiento'}, {'name':'Efectos adversos', 'value':'Efectos adversos'}, {'name':'Niveles séricos del TB fuera derango', 'value':'Niveles séricos del TB fuera derango'}, {'name':'Otros', 'value':'Otros'}]}, {'type':'input','label': 'Niveles séricos','name': 'sericLevels','disabled': false,'placeholder': 'niveles séricos'}, {'type':'input','label': 'Observaciones','name': 'observations','disabled': false,'placeholder': 'observaciones'}]}]",
-    "buttons": "['save','graphs']",
-    "historify": false,
-    "nameHistoricalDate": null,
-    "fieldsToGraph": null
+    "buttons": "['save','graphsBack']",
+    "historify": true,
+    "isTable": true,
+    "nameHistoricalDate": "analysisDate",
+    "fieldsToGraph": [
+        "sericLevels"
+    ]
 }

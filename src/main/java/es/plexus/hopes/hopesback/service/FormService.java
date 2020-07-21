@@ -7,11 +7,13 @@ import es.plexus.hopes.hopesback.controller.model.InputDTO;
 import es.plexus.hopes.hopesback.controller.model.TemplateDTO;
 import es.plexus.hopes.hopesback.repository.FormMongoRepository;
 import es.plexus.hopes.hopesback.repository.model.FormMongo;
+import es.plexus.hopes.hopesback.service.events.GraphsEvent;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.FormMapper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -47,11 +49,19 @@ public class FormService {
     private final FormMapper formMapper;
     private final TemplateService templateService;
 
+    private final ApplicationEventPublisher publisher;
+
+    private final PatientService patientService;
+    private final DispensationDetailService dispensationDetailService;
+
     @Autowired
-    public FormService(FormMongoRepository formMongoRepository, FormMapper formMapper, MongoTemplate mongoTemplate, TemplateService templateService) {
+    public FormService(FormMongoRepository formMongoRepository, FormMapper formMapper, MongoTemplate mongoTemplate, TemplateService templateService, ApplicationEventPublisher publisher, PatientService patientService, DispensationDetailService dispensationDetailService) {
         this.formMongoRepository = formMongoRepository;
         this.formMapper = formMapper;
         this.templateService = templateService;
+        this.publisher = publisher;
+        this.patientService = patientService;
+        this.dispensationDetailService = dispensationDetailService;
     }
 
     public void saveData(FormDTO formDto, String user) {
@@ -138,18 +148,24 @@ public class FormService {
     }
 
     public List<GraphHistorifyDinamycFormDTO> graphHistorifyDinamycFormByTemplateAndPatientId(String template, Integer patientId) {
+        List<GraphHistorifyDinamycFormDTO> graphs = new ArrayList<>();
 
         TemplateDTO templateDto = templateService.findByKey(template);
 
         validateHistorifiedBackDynamicFormTemplate(templateDto);
 
         List<Object> fieldsToGraph = templateDto.getFieldsToGraph();
-
         String fieldDate = templateDto.getNameHistoricalDate();
-
         List<FormDTO> forms = this.findByTemplateAndPatientId(templateDto.getKey(), patientId);
 
-        return fillGraphDinamicForm(forms, fieldsToGraph, fieldDate);
+        if(Boolean.TRUE.equals(templateDto.getHistorify())
+                && !Boolean.TRUE.equals(templateDto.getIsTable())) {
+
+            graphs = fillGraphDinamicForm(forms, fieldsToGraph, fieldDate);
+        }
+        publisher.publishEvent(new GraphsEvent(templateDto.getKey(), patientId, fieldsToGraph, fieldDate, forms, graphs));
+
+        return graphs;
     }
 
     private void validateDynamicFormData(FormDTO formDto, String formType, TemplateDTO templateDto) {
@@ -191,7 +207,8 @@ public class FormService {
     }
 
     private String obtainFormType(TemplateDTO templateDto) {
-        return Boolean.TRUE.equals(templateDto.getHistorify())? DYNAMIC_FORM_HISTORIFY_BACK : DYNAMIC_FORM_SIMPLE;
+        return Boolean.TRUE.equals(templateDto.getHistorify())
+                && !Boolean.TRUE.equals(templateDto.getIsTable())? DYNAMIC_FORM_HISTORIFY_BACK : DYNAMIC_FORM_SIMPLE;
     }
 
     private void validateDynamicFormTemplate(TemplateDTO templateDto, String formType) {
@@ -427,4 +444,5 @@ public class FormService {
         });
         return  graphList;
     }
+
 }
