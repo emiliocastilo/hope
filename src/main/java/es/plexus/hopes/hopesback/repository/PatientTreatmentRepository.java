@@ -1,5 +1,7 @@
 package es.plexus.hopes.hopesback.repository;
 
+import es.plexus.hopes.hopesback.repository.model.Medicine;
+import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -52,5 +54,9 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 
 	@Query(QueryConstants.QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID)
 	List<PatientTreatment> findFameTreatmentsByPatientId(@Param("patId") Long patId);
+
+	PatientTreatment findByPatientDiagnoseAndMedicineAndInitDate(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment);
+
+	PatientTreatment findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(String masterFormula, String masterFormulaDose);
 }
 

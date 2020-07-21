@@ -288,4 +288,15 @@ public class MedicineService {
 
 		return doseDTOPage;
 	}
+
+	public MedicineDTO findByNationalCode(String nationalCode) {
+		Optional<Medicine> medicine = medicineRepository.findByNationalCode(nationalCode);
+		MedicineDTO medicineDTO = null;
+
+		if (medicine.isPresent()) {
+			medicineDTO = MedicineMapper.INSTANCE.entityToDto(medicine.get());
+		}
+
+		return medicineDTO;
+	}
 }

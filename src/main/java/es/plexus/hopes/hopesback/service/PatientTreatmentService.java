@@ -4,7 +4,9 @@ import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
+import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
@@ -409,5 +411,17 @@ public class PatientTreatmentService {
 		return pt->{
 			return pt.getMedicine()!=null?pt.getMedicine().getActIngredients():"";
 		};
+	}
+
+	public void save(PatientTreatment patientTreatment) {
+		patientTreatmentRepository.saveAndFlush(patientTreatment);
+	}
+
+	public PatientTreatment findByPatientDiagnoseAndMedicineAndInitDate(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment) {
+		return patientTreatmentRepository.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose, medicine, initDateTreatment);
+	}
+
+	public PatientTreatment findByMasterFormulaAndMasterFormulaDose(String masterFormula, String masterFormulaDose) {
+		return patientTreatmentRepository.findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(masterFormula, masterFormulaDose);
 	}
 }
