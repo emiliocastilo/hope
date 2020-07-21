@@ -18,6 +18,8 @@ public class TemplateMongo {
 
     private Boolean historify;
 
+    private Boolean isTable;
+
     private String nameHistoricalDate;
 
     private List<Object> fieldsToGraph;
