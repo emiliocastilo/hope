@@ -16,8 +16,11 @@ import es.plexus.hopes.hopesback.service.MedicineService;
 import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
 import es.plexus.hopes.hopesback.service.PatientService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
+import es.plexus.hopes.hopesback.service.mapper.IndicationMapper;
 import es.plexus.hopes.hopesback.service.mapper.MedicineMapper;
+import es.plexus.hopes.hopesback.service.mapper.PatientDiagnosisMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientMapper;
+import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -84,14 +87,14 @@ public class MigrationService {
 		.forEach(f -> {
 
 			Patient patient = PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue()));
-			PatientDiagnose patientDiagnose = patientDiagnosisService.findByPatient(patient);
+			PatientDiagnose patientDiagnose = PatientDiagnosisMapper.INSTANCE.dtoToEntity(patientDiagnosisService.findByPatient(patient));
 
 			if (patientDiagnose == null) {
 				patientDiagnose = new PatientDiagnose();
 			}
 
 			patientDiagnose.setPatient(patient);
-			patientDiagnose.setIndication(indicationService.getIndicationByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE)));
+			patientDiagnose.setIndication(IndicationMapper.INSTANCE.dtoToEntity(indicationService.getIndicationByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE))));
 			patientDiagnose.setOthersIndications(obtainStringValue(f, TAGNAME_ANOTHER_PSORIASIS));
 			patientDiagnose.setInitDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
 			patientDiagnose.setSymptomsDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_SYMPTOM));
@@ -113,8 +116,8 @@ public class MigrationService {
 		formsDTO
 				.forEach(f -> {
 					Patient patient = PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue()));
-					Indication indication = indicationService.getIndicationByDescription(obtainStringValue(f, TAGNAME_INDICATION));
-					PatientDiagnose patientDiagnose = patientDiagnosisService.findByPatientAndIndication(patient, indication);
+					Indication indication = IndicationMapper.INSTANCE.dtoToEntity(indicationService.getIndicationByDescription(obtainStringValue(f, TAGNAME_INDICATION)));
+					PatientDiagnose patientDiagnose = PatientDiagnosisMapper.INSTANCE.dtoToEntity(patientDiagnosisService.findByPatientAndIndication(patient, indication));
 					PatientTreatment patientTreatment;
 					MedicineDTO medicine = null;
 					LocalDateTime initDateTreatment = obtainLocalDateTimeValue(f, TAGNAME_DATE_START);
@@ -122,11 +125,13 @@ public class MigrationService {
 					String masterFormulaDose = obtainStringValue(f, TAGNAME_MASTER_FORMULA_DOSES);
 
 					if (Boolean.TRUE.equals(getValueByTagNameFromForm(f, TAGNAME_MASTER_FORMULA))) {
-						patientTreatment = patientTreatmentService.findByMasterFormulaAndMasterFormulaDose(masterFormula, masterFormulaDose);
+						patientTreatment = PatientTreatmentMapper.INSTANCE.dtoToEntity(patientTreatmentService
+								.findByMasterFormulaAndMasterFormulaDose(masterFormula, masterFormulaDose));
 					} else {
 						medicine = medicineService.findByNationalCode(obtainStringValue(f, TAGNAME_NATIONAL_CODE));
 						// Averiguar qué Tratamiento tengo que actualizar, mirar medicamento y diagnóstico.
-						patientTreatment = patientTreatmentService.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose, MedicineMapper.INSTANCE.dtoToEntity(medicine), initDateTreatment);
+						patientTreatment = PatientTreatmentMapper.INSTANCE.dtoToEntity(patientTreatmentService
+								.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose, MedicineMapper.INSTANCE.dtoToEntity(medicine), initDateTreatment));
 					}
 
 					if (patientTreatment == null) {

@@ -1,14 +1,15 @@
 /**
- * 
+ *
  */
 package es.plexus.hopes.hopesback.service;
 
-import org.springframework.stereotype.Service;
-
+import es.plexus.hopes.hopesback.controller.model.IndicationDTO;
 import es.plexus.hopes.hopesback.repository.IndicationRepository;
 import es.plexus.hopes.hopesback.repository.model.Indication;
+import es.plexus.hopes.hopesback.service.mapper.IndicationMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 /**
  * @author jose.estevezbarroso
@@ -18,13 +19,14 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RequiredArgsConstructor
 public class IndicationService {
-	
+
 	private static final String CALLING_DB = "Llamando a la DB...";
 
 	private final IndicationRepository indicationRepository;
-	
-	public Indication getIndicationByDescription(final String description) {
+
+	public IndicationDTO getIndicationByDescription(final String description) {
 		log.debug(CALLING_DB);
-		return indicationRepository.findByDescription(description).orElse(null);
+		Indication indication = indicationRepository.findByDescription(description).orElse(null);
+		return IndicationMapper.INSTANCE.entityToDto(indication);
 	}
 }

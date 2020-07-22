@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
@@ -417,11 +418,13 @@ public class PatientTreatmentService {
 		patientTreatmentRepository.saveAndFlush(patientTreatment);
 	}
 
-	public PatientTreatment findByPatientDiagnoseAndMedicineAndInitDate(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment) {
-		return patientTreatmentRepository.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose, medicine, initDateTreatment);
+	public PatientTreatmentDTO findByPatientDiagnoseAndMedicineAndInitDate(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment) {
+		PatientTreatment patientTreatment = patientTreatmentRepository.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose, medicine, initDateTreatment).orElse(null);
+		return PatientTreatmentMapper.INSTANCE.entityToDto(patientTreatment);
 	}
 
-	public PatientTreatment findByMasterFormulaAndMasterFormulaDose(String masterFormula, String masterFormulaDose) {
-		return patientTreatmentRepository.findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(masterFormula, masterFormulaDose);
+	public PatientTreatmentDTO findByMasterFormulaAndMasterFormulaDose(String masterFormula, String masterFormulaDose) {
+		PatientTreatment patientTreatment = patientTreatmentRepository.findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(masterFormula, masterFormulaDose).orElse(null);
+		return PatientTreatmentMapper.INSTANCE.entityToDto(patientTreatment);
 	}
 }

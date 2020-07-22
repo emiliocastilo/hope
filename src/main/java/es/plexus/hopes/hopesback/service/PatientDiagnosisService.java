@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDiagnosisDTO;
 import es.plexus.hopes.hopesback.repository.HospitalRepository;
 import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
@@ -10,6 +11,7 @@ import es.plexus.hopes.hopesback.repository.model.Indication;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientData;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
+import es.plexus.hopes.hopesback.service.mapper.PatientDiagnosisMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -180,13 +182,15 @@ public class PatientDiagnosisService {
 		return patientDiagnosisRepository.saveAndFlush(patientDiagnose);
 	}
 
-	public PatientDiagnose findByPatient(Patient patient) {
+	public PatientDiagnosisDTO findByPatient(Patient patient) {
 		log.debug(CALLING_DB);
-		return patientDiagnosisRepository.findByPatient(patient);
+		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatient(patient);
+		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
 	}
 
-	public PatientDiagnose findByPatientAndIndication(Patient patient, Indication indication) {
-		return patientDiagnosisRepository.findByPatientAndIndication(patient, indication);
+	public PatientDiagnosisDTO findByPatientAndIndication(Patient patient, Indication indication) {
+		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientAndIndication(patient, indication).orElse(null);
+		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
 	}
 
 	/**
