@@ -166,6 +166,14 @@ public class DispensationDetailService {
 				.map(Mappers.getMapper(DispensationDetailMapper.class)::entityToDto)
 				.collect(Collectors.toList());
 	}
+
+	public List<DispensationDetailDTO> findDispensationDetailByNhc(String nhc) {
+		List<DispensationDetail> dispensationDetailsList = dispensationDetailRepository.findDispensationDetailByNhc(nhc);
+		return dispensationDetailsList.stream()
+				.map(Mappers.getMapper(DispensationDetailMapper.class)::entityToDto)
+				.collect(Collectors.toList());
+	}
+
 	private void fillMonthlyConsume(int index,
 			LocalDateTime dateStartPeriod, LocalDateTime dateStopPeriod,
 			List<Long> listPatients, Boolean isAvg, String code,

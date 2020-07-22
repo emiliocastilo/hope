@@ -47,4 +47,6 @@ public interface DispensationDetailRepository extends JpaRepository<Dispensation
 
 	@Query(QueryConstants.QUERY_FIND_DISPENSATION_DETAILS_BY_PATIENT_ID)
 	List<DispensationDetail> findDispensationDetailByPatientId(@Param("patId")Long patId);
+
+	List<DispensationDetail> findDispensationDetailByNhc(String nhc);
 }
