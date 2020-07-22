@@ -75,7 +75,7 @@ imagegallery:
   
 # Cron Migration
 cronexpression:
-  diagnosis: 0 1 * * * ?  # everyday 1am. 0/30 * * * * ? each 30sg
-  treatment: 0 30 * * * ?   # At second :00 of minute :30 of every hour. 0/30 * * * * ? each 30sg
+  diagnosis: 0 0 1 * * ?  # At 01:00:00am every day. 0/30 * * * * ? each 30sg
+  treatment: 0 0 4 * * ?   # At 04:00:00am every day. 0/30 * * * * ? each 30sg
 
 
