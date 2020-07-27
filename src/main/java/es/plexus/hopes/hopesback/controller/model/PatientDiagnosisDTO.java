@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.controller.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,13 +30,16 @@ public class PatientDiagnosisDTO {
     @ApiModelProperty(position = 60, example = "otras indicaciones", value = "Otras indicaciones")
     private String othersIndications;
 
-    @ApiModelProperty(position = 70, example = "2020-07-22", value = "Fecha de inicio del diagnóstico")
+    @ApiModelProperty(position = 70, example = "1981-01-01T00:00:00Z", value = "Fecha de inicio del diagnóstico")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime initDate;
 
-    @ApiModelProperty(position = 80, example = "2020-07-22", value = "Fecha de los síntomas")
+    @ApiModelProperty(position = 80, example = "1981-01-01T00:00:00Z", value = "Fecha de los síntomas")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime symptomsDate;
 
-    @ApiModelProperty(position = 90, example = "2020-07-22", value = "Fecha de derivación")
+    @ApiModelProperty(position = 90, example = "1981-01-01T00:00:00Z", value = "Fecha de derivación")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime derivationDate;
 
     @ApiModelProperty(position = 100, example = "[tratamiento 1]", value = "Tratamientos asociados al diagnóstico")
