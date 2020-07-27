@@ -1,5 +1,6 @@
 package es.plexus.hopes.hopesback.repository;
 
+import es.plexus.hopes.hopesback.repository.model.Indication;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PatientDiagnosisRepository extends JpaRepository<PatientDiagnose, Long> {
@@ -22,5 +24,7 @@ public interface PatientDiagnosisRepository extends JpaRepository<PatientDiagnos
 	List<PatientDiagnose> findPatientsDiagnosisGroupByCie10();
 
     PatientDiagnose findByPatient(Patient patient);
+
+    Optional<PatientDiagnose> findByPatientAndIndication(Patient patient, Indication indication);
 }
 

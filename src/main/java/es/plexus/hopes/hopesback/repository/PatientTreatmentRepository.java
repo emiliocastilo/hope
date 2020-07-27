@@ -1,5 +1,7 @@
 package es.plexus.hopes.hopesback.repository;
 
+import es.plexus.hopes.hopesback.repository.model.Medicine;
+import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PatientTreatmentRepository extends JpaRepository<PatientTreatment, Long> {
@@ -52,5 +55,9 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 
 	@Query(QueryConstants.QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID)
 	List<PatientTreatment> findFameTreatmentsByPatientId(@Param("patId") Long patId);
+
+	Optional<PatientTreatment> findByPatientDiagnoseAndMedicineAndInitDate(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment);
+
+	Optional<PatientTreatment> findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(String masterFormula, String masterFormulaDose);
 }
 
