@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @ApiModel
 @Data
@@ -20,4 +21,7 @@ public class RoleDTO {
 	@ApiModelProperty(position = 30, example = "Rol administrador. Tiene le máximo nivel de acceso a la aplicación", value = "Descripcion del rol")
 	@NotBlank
 	private String description;
+
+	@ApiModelProperty(position = 40, example = "['Hospital 1']", value = "Hospitales asociados al Rol")
+	private Set<HospitalDTO> hospitals;
 }

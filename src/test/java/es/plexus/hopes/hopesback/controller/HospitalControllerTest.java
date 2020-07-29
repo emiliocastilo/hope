@@ -65,7 +65,7 @@ public class HospitalControllerTest {
 		HospitalDTO hospitalDTO = new HospitalDTO();
 		hospitalDTO.setId(1L);
 		hospitalDTO.setName("Test");
-		hospitalDTO.setServiceDTO(Collections.emptySet());
+		hospitalDTO.setServices(Collections.emptySet());
 
 		return hospitalDTO;
 	}

@@ -3499,7 +3499,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Enfermeria\",\n    \"description\": \"Abarca la atención autónoma y en colaboración dispensada a personas de todas las edades, familias, grupos y comunidades, enfermos o no, y en todas circunstancias\"\n}",
+							"raw": "{\n    \"name\": \"PruebaRol\",\n    \"description\": \"Rol de prueba\",\n    \"hospitals\":[\n    \t{\"id\":\"1\",\n        \"services\":[\n            {\"id\":4,\n            \"pathologies\":[\n                {\"id\":2}\n            ]}\n        ]}\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
