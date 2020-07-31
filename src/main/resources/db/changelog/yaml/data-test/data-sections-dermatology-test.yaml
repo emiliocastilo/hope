@@ -1,0 +1,2384 @@
+databaseChangeLog:
+- changeSet:
+    id: sections-dermatology-1
+    author: angel.broncanorodriguez@plexus.es
+    changes:
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Hopes
+        - column:
+            name: sec_description
+            value: Home
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+        - column:
+            name: sec_icon
+            value: assets/img/modules/launch.png
+        - column:
+            name: sec_url
+            value: /hopes
+        - column:
+            name: sec_principal
+            valueBoolean: true
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Administración
+        - column:
+            name: sec_description
+            value: Sección que contiene las gestiones del usuario logado
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 1
+        - column:
+            name: sec_icon
+            value: assets/img/modules/administracion.png
+        - column:
+            name: sec_url
+            value: /hopes/management
+        - column:
+            name: sec_principal
+            valueBoolean: true
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Gestión de Médicos
+        - column:
+            name: sec_description
+            value: Sección que contiene la gestión de los médicos de la aplicación
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: assets/img/modules/medicos.png
+        - column:
+            name: sec_url
+            value: /hopes/management/medics
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Gestión de Pacientes
+        - column:
+            name: sec_description
+            value: Sección que contiene la Gestión de Pacientes
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: assets/img/modules/planes-atencion.png
+        - column:
+            name: sec_url
+            value: /hopes/management/patients
+        - column:
+            name: sec_principal
+            valueBoolean: true
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Gestión de Medicamentos
+        - column:
+            name: sec_description
+            value: Sección que contiene la Gestión de Medicamentos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 7
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: assets/img/modules/medicamentos.png
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Información de Tratamientos
+        - column:
+            name: sec_description
+            value: Sección que contiene la información de los tratamientos de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 3
+        - column:
+            name: sec_icon
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Información Resultados en Salud
+        - column:
+            name: sec_description
+            value: Sección que contiene los Resultados en salud de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 3
+        - column:
+            name: sec_icon
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Información Pacientes/Dosis
+        - column:
+            name: sec_description
+            value: Sección que contiene la Información de Pacientes/Dosis de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 3
+        - column:
+            name: sec_icon
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Información Farmaeconómicos
+        - column:
+            name: sec_description
+            value: Sección que contiene la Información Farmaeconómica de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 3
+        - column:
+            name: sec_icon
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Paciente
+        - column:
+            name: sec_description
+            value: Sección que contiene el Menú completo tras la seleccion de un Paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 1
+        - column:
+            name: sec_icon
+            value: assets/img/modules/planes-atencion.png
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients
+        - column:
+            name: sec_principal
+            valueBoolean: true
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Cuadro de Mando
+        - column:
+            name: sec_description
+            value: Sección que contiene el Cuadro de Mando de la patología
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 1
+        - column:
+            name: sec_icon
+            value: assets/img/modules/cuadro-de-mando.png
+        - column:
+            name: sec_url
+            value: /hopes/dashboard
+        - column:
+            name: sec_principal
+            valueBoolean: true
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Cuadro de Mando Paciente
+        - column:
+            name: sec_description
+            value: Sección que contiene la Cuadro de Mando Paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/dashboard
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes por indicación
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de diagnostico de Pacientes por
+              indicación
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/patients-indication
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes por diagnóstico CIE9
+        - column:
+            name: sec_description
+            value: Sección que contiene  informacion de diagnostico de Pacientes por
+              diagnóstico CIE9
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/cie9
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Gestión de Roles
+        - column:
+            name: sec_description
+            value: Sección que contiene la gestión de los roles de la aplicación
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/management/roles
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Evolución de índices clínicos
+        - column:
+            name: sec_description
+            value: Sección que contiene la Evolución de índices clínicos del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 9
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Gestión de Usuarios
+        - column:
+            name: sec_description
+            value: Sección que contiene la gestión de los usuarios de la aplicación
+        - column:
+            name: sec_active
+            valueBoolean: false
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: DLQI
+        - column:
+            name: sec_description
+            value: Sección que contiene el indice DLQI del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 29
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Soporte
+        - column:
+            name: sec_description
+            value: Sección que contiene la configuración de las opciones de soporte
+        - column:
+            name: sec_active
+            valueBoolean: false
+        - column:
+            name: sec_order
+            valueNumeric: 9
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Información Diagnóstico
+        - column:
+            name: sec_description
+            value: Sección que contiene la información de diagnóstico de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 3
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: EAV Y PASE
+        - column:
+            name: sec_description
+            value: Sección que contiene el indice EAV Y PASE del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 29
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/evolution-clinical-indices/eav-pase
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Seguimiento
+        - column:
+            name: sec_description
+            value: Sección que contiene el Seguimiento del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 6
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/tracing
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Diagnósticos
+        - column:
+            name: sec_description
+            value: Sección que contiene los diagnosticos del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: 'Otros índices: NAPSI'
+        - column:
+            name: sec_description
+            value: 'Sección que contiene el indice Otros índices: NAPSI  del paciente'
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 29
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Evaluación de análisis clínicos
+        - column:
+            name: sec_description
+            value: 'Sección que contiene la Evaluación de análisis clínicos del paciente '
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 10
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Hemograma
+        - column:
+            name: sec_description
+            value: Sección que contiene los hemogramas del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 34
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/blood-count
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Perfil metabólico
+        - column:
+            name: sec_description
+            value: Sección que contiene el perfil metabólico del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 34
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/metabolic-profile
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Bioquímica hepática y renal
+        - column:
+            name: sec_description
+            value: Sección que contiene la Bioquímica hepática y renal del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 34
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/kidney-liver-biochemistry
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Serología (VHC, VHB, otras infecciones y vacunas)
+        - column:
+            name: sec_description
+            value: Sección que contiene las Serología (VHC, VHB, otras infecciones
+              y vacunas) del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 34
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/serology
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Anticuerpo y antígeno leucocitario
+        - column:
+            name: sec_description
+            value: Sección que contiene la información de los Anticuerpo y antígeno
+              leucocitario del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 34
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/leukocyte-antibody-antigen
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Monitorización de fármacos biológicos
+        - column:
+            name: sec_description
+            value: Sección que contiene la Monitorización de fármacos biológicos del
+              paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 6
+        - column:
+            name: sec_section_root
+            valueNumeric: 34
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/biological-drug-monitoring
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Galería de fotos
+        - column:
+            name: sec_description
+            value: Sección que contiene la Galería de fotos del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 11
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/gallery
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Exploraciones complementarias de imagen
+        - column:
+            name: sec_description
+            value: Sección que contiene las Exploraciones complementarias de imagen
+              del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 12
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/complementary-imaging-scans
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Paciente compartido
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion del Paciente compartido
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 13
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/shared-patients
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Consentimiento
+        - column:
+            name: sec_description
+            value: Sección que contiene el Consentimiento del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 16
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/consent
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Adherencia al tratamiento
+        - column:
+            name: sec_description
+            value: Sección que contiene la Adherencia al tratamiento del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 15
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: PASI, BSA Y PGA
+        - column:
+            name: sec_description
+            value: Sección que contiene los índices clínicos PASI, BSA Y PGA del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 29
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/evolution-clinical-indices/pasi-bsa-pga
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Secciones
+        - column:
+            name: sec_description
+            value: Sección que contiene la gestión de secciones de la aplicación
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: assets/img/modules/alertas.png
+        - column:
+            name: sec_url
+            value: /hopes/management/sections
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Dispensaciones
+        - column:
+            name: sec_description
+            value: Sección que contiene la carga de dispensaciones
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 6
+        - column:
+            name: sec_section_root
+            valueNumeric: 2
+        - column:
+            name: sec_icon
+            value: assets/img/modules/dispensaciones.png
+        - column:
+            name: sec_url
+            value: /hopes/management/dispensations
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: cuadro de mandos 2
+        - column:
+            name: sec_description
+            value: prueba
+        - column:
+            name: sec_active
+            valueBoolean: false
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /asdf
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Datos del paciente
+        - column:
+            name: sec_description
+            value: Datos del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Datos personales
+        - column:
+            name: sec_description
+            value: Datos personales del paciente
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 87
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: hopes/pathology/patients/personal-information
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Datos de ensayos clínicos
+        - column:
+            name: sec_description
+            value: Datos de ensayos clínicos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 87
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/work-groups
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Datos sociodemográficos
+        - column:
+            name: sec_description
+            value: Datos sociodemográficos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 87
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/sociodemographic-data
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Evaluacion del estado físico
+        - column:
+            name: sec_description
+            value: Evaluacion del estado físico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 87
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/physical-condition
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Antecedentes familiares
+        - column:
+            name: sec_description
+            value: Antecedentes familiares
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 87
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/family-history
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Hábitos de consumo
+        - column:
+            name: sec_description
+            value: Hábitos de consumo
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 6
+        - column:
+            name: sec_section_root
+            valueNumeric: 87
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/consumption-habits
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Diagnóstico Principal
+        - column:
+            name: sec_description
+            value: Diagnóstico Principal
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 25
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/diagnosis/principal-diagnosis
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Diagnósticos Secundarios
+        - column:
+            name: sec_description
+            value: Diagnósticos Secundarios
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 25
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/diagnosis/secundary-diagnosis
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Comorbilidades
+        - column:
+            name: sec_description
+            value: Comorbilidades
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 25
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/diagnosis/comorbidities
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Tratamientos
+        - column:
+            name: sec_description
+            value: Tratamientos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 7
+        - column:
+            name: sec_section_root
+            valueNumeric: 20
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Consumo mensual medio en euros
+        - column:
+            name: sec_description
+            value: Sección que contiene la informacion del Consumo medio de tratamientos
+              biológicos mensual medio en euros
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 71
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/average-consuption-biological-treatment/avg-mon-con-eu
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Consumo medio de tratamientos biológicos
+        - column:
+            name: sec_description
+            value: Sección que contiene la informacion del Consumo medio de tratamientos
+              biológicos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 19
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Consumo anual de tratamientos biológicos
+        - column:
+            name: sec_description
+            value: Sección que contiene la Información Farmaeconómicos de Consumo
+              anual de tratamientos biológicos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 19
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Consumo mensual medio acumulado en euros
+        - column:
+            name: sec_description
+            value: Sección que contiene la informacion de Consumo medio de tratamientos
+              biológicos mensual medio acumulado en euros
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 71
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/average-consuption-biological-treatment/accumulated-avg-mon-con-eu
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Coste total por tratamiento biológico
+        - column:
+            name: sec_description
+            value: Sección que contiene el Coste total por tratamiento biológico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 19
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Costes totales
+        - column:
+            name: sec_description
+            value: Sección que contiene el Costes totales por tratamiento biologico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 74
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/total-expenses-biological-treatment/total-expenses
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Coste medio por tratamiento biológico
+        - column:
+            name: sec_description
+            value: Sección que contiene el Coste medio por tratamiento biológico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 19
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: '#'
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Costes medios
+        - column:
+            name: sec_description
+            value: 'Sección que contiene el Coste medio por tratamiento biológico:
+              Costes medios'
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 77
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/avg-expenses-biological-treatment/avg-expenses
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Costes medios acumulados
+        - column:
+            name: sec_description
+            value: 'Sección que contiene el Coste medio por tratamiento biológico:
+              Costes medios acumulados'
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 77
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/avg-expenses-biological-treatment/accumulated-avg-expenses
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes por tratamientos combinados
+        - column:
+            name: sec_description
+            value: Sección que contiene  informacion de diagnostico de Pacientes por
+              tratamientos combinados
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/patients-combined-treatments
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Motivo del último cambio de tratamiento biológico
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de diagnostico del Motivo del
+              cambio de tratamiento biológico de los últimos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/reason-last-change-biological-treatment
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Motivo del cambio de tratamiento biológico de los últimos 5 años
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de diagnostico del Motivo de la
+              suspensión de tratamiento biológico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 7
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/reason-change-biological-treatment-five-years
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes en tratamiento según agentes químicos
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de tratamiento de Pacientes en
+              tratamiento según agentes químicos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 16
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/treatments/chemical-agents
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Número de cambios de tratamiento biológico
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de diagnostico del Número de cambios
+              de tratamiento biológico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 9
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/number-changes-biological-treatment
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes en tratamiento según agentes biológicos
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de tratamiento de Pacientes en
+              tratamiento según agentes biológicos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 16
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/treatments/biological-agents
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Tratamiento biológico en pacientes con psoriasis en placas
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de tratamiento de Tratamiento
+              biológico en pacientes con psoriasis en placas
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 16
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/treatments/psoriasis-placas
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Tratamiento biológico en pacientes con eritrodermia
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de tratamiento de Tratamiento
+              biológico en pacientes con eritrodermia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 5
+        - column:
+            name: sec_section_root
+            valueNumeric: 16
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/treatments/eritrodermia
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Tratamiento biológico en pacientes con psoriasis pustulosa
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de tratamiento de Tratamiento
+              biológico en pacientes con psoriasis pustulosa
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 6
+        - column:
+            name: sec_section_root
+            valueNumeric: 16
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/treatments/psoriasis-pustulosa
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes según PASI
+        - column:
+            name: sec_description
+            value: Sección que contiene la información de resultados en salud de Pacientes
+              según PASI de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 17
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/healths-outcomes/patients-by-pasi
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes según BSA
+        - column:
+            name: sec_description
+            value: Sección que contiene  la información de resultados en salud de
+              Pacientes según BSA de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 17
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/healths-outcomes/patients-by-bsa
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes según PGA
+        - column:
+            name: sec_description
+            value: Sección que contiene  la información de resultados en salud de
+              Pacientes según PGA de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 17
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/healths-outcomes/patients-by-pga
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes según DLQI
+        - column:
+            name: sec_description
+            value: Sección que contiene  la información de resultados en salud de
+              Pacientes según DLQI de la patologia
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 17
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/healths-outcomes/patients-by-dlqi
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Test de Haynes Sackett
+        - column:
+            name: sec_description
+            value: Test de Haynes Sackett
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 45
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/haynes-sackett
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Test de Morisky Green
+        - column:
+            name: sec_description
+            value: Test de Morisky Green
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 45
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/morisky-green
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Consumo mensual en euros
+        - column:
+            name: sec_description
+            value: Sección que contiene la Información del Consumo anual de tratamientos
+              biologicos por Consumo mensual en euros
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 68
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/anual-consumption-biological/monthly-consuption-euros
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Consumo mensual acumulado en euros
+        - column:
+            name: sec_description
+            value: Sección que contiene la informacion del Consumo anual de tratamientos
+              biológicos por Consumo mensual acumulado en euros
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 68
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/anual-consumption-biological/accumulated-monthly-consuption-euros
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Costes acumulados
+        - column:
+            name: sec_description
+            value: 'Sección que contiene los Costes total acumulados por tratamiento
+              biologico '
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 2
+        - column:
+            name: sec_section_root
+            valueNumeric: 74
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/pharmacoeconomic/total-expenses-biological-treatment/accumulated-expenses
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Soporte
+        - column:
+            name: sec_description
+            value: Soporte
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 6
+        - column:
+            name: sec_section_root
+            valueNumeric: 1
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: hopes/contact
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes por tipo de tratamiento
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de diagnostico de Pacientes por
+              tipo de tratamiento
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 3
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/patients-treatment
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Motivo de la suspensión de tratamiento biológico
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de diagnostico del Motivo de la
+              suspensión de tratamiento biológico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 6
+        - column:
+            name: sec_section_root
+            valueNumeric: 15
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/diagnosis/reason-stop-bioligical-treatment
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Tratamiento biológico en pacientes con psoriasis palmo-plantar
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de tratamiento de Tratamiento
+              biológico en pacientes con psoriasis palmo-plantar
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 4
+        - column:
+            name: sec_section_root
+            valueNumeric: 16
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/treatments/psoriasis-palmo-plantar
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Pacientes según dosis/frecuencia del tratamiento biológico
+        - column:
+            name: sec_description
+            value: Sección que contiene informacion de Pacientes según dosis/frecuencia
+              del tratamiento biológico
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 18
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/dashboard/patient-dose/biological-treatment-frequency
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
+    - insert:
+        columns:
+        - column:
+            name: sec_title
+            value: Farmacológicos
+        - column:
+            name: sec_description
+            value: Tratamientos farmacológicos
+        - column:
+            name: sec_active
+            valueBoolean: true
+        - column:
+            name: sec_order
+            valueNumeric: 1
+        - column:
+            name: sec_section_root
+            valueNumeric: 97
+        - column:
+            name: sec_icon
+            value: ''
+        - column:
+            name: sec_url
+            value: /hopes/pathology/patients/farmacology-treatment
+        - column:
+            name: sec_principal
+            valueBoolean: false
+        schemaName: hopes
+        tableName: sections
