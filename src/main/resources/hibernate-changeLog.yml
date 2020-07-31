@@ -1,0 +1,2259 @@
+databaseChangeLog:
+- changeSet:
+    id: 1595582145895-1
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: scf_id_pk
+            name: scf_id
+            remarks: Columna con el identificador entre un formulario y un apartado
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: scf_section_id
+            remarks: Columna que contiene el identificador del apartado de la patologia
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: scf_form_id
+            remarks: Columna que contiene el identificador del formulario dentro del
+              apartado
+            type: BIGINT
+        - column:
+            name: scf_order
+            remarks: Columna que indica el orden
+            type: BIGINT
+        remarks: Tabla intermedia que representa la relación entre las entidades SECTIONS
+          y FORMS
+        tableName: sections_forms
+- changeSet:
+    id: 1595582145895-2
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: vat_id_pk
+            name: vat_id
+            remarks: Columna que contiene el identificador de la relacion de la tabla
+              auxiliar con su valor(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: vat_aux_table_id
+            remarks: Columna que contiene el identificador de la tabla auxiliar
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: vat_aux_table_name
+            remarks: Columna que contiene el nombre de la tabla auxiliar
+            type: VARCHAR(50)
+        - column:
+            name: vat_aux_table_desc
+            remarks: Columna que contiene la descripcion detallada de la tabla auxiliar
+            type: VARCHAR(150)
+        - column:
+            constraints:
+              nullable: false
+            name: vat_value_id
+            remarks: Columna que contiene el identificador del valor
+            type: BIGINT
+        - column:
+            name: vat_value
+            remarks: Columna que contiene el valor de la tabla
+            type: VARCHAR(2000)
+        - column:
+            name: vat_order
+            remarks: Columna que indica el orden del valor dentro de la tabla a la
+              que hace referencia
+            type: BIGINT
+        - column:
+            name: vat_active
+            remarks: Columna que indica si la tabla está o no activa
+            type: BOOLEAN
+        remarks: Tabla que representa la entidad VALUEES_TABLAS_AUXILIARES
+        tableName: values_aux_tables
+- changeSet:
+    id: 1595582145895-3
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: scr_id_pk
+            name: scr_id
+            remarks: Columna con el identificador entre un formulario y un apartado
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: scr_section_id
+            remarks: Columna que contiene el identificador del apartado de la patologia
+            type: SMALLINT(5)
+        - column:
+            constraints:
+              nullable: false
+            name: scr_role_id
+            remarks: Columna que contiene el identificador del formulario dentro del
+              apartado
+            type: SMALLINT(5)
+        remarks: Tabla intermedia que representa la relación entre las entidades SECTIONS
+          y FORMS
+        tableName: sections_roles
+- changeSet:
+    id: 1595582145895-4
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: rol_id_pk
+            name: rol_id
+            remarks: Columna que contiene el identificador del ROL
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: rol_name
+            remarks: Columna que contiene el nombre por el que se conoce al rol
+            type: VARCHAR(50)
+        - column:
+            name: rol_description
+            remarks: Columna que contiene una descripcion detallada del rol
+            type: VARCHAR(500)
+        remarks: Tabla que representa la entidad ROLES
+        tableName: roles
+- changeSet:
+    id: 1595582145895-5
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hsp_id_pk
+            name: hsp_id
+            remarks: Columna con el identificador de base de datos de la relación
+              entre las tablas HOSPITALS y PATHOLOGIES(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: hsp_hos_id
+            remarks: Columna con el id del hospital
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: hsp_pth_id
+            remarks: Columna con el id de la patologia
+            type: BIGINT
+        remarks: Tabla intermedia que representa la relación entre las entidades HOSPITALS
+          y PATHOLOGIES
+        tableName: hospitals_pathologies
+- changeSet:
+    id: 1595582145895-6
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: uro_id_pk
+            name: uro_id
+            remarks: Columna que contiene el identificador de la relacion rol-usuario
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: uro_user_id
+            remarks: Columna que contiene el identificador del usuario relacionado
+              con el rol
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: uro_rol_id
+            remarks: Columna que contiene el identificador del rol relacion con el
+              usuario
+            type: BIGINT
+        remarks: Tabla intermedia que representa la relación entre las entidades USERS
+          Y ROLES
+        tableName: users_roles
+- changeSet:
+    id: 1595582145895-7
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: for_id_pk
+            name: for_id
+            remarks: Columna que contiene el título del formulario
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: for_title
+            remarks: Columna que contiene la descripcion detallada del formulario
+            type: VARCHAR(50)
+        - column:
+            name: for_description
+            remarks: Columna que contiene el identificador del formulario dentro del
+              apartado
+            type: VARCHAR(500)
+        - column:
+            name: for_template
+            remarks: Columna que relaciona el formulario con una plantilla de la bbdd
+              no relacional
+            type: VARCHAR(100)
+        remarks: Tabla intermedia que representa la relación entre las entidades SECTIONS
+          y FORMS
+        tableName: forms
+- changeSet:
+    id: 1595582145895-8
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: dct_id_pk
+            name: dct_id
+            remarks: Columna con el id de los datos del médico(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: dct_name
+            remarks: Columna que contiene el nombre del médico
+            type: VARCHAR(50)
+        - column:
+            constraints:
+              nullable: false
+            name: dct_surname
+            remarks: Columna que contiene los apellidos del médico
+            type: VARCHAR(100)
+        - column:
+            constraints:
+              nullable: false
+            name: dct_phone
+            remarks: Columna que contiene el número de teléfono del médico
+            type: VARCHAR(11)
+        - column:
+            constraints:
+              nullable: false
+            name: dct_dni
+            remarks: Columna que contiene el dni del médico
+            type: VARCHAR(9)
+        - column:
+            constraints:
+              nullable: false
+            name: dct_college_number
+            remarks: Columna que contiene el número de colegiado del médico
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: dct_service_id
+            remarks: Columna que contiene el identificador del servicio al que pertenece
+              el médico
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: dct_active
+            remarks: Columna que indica que el médico está dado de alta en el sistema
+            type: BOOLEAN
+        - column:
+            name: dct_user_id
+            remarks: Columna que contiene el identificador del usuario del médico
+            type: BIGINT
+        - column:
+            name: date_created
+            remarks: Columna que contiene la fecha de alta del médico en el sistema
+            type: TIMESTAMP without time zone
+        - column:
+            name: date_updated
+            remarks: Columna que contiene la fecha de la última modificación sufrida
+              en los datos del médico de la tabla doctors
+            type: TIMESTAMP without time zone
+        remarks: Tabla que representa la entidad doctors
+        tableName: doctors
+- changeSet:
+    id: 1595582145895-9
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: tok_id_pk
+            name: tok_id
+            remarks: Columna que contiene el identificador del token. (pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: tok_value
+            remarks: Columna que contiene el valor del token.
+            type: VARCHAR(200)
+        - column:
+            constraints:
+              nullable: false
+            name: tok_type
+            remarks: Columna que contiene el tipo del token
+            type: VARCHAR(20)
+        - column:
+            name: tok_usr_id
+            type: SMALLINT(5)
+        - column:
+            constraints:
+              nullable: false
+            name: tok_token_creation_date
+            remarks: Columna que contiene la fecha de creaci�n del token
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            name: tok_token_expiration_date
+            remarks: Columna que contiene la fecha de experaci�n deltoken
+            type: TIMESTAMP without time zone
+        remarks: Tabla que representa la entidad tokens
+        tableName: tokens
+- changeSet:
+    id: 1595582145895-10
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pho_id_pk
+            name: pho_id
+            remarks: Columna que contiene el identificador de la foto (pk)
+            type: INTEGER
+        - column:
+            name: pho_name
+            remarks: Columna que contiene el valor nombre de la photo
+            type: VARCHAR
+        - column:
+            name: pho_type_photo
+            remarks: Columna que contiene el tipo de la foto
+            type: VARCHAR
+        - column:
+            name: pho_photo_bytes
+            remarks: Columna que contiene la photo en bytes
+            type: TEXT
+        - column:
+            name: pho_title
+            remarks: Columna que contiene el tiulo de la foto
+            type: VARCHAR
+        - column:
+            name: pho_description
+            remarks: Columna que contiene la descripcion de la foto
+            type: VARCHAR
+        - column:
+            name: pho_pth_id
+            remarks: Columna que contiene la seccion de la foto
+            type: BIGINT
+        - column:
+            name: pho_pac_id
+            remarks: Columna que contiene el paciente de la foto
+            type: BIGINT
+        - column:
+            name: user_updated
+            remarks: Columna que contiene el nombre de la ultima persona que ha modificado
+              la foto
+            type: VARCHAR
+        - column:
+            name: date_created
+            remarks: Columna que contiene la fecha de creación de la foto
+            type: TIMESTAMP without time zone
+        - column:
+            name: date_updated
+            remarks: Columna que contiene la fecha de la última modificación sufrida
+              en las fotos
+            type: TIMESTAMP without time zone
+        remarks: Tabla que representa la entidad foto
+        tableName: photos
+- changeSet:
+    id: 1595582145895-11
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pth_id_pk
+            name: pth_id
+            remarks: Columna con el id de base de datos del patologia(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: pth_name
+            remarks: Columna que contiene el nombre de la patologia
+            type: VARCHAR(100)
+        - column:
+            name: pth_description
+            remarks: Columna que contiene la descripcion detallada de la patologia
+            type: VARCHAR(500)
+        remarks: Tabla que representa la entidad PATHOLOGY
+        tableName: pathologies
+- changeSet:
+    id: 1595582145895-12
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hos_id_pk
+            name: hos_id
+            remarks: Columna con el id de base de datos del hospital(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: hos_name
+            remarks: Columna que contiene el nombre del hospital
+            type: VARCHAR(100)
+        - column:
+            name: hos_cie
+            type: VARCHAR
+        remarks: Tabla que representa la entidad hospitales
+        tableName: hospitals
+- changeSet:
+    id: 1595582145895-13
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pac_id_pk
+            name: pac_id
+            remarks: Columna que contiene el identificador del paciente en la bbdd
+              de la aplicación. (pk)
+            type: INTEGER
+        - column:
+            name: pac_hos_id
+            remarks: Columna que contiene el identificador del hospital en el que
+              está dado de alta el paciente en la bbdd de la aplicación.
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: pac_name
+            remarks: Columna que contiene el nombre del paciente
+            type: VARCHAR(50)
+        - column:
+            constraints:
+              nullable: false
+            name: pac_first_surname
+            remarks: Columna que contiene el primer apellido del paciente
+            type: VARCHAR(50)
+        - column:
+            name: pac_last_surname
+            remarks: Columna que contiene el segundo apellido del paciente
+            type: VARCHAR(50)
+        - column:
+            constraints:
+              nullable: false
+            name: pac_nhc
+            type: VARCHAR(50)
+        - column:
+            constraints:
+              nullable: false
+            name: pac_health_card
+            remarks: Columna que contiene el número de tarjeta sanitaria del paciente
+            type: VARCHAR(50)
+        - column:
+            name: pac_dni
+            remarks: Columna que contiene el documento nacional de identidad del paciente
+            type: VARCHAR(9)
+        - column:
+            name: pac_address
+            remarks: Columna que contiene la direccion  del domicilio del paciente
+            type: VARCHAR(200)
+        - column:
+            name: pac_phone
+            remarks: Columna que contiene el número de teléfono fijo facilitado por
+              el paciente
+            type: VARCHAR(15)
+        - column:
+            name: pac_email
+            remarks: Columna que contiene el email facilitado por el paciente
+            type: VARCHAR(50)
+        - column:
+            name: pac_gender_code
+            remarks: Columna que contiene el código del sexo del paciente
+            type: VARCHAR(1)
+        - column:
+            name: pac_birth_date
+            remarks: Columna que contiene la fecha de nacimiento del paciente
+            type: TIMESTAMP without time zone
+        remarks: Tabla que representa la entidad PATIENTS
+        tableName: patients
+- changeSet:
+    id: 1595582145895-14
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hou_id_pk
+            name: hou_id
+            type: INTEGER
+        - column:
+            name: hou_pac_id
+            type: BIGINT
+        - column:
+            name: hou_index_type
+            type: VARCHAR(50)
+        - column:
+            name: hou_value
+            type: numeric(4, 2)
+        - column:
+            name: hou_result
+            type: VARCHAR(50)
+        - column:
+            name: hou_date
+            type: TIMESTAMP without time zone
+        tableName: health_outcomes
+- changeSet:
+    id: 1595582145895-15
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: dsp_id_pk
+            name: dsp_id
+            remarks: Columna que contiene el identificador de la carga de dispensaciones.
+              (pk)
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: dsp_date
+            remarks: Columna que indica la fecha de carga de las dispensaciones
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            name: dsp_start_period
+            remarks: Columna que indica el inicio del periodo de las dispensaciones
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            name: dsp_end_period
+            remarks: Columna que indica el fin del periodo de las dispensaciones
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            name: dsp_num_records
+            remarks: Columna que indica el número de dispensaciones de la carga
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            defaultValueComputed: CURRENT_TIMESTAMP
+            name: date_created
+            remarks: Columna que contiene la fecha de alta del medicamento en el sistema
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            defaultValueComputed: CURRENT_TIMESTAMP
+            name: date_updated
+            remarks: Columna que contiene la fecha de la última modificación sufrida
+              en los datos del medicamento
+            type: TIMESTAMP without time zone
+        remarks: Tabla que representa la entidad DISPENSATIONS
+        tableName: dispensations
+- changeSet:
+    id: 1595582145895-16
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ind_id_pk
+            name: ind_id
+            type: INTEGER
+        - column:
+            name: ind_pth_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: ind_description
+            type: VARCHAR(20)
+        tableName: indications
+- changeSet:
+    id: 1595582145895-17
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: paf_id_pk
+            name: paf_id
+            remarks: Columna que contiene el identificador de la relacion paciente-formulario-usuario
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: paf_patient_id
+            remarks: Columna que contiene el identificador del usuario relacionado
+              con el rol
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: paf_form_id
+            remarks: Columna que contiene el identificador del rol relacion con el
+              usuario
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: paf_user_id
+            remarks: Columna que contiene el identificador del rol relacion con el
+              usuario
+            type: BIGINT
+        - column:
+            name: paf_date_crea
+            remarks: Columna que contiene el identificador del rol relacion con el
+              usuario
+            type: TIMESTAMP without time zone
+        remarks: Tabla intermedia que representa la relación entre las entidades PATIENTS
+          y FORMS
+        tableName: patients_forms
+- changeSet:
+    id: 1595582145895-18
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: cin_id_pk
+            name: cin_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: cin_code
+            type: VARCHAR(20)
+        - column:
+            constraints:
+              nullable: false
+            name: cin_description
+            type: VARCHAR(200)
+        tableName: cies_nine
+- changeSet:
+    id: 1595582145895-19
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: usr_id_pk
+            name: usr_id
+            remarks: Columna que contiene el identificador del usuario en la base
+              de datos de la aplicación
+            type: INTEGER
+        - column:
+            name: usr_name
+            remarks: Columna que contiene el nombre de acceso del usuario en el sistema
+            type: VARCHAR(50)
+        - column:
+            name: usr_password
+            remarks: Columna que contiene la contraseña de acceso del usuario
+            type: VARCHAR(200)
+        - column:
+            name: usr_email
+            remarks: Columna que contiene el email del usuario al que enviar información
+              desde el sistema
+            type: VARCHAR(50)
+        - column:
+            name: usr_hos_id
+            remarks: Columna que contiene el identificador del hospital al que pertenece
+              el usuario
+            type: BIGINT
+        - column:
+            name: date_created
+            remarks: Columna que contiene la fecha de creación del usuario
+            type: TIMESTAMP without time zone
+        - column:
+            name: date_updated
+            remarks: Columna que contiene la fecha de la última modificación sufrida
+              en el usuario
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            defaultValueBoolean: true
+            name: usr_active
+            remarks: Columna que indica si el usuario está activo en el sistema
+            type: BOOLEAN
+        remarks: Tabla que representa la entidad USERS
+        tableName: users
+- changeSet:
+    id: 1595582145895-20
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: ptr_id_pk
+            name: ptr_id
+            type: INTEGER
+        - column:
+            name: ptr_pdg_id
+            type: BIGINT
+        - column:
+            name: ptr_active
+            type: BOOLEAN
+        - column:
+            name: ptr_type
+            type: VARCHAR(50)
+        - column:
+            name: ptr_med_id
+            type: BIGINT
+        - column:
+            name: ptr_dose
+            type: VARCHAR(50)
+        - column:
+            name: ptr_master_formula
+            type: VARCHAR(50)
+        - column:
+            name: ptr_master_formula_dose
+            type: VARCHAR(50)
+        - column:
+            name: ptr_regimen
+            type: VARCHAR(50)
+        - column:
+            name: ptr_init_date
+            type: TIMESTAMP without time zone
+        - column:
+            name: ptr_final_date
+            type: TIMESTAMP without time zone
+        - column:
+            name: ptr_end_cause
+            type: VARCHAR(50)
+        - column:
+            name: ptr_reason
+            type: VARCHAR(50)
+        tableName: patients_treatments
+- changeSet:
+    id: 1595582145895-21
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pdg_id_pk
+            name: pdg_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: pdg_pac_id
+            type: BIGINT
+        - column:
+            name: pdg_ind_id
+            type: BIGINT
+        - column:
+            name: pdg_others_indications
+            type: VARCHAR(50)
+        - column:
+            name: pdg_init_date
+            type: TIMESTAMP without time zone
+        - column:
+            name: pdg_symptoms_date
+            type: TIMESTAMP without time zone
+        - column:
+            name: pdg_derivation_date
+            type: TIMESTAMP without time zone
+        - column:
+            name: pdg_cie_code
+            remarks: Código CIE
+            type: VARCHAR(10)
+        - column:
+            name: pdg_cie_description
+            remarks: Descripción código CIE
+            type: VARCHAR(200)
+        tableName: patients_diagnoses
+- changeSet:
+    id: 1595582145895-22
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: sec_id_pk
+            name: sec_id
+            remarks: Columna con el id de base de datos del patologia(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: sec_title
+            remarks: Columna que contiene el titulo del apartado del menu de la patologia
+            type: VARCHAR(100)
+        - column:
+            name: sec_description
+            remarks: Columna que contiene la descripcion detallada del apartado del
+              menu de la patologia
+            type: VARCHAR(500)
+        - column:
+            name: sec_active
+            remarks: Columna que indica sí este apartado forma parte del menu de la
+              patologia
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: sec_order
+            remarks: Columna que indica el orden del apartado dentro del menu/listado
+              de apartados de la patologia
+            type: BIGINT
+        - column:
+            name: sec_section_root
+            remarks: Columna que contiene el identificador del apartado padre en el
+              que estaría incluido creando un arbol de apartados dentro del menú de
+              la patologia
+            type: BIGINT
+        - column:
+            name: sec_icon
+            remarks: Columna que incluye el nombre del icono
+            type: VARCHAR(100)
+        - column:
+            name: sec_url
+            remarks: Columna que incluye el path dentro del árbol de secciones de
+              menus
+            type: VARCHAR(100)
+        - column:
+            defaultValueBoolean: false
+            name: sec_principal
+            type: BOOLEAN
+        remarks: Tabla que representa la entidad SECTIONS. Se consideran apartados
+          tanto las opciones de menu como cualquier elemento hijo que cuelgue de él
+        tableName: sections
+- changeSet:
+    id: 1595582145895-23
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pff_id_pk
+            name: pff_id
+            remarks: Columna que contiene el identificador de la relacion paciente-formulario-usuario
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: pff_paf_id
+            remarks: Columna que contiene el identificador de la relacion paciente
+              formulario
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: pff_form_id
+            remarks: Columna que contiene el identificador del formulario
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: pff_pac_id
+            remarks: Columna que contiene el identificador del paciente
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: pff_field_id
+            remarks: Columna que contiene el identificador del campo
+            type: BIGINT
+        - column:
+            name: pff_value_txt
+            remarks: Columna que contiene el valor del campo cuando es de tipo texto
+            type: VARCHAR(2000)
+        - column:
+            name: pff_value_num
+            remarks: Columna que contiene el valor del campo cuando es de tipo numerico
+            type: BIGINT
+        - column:
+            name: pff_value_bool
+            remarks: Columna que contiene el valor del campo cuando es de tipo booleano
+            type: BOOLEAN
+        - column:
+            name: pff_value_data
+            remarks: Columna que contiene el valor del campo cuando es de tipo data
+            type: BYTEA
+        remarks: Tabla intermedia que representa la relación entre las entidades PATIENTS
+          FORMS FIELDS
+        tableName: patients_forms_fields
+- changeSet:
+    id: 1595582145895-24
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: gnd_code_pk
+            name: gnd_code
+            remarks: Columna que contiene el código identificativo del sexo de los
+              pacientes (pk)
+            type: VARCHAR(1)
+        - column:
+            constraints:
+              nullable: false
+            name: gnd_name
+            remarks: Columna con el nombre de los distintos sexos
+            type: VARCHAR(9)
+        remarks: Tabla catálogo con todos los sexos
+        tableName: genders
+- changeSet:
+    id: 1595582145895-25
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: med_id_pk
+            name: med_id
+            remarks: Columna con el id de los datos del medicamento(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: med_act_ingredients
+            remarks: Columna que contiene el principio activo del medicamento
+            type: VARCHAR(500)
+        - column:
+            constraints:
+              nullable: false
+            name: med_code_act
+            remarks: Columna que contiene el código ACT
+            type: VARCHAR(7)
+        - column:
+            constraints:
+              nullable: false
+            name: med_acronym
+            remarks: Columna que contiene el acrónimo del medicamento
+            type: VARCHAR(15)
+        - column:
+            name: med_national_code
+            remarks: Columna que contiene el código nacional del medicamento
+            type: VARCHAR(7)
+        - column:
+            name: med_description
+            remarks: Columna que contiene la descripción del medicamento
+            type: VARCHAR(150)
+        - column:
+            name: med_presentation
+            remarks: Columna que contiene la presentación del medicamento
+            type: VARCHAR(500)
+        - column:
+            defaultValueBoolean: false
+            name: med_commercialization
+            remarks: Columna que indica si el medicamento se está comercializando
+            type: BOOLEAN
+        - column:
+            constraints:
+              nullable: false
+            name: date_created
+            remarks: Columna que contiene la fecha de alta del medicamento en el sistema
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            name: date_updated
+            remarks: Columna que contiene la fecha de la última modificación sufrida
+              en los datos del medicamento
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            defaultValueBoolean: false
+            name: med_biologic
+            remarks: Columna indicador de si un medicamentoes biológico.
+            type: BOOLEAN
+        - column:
+            name: med_content
+            type: VARCHAR(150)
+        - column:
+            name: med_authorization_date
+            type: date
+        - column:
+            constraints:
+              nullable: false
+            defaultValueBoolean: false
+            name: med_authorized
+            type: BOOLEAN
+        - column:
+            name: med_end_date_authorization
+            type: date
+        - column:
+            name: med_commercialization_date
+            type: date
+        - column:
+            name: med_end_date_commercialization
+            type: date
+        - column:
+            name: med_via_administration
+            type: VARCHAR(150)
+        - column:
+            name: med_brand
+            type: VARCHAR(50)
+        - column:
+            name: med_units
+            type: INTEGER
+        - column:
+            name: med_pvl
+            type: numeric(13, 2)
+        - column:
+            name: med_pvl_unitary
+            type: numeric(13, 2)
+        - column:
+            name: med_pvp
+            type: numeric(13, 2)
+        - column:
+            name: med_pathology
+            type: VARCHAR(150)
+        - column:
+            name: med_family
+            type: VARCHAR(150)
+        - column:
+            name: med_subfamily
+            type: VARCHAR(150)
+        remarks: Tabla que representa la entidad medicines
+        tableName: medicines
+- changeSet:
+    id: 1595582145895-26
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pai_code_pk
+            name: pai_code
+            remarks: Columna que contiene el código ISO de 3 letras asignado a cada
+              país o territorio. (pk)
+            type: VARCHAR(3)
+        - column:
+            constraints:
+              nullable: false
+            name: pai_name
+            remarks: Columna con el nombre del país o territorio
+            type: VARCHAR(60)
+        remarks: Tabla catálogo con todos los países
+        tableName: countries
+- changeSet:
+    id: 1595582145895-27
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: hss_id_pk
+            name: hss_id
+            remarks: Columna con el identificador de base de datos de la relación
+              entre las tablas HOSPITALS y SERVICES(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: hss_hos_id
+            remarks: Columna con el id del hospital
+            type: SMALLINT(5)
+        - column:
+            constraints:
+              nullable: false
+            name: hss_srv_id
+            remarks: Columna con el id del servicio
+            type: SMALLINT(5)
+        remarks: Tabla intermedia que representa la relación entre las entidades HOSPITALS
+          y SERVICES
+        tableName: hospitals_services
+- changeSet:
+    id: 1595582145895-28
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pdt_id_pk
+            name: pdt_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: pdt_pac_id
+            type: BIGINT
+        - column:
+            name: pdt_weight
+            type: numeric(5, 2)
+        - column:
+            name: pdt_height
+            type: numeric(3, 2)
+        - column:
+            name: pdt_imc
+            type: numeric(4, 2)
+        - column:
+            name: pdt_pat
+            type: BIGINT
+        - column:
+            name: pdt_pas
+            type: BIGINT
+        - column:
+            name: pdt_abdominal_perimeter
+            type: BIGINT
+        - column:
+            name: pdt_body_surface
+            type: numeric(4, 2)
+        - column:
+            name: pdt_psoriatric
+            type: BOOLEAN
+        - column:
+            name: pdt_date
+            type: TIMESTAMP without time zone
+        tableName: patients_data
+- changeSet:
+    id: 1595582145895-29
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: rpt_id_pk
+            name: rpt_id
+            type: BIGINT
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+            name: rpt_rol_id
+            type: BIGINT
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+            name: rpt_pth_id
+            type: BIGINT
+        tableName: roles_pathologies
+- changeSet:
+    id: 1595582145895-30
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: pcp_id_pk
+            name: pcp_id
+            remarks: Columna con el id de base de datos de la relación entre las tablas
+              pacientes y patologias(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: pcp_pac_id
+            remarks: Columna con el id del paciente
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: pcp_pth_id
+            remarks: Columna con el id de la patologia
+            type: BIGINT
+        remarks: Tabla intermedia que representa la relación entre las entidades PATIENTS
+          y PATHOLOGIES
+        tableName: patients_pathologies
+- changeSet:
+    id: 1595582145895-31
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: cid_id_pk
+            name: cid_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: cid_code
+            type: VARCHAR(20)
+        - column:
+            constraints:
+              nullable: false
+            name: cid_description
+            type: VARCHAR(2000)
+        tableName: cies_ten
+- changeSet:
+    id: 1595582145895-32
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: dsd_id_pk
+            name: dsd_id
+            remarks: Columna que contiene el identificador de la dispensación. (pk)
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: dsd_date
+            remarks: Columna que indica la fecha de las dispensación
+            type: TIMESTAMP without time zone
+        - column:
+            name: dsd_nhc
+            remarks: Columna que contiene el número de historia clínica del paciente
+              al cual se le ha prescito la medicación
+            type: VARCHAR(50)
+        - column:
+            name: dsd_code
+            remarks: Columna que contiene el código del medicamento
+            type: VARCHAR(9)
+        - column:
+            name: dsd_national_code
+            remarks: Columna que contiene el código nacional del medicamento
+            type: INTEGER
+        - column:
+            name: dsd_description
+            remarks: Columna que contiene la descripción de la dispensación
+            type: VARCHAR(100)
+        - column:
+            name: dsd_quantity
+            remarks: Columna que indica cantidad a tomar por el paciente
+            type: VARCHAR(100)
+        - column:
+            name: dsd_amount
+            remarks: Columna que indica el precio de la medicación
+            type: numeric(13, 2)
+        - column:
+            name: dsd_days_disp
+            remarks: Columna que indica el número de dias de la dispensación proporcionada
+            type: INTEGER
+        - column:
+            name: dsd_dsp_id
+            remarks: Columna que indica el número de dispensaciones de la carga
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueComputed: CURRENT_TIMESTAMP
+            name: date_created
+            remarks: Columna que contiene la fecha de alta del medicamento en el sistema
+            type: TIMESTAMP without time zone
+        - column:
+            constraints:
+              nullable: false
+            defaultValueComputed: CURRENT_TIMESTAMP
+            name: date_updated
+            remarks: Columna que contiene la fecha de la última modificación sufrida
+              en los datos del medicamento
+            type: TIMESTAMP without time zone
+        remarks: Tabla que representa la entidad DISPENSATION_DETAILS
+        tableName: dispensation_details
+- changeSet:
+    id: 1595582145895-33
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: dos_id_pk
+            name: dos_id
+            remarks: Columna con el id de base de datos de la dosis(pk)
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: dos_code_atc
+            remarks: Columna que contiene el código ATC
+            type: VARCHAR(7)
+        - column:
+            name: dos_description
+            remarks: Columna que contiene el nombre del hospital
+            type: VARCHAR(150)
+        - column:
+            name: dos_dose_indicated
+            remarks: Columna que contiene el nombre del hospital
+            type: VARCHAR(150)
+        - column:
+            name: dos_recommendation
+            remarks: Columna que contiene valor de la recomendación
+            type: VARCHAR(200)
+        - column:
+            name: date_created
+            type: TIMESTAMP without time zone
+        - column:
+            name: date_updated
+            type: TIMESTAMP without time zone
+        remarks: Tabla que representa la entidad hospitales
+        tableName: doses
+- changeSet:
+    id: 1595582145895-34
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: lcs_id_pk
+            name: lcs_id
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: lcs_locale
+            type: VARCHAR(2)
+        - column:
+            constraints:
+              nullable: false
+            name: lcs_title
+            remarks: Columna que contiene el titulo del seccion
+            type: VARCHAR(60)
+        - column:
+            constraints:
+              nullable: false
+            name: lcs_description
+            remarks: Columna que contiene la descripcion de seccion.
+            type: VARCHAR(200)
+        - column:
+            name: lcs_sec_id
+            type: SMALLINT(5)
+        remarks: Tabla de traducciones de secciones
+        tableName: localized_sections
+- changeSet:
+    id: 1595582145895-35
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: rec_id_pk
+            name: rec_id
+            remarks: Columna que contiene el código identificativo de la recomendacion
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: rec_value
+            remarks: Columna con los distintos valores de recomendaciones para un
+              medicamento
+            type: VARCHAR(50)
+        remarks: Tabla catálogo recomendations, son las opciones de las recomendaciones
+          de un medicamento
+        tableName: recommendations
+- changeSet:
+    id: 1595582145895-36
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: srv_id_pk
+            name: srv_id
+            remarks: Columna que contiene el código identificativo del servicio
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: srv_name
+            remarks: Columna con el nombre de los distintos servicios del hospital
+            type: VARCHAR(50)
+        - column:
+            name: srv_description
+            remarks: Columna que contiene una descripción detallada del servicio del
+              hospital
+            type: VARCHAR(100)
+        remarks: Tabla catálogo con todos los servicios del hospital
+        tableName: services
+- changeSet:
+    id: 1595582145895-37
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: scf_section_id, scf_form_id
+        constraintName: sections_forms_unique
+        tableName: sections_forms
+- changeSet:
+    id: 1595582145895-38
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: scr_section_id, scr_role_id
+        constraintName: sections_roles_unique
+        tableName: sections_roles
+- changeSet:
+    id: 1595582145895-39
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: rpt_rol_id
+        baseTableName: roles_pathologies
+        constraintName: rpt_rol_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: rol_id
+        referencedTableName: roles
+        validate: true
+- changeSet:
+    id: 1595582145895-40
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: scr_role_id
+        baseTableName: sections_roles
+        constraintName: scr_role_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: rol_id
+        referencedTableName: roles
+        validate: true
+- changeSet:
+    id: 1595582145895-41
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: uro_rol_id
+        baseTableName: users_roles
+        constraintName: uro_rol_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: rol_id
+        referencedTableName: roles
+        validate: true
+- changeSet:
+    id: 1595582145895-42
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: hsp_hos_id, hsp_pth_id
+        constraintName: hospitals_pathologies_unique
+        tableName: hospitals_pathologies
+- changeSet:
+    id: 1595582145895-43
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: uro_user_id, uro_rol_id
+        constraintName: users_roles_unique
+        tableName: users_roles
+- changeSet:
+    id: 1595582145895-44
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: paf_form_id
+        baseTableName: patients_forms
+        constraintName: paf_form_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: for_id
+        referencedTableName: forms
+        validate: true
+- changeSet:
+    id: 1595582145895-45
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pff_form_id
+        baseTableName: patients_forms_fields
+        constraintName: pff_form_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: for_id
+        referencedTableName: forms
+        validate: true
+- changeSet:
+    id: 1595582145895-46
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: scf_form_id
+        baseTableName: sections_forms
+        constraintName: scf_form_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: for_id
+        referencedTableName: forms
+        validate: true
+- changeSet:
+    id: 1595582145895-47
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: rpt_pth_id
+        baseTableName: roles_pathologies
+        constraintName: rpt_pth_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: pth_id
+        referencedTableName: pathologies
+        validate: true
+- changeSet:
+    id: 1595582145895-48
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: hsp_hos_id
+        baseTableName: hospitals_pathologies
+        constraintName: hsp_hos_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: hos_id
+        referencedTableName: hospitals
+        validate: true
+- changeSet:
+    id: 1595582145895-49
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: hss_hos_id
+        baseTableName: hospitals_services
+        constraintName: hss_hos_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: hos_id
+        referencedTableName: hospitals
+        validate: true
+- changeSet:
+    id: 1595582145895-50
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pac_hos_id
+        baseTableName: patients
+        constraintName: pac_hos_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: hos_id
+        referencedTableName: hospitals
+        validate: true
+- changeSet:
+    id: 1595582145895-51
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: usr_hos_id
+        baseTableName: users
+        constraintName: usr_hos_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: hos_id
+        referencedTableName: hospitals
+        validate: true
+- changeSet:
+    id: 1595582145895-52
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: pac_health_card
+        constraintName: pac_health_card_unique
+        tableName: patients
+- changeSet:
+    id: 1595582145895-53
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: pac_nhc
+        constraintName: pac_nhc_unique
+        tableName: patients
+- changeSet:
+    id: 1595582145895-54
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: pac_dni
+        constraintName: patients_pac_dni_unique
+        tableName: patients
+- changeSet:
+    id: 1595582145895-55
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: pac_email
+        constraintName: patients_pac_email_unique
+        tableName: patients
+- changeSet:
+    id: 1595582145895-56
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pdg_pac_id
+        baseTableName: patients_diagnoses
+        constraintName: pdg_pac_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: CASCADE
+        referencedColumnNames: pac_id
+        referencedTableName: patients
+        validate: true
+- changeSet:
+    id: 1595582145895-57
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pdt_pac_id
+        baseTableName: patients_data
+        constraintName: pdt_pac_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: CASCADE
+        referencedColumnNames: pac_id
+        referencedTableName: patients
+        validate: true
+- changeSet:
+    id: 1595582145895-58
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pho_pac_id
+        baseTableName: photos
+        constraintName: pho_pac_id_pk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: pac_id
+        referencedTableName: patients
+        validate: true
+- changeSet:
+    id: 1595582145895-59
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: hou_pac_id
+        indexName: fki_hou_pac_id
+        tableName: health_outcomes
+- changeSet:
+    id: 1595582145895-60
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: hou_pac_id
+        baseTableName: health_outcomes
+        constraintName: hou_pac_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: CASCADE
+        referencedColumnNames: pac_id
+        referencedTableName: patients
+        validate: true
+- changeSet:
+    id: 1595582145895-61
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: ind_pth_id
+        indexName: fki_ind_pth_id
+        tableName: indications
+- changeSet:
+    id: 1595582145895-62
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: ind_pth_id
+        baseTableName: indications
+        constraintName: ind_pth_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: CASCADE
+        referencedColumnNames: pth_id
+        referencedTableName: pathologies
+        validate: true
+- changeSet:
+    id: 1595582145895-63
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pdg_ind_id
+        baseTableName: patients_diagnoses
+        constraintName: pdg_ind_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: CASCADE
+        referencedColumnNames: ind_id
+        referencedTableName: indications
+        validate: true
+- changeSet:
+    id: 1595582145895-64
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: paf_form_id, paf_user_id
+        constraintName: patients_forms_unique
+        tableName: patients_forms
+- changeSet:
+    id: 1595582145895-65
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pff_paf_id
+        baseTableName: patients_forms_fields
+        constraintName: pff_paf_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: paf_id
+        referencedTableName: patients_forms
+        validate: true
+- changeSet:
+    id: 1595582145895-66
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: usr_email
+        constraintName: usr_email_unique
+        tableName: users
+- changeSet:
+    id: 1595582145895-67
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: usr_name
+        constraintName: usr_name_unique
+        tableName: users
+- changeSet:
+    id: 1595582145895-68
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: ptr_med_id
+        indexName: fki_ptr_med_id
+        tableName: patients_treatments
+- changeSet:
+    id: 1595582145895-69
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: ptr_pdg_id
+        indexName: fki_ptr_pdg_id
+        tableName: patients_treatments
+- changeSet:
+    id: 1595582145895-70
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: pdg_ind_id
+        indexName: fki_pdg_ind_id
+        tableName: patients_diagnoses
+- changeSet:
+    id: 1595582145895-71
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: pdg_pac_id
+        indexName: fki_pdg_pac_id
+        tableName: patients_diagnoses
+- changeSet:
+    id: 1595582145895-72
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: sec_section_root
+        baseTableName: sections
+        constraintName: sec_section_root_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: sec_id
+        referencedTableName: sections
+        validate: true
+- changeSet:
+    id: 1595582145895-73
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: pff_paf_id, pff_form_id
+        constraintName: patients_forms_fields_unique
+        tableName: patients_forms_fields
+- changeSet:
+    id: 1595582145895-74
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pac_gender_code
+        baseTableName: patients
+        constraintName: pac_gender_code_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: gnd_code
+        referencedTableName: genders
+        validate: true
+- changeSet:
+    id: 1595582145895-75
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: med_national_code
+        constraintName: medicines_med_national_code_key
+        tableName: medicines
+- changeSet:
+    id: 1595582145895-76
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: ptr_med_id
+        baseTableName: patients_treatments
+        constraintName: patients_treatments_ptr_med_id_fkey
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: CASCADE
+        referencedColumnNames: med_id
+        referencedTableName: medicines
+        validate: true
+- changeSet:
+    id: 1595582145895-77
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: hss_hos_id, hss_srv_id
+        constraintName: hospitals_services_unique
+        tableName: hospitals_services
+- changeSet:
+    id: 1595582145895-78
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: pdt_pac_id
+        indexName: fki_pdt_pac_id
+        tableName: patients_data
+- changeSet:
+    id: 1595582145895-79
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            defaultValueComputed: nextval('roles_pathologies_rpt_pathology_id_seq'::regclass)
+            name: rpt_pth_id
+        indexName: fki_rpt_pth_id_fk
+        tableName: roles_pathologies
+- changeSet:
+    id: 1595582145895-80
+    author: angel.broncanorodrig (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            defaultValueComputed: nextval('roles_pathologies_rpt_role_id_seq'::regclass)
+            name: rpt_rol_id
+        indexName: fki_rpt_rol_id_fk
+        tableName: roles_pathologies
+- changeSet:
+    id: 1595582145895-81
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: rpt_rol_id, rpt_pth_id
+        constraintName: rpt_rol_id_rpt_pth_id_unique
+        tableName: roles_pathologies
+- changeSet:
+    id: 1595582145895-82
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: pcp_pac_id, pcp_pth_id
+        constraintName: patients_pathologies_unique
+        tableName: patients_pathologies
+- changeSet:
+    id: 1595582145895-83
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pcp_pth_id
+        baseTableName: patients_pathologies
+        constraintName: pcp_pth_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: pth_id
+        referencedTableName: pathologies
+        validate: true
+- changeSet:
+    id: 1595582145895-84
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: dsd_dsp_id
+        baseTableName: dispensation_details
+        constraintName: dsd_dsp_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: dsp_id
+        referencedTableName: dispensations
+        validate: true
+- changeSet:
+    id: 1595582145895-85
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: dos_code_atc, dos_description, dos_dose_indicated
+        constraintName: dos_codeatc_description_doseindicated_unique
+        tableName: doses
+- changeSet:
+    id: 1595582145895-86
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: lcs_sec_id
+        baseTableName: localized_sections
+        constraintName: lcs_id_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: sec_id
+        referencedTableName: sections
+        validate: true
+- changeSet:
+    id: 1595582145895-87
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: scf_section_id
+        baseTableName: sections_forms
+        constraintName: scf_section_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: sec_id
+        referencedTableName: sections
+        validate: true
+- changeSet:
+    id: 1595582145895-88
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: scr_section_id
+        baseTableName: sections_roles
+        constraintName: scr_section_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: sec_id
+        referencedTableName: sections
+        validate: true
+- changeSet:
+    id: 1595582145895-89
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: hsp_pth_id
+        baseTableName: hospitals_pathologies
+        constraintName: hsp_pth_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: pth_id
+        referencedTableName: pathologies
+        validate: true
+- changeSet:
+    id: 1595582145895-90
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: uro_user_id
+        baseTableName: users_roles
+        constraintName: uro_user_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: usr_id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1595582145895-91
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: dct_service_id
+        baseTableName: doctors
+        constraintName: dct_srv_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: srv_id
+        referencedTableName: services
+        validate: true
+- changeSet:
+    id: 1595582145895-92
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: dct_user_id
+        baseTableName: doctors
+        constraintName: dct_usr_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: usr_id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1595582145895-93
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: tok_usr_id
+        baseTableName: tokens
+        constraintName: tok_usr_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: usr_id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1595582145895-94
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: pho_pth_id
+        baseTableName: photos
+        constraintName: pho_sec_id_pk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: pth_id
+        referencedTableName: pathologies
+        validate: true
+- changeSet:
+    id: 1595582145895-95
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: paf_user_id
+        baseTableName: patients_forms
+        constraintName: paf_user_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: usr_id
+        referencedTableName: users
+        validate: true
+- changeSet:
+    id: 1595582145895-96
+    author: angel.broncanorodrig (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: hss_srv_id
+        baseTableName: hospitals_services
+        constraintName: hss_srv_id_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: srv_id
+        referencedTableName: services
+        validate: true
+

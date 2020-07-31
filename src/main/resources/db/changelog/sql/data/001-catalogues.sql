@@ -1,15 +1,3 @@
------------------------------------------------------------------ ROLES -------------------------------------------------------------------------------
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Administrador', 'Rol administrador. Tiene le máximo nivel de acceso a la aplicación');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Gestor CAU', 'Rol gestor del CAU. Permite la gestión de las credenciales de acceso de los diferentes usuarios de la aplicación, recuperación y asignación de perfiles');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Gestor', 'Rol gestor. Personaliza las características de los formularios, encuestas, tramtamientos, medicamentos, etc a la aplicación');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Farmacéutico', 'Rol farmacéutico. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Médico Dermatología', 'Rol médico de la patología dermatología');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Médico VIH', 'Rol médico de la patología VIH');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Médica Reumatología', 'Rol médico de la patología reumatología');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Enfermero', 'Rol enfermero. Posee acceso al cuadro de mandos, calendario, listado de pacientes. Posibilidad de personalización de formularios relativos a su alcance');
-INSERT INTO hopes.roles VALUES (nextval('hopes.users_usr_id_seq'),'Paciente', 'Rol gestor. Posee acceso a la información que los roles de seguimiento le concedan, ademas de a encuestas, recordatorios de consulta');
------------------------------------------------------------------ ROLES -------------------------------------------------------------------------------
-
 ----------------------------------------------------------------- GENDERS -------------------------------------------------------------------------------
 INSERT INTO hopes.genders VALUES ('M', 'Masculino');
 INSERT INTO hopes.genders VALUES ('F', 'Femenino');

@@ -3,17 +3,8 @@ databaseChangeLog:
       file: ../sql/data/001-catalogues.sql
       relativeToChangelogFile: true
 - include:
-      file: ../sql/data/002-configuration_sections.sql
+      file: ../sql/data/002-load_Cie9.sql
       relativeToChangelogFile: true
 - include:
-      file: ../sql/data/003-configuration_hospital_path_user.sql
-      relativeToChangelogFile: true
-- include:
-      file: ../sql/data/004-services_hospitals.sql
-      relativeToChangelogFile: true
-- include:
-      file: ../sql/data/005-Configuration_Recommendations.sql
-      relativeToChangelogFile: true
-- include:
-      file: ../sql/data/006-load_Cie9.sql
-      relativeToChangelogFile: true
+        file: ../sql/data/003-load_Cie10.sql
+        relativeToChangelogFile: true
