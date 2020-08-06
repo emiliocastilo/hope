@@ -26,4 +26,22 @@ public class UserDTO {
 
 	@ApiModelProperty(position = 60, example = "1", value = "Identificador del hospital al que pertenece el usuario")
 	private Long hospitalId;
+
+	@ApiModelProperty(position = 70, example = "carlos", value = "Nombre del usuario")
+	private String name;
+
+	@ApiModelProperty(position = 80, example = "Ruíz", value = "Apellido del usuario")
+	private String surname;
+
+	@ApiModelProperty(position = 90, example = "600000000", value = "Teléfono del usuario")
+	private String phone;
+
+	@ApiModelProperty(position = 100, example = "52201960X", value = "DNI del usuario")
+	private String dni;
+
+	@ApiModelProperty(position = 110, example = "075566666", value = "Número de colegiado del médico")
+	private Long collegeNumber;
+
+	@ApiModelProperty(position = 120, example = "1", value = "Servicio relacionado al médico")
+	private ServiceDTO service;
 }

@@ -1,5 +1,8 @@
 package es.plexus.hopes.hopesback.service.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
@@ -7,16 +10,20 @@ import es.plexus.hopes.hopesback.controller.model.UserViewDTO;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.User;
+import org.hibernate.service.spi.ServiceException;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
+import org.mapstruct.factory.Mappers;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+
+	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
 	@Mappings({
 			@Mapping(source = "hospital", target = "hospitalId", qualifiedByName = "userToHospitalIdConverter"),
@@ -59,5 +66,20 @@ public interface UserMapper {
 	@Named("rolesToRoleIdListConverter")
 	default Set<Long> rolesToRoleIdListConverter(Set<Role> roles) {
 		return roles.stream().map(Role::getId).collect(Collectors.toSet());
+	}
+
+	@Named("jsonToUserDTOConverter")
+	default UserDTO jsonToUserDTOConverter(String user) {
+		UserDTO userDTO;
+
+		try {
+			userDTO = new ObjectMapper().readValue(user, UserDTO.class);
+		} catch (JsonMappingException e) {
+			throw new ServiceException("Fields not belonging to the object are being sent " + e.getMessage());
+		} catch (JsonProcessingException e) {
+			throw new ServiceException("Filter processing error occurred " + e.getMessage());
+		}
+
+		return userDTO;
 	}
 }

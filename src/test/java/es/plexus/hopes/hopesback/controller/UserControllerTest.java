@@ -11,6 +11,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -18,7 +23,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,10 +44,11 @@ public class UserControllerTest {
 	@Test
 	public void getAllUserShouldBeStatusOk() {
 		// given
-		given(userService.getAllUsers()).willReturn(Collections.singletonList(mockFullUser()));
+		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
+		given(userService.getAllUsers(any(Pageable.class))).willReturn(new PageImpl<>(Collections.singletonList(mockFullUser()), pageRequest, 1));
 
 		// when
-		List<UserDTO> response = userController.getAllUsers();
+		Page<UserDTO> response = userController.getAllUsers(pageRequest);
 
 		// then
 		assertNotNull(response);

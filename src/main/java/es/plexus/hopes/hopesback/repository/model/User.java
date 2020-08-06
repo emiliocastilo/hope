@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.repository.model;
 
 import lombok.Data;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,7 @@ public class User extends AbstractAudit {
 
 	@NotBlank
 	@Size(max = 500)
-	@Column(name = "usr_name")
+	@Column(name = "usr_username")
 	private String username;
 
 	@NotBlank
@@ -62,8 +63,26 @@ public class User extends AbstractAudit {
 	@Column(name = "usr_active")
 	private boolean active = true;
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-	private Doctor doctor;
+	@NotBlank
+	@Size(max = 500)
+	@Column(name = "usr_name")
+	private String name;
+
+	@Column(name = "usr_surname")
+	private String surname;
+
+	@Column(name = "usr_phone")
+	private String phone;
+
+	@Column(name = "usr_dni")
+	private String dni;
+
+	@Column(name = "usr_college_number")
+	private Long collegeNumber;
+
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "usr_srv_id", referencedColumnName = "srv_id")
+	private Service service;
 
 }
 

@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.service;
 import es.plexus.hopes.hopesback.configuration.MailTemplateConfiguration;
 import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
+import es.plexus.hopes.hopesback.controller.model.ServiceDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
@@ -19,6 +20,10 @@ import es.plexus.hopes.hopesback.service.mail.TemplateMail;
 import es.plexus.hopes.hopesback.service.mapper.UserMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,7 +33,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.FIRST_TOKEN_EXPIRATION_TIME;
 
@@ -46,6 +50,7 @@ public class UserService {
 	private final TokenRepository tokenRepository;
 	private final MailTemplateConfiguration mailTemplateConfiguration;
 	private static final String EVERY_30_MINUTES = "0 0/30 * * * ?";
+	private final ServiceService serviceService;
 
 	//ToDo refactorizar para eliminar la sobrecarga del constructor
 	@Autowired
@@ -54,7 +59,7 @@ public class UserService {
 					   final PasswordManagementService passwordManagementService,
 					   final MailService mailService,
 					   final TokenRepository tokenRepository,
-					   final MailTemplateConfiguration mailTemplateConfiguration) {
+					   final MailTemplateConfiguration mailTemplateConfiguration, ServiceService serviceService) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.roleService = roleService;
@@ -63,11 +68,12 @@ public class UserService {
 		this.mailService = mailService;
 		this.tokenRepository = tokenRepository;
 		this.mailTemplateConfiguration = mailTemplateConfiguration;
+		this.serviceService = serviceService;
 	}
 
 
-	public List<UserDTO> getAllUsers() {
-		return userRepository.findAll().stream().map(userMapper::userToUserDTOConverter).collect(Collectors.toList());
+	public Page<UserDTO> getAllUsers(Pageable pageable) {
+		return userRepository.findAll(pageable).map(userMapper::userToUserDTOConverter);
 	}
 
 	public UserDTO getOneUserById(final Long id) {
@@ -94,10 +100,10 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserSimpleDTO getOneSimpleUserByName(final String name, String roleName) {
+	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String roleName) {
 		UserSimpleDTO userSimpleDTO = null;
 
-		final Optional<User> user = userRepository.findByUsername(name);
+		final Optional<User> user = userRepository.findByUsername(username);
 
 		if (user.isPresent()) {
 			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
@@ -111,6 +117,7 @@ public class UserService {
 	}
 
 	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
+		checkServiceExistence(userDTO.getService());
 		User user = addUserAndReturnEntity(userDTO);
 		final String password = setGeneratedPasswordForUser(user);
 		user = userRepository.save(user);
@@ -146,6 +153,11 @@ public class UserService {
 
 		if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
 			user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
+		}
+
+		if (userDTO.getService() != null){
+			Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService.getOneServiceById(userDTO.getService().getId());
+			service.ifPresent(user::setService);
 		}
 
 		updateAccountStatus(userDTO, user);
@@ -311,5 +323,50 @@ public class UserService {
 
 	public boolean existUserEmail(String email){
 		return userRepository.existsByEmail(email);
+	}
+
+	public Page<UserDTO> findUsersBySearch(String search, Pageable pageable) {
+		Page<User> users = userRepository.findUsersBySearch(search, pageable);
+		return users.map(userMapper::userToUserDTOConverter);
+	}
+
+	public Page<UserDTO> filterDoctors(String user, Pageable pageable) {
+		UserDTO userDTO = UserMapper.INSTANCE.jsonToUserDTOConverter(user);
+		log.debug("Llamando al servicio...");
+
+		ExampleMatcher matcher = ExampleMatcher.matchingAll().withIgnoreCase(true).withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+		User userEx = userMapper.userDTOToUserConverter(userDTO);
+
+		Example<User> spec = Example.of(userEx, matcher);
+		Page<User> users = userRepository.findAll(spec, pageable);
+
+		return users.map(userMapper::userToUserDTOConverter);
+	}
+
+	public UserDTO updateUser(UserUpdateDTO userUpdateDTO) {
+		checkServiceExistence(userUpdateDTO.getServiceDTO());
+		UserDTO userDTO = userMapper.userUpdateDTOToUserDTOConverter(userUpdateDTO);
+		User user = userMapper.userDTOToUserConverter(userDTO);
+
+		return userMapper.userToUserDTOConverter(userRepository.save(user));
+	}
+
+	public void deleteUser(Long id) {
+
+		log.debug(String.format("Llamando a la BD para borrar el registro de usuarios con id=%d...", id));
+		userRepository.deleteById(id);
+	}
+
+	private void checkServiceExistence(ServiceDTO serviceDTO) {
+		if (serviceDTO != null && serviceDTO.getId() != null) {
+			final Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService
+					.getOneServiceById(serviceDTO.getId());
+
+			if (!service.isPresent()) {
+				throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+						String.format("Servicio con el id %d no encontrado. El servicio es requerido en médicos",
+								serviceDTO.getId()));
+			}
+		}
 	}
 }
