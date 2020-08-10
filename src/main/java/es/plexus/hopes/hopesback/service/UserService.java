@@ -354,6 +354,29 @@ public class UserService {
 			user.setRoles(userOri.get().getRoles());
 			user.setHospital(userOri.get().getHospital());
 			user.setService(userOri.get().getService());
+			user.setActive(userOri.get().isActive());
+
+			if (user.getCollegeNumber() == null) {
+				user.setCollegeNumber(userOri.get().getCollegeNumber());
+			}
+			if (user.getDni() == null) {
+				user.setDni(userOri.get().getDni());
+			}
+			if (user.getEmail() == null) {
+				user.setEmail(userOri.get().getEmail());
+			}
+			if (user.getName() == null) {
+				user.setUsername(userOri.get().getUsername());
+			}
+			if (user.getSurname() == null) {
+				user.setSurname(userOri.get().getSurname());
+			}
+			if (user.getUsername() == null) {
+				user.setUsername(userOri.get().getUsername());
+			}
+			if (user.getPhone() == null) {
+				user.setPhone(userOri.get().getPhone());
+			}
 		}
 
 		return userMapper.userToUserDTOConverter(userRepository.save(user));

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
 
 @ApiModel
@@ -34,9 +35,11 @@ public class UserDTO {
 	private String surname;
 
 	@ApiModelProperty(position = 90, example = "600000000", value = "Teléfono del usuario")
+	@Pattern(regexp = "^[0-9]{2,3}-? ?[0-9]{6,7}$")
 	private String phone;
 
 	@ApiModelProperty(position = 100, example = "52201960X", value = "DNI del usuario")
+	@Pattern(regexp = "^[0-9]{8}[A-Za-z]$")
 	private String dni;
 
 	@ApiModelProperty(position = 110, example = "075566666", value = "Número de colegiado del médico")
