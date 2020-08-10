@@ -20,7 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	boolean existsByUsername(String username);
 
     @Query("select usr from User usr "
-            + " WHERE LOWER(usr.name) like CONCAT('%',LOWER(:search),'%') "
+            + " WHERE LOWER(usr.username) like CONCAT('%',LOWER(:search),'%')"
+            + " OR LOWER(usr.name) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(usr.surname) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(usr.phone) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(usr.dni) like CONCAT('%',LOWER(:search),'%') "

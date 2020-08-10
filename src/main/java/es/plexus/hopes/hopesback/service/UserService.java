@@ -330,7 +330,7 @@ public class UserService {
 		return users.map(userMapper::userToUserDTOConverter);
 	}
 
-	public Page<UserDTO> filterDoctors(String user, Pageable pageable) {
+	public Page<UserDTO> filterUsers(String user, Pageable pageable) {
 		UserDTO userDTO = UserMapper.INSTANCE.jsonToUserDTOConverter(user);
 		log.debug("Llamando al servicio...");
 
@@ -344,9 +344,17 @@ public class UserService {
 	}
 
 	public UserDTO updateUser(UserUpdateDTO userUpdateDTO) {
-		checkServiceExistence(userUpdateDTO.getServiceDTO());
 		UserDTO userDTO = userMapper.userUpdateDTOToUserDTOConverter(userUpdateDTO);
+		Optional<User> userOri= userRepository.findById(userDTO.getId());
+
 		User user = userMapper.userDTOToUserConverter(userDTO);
+
+		if (userOri.isPresent()){
+			user.setPassword(userOri.get().getPassword());
+			user.setRoles(userOri.get().getRoles());
+			user.setHospital(userOri.get().getHospital());
+			user.setService(userOri.get().getService());
+		}
 
 		return userMapper.userToUserDTOConverter(userRepository.save(user));
 	}

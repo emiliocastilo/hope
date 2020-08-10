@@ -1617,6 +1617,171 @@
 			"name": "User",
 			"item": [
 				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/users?page=0&size=5&sort=name,asc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								}
+							]
+						},
+						"description": "Devuelve todos los usuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "Find by Searches",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/users/searches?page=0&size=5&sort=name,asc&search=d",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								},
+								{
+									"key": "search",
+									"value": "d"
+								}
+							]
+						},
+						"description": "Buscador de usuarios por un texto"
+					},
+					"response": []
+				},
+				{
+					"name": "Find by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/users/10",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"10"
+							]
+						},
+						"description": "Devuelve un usuario dado su ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Find By Filter",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/users/filters?page=0&size=5&sort=name,asc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"filters"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "sort",
+									"value": "name,asc"
+								}
+							]
+						},
+						"description": "Devuelve usuarios según un filtro dado"
+					},
+					"response": []
+				},
+				{
 					"name": "Add User",
 					"request": {
 						"auth": {
@@ -1633,7 +1798,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"victor.gonzales1\",\n    \"password\": \"password\",\n    \"email\": \"victor.gonzales1@plexus.es\",\n    \"roles\": [1,2],\n    \"hospitalId\": 4\n}",
+							"raw": "{\n    \"username\": \"victor.gonzales1\",\n    \"password\": \"password\",\n    \"email\": \"prueba@plexus.es\",\n    \"roles\": [1,2],\n    \"hospitalId\": 1,\n    \"name\": \"Víctor\",\n    \"surname\": \"Gonzales\",\n    \"phone\": \"600000000\",\n    \"dni\": \"52201960X\",\n    \"collegeNumber\": \"075566666\",\n    \"service\": {\"id\":4}\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1648,6 +1813,73 @@
 							"path": [
 								"v1",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 14,\r\n    \"name\": \"Nprueba\",\r\n    \"surname\": \"Aprueba\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"username\": \"Nprueba.Aprueba\",\r\n    \"email\": \"antoine.griezmann1@plexus.es\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/users",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						},
+						"description": "actualizar un usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/users/14",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"14"
 							]
 						}
 					},

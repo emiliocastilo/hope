@@ -68,7 +68,7 @@ public class UserController {
 		return userService.getOneUserById(id);
 	}
 
-	@ApiOperation("Buscador de medicos")
+	@ApiOperation("Buscador de usuarios")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/searches")
 	public Page<UserDTO> findUsersBySearch(
@@ -83,12 +83,12 @@ public class UserController {
 	@ApiOperation("Filtro de usuarios")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/filters")
-	public Page<UserDTO> filterDoctors(
+	public Page<UserDTO> filterUsers(
 			@ApiParam(value = "filtrado")
-			@RequestParam(value = "usuario", required = false, defaultValue = "{}") String user,
+			@RequestParam(value = "user", required = false, defaultValue = "{}") String user,
 			@PageableDefault(size = 5) Pageable pageable) {
 		log.debug("Filter...");
-		return userService.filterDoctors(user, pageable);
+		return userService.filterUsers(user, pageable);
 	}
 
 	@ApiOperation("Crear un nuevo usuario")
@@ -114,7 +114,7 @@ public class UserController {
 	@ApiOperation("Borrar un usuario por identificador")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
-	public void deleteDoctor(
+	public void deleteUser(
 			@ApiParam(value = "identificador") @PathVariable final Long id) {
 
 		if (userService.getOneUserById(id) == null) {
