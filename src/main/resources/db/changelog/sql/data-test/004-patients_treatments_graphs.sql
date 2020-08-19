@@ -43,31 +43,31 @@ VALUES( 'Prueba11', 'Primer11', 'Segun11', 'PCM011', 'PCMTARJ11', null, null, nu
 
 --patients_diagnoses
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM001'), (select ind_id from hopes.indications where ind_description ='EN PLACAS'),  null, null, '', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM002'), (select ind_id from hopes.indications where ind_description ='EN PLACAS'),  null, null, '', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM003'), (select ind_id from hopes.indications where ind_description ='PALMOPLANTAR'),  null, null, '', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM004'), (select ind_id from hopes.indications where ind_description ='ERITRODERMIA'),  null, null, '', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM005'), (select ind_id from hopes.indications where ind_description ='PUSTULOSA'),  null, null, '', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM006'), (select ind_id from hopes.indications where ind_description ='OTRAS'),  null, null, 'Otras indicaciones', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM007'), (select ind_id from hopes.indications where ind_description ='PALMOPLANTAR'),  null, null, '', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM008'), (select ind_id from hopes.indications where ind_description ='ERITRODERMIA'),  null, null, '', null, null, null);
 INSERT INTO hopes.patients_diagnoses
-(pdg_pac_id, pdg_ind_id, pdg_cin_id, pdg_cid_id, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
+(pdg_pac_id, pdg_ind_id, pdg_cie_code, pdg_cie_description, pdg_others_indications, pdg_init_date, pdg_symptoms_date, pdg_derivation_date)
 VALUES((select pac_id from hopes.patients where pac_nhc = 'PCM009'), (select ind_id from hopes.indications where ind_description ='PALMOPLANTAR'),  null, null, '', null, null, null);
 
 --patients_treatments
