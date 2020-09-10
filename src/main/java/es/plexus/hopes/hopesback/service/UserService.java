@@ -3,7 +3,6 @@ package es.plexus.hopes.hopesback.service;
 import es.plexus.hopes.hopesback.configuration.MailTemplateConfiguration;
 import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
-import es.plexus.hopes.hopesback.controller.model.ServiceDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
@@ -117,7 +116,7 @@ public class UserService {
 	}
 
 	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
-		checkServiceExistence(userDTO.getService());
+		checkServiceExistence(userDTO);
 		User user = addUserAndReturnEntity(userDTO);
 		final String password = setGeneratedPasswordForUser(user);
 		user = userRepository.save(user);
@@ -155,8 +154,8 @@ public class UserService {
 			user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
 		}
 
-		if (userDTO.getService() != null){
-			Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService.getOneServiceById(userDTO.getService().getId());
+		if (userDTO.getServiceId() != null){
+			Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService.getOneServiceById(userDTO.getServiceId());
 			service.ifPresent(user::setService);
 		}
 
@@ -388,16 +387,19 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 
-	private void checkServiceExistence(ServiceDTO serviceDTO) {
-		if (serviceDTO != null && serviceDTO.getId() != null) {
+	private void checkServiceExistence(UserDTO userDTO) {
+		if (userDTO.getServiceId() != null) {
 			final Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService
-					.getOneServiceById(serviceDTO.getId());
+					.getOneServiceById(userDTO.getServiceId());
 
 			if (!service.isPresent()) {
 				throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
-						String.format("Servicio con el id %d no encontrado. El servicio es requerido en médicos",
-								serviceDTO.getId()));
+						String.format("Servicio con el id %d no encontrado. El servicio es requerido en usuarios con número de colegiado",
+								userDTO.getServiceId()));
 			}
+		} else if (userDTO.getCollegeNumber() != null) {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception("El servicio es requerido en usuarios con número de colegiado");
 		}
 	}
 }

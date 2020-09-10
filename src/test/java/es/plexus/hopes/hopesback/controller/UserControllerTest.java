@@ -156,19 +156,7 @@ public class UserControllerTest {
 		user.setName("User Name");
 		user.setSurname("User Surname");
 		user.setPhone("User Phone");
-
-		final ServiceDTO serviceDTO = new ServiceDTO();
-		serviceDTO.setId(1L);
-		serviceDTO.setName("Service Name");
-
-		final PathologyDTO pathologyDTO = new PathologyDTO();
-		pathologyDTO.setDescription("Pathology Description");
-		pathologyDTO.setId(1L);
-		pathologyDTO.setName("Pathology Name");
-
-		serviceDTO.setPathologies(new HashSet<>(Collections.singletonList(pathologyDTO)));
-
-		user.setService(serviceDTO);
+		user.setServiceId(1L);
 
 		return user;
 	}
