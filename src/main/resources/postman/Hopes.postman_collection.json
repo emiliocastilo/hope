@@ -2542,14 +2542,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensations/findMonthlyConsumeAvg",
+							"raw": "{{dev}}/v1/dispensation-details/find-monthly-consumes-accumulated-avg?lastYears=2&code=L04AA24",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"dispensations",
-								"findMonthlyConsumeAvg"
+								"dispensation-details",
+								"find-monthly-consumes-accumulated-avg"
+							],
+							"query": [
+								{
+									"key": "lastYears",
+									"value": "2"
+								},
+								{
+									"key": "code",
+									"value": "L04AA24"
+								}
 							]
 						}
 					},

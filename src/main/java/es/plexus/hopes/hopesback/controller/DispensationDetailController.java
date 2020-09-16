@@ -1,5 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -112,7 +113,7 @@ public class DispensationDetailController {
 	@ApiOperation("Consumo mensual en euros (Biolgicos)")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_MONTHLY_CONSUME)
-	public Map<String, Map<String, String>> findMonthlyConsume(
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsume(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
@@ -122,7 +123,7 @@ public class DispensationDetailController {
 	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED)
-	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAcumulated(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED);
@@ -132,7 +133,7 @@ public class DispensationDetailController {
 	@ApiOperation("Consumo mensual medio en euros (Biolgicos)")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_MONTHLY_CONSUME_AVG)
-	public Map<String, Map<String, String>> findMonthlyConsumeAvg(
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAvg(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_AVG);
@@ -142,7 +143,7 @@ public class DispensationDetailController {
 	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED_AVG)
-	public Map<String, Map<String, String>> findMonthlyConsumeAcumulatedAvg(
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAcumulatedAvg(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED_AVG);
@@ -152,7 +153,7 @@ public class DispensationDetailController {
 	@ApiOperation("Coste Total por tratamiento Biolgico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT)
-	public Map<String, Map<String, String>> findTotalCostTreatment(
+	public Map<String, Map<String, BigDecimal>> findTotalCostTreatment(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
@@ -164,7 +165,7 @@ public class DispensationDetailController {
 	@ApiOperation("Coste Total acumulado por tratamiento Biolgico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT_ACCUMULATED)
-	public Map<String, Map<String, String>> findTotalCostTreatmentAcumulated(
+	public Map<String, Map<String, BigDecimal>> findTotalCostTreatmentAcumulated(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
@@ -176,7 +177,7 @@ public class DispensationDetailController {
 	@ApiOperation("Coste Total medio por tratamiento Biolgico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT_AVG)
-	public Map<String, Map<String, String>> findTotalCostTreatmentAvg(
+	public Map<String, Map<String, BigDecimal>> findTotalCostTreatmentAvg(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
@@ -188,7 +189,7 @@ public class DispensationDetailController {
 	@ApiOperation("Coste Total por tratamiento Biolgico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(FIND_TOTAL_MONTHLY_COST_TRATMENT_ACCUMULATED_AVG)
-	public Map<String, Map<String, String>> findTotalCostTreatmentAcumulatedAvg(
+	public Map<String, Map<String, BigDecimal>> findTotalCostTreatmentAcumulatedAvg(
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
