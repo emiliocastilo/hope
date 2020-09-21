@@ -126,11 +126,11 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_DIAGNOSE_GROUP_BY_CIE9 =
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
-			"join Cie9 c on c.id = pdg.cie9.id ";
+			"join Cie9 c on c.code = pdg.cieCode ";
 
 	public static final String QUERY_PATIENTS_DIAGNOSE_BY_CIE10 =
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
-					"join Cie10 c on c.id = pdg.cie10.id ";
+					"join Cie10 c on c.code = pdg.cieCode";
 
 
 	public static final String SELECT_PATIENT = "select pat " +
@@ -151,12 +151,12 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_BY_CIE_9 =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
-			"join fetch Cie9 c09 on pdg.cie9.id = c09.id " +
+			"join fetch Cie9 c09 on pdg.cieCode = c09.code " +
 			"where c09.description = :cie9 ";
 
 	public static final String QUERY_PATIENTS_BY_CIE_10 =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
-			"join fetch Cie10 c10 on pdg.cie10.id = c10.id " +
+			"join fetch Cie10 c10 on pdg.cieCode= c10.code " +
 			"where c10.description = :cie10 ";
 
 	public static final String JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE =

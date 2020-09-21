@@ -1,13 +1,14 @@
 package es.plexus.hopes.hopesback.service.mapper;
 
-import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
-import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
+import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
+import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
+import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
 
 @Mapper
 public interface HealthOutcomeMapper {

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="emails/fragments/defaultStructure :: head"></div>
+<body>
+<div style="font-family: Sans-Serif;">
+<!--    <div th:replace="emails/fragments/defaultStructure :: bodyHeader"></div>-->
+
+    <div id="mainSection">
+        <p> Buenos días,
+            <br>
+            <br>
+            Su petición ha sido enviado al equipo de soporte: <br>
+            <i>'<span style="color: gray" th:text="${body}"></span>'</i>
+            <br>
+            <br>
+            Procedemos a su revisión. Le mantendremos informado.
+            <br>
+            <br>
+            Saludos cordiales.
+        </p>
+    </div>
+
+    <div th:replace="emails/fragments/defaultStructure :: bodyFooter"></div>
+</div>
+</body>
+</html>

@@ -11,10 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GraphHistorifyDinamycFormDTO {
-	@ApiModelProperty(position = 10, example = "NHC001", value = "Nombre del campo a mostrar en la gráfica")
+	@ApiModelProperty(position = 10, example = "Leucocitos", value = "Nombre del campo a mostrar en la gráfica")
 	String name;
 
-	@ApiModelProperty(position = 20, example = "HC001", value = "Tarjeta sanitaria del paciente")
+	@ApiModelProperty(position = 20, example = "", value = "Listado de valores")
 	List<DataHistoricDinamycFormDTO> values;
 
 }

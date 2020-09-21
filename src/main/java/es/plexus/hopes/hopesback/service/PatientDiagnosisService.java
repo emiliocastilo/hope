@@ -1,12 +1,17 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDiagnosisDTO;
+import es.plexus.hopes.hopesback.repository.HospitalRepository;
 import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.repository.model.Indication;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientData;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
+import es.plexus.hopes.hopesback.service.mapper.PatientDiagnosisMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -17,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
@@ -29,11 +35,13 @@ import static java.util.stream.Collectors.groupingBy;
 public class PatientDiagnosisService {
 
 	private static final String CALLING_DB = "Calling DB...";
+	public static final String CIE_9 = "CIE9";
 
 
 	private final PatientDiagnosisRepository patientDiagnosisRepository;
 	private final PatientRepository patientRepository;
 	private final PatientDataRepository patientDataRepository;
+	private final HospitalRepository hospitalRepository;
 
 	/**
 	 * Method that it return a list with the number of patients group by indication in the Patient Diagnose Section
@@ -58,25 +66,28 @@ public class PatientDiagnosisService {
 
 
 	/**
-	 * Method that it return a list with a number of patients group by CIE9 in the Patient Diagnose Section
+	 * Method that it return a list with a number of patients group by CIE in the Patient Diagnose Section
+	 *
+	 * @param hospitalId
 	 * @return
 	 */
-	public Map<String, Long>  findPatientsByCie9(){
+	public Map<String, Long> findPatientsByCie(Long hospitalId) {
 		log.debug(CALLING_DB);
-		List<PatientDiagnose> patientDiagnosisList = patientDiagnosisRepository.findPatientsDiagnosisGroupByCie9();
-		return patientDiagnosisList.stream()
-				.collect(groupingBy(pd -> pd.getCie9().getDescription(), Collectors.counting()));
-	}
+		Optional<Hospital> hospital = hospitalRepository.findById(hospitalId);
+		Map<String, Long> patientDiagnosisMap = null;
+		List<PatientDiagnose> patientDiagnosisList;
 
-	/**
-	 * Method that it return a list with a number of patients group by CIE10 in the Patient Diagnose Section
-	 * @return
-	 */
-	public Map<String, Long>  findPatientsByCie10(){
-		log.debug(CALLING_DB);
-		List<PatientDiagnose> patientDiagnosisList = patientDiagnosisRepository.findPatientsDiagnosisGroupByCie10();
-		return patientDiagnosisList.stream()
-				.collect(groupingBy(pd -> pd.getCie10().getDescription(), Collectors.counting()));
+		if (hospital.isPresent()) {
+			if (CIE_9.equalsIgnoreCase(hospital.get().getCie())) {
+				patientDiagnosisList = patientDiagnosisRepository.findPatientsDiagnosisGroupByCie9();
+			} else {
+				patientDiagnosisList = patientDiagnosisRepository.findPatientsDiagnosisGroupByCie10();
+			}
+			patientDiagnosisMap = patientDiagnosisList.stream()
+					.collect(groupingBy(PatientDiagnose::getCieDescription, Collectors.counting()));
+		}
+
+		return patientDiagnosisMap;
 	}
 
 	/**
@@ -93,7 +104,6 @@ public class PatientDiagnosisService {
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 		return page;
 	}
-
 
 	/**
 	 * Method that it return a list with the patient details by indication in the Patient Diagnose Section
@@ -113,59 +123,74 @@ public class PatientDiagnosisService {
 
 
 	/**
-	 * Method that it return a list pageable the patient details by CIE9 in the Patient Diagnose Section
+	 * Method that it return a list pageable the patient details by CIE in the Patient Diagnose Section
+	 *
 	 * @return
 	 */
 	@Transactional
-	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie9(final String cie9, final Pageable pageable){
+	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie(final String codeDescription, final Long hospitalId, final Pageable pageable) {
 		log.debug(CALLING_DB);
-		log.debug( "INIT: Query Patients By Cie9");
-		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie9(cie9);
-		log.debug( "END: Query Patients By Cie9");
+
+		List<Patient> patients = null;
+		Optional<Hospital> hospital = hospitalRepository.findById(hospitalId);
+
+		if (hospital.isPresent()) {
+			if (CIE_9.equalsIgnoreCase(hospital.get().getCie())) {
+				log.debug( "INIT: Query Patients By Cie9");
+				patients = patientRepository.findPatientDetailsGraphsByCie9(codeDescription);
+				log.debug( "END: Query Patients By Cie9");
+			} else {
+				log.debug( "INIT: Query Patients By Cie10");
+				patients = patientRepository.findPatientDetailsGraphsByCie10(codeDescription);
+				log.debug( "END: Query Patients By Cie10");
+			}
+		}
+
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
-		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
-		return page;
+
+		return doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 	}
 
 	/**
-	 * Method that it return a list the patient details by CIE9 in the Patient Diagnose Section
+	 * Method that it return a list the patient details by CIE in the Patient Diagnose Section
+	 *
 	 * @return
 	 */
 	@Transactional
-	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie9(final String cie9){
+	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie(final String codeDescription, final Long hospitalId) {
 		log.debug(CALLING_DB);
-		log.debug( "INIT: Query Patients By Cie9");
-		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie9(cie9);
-		log.debug( "END: Query Patients By Cie9");
+		List<Patient> patients = null;
+		Optional<Hospital> hospital = hospitalRepository.findById(hospitalId);
+
+		if (hospital.isPresent()) {
+			if (CIE_9.equalsIgnoreCase(hospital.get().getCie())) {
+				log.debug( "INIT: Query Patients By Cie9");
+				patients = patientRepository.findPatientDetailsGraphsByCie9(codeDescription);
+				log.debug( "END: Query Patients By Cie9");
+			} else {
+				log.debug( "INIT: Query Patients By Cie10");
+				patients = patientRepository.findPatientDetailsGraphsByCie10(codeDescription);
+				log.debug( "END: Query Patients By Cie10");
+			}
+		}
+
 		return fillGraphPatientDetailDtoList(patients);
 	}
 
-	/**
-	 * Method that it return a list pageable the patient details by CIE10 in the Patient Diagnose Section
-	 * @return
-	 */
-	@Transactional
-	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByCie10(final String cie10, final Pageable pageable){
+	public PatientDiagnose save(final PatientDiagnose patientDiagnose) {
 		log.debug(CALLING_DB);
-		log.debug( "INIT: Query Patients By Cie10");
-		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie10(cie10);
-		log.debug( "END: Query Patients By Cie10");
-		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
-		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
-		return page;
+		return patientDiagnosisRepository.saveAndFlush(patientDiagnose);
 	}
 
-	/**
-	 * Method that it return a list the patient details by CIE10 in the Patient Diagnose Section
-	 * @return
-	 */
-	@Transactional
-	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByCie10(final String cie10){
+	public PatientDiagnosisDTO findByPatient(Patient patient) {
 		log.debug(CALLING_DB);
-		log.debug( "INIT: Query Patients By Cie10");
-		List<Patient> patients = patientRepository.findPatientDetailsGraphsByCie10(cie10);
-		log.debug( "END: Query Patients By Cie10");
-		return fillGraphPatientDetailDtoList(patients);
+		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatient(patient);
+		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
+	}
+
+	public PatientDiagnosisDTO findByPatientAndIndication(Patient patient, Indication indication) {
+		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientAndIndication(patient, indication).orElse(null);
+		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
 	}
 
 	/**

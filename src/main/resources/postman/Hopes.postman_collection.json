@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1aa8e0d7-2efd-4207-8220-465efbbe5e60",
+		"_postman_id": "605207d8-0da1-470a-b9bd-3738e1142ab2",
 		"name": "Hopes",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -264,6 +264,12 @@
 								"patients-diagnoses",
 								"combined-treatments",
 								"patients"
+							],
+							"query": [
+								{
+									"key": "combinedTreatment",
+									"value": "Quimico-Biologico"
+								}
 							]
 						}
 					},
@@ -306,7 +312,7 @@
 					"response": []
 				},
 				{
-					"name": "/patients-diagnoses/cie9",
+					"name": "/patients-diagnoses/cie",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -321,21 +327,27 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9",
+							"raw": "{{dev}}/v1/patients-diagnoses/cie?hospitalId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"patients-diagnoses",
-								"cie9"
+								"cie"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "1"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "/patients-diagnoses/cie9/patients",
+					"name": "/patients-diagnoses/cie/patients",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -350,20 +362,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ornare, elit ,",
+							"raw": "{{dev}}/v1/patients-diagnoses/cie/patients?cieDescription=COLERA&hospitalId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"patients-diagnoses",
-								"cie9",
+								"cie",
 								"patients"
 							],
 							"query": [
 								{
-									"key": "cie9",
-									"value": "ornare, elit ,"
+									"key": "cieDescription",
+									"value": "COLERA"
+								},
+								{
+									"key": "hospitalId",
+									"value": "1"
 								}
 							]
 						}
@@ -371,7 +387,7 @@
 					"response": []
 				},
 				{
-					"name": "/patients-diagnoses/cie9/patients-export",
+					"name": "/patients-diagnoses/cie/patients-export",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -386,121 +402,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie9/patients?cie9=ornare, elit ,",
+							"raw": "{{dev}}/v1/patients-diagnoses/cie/patients-export?cieDescription=COLERA&hospitalId=1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"patients-diagnoses",
-								"cie9",
-								"patients"
-							],
-							"query": [
-								{
-									"key": "cie9",
-									"value": "ornare, elit ,"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10/patients",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients?cie10=at, libero. Morbi",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10",
-								"patients"
-							],
-							"query": [
-								{
-									"key": "cie10",
-									"value": "at, libero. Morbi"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/patients-diagnoses/cie10/patients-export",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie10/patients-export?cie10=at, libero. Morbi",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"patients-diagnoses",
-								"cie10",
+								"cie",
 								"patients-export"
 							],
 							"query": [
 								{
-									"key": "cie10",
-									"value": "at, libero. Morbi"
+									"key": "cieDescription",
+									"value": "COLERA"
+								},
+								{
+									"key": "hospitalId",
+									"value": "1"
 								}
 							]
 						}
@@ -945,7 +864,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a93e0f72-0e9c-42cb-8028-e6b0a746e225",
+								"id": "00618c62-20ba-44cb-8844-f439ba0267bd",
 								"exec": [
 									""
 								],
@@ -1225,7 +1144,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "35263648-8a28-45d2-9189-085c83d75646",
+								"id": "f1918981-c811-45b2-89af-1e6b6da2d026",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -1270,7 +1189,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "04d58823-175b-41f3-aaa5-ca596ff81c7f",
+								"id": "5bfc51a9-ea04-4332-9f0e-f55cf98c42cd",
 								"exec": [
 									"pm.globals.set(\"token\", pm.response.headers.get('Authorization'));"
 								],
@@ -2317,7 +2236,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6007ece0-410a-4196-87f4-80a5ad1b4707",
+								"id": "7c03966c-e225-49eb-b92b-55dbe11fe075",
 								"exec": [
 									""
 								],
@@ -2897,7 +2816,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3f1afb54-09fc-4655-8227-f28bba7e28d0",
+								"id": "e3cb74bf-ade0-44de-97f1-66d02127a493",
 								"exec": [
 									""
 								],
@@ -3021,7 +2940,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D23S34\",\r\n    \"recommended\": \"true\",\r\n    \"recommendation\": {\r\n    \t\"id\": 3\r\n    },\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mágicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": \"true\" \r\n    }\r\n}",
+							"raw": "{\r\n\t\"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D23S34\",\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mágicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": \"true\" \r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3050,12 +2969,82 @@
 					"response": []
 				},
 				{
+					"name": "create with XLSX",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "multipartFile",
+									"contentType": "",
+									"type": "file",
+									"src": "/C:/workspace/repos/hopes/hopes-back/src/main/resources/postman/Plantilla_BBDD_Medicamentos_v3.xlsx"
+								},
+								{
+									"key": "",
+									"value": "",
+									"contentType": "",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/medicines/createAll",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"createAll"
+							],
+							"query": [
+								{
+									"key": "Content-Type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": null,
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Create Method"
+					},
+					"response": []
+				},
+				{
 					"name": "findAll",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "1b436d4b-29e6-476c-9c87-d4362e738ff1",
+								"id": "6cc0eb66-887c-4fd7-b9d6-7c6b58c0eb79",
 								"exec": [
 									""
 								],
@@ -3253,7 +3242,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/searches?page=0&size=1&sort=id,asc&search=A",
+							"raw": "{{dev}}/v1/medicines/searches?page=0&size=10&sort=id,asc&search=ORENCIA",
 							"host": [
 								"{{dev}}"
 							],
@@ -3277,7 +3266,42 @@
 								},
 								{
 									"key": "search",
-									"value": "A"
+									"value": "ORENCIA"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findDoseByMedicineId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/medicines/doses?medicineId=11",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"doses"
+							],
+							"query": [
+								{
+									"key": "medicineId",
+									"value": "11"
 								}
 							]
 						}
@@ -3296,7 +3320,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7e542c91-be70-4f9f-940a-023bb0b0d9d0",
+								"id": "cab69c26-879b-427e-a5d4-ffcb21a78afa",
 								"exec": [
 									""
 								],
@@ -3691,7 +3715,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f75d72ca-8e8c-4126-99c9-df45dcacb9d6",
+								"id": "bd0aa1a4-a552-419e-872a-e37b96037e0c",
 								"exec": [
 									""
 								],
@@ -3798,7 +3822,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "aecb7cbe-8110-489b-87e7-ee54a2e009e2",
+						"id": "ca676bd7-dd76-46b1-8d49-fb28e04195d3",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3808,7 +3832,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "ae4a8aa4-269e-4e20-a34b-658fd3899a3b",
+						"id": "f8b7fd3f-2ad6-44b7-b733-0f49f70d9abf",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -3838,7 +3862,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"template\": \"PLANTILLA_PRUEBA\",\n\t\"data\": [{ \"name\":\"a\", \"value\":\"aa\"}, { \"name\":\"b\", \"value\":\"bb\"}, { \"name\":\"c\", \"value\":\"cc\"}],\n\t\"patientId\": 1\n}",
+							"raw": "{\n\t\"template\": \"DIAGNOSTICO\",\n\t\"data\": [{ \"name\":\"psoriasisType\", \"value\":\"PALMOPLANTAR\"}, { \"name\":\"firstSymptomsDate\", \"value\":\"2020-06-09T15:00:12\"}, { \"name\":\"specialtyCareDate\", \"value\":\"2020-06-10T15:00:12\"}, { \"name\":\"mainDiagnosisDate\", \"value\":\"2020-06-08T15:00:12\"}],\n\t\"patientId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -4249,6 +4273,44 @@
 					"response": []
 				},
 				{
+					"name": "/health-outcomes/save-score-data-by-index-type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"NAPSI\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"EAV\",\n\t\"value\" : 20,\n\t\"result\" : \"Moderada\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"PGA\",\n\t\"value\" : 31.5,\n\t\"result\" : \"Severa\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"DLQI\",\n\t\"value\" : 36.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-12T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"BSA\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-11T12:10:03\"\n}]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/health-outcomes/save-score-data-by-index-type",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"health-outcomes",
+								"save-score-data-by-index-type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "/health-outcomes/get-detail-results-by-type",
 					"request": {
 						"auth": {
@@ -4303,7 +4365,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type-export?indexType=PASI",
+							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type-export?indexType=PASI&result=Prueba PASI 6",
 							"host": [
 								"{{dev}}"
 							],
@@ -4316,6 +4378,10 @@
 								{
 									"key": "indexType",
 									"value": "PASI"
+								},
+								{
+									"key": "result",
+									"value": "Prueba PASI 6"
 								}
 							]
 						}
@@ -4568,6 +4634,49 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Soporte",
+			"item": [
+				{
+					"name": "Enviar petición a soporte",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"perico@gmail.com\",\r\n    \"subject\": \"no me va la pagina\",\r\n    \"body\": \"entrando a la pagina X me da un pantallazo en blanco\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/support",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"support"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "PatientDashboard",
 			"item": [
 				{
@@ -4640,6 +4749,124 @@
 				}
 			],
 			"description": "Peticiones que se realizan al PatientDashboardController y que validan la funcionalidad de la sección cuadro de mandos del paciente y sus subsecciones.",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cie",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/cies?hospitalId=1&page=10",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"cies"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findCieBySearch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/cies/searches?hospitalId=2&search=B4&page=0&size=10&sort=code,desc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"cies",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "hospitalId",
+									"value": "2"
+								},
+								{
+									"key": "search",
+									"value": "B4"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "code,desc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Peticiones que se realizan en el CieController",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5ede9119-521b-4959-8467-6759c975d2c2",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "893def35-5f9c-42d0-8c68-a361aead44d6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
 			"protocolProfileBehavior": {}
 		}
 	],

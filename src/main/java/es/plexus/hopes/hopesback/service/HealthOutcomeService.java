@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphHealthOutcomeDTO;
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
 import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -36,7 +38,8 @@ public class HealthOutcomeService {
 
 	private final HealthOutcomeRepository healthOutcomeRepository;
 	private final PatientRepository patientRepository;
-	
+	private final PatientService patientService;
+
 	public Map<String, Long> findResultsByTypes(final String type) {
 		log.debug(CALLING_DB);
 		return fillResultsByTypes(type);
@@ -65,7 +68,7 @@ public class HealthOutcomeService {
 	
 	private Map<String, Long> fillResultsByTypes(String type) {
 		Map<String, Long> result = new HashMap<>();
-		
+
 		List<HealthOutcome> healthoutcomeResultList = healthOutcomeRepository.findResultsByTypes(type);
 		
 		Map<Patient, HealthOutcome> mapPatientMaxDate = healthoutcomeResultList.stream()
@@ -99,5 +102,18 @@ public class HealthOutcomeService {
 		});
 
 		return mapEvolutionIndicesGraph;
+	}
+
+	public List<HealthOutcomeDTO> saveScoreDataByIndexType(List<HealthOutcomeDTO> healthOutcomeDtos) {
+		log.debug(CALLING_DB);
+		List<HealthOutcome> healthOutcomesSaved = new ArrayList<>();
+		healthOutcomeDtos.stream().forEach(ho -> {
+			HealthOutcome healthOutcome = HealthOutcomeMapper.INSTANCE.dtoToEntity(ho);
+			healthOutcome.setPatient(patientService.getEntityPatientById(ho.getPatientId()).orElse(null));
+			HealthOutcome entitySaved = healthOutcomeRepository.saveAndFlush(healthOutcome);
+			healthOutcomesSaved.add(entitySaved);
+		});
+
+		return HealthOutcomeMapper.INSTANCE.entityToHealthOutcomeDtos(healthOutcomesSaved);
 	}
 }

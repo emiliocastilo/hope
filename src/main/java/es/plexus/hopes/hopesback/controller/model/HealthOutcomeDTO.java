@@ -4,13 +4,14 @@
 package es.plexus.hopes.hopesback.controller.model;
 
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 /**
  * @author jose.estevezbarroso

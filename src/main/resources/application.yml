@@ -3,9 +3,8 @@ plexus:
   hopes:
     email:
       template:
-        default-sender: "no-reply@hopes.com"
-        default-subject: "Reset your password"
-        default-text: "Hopes password reset"
+        default-sender: "support-hopes@plexus.services"
+        support-sender: "support-hopes@plexus.services"
         reset-password-url: "/user/reset_password?token="
 
 # Server settings
@@ -59,6 +58,8 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+  messages:
+    basename: i18n.messages
 # Logging
 logging:
   level:
@@ -71,3 +72,10 @@ logging:
 # Image gallery
 imagegallery:
   url: http://localhost:8081/v1
+  
+# Cron Migration
+cronexpression:
+  diagnosis: 0 0 1 * * ?  # At 01:00:00am every day. 0/30 * * * * ? each 30sg
+  treatment: 0 0 4 * * ?   # At 04:00:00am every day. 0/30 * * * * ? each 30sg
+
+

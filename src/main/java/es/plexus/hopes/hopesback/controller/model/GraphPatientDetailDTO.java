@@ -29,9 +29,6 @@ public class GraphPatientDetailDTO {
 	@ApiModelProperty(position = 60, example = "696.1 OTRA PSORIASIS", value = "Diagnóstico principal del paciente: CIE9code + spc +CIE9desc")
 	String principalDiagnose;
 
-	@ApiModelProperty(position = 70, example = "696.1 OTRA PSORIASIS", value = "Diagnóstico principal del paciente: CIE10code + spc +CIE10desc")
-	String principalDiagnoseCie10;
-
 	@ApiModelProperty(position = 80, example = "Apremilast", value = "Nombre de las medicaciones")
 	String treatment;
 

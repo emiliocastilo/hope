@@ -166,8 +166,7 @@ public class PatientTreatmentControllerTest {
 		graphPatientDetailDTO.setHealthCard("HC0001");
 		graphPatientDetailDTO.setFullName("Nombre completo");
 		graphPatientDetailDTO.setPrincipalIndication("Indication");
-		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE 9");
-		graphPatientDetailDTO.setPrincipalDiagnoseCie10("Diagnose cie 10");
+		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE");
 		graphPatientDetailDTO.setTreatment("Treatment");
 		graphPatientDetailDTO.setPasi("PASI Result");
 		graphPatientDetailDTO.setPasiDate(LocalDateTime.now());

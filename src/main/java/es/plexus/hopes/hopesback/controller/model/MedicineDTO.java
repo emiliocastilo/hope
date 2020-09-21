@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.controller.model;
 
 import es.plexus.hopes.hopesback.repository.model.AbstractAudit;
-import es.plexus.hopes.hopesback.repository.model.Recommendation;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,34 +18,36 @@ public class MedicineDTO extends AbstractAudit {
     @NotNull
     private String actIngredients;
 
-    @ApiModelProperty(position = 30, example = "J05A", value = "Principios activos del medicamento")
+    @ApiModelProperty(position = 30, example = "J05A", value = "Código ATC del medicamento")
     @NotNull
     private String codeAct;
 
-    @ApiModelProperty(position = 40, example = "true", value = "Indicación de si está recomendado el medicamento")
-    private boolean recommended;
-
-    @ApiModelProperty(position = 50, example = "13", value = "Tipo de recomendación")
-    private Recommendation recommendation;
-
-    @ApiModelProperty(position = 60, example = "AAS", value = "Acrónimo por el que es conocido el medicamento")
+    @ApiModelProperty(position = 40, example = "AAS", value = "Acrónimo por el que es conocido el medicamento")
     @Pattern(regexp = "^[A-Z]$")
     private String acronym;
 
-    @ApiModelProperty(position = 70, example = "711415P", value = "Código nacional del medicamento")
+    @ApiModelProperty(position = 50, example = "711415P", value = "Código nacional del medicamento")
     @Pattern(regexp = "^[0-9]{6}[A-Za-z]{7}$")
     private String nationalCode;
 
-    @ApiModelProperty(position = 80, example = "Medicamento con propiedades mágicas", value = "Descripción del medicamento")
+    @ApiModelProperty(position = 60, example = "Medicamento con propiedades mágicas", value = "Descripción del medicamento")
     private String description;
 
-    @ApiModelProperty(position = 90, example = "ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos", value = "Presentación del medicamento")
+    @ApiModelProperty(position = 70, example = "ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos", value = "Presentación del medicamento")
     private String presentation;
 
-    @ApiModelProperty(position = 100, example = "false", value = "Indicación de si se comercializa el medicamento")
+    @ApiModelProperty(position = 80, example = "false", value = "Indicación de si se comercializa el medicamento")
     private boolean commercialization;
-    
-    @ApiModelProperty(position = 110, example = "false", value = "Indicación de si el medicamento es biológico")
+
+    @ApiModelProperty(position = 90, example = "false", value = "Indicación de si el medicamento es biológico")
     private boolean biologic;
 
+    @ApiModelProperty(position = 100, example = "oral", value = "Vía de administración")
+    private String viaAdministration;
+
+    @ApiModelProperty(position = 110, example = "Biologico", value = "Familia/Tipo del medicamento")
+    private String family;
+
+    @ApiModelProperty(position = 120, example = "Iniston", value = "Marca del medicamento")
+    private String brand;
 }

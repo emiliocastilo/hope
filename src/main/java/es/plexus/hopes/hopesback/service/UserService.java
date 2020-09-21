@@ -21,7 +21,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +41,7 @@ public class UserService {
 	private final RoleService roleService;
 	private final UserRepository userRepository;
 	private final HospitalService hospitalService;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final PasswordManagementService passwordManagementService;
 	private final MailService mailService;
 	private final TokenRepository tokenRepository;
 	private final MailTemplateConfiguration mailTemplateConfiguration;
@@ -52,7 +51,7 @@ public class UserService {
 	@Autowired
 	public UserService(final UserRepository userRepository, final UserMapper userMapper,
 					   final RoleService roleService, final HospitalService hospitalService,
-					   final BCryptPasswordEncoder bCryptPasswordEncoder,
+					   final PasswordManagementService passwordManagementService,
 					   final MailService mailService,
 					   final TokenRepository tokenRepository,
 					   final MailTemplateConfiguration mailTemplateConfiguration) {
@@ -60,7 +59,7 @@ public class UserService {
 		this.userMapper = userMapper;
 		this.roleService = roleService;
 		this.hospitalService = hospitalService;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.passwordManagementService = passwordManagementService;
 		this.mailService = mailService;
 		this.tokenRepository = tokenRepository;
 		this.mailTemplateConfiguration = mailTemplateConfiguration;
@@ -113,9 +112,18 @@ public class UserService {
 
 	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
 		User user = addUserAndReturnEntity(userDTO);
+		final String password = setGeneratedPasswordForUser(user);
 		user = userRepository.save(user);
 
+		sendCredentialsEmail(user, password);
+
 		return userMapper.userToUserDTOConverter(user);
+	}
+
+	public String setGeneratedPasswordForUser(final User user) {
+		final String password = passwordManagementService.generatePassword();
+		user.setPassword(passwordManagementService.encode(password));
+		return password;
 	}
 
 	User addUserAndReturnEntity(final UserDTO userDTO) throws ServiceException {
@@ -138,10 +146,6 @@ public class UserService {
 
 		if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
 			user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
-		}
-
-		if (userDTO.getPassword() != null) {
-			user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
 		}
 
 		updateAccountStatus(userDTO, user);
@@ -188,6 +192,21 @@ public class UserService {
 		}
 	}
 
+	public void sendCredentialsEmail(final User user, final String password) throws ServiceException {
+		log.debug("sendCredentialsEmail");
+
+		final TemplateMail simpleMail = TemplateMail.builder()
+				.from(mailTemplateConfiguration.getDefaultSender())
+				.to(user.getEmail())
+				.subject("email.send-credentials.subject")
+				.template("emails/sendCredentials")
+				.templateParam("username", user.getUsername())
+				.templateParam("password", password)
+				.html(true)
+				.build();
+		mailService.sendMail(simpleMail);
+	}
+
 	public void requestPasswordChange(final String email) throws ServiceException {
 		log.debug("requestPasswordChange");
 
@@ -197,13 +216,12 @@ public class UserService {
 			log.debug("Usuario encontrado -> creacion de token temporal");
 
 			String token = UUID.randomUUID().toString();
-			createPasswordResetTokenForUser(optionalUser.get(), bCryptPasswordEncoder.encode(token));
+			createPasswordResetTokenForUser(optionalUser.get(), passwordManagementService.encode(token));
 
 			final TemplateMail simpleMail = TemplateMail.builder()
 					.from(mailTemplateConfiguration.getDefaultSender())
 					.to(optionalUser.get().getEmail())
-					.subject(mailTemplateConfiguration.getDefaultSubject())
-					.text(mailTemplateConfiguration.getDefaultText())
+					.subject("email.reset-password.subject")
 					.template("emails/changePassword")
 					.templateParam("passwordChangeUrl", mailTemplateConfiguration.getResetPasswordUrl() + token)
 					.html(true)
@@ -244,14 +262,14 @@ public class UserService {
 	}
 
 	private void changeUserPassword(User user, String password) {
-		user.setPassword(bCryptPasswordEncoder.encode(password));
+		user.setPassword(passwordManagementService.encode(password));
 		userRepository.save(user);
 	}
 
 	private Token findPasswordResetToken(String token) {
 		final List<Token> listToken = tokenRepository.findByTokenExpirationDateAfter(LocalDateTime.now());
 		return listToken.stream()
-				.filter(p -> bCryptPasswordEncoder.matches(token, p.getValue()))
+				.filter(p -> passwordManagementService.matches(token, p.getValue()))
 				.findAny()
 				.orElse(null);
 	}
@@ -284,7 +302,7 @@ public class UserService {
 	}
 
 	private boolean checkIfValidOldPassword(User user, String password) {
-		return bCryptPasswordEncoder.matches(password, user.getPassword());
+		return passwordManagementService.matches(password, user.getPassword());
 	}
 
 	public boolean existUsername(String username){

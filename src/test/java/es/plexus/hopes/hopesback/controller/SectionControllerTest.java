@@ -4,7 +4,6 @@ import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.service.SectionService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
-import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

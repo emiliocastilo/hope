@@ -1,0 +1,10 @@
+{
+    "key": "dlqi",
+    "form": "[{'type':'title','name':'DLQI'}, {'type': 'datepicker','name':'evaluationDate', 'label':'Fecha de evaluación'}, {'type': 'input', 'name': 'dlqiScore', 'label': ''}]",
+    "buttons": "['save', 'clean', 'graphsBack']",
+    "historify": true,
+    "nameHistoricalDate": "evaluationDate",
+    "fieldsToGraph": [
+        "dlqiScore"
+    ]
+}
