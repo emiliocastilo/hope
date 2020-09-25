@@ -104,6 +104,7 @@ public class UserDetailsServiceImplTest {
 		final Role role = new Role();
 		role.setId(1L);
 		role.setName("ROLE_ADMIN");
+		role.setCode("ROLE_ADMIN");
 		role.setDescription("Rol Description");
 
 		return role;
