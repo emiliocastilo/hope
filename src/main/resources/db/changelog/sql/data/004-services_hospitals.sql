@@ -27,7 +27,7 @@ WITH serviceOne AS (
      hospital_services_three AS (
          INSERT INTO hopes.hospitals_services (hss_id, hss_hos_id, hss_srv_id)
              VALUES (nextval('hopes.hospitals_services_hss_id_seq'), (SELECT hos_id FROM hopes.hospitals WHERE hos_name = 'Hopes - Servicios de Salud'),
-                     (SELECT srv_id FROM serviceThree))
+                     (SELECT srv_id FROM serviceOne))
      ) INSERT INTO hopes.hospitals_services (hss_id, hss_hos_id, hss_srv_id)
      VALUES (nextval('hopes.hospitals_services_hss_id_seq'), (SELECT hos_id FROM hopes.hospitals WHERE hos_name = 'Hopes - Servicios de Salud'),
-                     (SELECT srv_id FROM serviceFour));
+                     (SELECT srv_id FROM serviceThree));
