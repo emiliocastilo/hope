@@ -137,7 +137,7 @@ public class UserService {
 
 	private User addUserAndReturnEntityCommon(UserDTO userDTO) throws ServiceException {
 		validateUsername(userDTO);
-
+		validateEmail(userDTO);
 		final User user = userMapper.userDTOToUserConverter(userDTO);
 
 		if (userDTO.getHospitalId() != null) {
@@ -152,12 +152,19 @@ public class UserService {
 		return user;
 	}
 
+	private void validateEmail(UserDTO userDTO) {
+		if (userDTO != null && userDTO.getId() == null && userRepository.existsByEmail(userDTO.getEmail())) {
+			throw ServiceExceptionCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION.exception(
+					String.format("El email %s ya existe", userDTO.getEmail()));
+		}
+	}
+
 	Optional<User> getOneUserCommon(Long id) {
 		return userRepository.findById(id);
 	}
 
 	private void validateUsername(UserDTO userDTO) throws ServiceException {
-		if (userDTO != null && userDTO.getId() == null && getOneUserByName(userDTO.getUsername()) != null) {
+		if (userDTO != null && userDTO.getId() == null && userRepository.existsByUsername(userDTO.getUsername())) {
 			throw ServiceExceptionCatalog.USERNAME_DUPLICATE_EXCEPTION.exception(
 					String.format("User with name %s already exists", userDTO.getUsername()));
 		}
@@ -298,4 +305,11 @@ public class UserService {
 		return passwordManagementService.matches(password, user.getPassword());
 	}
 
+	public boolean existUsername(String username){
+		return userRepository.existsByUsername(username);
+	}
+
+	public boolean existUserEmail(String email){
+		return userRepository.existsByEmail(email);
+	}
 }

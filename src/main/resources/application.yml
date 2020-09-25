@@ -3,8 +3,8 @@ plexus:
   hopes:
     email:
       template:
-        default-sender: "jordi.ripoll@plexus.es"
-        support-sender: "support@hopes.es"
+        default-sender: "support-hopes@plexus.services"
+        support-sender: "support-hopes@plexus.services"
         reset-password-url: "/user/reset_password?token="
     ldap:
       dn-patterns: "uid={0},ou=people"
@@ -87,5 +87,6 @@ imagegallery:
   
 # Cron Migration
 cronexpression:
-  diagnosis: 0 1 * * * ?  # everyday 1am. 0/30 * * * * ? each 30sg
+  diagnosis: 0 0 1 * * ?  # At 01:00:00am every day. 0/30 * * * * ? each 30sg
+  treatment: 0 0 4 * * ?   # At 04:00:00am every day. 0/30 * * * * ? each 30sg
 

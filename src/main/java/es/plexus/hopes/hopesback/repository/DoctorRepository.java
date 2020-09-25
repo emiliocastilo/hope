@@ -20,4 +20,9 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 			+ " OR LOWER(doc.user.email) like CONCAT('%',LOWER(:search),'%') ")
 	Page<Doctor> findDoctorsBySearch(@Param("search") String search, Pageable pageable);
 
+	boolean existsByDni(String dni);
+
+	boolean existsByCollegeNumber(Long collegeNumber);
+
+	boolean existsByPhone(String phone);
 }

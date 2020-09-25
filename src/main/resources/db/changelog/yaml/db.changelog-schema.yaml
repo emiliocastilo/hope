@@ -48,11 +48,20 @@ databaseChangeLog:
     file: ../sql/schema/016-schema.sql
     relativeToChangelogFile: true
 - include:
+    file: ../sql/schema/017-schema.sql
+    relativeToChangelogFile: true
+- include:
     file: ../sql/schema/018-schema.sql
     relativeToChangelogFile: true
 - include:
     file: ../sql/schema/019-schema.sql
     relativeToChangelogFile: true
 - include:
-      file: ../sql/schema/020-schema.sql
-      relativeToChangelogFile: true
+    file: ../sql/schema/020-schema.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/schema/021-schema.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/schema/022-schema.sql
+    relativeToChangelogFile: true

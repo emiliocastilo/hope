@@ -1,0 +1,8 @@
+{
+    "key": "secundary-diagnosis",
+    "form": "[{'type':'title','name':'DIAGNÓSTICO SECUNDARIO'}, {'type':'table','label':'Diagnósticos secundarios','name':'secondaryDiagnosis','actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}],'button':'add', 'columns':4,'fields':[{'type': 'datepicker','label': 'Fecha','name': 'dateCie','disabled': false}, {'type': 'input','label': 'Código CIE','name': 'cieCode','disabled': false,'calculated_back': true, 'formula': '/v1/cie', 'params':['cieCode']}, {'type': 'input','label': 'Descripción del diagnóstico CIE','name': 'description','disabled': false,'calculated_back': true, 'formula': '/v1/cie', 'params':['cieDescription']}, {'type': 'input','label': 'Otros datos','name': 'anotherData','disabled': false,'placeholder': 'otros datos'}]} ]",
+    "buttons": "['save']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}

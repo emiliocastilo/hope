@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.DispensationDTO;
-import es.plexus.hopes.hopesback.controller.model.FormDispensationDTO;
+import es.plexus.hopes.hopesback.controller.model.DoseDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
 import es.plexus.hopes.hopesback.service.MedicineService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -21,10 +20,9 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -163,6 +161,18 @@ public class MedicinesControllerTest {
 		verify(medicineService, times(1)).saveAll(any());
 	}
 
+	@Test
+	public void callFindDosesByMedicineIdShouldBeStatusOk() {
+		// given
+		given(medicineService.findDosesByMedicineId(anyLong())).willReturn(Collections.singletonList(mockDoseDTO()));
+
+		// when
+		List<DoseDTO> response = medicineController.findDosesByMedicineId(mockMedicineDTO().getId());
+
+		// then
+		assertNotNull(response);
+	}
+
 	//Mocks
 	private MedicineDTO mockMedicineDTO() {
 		MedicineDTO medicineDTO = new MedicineDTO();
@@ -184,6 +194,15 @@ public class MedicinesControllerTest {
 	private String mockJsonMedicine() {
 		String json = "{\"acronym\":\"" + mockMedicineDTO().getAcronym() + "\"}";
 		return json;
+	}
+
+	private DoseDTO mockDoseDTO() {
+		DoseDTO doseDTO = new DoseDTO();
+		doseDTO.setCodeAtc("Code Act");
+		doseDTO.setDescription("Description dose");
+		doseDTO.setDoseIndicated("Doses");
+		doseDTO.setRecommendation("Recommendation");
+		return doseDTO;
 	}
 
 }

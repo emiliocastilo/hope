@@ -1,0 +1,8 @@
+{
+    "key": "work-groups",
+    "form": "[{'type':'title','name':'Datos sobre ensayos clínicos'},  {'type': 'select','label': 'Grupo de Trabajo (Ensayo clínico)','name': 'workGroups','disabled': false, 'options': [ {'name':'Grupo 1','value':'Grupo 1'}, {'name':'Grupo 2','value':'Grupo 2'}, {'name':'Grupo 3','value':'Grupo 3'}, {'name':'Grupo 4','value':'Grupo 4'}, {'name':'Grupo 5','value':'Grupo 5'}, {'name':'Grupo 6','value':'Grupo 6'}, {'name':'Grupo 7','value':'Grupo 7'}, {'name':'Grupo 8','value':'Grupo 8'}, {'name':'Grupo 9','value':'Grupo 9'}, {'name':'Grupo 10','value':'Grupo 10'}]},  {'type':'radio','label':'Demuestra interés en participar en ensayo clínico','name':'interesting', 'radioButton':[{'optionName':'Sí','value':true}, {'optionName':'No','value':false}]},  {'type':'radio','label':'Participa en ensayo clínico','name':'participates', 'radioButton':[{'optionName':'Sí','value':true}, {'optionName':'No','value':false}]} ]",
+    "buttons": "['save','clean']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}

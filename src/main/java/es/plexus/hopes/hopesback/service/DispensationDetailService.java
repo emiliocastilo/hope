@@ -8,6 +8,7 @@ import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.utils.CsvUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.csv.CSVRecord;
 import org.hibernate.service.spi.ServiceException;
 import org.mapstruct.factory.Mappers;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormatSymbols;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -127,10 +130,10 @@ public class DispensationDetailService {
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 	}
 	
-	public Map<String, Map<String, String>> findMonthlyConsume(Integer lastYears, Boolean isAvg, String code) {
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsume(Integer lastYears, Boolean isAvg, String code) {
 		log.debug(CALLING_DB);
 		
-		Map<String, Map<String, String>> result = new HashMap<>();		
+		Map<String, Map<String, BigDecimal>> result = new HashMap<>();
 		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
 		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
 		
@@ -143,10 +146,10 @@ public class DispensationDetailService {
 		return result;
 	}
 	
-	public Map<String, Map<String, String>> findMonthlyConsumeAcumulated(Integer lastYears, Boolean isAvg, String code) {
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAcumulated(Integer lastYears, Boolean isAvg, String code) {
 		log.debug(CALLING_DB);
 		
-		Map<String, Map<String, String>> result = new HashMap<>();		
+		Map<String, Map<String, BigDecimal>> result = new HashMap<>();
 		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
 		LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
 		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
@@ -165,62 +168,71 @@ public class DispensationDetailService {
 				.map(Mappers.getMapper(DispensationDetailMapper.class)::entityToDto)
 				.collect(Collectors.toList());
 	}
+
+	public List<DispensationDetailDTO> findDispensationDetailByNhc(String nhc) {
+		List<DispensationDetail> dispensationDetailsList = dispensationDetailRepository.findDispensationDetailByNhc(nhc);
+		return dispensationDetailsList.stream()
+				.map(Mappers.getMapper(DispensationDetailMapper.class)::entityToDto)
+				.collect(Collectors.toList());
+	}
+
 	private void fillMonthlyConsume(int index,
 			LocalDateTime dateStartPeriod, LocalDateTime dateStopPeriod,
 			List<Long> listPatients, Boolean isAvg, String code,
-			Map<String, Map<String, String>> result) {
+			Map<String, Map<String, BigDecimal>> result) {
 		
 		YearMonth ymStopPeriod = YearMonth.from(dateStopPeriod);
 		YearMonth ymNow = YearMonth.from(LocalDateTime.now());
-		String resultAllPatients = "-";
-		String resultAllPatientsContolled = "-";
+		BigDecimal resultAllPatients = BigDecimal.ZERO;
+		BigDecimal resultAllPatientsContolled = BigDecimal.ZERO;
 		
 		if(!result.containsKey(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR])) {
-			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<String, String>());
+			result.put(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR], new HashMap<>());
 		}
-		
+
 		if(ymStopPeriod.isAfter(ymNow)) {			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Todos los pacientes", resultAllPatients);
+					dateStopPeriod.getYear() + " - Todos los pacientes", resultAllPatients.setScale(2, RoundingMode.HALF_UP));
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Pacientes Controlados ", resultAllPatientsContolled);
+					dateStopPeriod.getYear() + " - Pacientes Controlados ", resultAllPatientsContolled.setScale(2, RoundingMode.HALF_UP));
 		} else {
-			
+
 			// Consumo de todos los pacientes separado por meses
 			Double consumeByMonth = dispensationDetailRepository.findResultsAllPatiensByMonth(
-					dateStartPeriod, dateStopPeriod, code);			
-			
+					dateStartPeriod, dateStopPeriod, code);
+
 			//Consumo de todos los pacientes controlados (PASI=0) separado por meses
-			Double consumeByPasi = 0.0;
-						
+			Double consumeByPasi = 0.00;
+
 			for (Long patient : listPatients) {
-				consumeByPasi += 
+				consumeByPasi +=
 						dispensationDetailRepository.findResultsAllPasiPatiensByMonth(LocalDateTime.now().plusMonths(-6),
 								dateStartPeriod, dateStopPeriod, patient, code);
 			}
 			
-			if(isAvg) {
+			if(Boolean.TRUE.equals(isAvg)) {
 				if(consumeByMonth > 0) {
 					List<String> listPatientsForAvg = dispensationDetailRepository.findPatiensMonth(
 							dateStopPeriod.plusMonths(-3), dateStopPeriod.plusSeconds(-1));
-					if(listPatientsForAvg.size() > 0) {
+					if(CollectionUtils.isNotEmpty(listPatientsForAvg)) {
 						consumeByMonth /= listPatientsForAvg.size();
-						resultAllPatients = consumeByMonth.toString();
 						consumeByPasi /= listPatientsForAvg.size();
-						resultAllPatientsContolled = consumeByPasi.toString();
 					}
 				} else {
-					resultAllPatients = "0.0";
-					resultAllPatientsContolled = "0.0";
+					consumeByMonth  = 0.00;
+					consumeByPasi = 0.00;
 				}
 			}
-			
+
+			resultAllPatients = new BigDecimal(consumeByMonth);
+			resultAllPatientsContolled = new BigDecimal(consumeByPasi);
+
 			// Set result in current month
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Todos los pacientes", consumeByMonth.toString());
+					dateStopPeriod.getYear() + " - Todos los pacientes",resultAllPatients.setScale(2, RoundingMode.HALF_UP));
 			
 			result.get(MONTHS_OF_YEAR[index%NUM_MONTHS_OF_YEAR]).put(
-					dateStopPeriod.getYear() + " - Pacientes Controlados", consumeByPasi.toString());			
+					dateStopPeriod.getYear() + " - Pacientes Controlados", resultAllPatientsContolled.setScale(2, RoundingMode.HALF_UP));
 		}
 	}
 }

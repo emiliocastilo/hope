@@ -1,0 +1,8 @@
+{
+    "key": "leukocyte-antibody-antigen",
+    "form": "[{'type':'title','name':'ANTICUERPOS Y ANTÍGENO LEUCOCITARIO'}, {'type':'section','name':'Otros parámetros'}, {'type':'datepicker','label':'Fecha','name':'date','disabled':false}, {'type':'checkbox','label':'HLA-B27','name':'hbla','disabled':false,'placeholder':''}, {'type': 'select','name': 'ccp','label': 'CCP','options': [ {'name':'negativo','value':'negativo'}, {'name':'bajo','value':'bajo'}, {'name':'débilmente positivo','value':'débilmente positivo'}, {'name':'alto positivo','value':'alto positivo'}],'disabled': false,'placeholder': '' }, {'type':'checkbox','label':'FR','name':'fr','disabled':false,'placeholder':''}, {'type':'checkbox','label':'ANAs','name':'anas','disabled':false,'placeholder':''}, {'type': 'select','label': 'Patrón de fluorescencia (ANAs)','name': 'fluorescencePattern','options': [ {'name':'moteado','value':'moteado'}, {'name':'homogéneo','value':'homogéneo'}, {'name':'periférico','value':'periférico'}, {'name':'nucleolar','value':'nucleolar'}],'disabled': false,'placeholder': '' }]",
+    "buttons": "['save','clean']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}

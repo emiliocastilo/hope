@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import com.google.common.base.Throwables;
+import es.plexus.hopes.hopesback.controller.model.DoseDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
 import es.plexus.hopes.hopesback.repository.DoseRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
@@ -8,6 +9,7 @@ import es.plexus.hopes.hopesback.repository.model.Dose;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
+import es.plexus.hopes.hopesback.service.mapper.DoseMapper;
 import es.plexus.hopes.hopesback.service.mapper.MedicineMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -40,8 +42,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -107,6 +111,9 @@ public class MedicineService {
 				}
 			}
 			if (row.getRowNum() != 0) {
+				doseRepository.findByCodeAtcAndDescriptionAndDoseIndicated(dose.getCodeAtc()
+						, dose.getDescription()
+						, dose.getDoseIndicated()).ifPresent(doseToUpdate -> dose.setId(doseToUpdate.getId()));
 				doseRepository.save(dose);
 			}
 		} catch (IllegalStateException e) {
@@ -268,5 +275,28 @@ public class MedicineService {
 				.withIgnorePaths(IGNORE_PATHS)
 				.withIgnoreCase(true)
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+	}
+
+	public List<DoseDTO> findDosesByMedicineId(Long medicineId) {
+		List<DoseDTO> doseDTOPage = null;
+		Medicine medicine = medicineRepository.findById(medicineId).orElse(null);
+
+		if (Objects.nonNull(medicine)) {
+			List<Dose> doses = doseRepository.findByCodeAtc(medicine.getCodeAct());
+			doseDTOPage = doses.stream().map(DoseMapper.INSTANCE::entityToDto).collect(Collectors.toList());
+		}
+
+		return doseDTOPage;
+	}
+
+	public MedicineDTO findByNationalCode(String nationalCode) {
+		Optional<Medicine> medicine = medicineRepository.findByNationalCode(nationalCode);
+		MedicineDTO medicineDTO = null;
+
+		if (medicine.isPresent()) {
+			medicineDTO = MedicineMapper.INSTANCE.entityToDto(medicine.get());
+		}
+
+		return medicineDTO;
 	}
 }

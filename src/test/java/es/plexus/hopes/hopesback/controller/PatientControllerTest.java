@@ -1,10 +1,9 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientDTO;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.service.PatientService;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
+import es.plexus.hopes.hopesback.utils.MockUtils;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,10 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,11 +38,11 @@ public class PatientControllerTest {
 	public void callFindAllShouldBeStatusOk() {
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("id"));
 		// given
-		given(patientService.findPatientsByPathology(anyLong(), any(Pageable.class)))
+		given(patientService.findPatientsByPathology(Collections.singletonList(1L), pageRequest))
 				.willReturn(getPageablePatient(pageRequest));
 
 		// when
-		Page<PatientDTO> response = patientController.findAll(1L, pageRequest);
+		Page<PatientDTO> response = patientController.findAll(Collections.singletonList(1L), pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -57,18 +53,18 @@ public class PatientControllerTest {
 	public void callFindAllShouldThrowException() throws Exception {
 		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
 		// given
-		given(patientService.findPatientsByPathology(anyLong(), any(Pageable.class)))
+		given(patientService.findPatientsByPathology(Collections.singletonList(0L), pageRequest))
 				.willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		Page<PatientDTO> response = patientController.findAll(0L, pageRequest);
+		Page<PatientDTO> response = patientController.findAll(Collections.singletonList(0L), pageRequest);
 
 	}
 
 	@Test
 	public void callFindByIdShouldBeStatusOK() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.findById(1L)).willReturn(mockPatientDTO());
+		given(patientService.findById(1L)).willReturn(MockUtils.mockPatientDTO());
 
 		// when
 		PatientDTO response = patientController.findById(1L);
@@ -102,7 +98,7 @@ public class PatientControllerTest {
 	@Test
 	public void callCreateShouldBeStatusOk() throws es.plexus.hopes.hopesback.service.exception.ServiceException {
 		// given
-		given(patientService.save(new PatientDTO())).willReturn(mockPatientDTO());
+		given(patientService.save(new PatientDTO())).willReturn(MockUtils.mockPatientDTO());
 
 		// when
 		PatientDTO response = patientController.create(new PatientDTO());
@@ -159,42 +155,14 @@ public class PatientControllerTest {
 		given(patientService.findById(anyLong())).willThrow(new ServiceException("Error: Too much pathologies"));
 
 		// when
-		patientController.update(mockPatientDTO());
+		patientController.update(MockUtils.mockPatientDTO());
 
 	}
 
 	//Mocks
 
-	private PatientDTO mockPatientDTO() {
-		PatientDTO patientDto = new PatientDTO();
-
-		patientDto.setAddress("Calle Falsa, 1");
-		patientDto.setBirthDate(LocalDateTime.now());
-		patientDto.setDni("012345678W");
-		patientDto.setEmail("email@hopes.com");
-		patientDto.setId(1L);
-		patientDto.setName("Peter");
-		patientDto.setFirstSurname("Perez");
-		patientDto.setLastSurname("Perez");
-		patientDto.setGenderCode("M");
-		patientDto.setNhc("NHC0001");
-		patientDto.setHealthCard("HC0001");
-		patientDto.setPhone("+356663");
-
-		Hospital hospital = new Hospital();
-		hospital.setId(1L);
-		patientDto.setHospital(hospital);
-
-
-		Set<PathologyDTO> pathologies = new HashSet<>();
-		PathologyDTO pathology = new PathologyDTO();
-		pathologies.add(pathology);
-		patientDto.setPathologies(pathologies);
-		return patientDto;
-	}
-
 	private PageImpl<PatientDTO> getPageablePatient(PageRequest pageRequest) {
-		return new PageImpl<>(Collections.singletonList(mockPatientDTO()), pageRequest, 1);
+		return new PageImpl<>(Collections.singletonList(MockUtils.mockPatientDTO()), pageRequest, 1);
 	}
 
 	@Test
@@ -213,7 +181,7 @@ public class PatientControllerTest {
 	}
 
 	private String mockJSONPatient() {
-		return "{\"name\":\"" + mockPatientDTO().getName() + "\"}";
+		return "{\"name\":\"" + MockUtils.mockPatientDTO().getName() + "\"}";
 	}
 
 }

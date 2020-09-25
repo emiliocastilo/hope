@@ -13,4 +13,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 	Optional<Role> findByCode(String code);
 
 	Page<Role> findByNameContainingIgnoreCase(final String name, final Pageable pageable);
+
+	boolean existsByName(String name);
 }

@@ -20,10 +20,10 @@ spring:
       password: root
   # Mail
   mail:
-    host: "in-v3.mailjet.com"
+    host: "mail.tecnologiasplexus.com"
     port: 587
-    username: "cc2db7b964d9c29959b03d5f2dc690f5"
-    password: "24d9d686cb16587debf7a316f8a3e033"
+    username: "support-hopes@plexus.services"
+    password: "2B4yrH3s9i9ZE"
     default-encoding: "UTF-8"
     protocol: smtp
     smtp:

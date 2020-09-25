@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @ApiModel
 @Data
@@ -16,4 +17,15 @@ public class TemplateDTO {
     @IsValidJson
     @NotEmpty
     private String form;
+
+    @NotEmpty
+    private String buttons;
+
+    private Boolean historify;
+
+    private Boolean isTable;
+
+    private String nameHistoricalDate;
+
+    private List<Object> fieldsToGraph;
 }

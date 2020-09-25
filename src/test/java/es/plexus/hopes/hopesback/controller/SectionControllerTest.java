@@ -4,7 +4,6 @@ import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.service.SectionService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
-import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,16 +75,6 @@ public class SectionControllerTest {
 
 		// then
 		verify(sectionService, times(1)).deleteById(anyLong());
-	}
-
-	@Test(expected = ServiceException.class)
-	public void callDeleteShouldThrowException() throws ServiceException {
-		// given
-		given(sectionService.deleteById(0L)).willThrow(ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception("No se encuentra el id"));
-
-		// when
-		sectionService.deleteById(0L);
-
 	}
 
 	@Test

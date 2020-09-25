@@ -1,0 +1,8 @@
+{
+    "key": "eav-pase",
+    "form": "[{'type':'title','name':'Evaluación del dolor'}, {'type':'section','name':'Escala analógica visual(EAV)'},{'type':'datepicker','label':'Fecha EAV','name':'eavDate','disabled':false},{'type':'input','label':'Prurito','name':'pruritusList','disabled':false},{'type':'input','label':'Valoración Global por el Paciente','name':'vgpList','disabled':false},{'type':'input','label':'Valoración Global por el Médico','name':'vgmList','disabled':false},{'type':'section','name':'Psoriatic Arthritis Screening and Evaluation (PASE)'},{'type':'datepicker','label':'Fecha PASE','name':'paseDate','disabled':false},{'type':'input','label':'PASE Score','name':'pruritusList','disabled':false},{'type':'input','label':'Valoración de la afectación funcional','name':'functionalImpairmentList','disabled':false},{'type':'input','label':'Valoración de los sintomas','name':'symptomsList','disabled':false}]",
+    "buttons": "['save','clean']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}
