@@ -33,4 +33,10 @@ public class Service {
 	@Column(name = "srv_description", length = 100)
 	private String description;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "services_pathologies",
+			joinColumns = @JoinColumn(name = "srp_srv_id"),
+			inverseJoinColumns = @JoinColumn(name = "srp_pth_id"))
+	private Set<Pathology> pathologies = new HashSet<>();
+
 }
