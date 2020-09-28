@@ -63,8 +63,8 @@ databaseChangeLog:
     file: ../sql/schema/021-schema.sql
     relativeToChangelogFile: true
 - include:
-    file: ../sql/schema/022-schema.sql
+    file: ../sql/schema/023-schema.sql
     relativeToChangelogFile: true
 - include:
-    file: ../sql/schema/023-schema.sql
+    file: ../sql/schema/024-schema.sql
     relativeToChangelogFile: true
