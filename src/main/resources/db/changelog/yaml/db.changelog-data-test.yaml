@@ -10,5 +10,8 @@ databaseChangeLog:
     file: ../sql/data-test/004-patients_treatments_graphs.sql
     relativeToChangelogFile: true
 - include:
-    file: ../sql/data-test/005-patients_treatments_graphs-actualizar_datos.sql
+    file: ../sql/data-test/005-rol-code.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/006-patients_treatments_graphs-actualizar_datos.sql
     relativeToChangelogFile: true

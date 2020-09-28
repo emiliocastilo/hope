@@ -99,16 +99,16 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String roleName) {
+	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String roleCode) {
 		UserSimpleDTO userSimpleDTO = null;
 
 		final Optional<User> user = userRepository.findByUsername(username);
 
 		if (user.isPresent()) {
 			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
-			Optional<RoleDTO> role = roleService.getRoleByName(roleName);
-			if (role.isPresent()) {
-				userSimpleDTO.setRolSelected(role.get());
+			RoleDTO role = roleService.getRoleByCode(roleCode);
+			if (role != null) {
+				userSimpleDTO.setRolSelected(role);
 			}
 		}
 

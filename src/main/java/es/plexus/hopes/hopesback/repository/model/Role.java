@@ -39,4 +39,7 @@ public class Role {
 			inverseJoinColumns = @JoinColumn(name = "rhs_hos_id"))
 	private Set<Hospital> hospitals = new HashSet<>();
 
+	@Column(name = "rol_code", length = 100)
+	private String code;
+
 }

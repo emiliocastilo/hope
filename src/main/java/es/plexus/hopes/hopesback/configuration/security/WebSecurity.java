@@ -1,6 +1,9 @@
 package es.plexus.hopes.hopesback.configuration.security;
 
+import es.plexus.hopes.hopesback.configuration.LDAPConfiguration;
+import es.plexus.hopes.hopesback.service.RoleService;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,10 +34,15 @@ import static es.plexus.hopes.hopesback.configuration.security.Constants.SAVE_NE
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-	private UserDetailsService userDetailsService;
+	private final UserDetailsService userDetailsService;
+	private final RoleService roleService;
+	private final LDAPConfiguration ldapConfiguration;
 
-	public WebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+	public WebSecurity(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, RoleService roleService,
+					   LDAPConfiguration ldapConfiguration) {
 		this.userDetailsService = userDetailsService;
+		this.roleService = roleService;
+		this.ldapConfiguration = ldapConfiguration;
 	}
 
 	@Bean
@@ -61,13 +69,24 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, RESET_PASS_URL).permitAll()
 				.antMatchers(HttpMethod.POST, SAVE_NEW_PASS_URL).permitAll()
 				.anyRequest().authenticated().and()
-				.addFilterBefore(new JWTAuthenticationFilter(authenticationManager(), userDetailsService), UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(new JWTAuthenticationFilter(authenticationManager(), userDetailsService, roleService), UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JWTAuthorizationFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder())
+				.and()
+			.ldapAuthentication()
+				.userDnPatterns(ldapConfiguration.getDnPatterns())
+				.groupSearchBase(ldapConfiguration.getGroupSearchBase())
+				.contextSource()
+					.url(ldapConfiguration.getUrl())
+					.and()
+				.passwordCompare()
+					.passwordEncoder(new BCryptPasswordEncoder())
+					.passwordAttribute(ldapConfiguration.getPasswordAttribute());
 	}
 
 	@Bean
@@ -84,4 +103,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 		return source;
 	}
+
+
 }

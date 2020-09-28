@@ -6,6 +6,11 @@ plexus:
         default-sender: "support-hopes@plexus.services"
         support-sender: "support-hopes@plexus.services"
         reset-password-url: "/user/reset_password?token="
+    ldap:
+      dn-patterns: "uid={0},ou=people"
+      group-search-base: "ou=groups"
+      url: "ldap://localhost:8389/dc=springframework,dc=org"
+      password-attribute: "userPassword"
 
 # Server settings
 server:
@@ -60,6 +65,13 @@ spring:
       force: true
   messages:
     basename: i18n.messages
+  ldap:
+    #TEST LDAP
+    embedded:
+      ldif: classpath:test-server.ldif
+      base-dn: dc=springframework,dc=org
+      port: 8389
+
 # Logging
 logging:
   level:
@@ -77,5 +89,4 @@ imagegallery:
 cronexpression:
   diagnosis: 0 0 1 * * ?  # At 01:00:00am every day. 0/30 * * * * ? each 30sg
   treatment: 0 0 4 * * ?   # At 04:00:00am every day. 0/30 * * * * ? each 30sg
-
 
