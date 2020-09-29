@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @ApiModel
@@ -26,6 +27,15 @@ public class RoleDTO {
 	@NotBlank
 	private String description;
 
-	@ApiModelProperty(position = 40, example = "['Hospital 1']", value = "Hospitales asociados al Rol")
-	private Set<HospitalDTO> hospitals;
+	@ApiModelProperty(position = 50, example = "Hospital 1", value = "Hospital asociados al Rol")
+	@NotNull
+	private HospitalDTO hospital;
+
+	@ApiModelProperty(position = 60, example = "Servicio 1", value = "Servicio asociado al Rol")
+	@NotNull
+	private ServiceDTO service;
+
+	@ApiModelProperty(position = 70, example = "Patología 1", value = "Patología asociada al Rol")
+	@NotNull
+	private PathologyDTO pathology;
 }

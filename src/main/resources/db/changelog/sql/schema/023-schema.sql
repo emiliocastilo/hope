@@ -15,27 +15,6 @@ COMMENT ON COLUMN hopes.users.usr_srv_id IS 'Columna que contiene el identificad
 
 ALTER TABLE hopes.users ADD CONSTRAINT usr_srv_id_fk FOREIGN KEY (usr_srv_id) REFERENCES hopes.services(srv_id);
 
--- object: hopes.roles_hospitals | type: TABLE --
-DROP TABLE IF EXISTS hopes.roles_hospitals CASCADE;
-CREATE TABLE hopes.roles_hospitals
-(
-    rhs_id     serial,
-    rhs_hos_id smallint NOT NULL,
-    rhs_rol_id smallint NOT NULL,
-    CONSTRAINT rhs_id_pk PRIMARY KEY (rhs_id),
-    CONSTRAINT rhs_hos_id_fk FOREIGN KEY (rhs_hos_id) REFERENCES hopes.hospitals (hos_id),
-    CONSTRAINT rhs_rol_id_fk FOREIGN KEY (rhs_rol_id) REFERENCES hopes.roles (rol_id)
-);
--- COMENTARIOS
-COMMENT ON TABLE hopes.roles_hospitals IS 'Tabla intermedia que representa la relación entre las entidades HOSPITALS y ROLES';
-COMMENT ON COLUMN hopes.roles_hospitals.rhs_id IS 'Columna con el id de la tabla';
-COMMENT ON COLUMN hopes.roles_hospitals.rhs_hos_id IS 'Columna que contiene el ID del hospital';
-COMMENT ON COLUMN hopes.roles_hospitals.rhs_rol_id IS 'Columna que contiene el ID del rol';
-COMMENT ON CONSTRAINT rhs_id_pk ON hopes.roles_hospitals IS 'pk de la tabla ROLES_HOSPITALS';
-COMMENT ON CONSTRAINT rhs_hos_id_fk ON hopes.roles_hospitals IS 'fk Relacion con la tabla HOSPITALS';
-COMMENT ON CONSTRAINT rhs_rol_id_fk ON hopes.roles_hospitals IS 'fk Relacion con la tabla ROLES';
--- ddl-end --
-
 -- object: hopes.services_pathologies | type: TABLE --
 DROP TABLE IF EXISTS hopes.services_pathologies CASCADE;
 CREATE TABLE hopes.services_pathologies
@@ -44,6 +23,7 @@ CREATE TABLE hopes.services_pathologies
     srp_srv_id smallint NOT NULL,
     srp_pth_id smallint NOT NULL,
     CONSTRAINT srp_id_pk PRIMARY KEY (srp_id),
+    CONSTRAINT srp_srv_pth_unique UNIQUE (srp_srv_id, srp_pth_id),
     CONSTRAINT srp_srv_id_fk FOREIGN KEY (srp_srv_id) REFERENCES hopes.services (srv_id),
     CONSTRAINT srp_pth_id_fk FOREIGN KEY (srp_pth_id) REFERENCES hopes.pathologies (pth_id)
 );
@@ -59,3 +39,19 @@ COMMENT ON CONSTRAINT srp_srv_id_fk ON hopes.services_pathologies IS 'fk Relacio
 
 -- Eliminar las tablas de doctor
 DROP TABLE IF EXISTS hopes.doctors CASCADE;
+
+-- Eliminar tabla HOSPITALS_PATHOLOGIES
+DROP TABLE IF EXISTS hopes.hospitals_pathologies;
+
+-- Añadir columnas nuevas en la tabla ROLES
+ALTER TABLE hopes.roles ADD COLUMN rol_hos_id bigint; --NOT NULL;
+ALTER TABLE hopes.roles ADD COLUMN rol_srv_id bigint; --NOT NULL;
+ALTER TABLE hopes.roles ADD COLUMN rol_pth_id bigint; --NOT NULL;
+
+COMMENT ON COLUMN hopes.roles.rol_hos_id IS 'Columna que contiene el identificador del hospital asociado al rol';
+COMMENT ON COLUMN hopes.roles.rol_srv_id IS 'Columna que contiene el identificador del servicio asociado al rol';
+COMMENT ON COLUMN hopes.roles.rol_pth_id IS 'Columna que contiene el identificador de la patología asociada al rol';
+
+ALTER TABLE hopes.roles ADD CONSTRAINT rol_hos_id_fk FOREIGN KEY (rol_hos_id) REFERENCES hopes.hospitals(hos_id);
+ALTER TABLE hopes.roles ADD CONSTRAINT rol_srv_id_fk FOREIGN KEY (rol_srv_id) REFERENCES hopes.services(srv_id);
+ALTER TABLE hopes.roles ADD CONSTRAINT rol_pth_id_fk FOREIGN KEY (rol_pth_id) REFERENCES hopes.pathologies(pth_id);

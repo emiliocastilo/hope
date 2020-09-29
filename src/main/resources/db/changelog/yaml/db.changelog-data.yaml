@@ -20,6 +20,3 @@ databaseChangeLog:
 - include:
       file: ../sql/data/007-changes_sections.sql
       relativeToChangelogFile: true
-- include:
-      file: ../sql/data/008-relacion_rol_hospital_servicio_patologia.sql
-      relativeToChangelogFile: true
