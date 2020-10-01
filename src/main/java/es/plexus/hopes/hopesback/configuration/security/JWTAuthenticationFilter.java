@@ -71,7 +71,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				RoleDTO roleDTO = this.roleService.getRoleByCode(authority.getAuthority());
 
 				if (roleDTO != null) {
-					roles.add(roleDTO.getName());
+					StringBuilder role = new StringBuilder();
+					role.append(roleDTO.getName()).append(" · ").append(roleDTO.getHospital().getName()).append(" · ").append(roleDTO.getPathology().getName());
+					roles.add(role.toString());
 				}
 			}
 		}
