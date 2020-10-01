@@ -1,5 +1,7 @@
 package es.plexus.hopes.hopesback.repository;
 
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,9 +12,11 @@ import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-	Optional<Role> findByCode(String code);
+    Optional<Role> findByCode(String code);
 
-	Page<Role> findByNameContainingIgnoreCase(final String name, final Pageable pageable);
+    Page<Role> findByNameContainingIgnoreCase(final String name, final Pageable pageable);
 
-	boolean existsByName(String name);
+    boolean existsByName(String name);
+
+    Optional<Role> findByNameAndHospitalAndPathology(String name, Hospital hospitalId, Pathology pathologyId);
 }

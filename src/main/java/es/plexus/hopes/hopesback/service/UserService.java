@@ -17,8 +17,8 @@ import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mail.MailService;
 import es.plexus.hopes.hopesback.service.mail.TemplateMail;
 import es.plexus.hopes.hopesback.service.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -38,6 +38,7 @@ import static es.plexus.hopes.hopesback.configuration.security.Constants.FIRST_T
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class UserService {
 
 	private final UserMapper userMapper;
@@ -50,25 +51,7 @@ public class UserService {
 	private final MailTemplateConfiguration mailTemplateConfiguration;
 	private static final String EVERY_30_MINUTES = "0 0/30 * * * ?";
 	private final ServiceService serviceService;
-
-	//ToDo refactorizar para eliminar la sobrecarga del constructor
-	@Autowired
-	public UserService(final UserRepository userRepository, final UserMapper userMapper,
-					   final RoleService roleService, final HospitalService hospitalService,
-					   final PasswordManagementService passwordManagementService,
-					   final MailService mailService,
-					   final TokenRepository tokenRepository,
-					   final MailTemplateConfiguration mailTemplateConfiguration, ServiceService serviceService) {
-		this.userRepository = userRepository;
-		this.userMapper = userMapper;
-		this.roleService = roleService;
-		this.hospitalService = hospitalService;
-		this.passwordManagementService = passwordManagementService;
-		this.mailService = mailService;
-		this.tokenRepository = tokenRepository;
-		this.mailTemplateConfiguration = mailTemplateConfiguration;
-		this.serviceService = serviceService;
-	}
+	private final PathologyService pathologyService;
 
 
 	public Page<UserDTO> getAllUsers(Pageable pageable) {
@@ -99,16 +82,16 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String roleCode) {
+	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String role) {
 		UserSimpleDTO userSimpleDTO = null;
 
 		final Optional<User> user = userRepository.findByUsername(username);
 
 		if (user.isPresent()) {
 			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
-			RoleDTO role = roleService.getRoleByCode(roleCode);
-			if (role != null) {
-				userSimpleDTO.setRolSelected(role);
+			RoleDTO roleDTO = roleService.findByNameHospitalAndPathology(role);
+			if (roleDTO != null) {
+				userSimpleDTO.setRolSelected(roleDTO);
 			}
 		}
 

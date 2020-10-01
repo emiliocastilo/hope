@@ -1,18 +1,26 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.controller.model.HospitalDTO;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.repository.RoleRepository;
+import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
+import es.plexus.hopes.hopesback.service.mapper.HospitalMapper;
+import es.plexus.hopes.hopesback.service.mapper.PathologyMapper;
 import es.plexus.hopes.hopesback.service.mapper.RoleMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -24,19 +32,15 @@ import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalo
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class RoleService {
 
 	private final RoleRepository roleRepository;
 	private final RoleMapper roleMapper;
 	private final MenuService menuService;
-
-	@Autowired
-	public RoleService(final RoleRepository roleRepository, final RoleMapper roleMapper,
-					   final MenuService menuService) {
-		this.roleRepository = roleRepository;
-		this.roleMapper = roleMapper;
-		this.menuService = menuService;
-	}
+	private final HospitalService hospitalService;
+	private final PathologyService pathologyService;
+	private final HospitalMapper hospitalMapper;
 
 	public Page<RoleDTO> getAllRoles(final Pageable pageable) {
 		log.debug("Calling BD. Obtener todos los roles...");
@@ -146,6 +150,22 @@ public class RoleService {
 		}
 
 		return menuDTO;
+	}
+
+	public RoleDTO findByNameHospitalAndPathology(String roleSt) {
+
+		String[] roleArray = roleSt.split(" · ");
+		Hospital hospital = hospitalMapper.hospitalDTOToHospitalConverter(hospitalService.findByName(roleArray[1]));
+		Pathology pathology = PathologyMapper.INSTANCE.dtoToEntity(pathologyService.findByName(roleArray[2]));
+		Optional<Role> role = roleRepository.findByNameAndHospitalAndPathology(roleArray[0], hospital, pathology);
+
+		if (role.isPresent()) {
+			return roleMapper.roleToRoleDTOConverter(role.get());
+		} else {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+					MessageFormat.format("Rol con nombre {0}, hospital {1} y patología {2} no encontrado. " +
+							"El rol es requerido.", roleArray[0], roleArray[1], roleArray[2]));
+		}
 	}
 
 	private Optional<Role> getOneRoleByIdCommon(Long id) {
