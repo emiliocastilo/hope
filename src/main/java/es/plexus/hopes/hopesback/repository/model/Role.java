@@ -34,7 +34,7 @@ public class Role {
 	@Column(name = "rol_description", length = 500)
 	private String description;
 
-	@Column(name = "rol_code", length = 100)
+	@Column(name = "rol_code", length = 100, unique = true)
 	private String code;
 
 	@ManyToOne

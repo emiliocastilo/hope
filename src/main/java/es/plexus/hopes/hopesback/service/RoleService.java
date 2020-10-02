@@ -14,13 +14,12 @@ import es.plexus.hopes.hopesback.service.mapper.PathologyMapper;
 import es.plexus.hopes.hopesback.service.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -71,13 +70,63 @@ public class RoleService {
 	}
 
 	public RoleDTO addRole(final RoleDTO roleDTO) {
-		Role role = addRoleCommon(roleDTO);
+
+		roleDTO.setCode(codeRoleGenerator(roleDTO));
 
 		log.debug("Llamando DB. Guardando record.");
-		existRole(roleDTO);
-		role = roleRepository.save(role);
+		Role role = addRoleCommon(roleDTO);
+		try {
+			role = roleRepository.save(role);
+		}catch (DataIntegrityViolationException ex) {
+			throw ServiceExceptionCatalog.ROLE_CODE_VIOLATION_CONSTRAINT_EXCEPTION.exception(
+					String.format("El rol con code %s ya existe para el hospital %s con patología %s",
+							role.getCode(), roleDTO.getHospital().getName(), roleDTO.getPathology().getName()));
+		}
 
 		return roleMapper.roleToRoleDTOConverter(role);
+	}
+
+	/**
+	 * Método para generar un código basado en el nombre del rol, el hospital y la patología asociada.
+	 *
+	 * @param roleDTO modelo
+	 * @return código autogenerado
+	 */
+	private String codeRoleGenerator(RoleDTO roleDTO) {
+
+		HospitalDTO hospitalDTO = hospitalService.findById(roleDTO.getHospital().getId());
+		Optional<Pathology> pathology = pathologyService.getOnePathologyById(roleDTO.getPathology().getId());
+		String split = "_";
+		StringBuilder code = new StringBuilder();
+
+		if (hospitalDTO != null && pathology.isPresent()) {
+			String roleName = roleDTO.getName().toUpperCase().replaceAll("\\s", "");
+			String[] hospitalNameArray = hospitalDTO.getName().toUpperCase().split(" ");
+			StringBuilder hospitalCode = new StringBuilder(String.valueOf(hospitalDTO.getId()));
+			String[] pathologyNameArray = pathology.get().getName().toUpperCase().split(" ");
+			StringBuilder pathologyCode = new StringBuilder(String.valueOf(pathology.get().getId()));
+
+			nameTrimmer(hospitalNameArray, hospitalCode);
+			nameTrimmer(pathologyNameArray, pathologyCode);
+
+			code.append("ROLE").append(split).append(roleName).append(split).append(hospitalCode).append(split)
+					.append(pathologyCode);
+		}
+
+		return code.toString();
+	}
+
+	/**
+	 * Método para acortar el nombre de un hospital o una patología, y así usarlo en el código del Rol
+	 *
+	 * @param nameArray   palabras que componen el nombre del hospital o la patología
+	 * @param codeBuilder código que se usará para componer el código del rol
+	 */
+	private void nameTrimmer(String[] nameArray, StringBuilder codeBuilder) {
+
+		for (String word : nameArray) {
+			codeBuilder.append(word.charAt(0)).append(word.length()>1?word.charAt(1):"");
+		}
 	}
 
 	private void existRole(RoleDTO roleDTO) {

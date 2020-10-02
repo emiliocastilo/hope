@@ -55,3 +55,6 @@ COMMENT ON COLUMN hopes.roles.rol_pth_id IS 'Columna que contiene el identificad
 ALTER TABLE hopes.roles ADD CONSTRAINT rol_hos_id_fk FOREIGN KEY (rol_hos_id) REFERENCES hopes.hospitals(hos_id);
 ALTER TABLE hopes.roles ADD CONSTRAINT rol_srv_id_fk FOREIGN KEY (rol_srv_id) REFERENCES hopes.services(srv_id);
 ALTER TABLE hopes.roles ADD CONSTRAINT rol_pth_id_fk FOREIGN KEY (rol_pth_id) REFERENCES hopes.pathologies(pth_id);
+
+-- La columna CODE de ROLES debe ser única.
+ALTER TABLE hopes.roles ADD CONSTRAINT rol_code_unique UNIQUE (rol_code);
