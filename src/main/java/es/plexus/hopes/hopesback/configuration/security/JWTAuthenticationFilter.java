@@ -64,14 +64,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 
-		List<String> roles = new ArrayList<>();
+		List<RoleDTO> roles = new ArrayList<>();
 		if (!authorities.isEmpty()) {
 			for (GrantedAuthority authority : authorities) {
 
 				RoleDTO roleDTO = this.roleService.getRoleByCode(authority.getAuthority());
 
 				if (roleDTO != null) {
-					roles.add(roleDTO.getName() + " · " + roleDTO.getHospital().getName() + " · " + roleDTO.getPathology().getName());
+					roles.add(roleDTO);
 				}
 			}
 		}
