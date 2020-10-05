@@ -4,13 +4,11 @@ import es.plexus.hopes.hopesback.controller.model.HospitalDTO;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.repository.RoleRepository;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.HospitalMapper;
-import es.plexus.hopes.hopesback.service.mapper.PathologyMapper;
 import es.plexus.hopes.hopesback.service.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -75,59 +72,16 @@ public class RoleService {
 
 		log.debug("Llamando DB. Guardando record.");
 		Role role = addRoleCommon(roleDTO);
+
 		try {
 			role = roleRepository.save(role);
-		}catch (DataIntegrityViolationException ex) {
+		} catch (DataIntegrityViolationException ex) {
 			throw ServiceExceptionCatalog.ROLE_CODE_VIOLATION_CONSTRAINT_EXCEPTION.exception(
 					String.format("El rol con code %s ya existe para el hospital %s con patología %s",
 							role.getCode(), roleDTO.getHospital().getName(), roleDTO.getPathology().getName()));
 		}
 
 		return roleMapper.roleToRoleDTOConverter(role);
-	}
-
-	/**
-	 * Método para generar un código basado en el nombre del rol, el hospital y la patología asociada.
-	 * El código es ROLE_NOMBRE ROLE_ID HOSPITAL + 2 CARACTERES DE CADA PALABRA DEL NOMBRE_ID PATOLOGIA +2 CARACTERES DE CADA PALABRA DEL NOMBRE
-	 *
-	 * @param roleDTO modelo
-	 * @return código autogenerado
-	 */
-	private String codeRoleGenerator(RoleDTO roleDTO) {
-
-		HospitalDTO hospitalDTO = hospitalService.findById(roleDTO.getHospital().getId());
-		Optional<Pathology> pathology = pathologyService.getOnePathologyById(roleDTO.getPathology().getId());
-		String split = "_";
-		StringBuilder code = new StringBuilder();
-
-		if (hospitalDTO != null && pathology.isPresent()) {
-			String roleName = roleDTO.getName().toUpperCase().replaceAll("\\s", "");
-			String[] hospitalNameArray = hospitalDTO.getName().toUpperCase().split(" ");
-			StringBuilder hospitalCode = new StringBuilder(String.valueOf(hospitalDTO.getId()));
-			String[] pathologyNameArray = pathology.get().getName().toUpperCase().split(" ");
-			StringBuilder pathologyCode = new StringBuilder(String.valueOf(pathology.get().getId()));
-
-			nameTrimmer(hospitalNameArray, hospitalCode);
-			nameTrimmer(pathologyNameArray, pathologyCode);
-
-			code.append("ROLE").append(split).append(roleName).append(split).append(hospitalCode).append(split)
-					.append(pathologyCode);
-		}
-
-		return code.toString();
-	}
-
-	/**
-	 * Método para acortar el nombre de un hospital o una patología, y así usarlo en el código del Rol
-	 *
-	 * @param nameArray   palabras que componen el nombre del hospital o la patología
-	 * @param codeBuilder código que se usará para componer el código del rol
-	 */
-	private void nameTrimmer(String[] nameArray, StringBuilder codeBuilder) {
-
-		for (String word : nameArray) {
-			codeBuilder.append(word.charAt(0)).append(word.length()>1?word.charAt(1):"");
-		}
 	}
 
 	private void existRole(RoleDTO roleDTO) {
@@ -148,12 +102,20 @@ public class RoleService {
 	}
 
 	public RoleDTO updateRole(final RoleDTO roleDTO) throws ServiceException {
+
 		checkRoleExistence(roleDTO.getId());
+		roleDTO.setCode(codeRoleGenerator(roleDTO));
 
 		Role role = addRoleCommon(roleDTO);
-		log.debug("Llamando DB. Registro actualizado con id=" + roleDTO.getId());
-		existRole(roleDTO);
-		role = roleRepository.save(role);
+
+		try {
+			log.debug("Llamando DB. Registro actualizado con id=" + roleDTO.getId());
+			role = roleRepository.save(role);
+		} catch (DataIntegrityViolationException ex) {
+			throw ServiceExceptionCatalog.ROLE_CODE_VIOLATION_CONSTRAINT_EXCEPTION.exception(
+					String.format("El rol con code %s ya existe para el hospital %s con patología %s",
+							role.getCode(), roleDTO.getHospital().getName(), roleDTO.getPathology().getName()));
+		}
 
 		return roleMapper.roleToRoleDTOConverter(role);
 	}
@@ -202,22 +164,6 @@ public class RoleService {
 		return menuDTO;
 	}
 
-	public RoleDTO findByNameHospitalAndPathology(String roleSt) {
-
-		String[] roleArray = roleSt.split(" · ");
-		Hospital hospital = hospitalMapper.hospitalDTOToHospitalConverter(hospitalService.findByName(roleArray[1]));
-		Pathology pathology = PathologyMapper.INSTANCE.dtoToEntity(pathologyService.findByName(roleArray[2]));
-		Optional<Role> role = roleRepository.findByNameAndHospitalAndPathology(roleArray[0], hospital, pathology);
-
-		if (role.isPresent()) {
-			return roleMapper.roleToRoleDTOConverter(role.get());
-		} else {
-			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
-					MessageFormat.format("Rol con nombre {0}, hospital {1} y patología {2} no encontrado. " +
-							"El rol es requerido.", roleArray[0], roleArray[1], roleArray[2]));
-		}
-	}
-
 	private Optional<Role> getOneRoleByIdCommon(Long id) {
 		log.debug(String.format("Llamando a la DB. Buscando rol por id = %d", id));
 		return roleRepository.findById(id);
@@ -233,6 +179,50 @@ public class RoleService {
 		if (!storedRole.isPresent()) {
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
 					.exception(String.format("RoleDto con id = %s no encontrado ...", id));
+		}
+	}
+
+	/**
+	 * Método para generar un código basado en el nombre del rol, el hospital y la patología asociada.
+	 * El código es ROLE_NOMBRE ROLE_ID HOSPITAL + 2 CARACTERES DE CADA PALABRA DEL NOMBRE_ID PATOLOGIA +2 CARACTERES DE CADA PALABRA DEL NOMBRE
+	 *
+	 * @param roleDTO modelo
+	 * @return código autogenerado
+	 */
+	private String codeRoleGenerator(RoleDTO roleDTO) {
+
+		HospitalDTO hospitalDTO = hospitalService.findById(roleDTO.getHospital().getId());
+		Optional<Pathology> pathology = pathologyService.getOnePathologyById(roleDTO.getPathology().getId());
+		String split = "_";
+		StringBuilder code = new StringBuilder();
+
+		if (hospitalDTO != null && pathology.isPresent()) {
+			String roleName = roleDTO.getName().toUpperCase().replaceAll("\\s", "");
+			String[] hospitalNameArray = hospitalDTO.getName().toUpperCase().split(" ");
+			StringBuilder hospitalCode = new StringBuilder(String.valueOf(hospitalDTO.getId()));
+			String[] pathologyNameArray = pathology.get().getName().toUpperCase().split(" ");
+			StringBuilder pathologyCode = new StringBuilder(String.valueOf(pathology.get().getId()));
+
+			nameTrimmer(hospitalNameArray, hospitalCode);
+			nameTrimmer(pathologyNameArray, pathologyCode);
+
+			code.append("ROLE").append(split).append(roleName).append(split).append(hospitalCode).append(split)
+					.append(pathologyCode);
+		}
+
+		return code.toString();
+	}
+
+	/**
+	 * Método para acortar el nombre de un hospital o una patología, y así usarlo en el código del Rol
+	 *
+	 * @param nameArray   palabras que componen el nombre del hospital o la patología
+	 * @param codeBuilder código que se usará para componer el código del rol
+	 */
+	private void nameTrimmer(String[] nameArray, StringBuilder codeBuilder) {
+
+		for (String word : nameArray) {
+			codeBuilder.append(word.charAt(0)).append(word.length()>1?word.charAt(1):"");
 		}
 	}
 }
