@@ -88,6 +88,7 @@ public class RoleService {
 
 	/**
 	 * Método para generar un código basado en el nombre del rol, el hospital y la patología asociada.
+	 * El código es ROLE_NOMBRE ROLE_ID HOSPITAL + 2 CARACTERES DE CADA PALABRA DEL NOMBRE_ID PATOLOGIA +2 CARACTERES DE CADA PALABRA DEL NOMBRE
 	 *
 	 * @param roleDTO modelo
 	 * @return código autogenerado

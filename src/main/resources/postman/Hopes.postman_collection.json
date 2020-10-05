@@ -1801,13 +1801,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/hospitals",
+							"raw": "{{dev}}/v1/hospitals/1",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"hospitals"
+								"hospitals",
+								"1"
 							]
 						}
 					},
@@ -1842,6 +1843,35 @@
 							"path": [
 								"v1",
 								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findByid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/services/1",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"services",
+								"1"
 							]
 						}
 					},
@@ -3457,7 +3487,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"PruebaRol\",\n    \"description\": \"Rol de prueba\",\n    \"hospitals\":[\n    \t{\"id\":\"1\",\n        \"services\":[\n            {\"id\":4,\n            \"pathologies\":[\n                {\"id\":2}\n            ]}\n        ]}\n    ]\n}",
+							"raw": "{\n    \"name\": \"PruebaRol\",\n    \"description\": \"Rol de prueba\",\n    \"hospital\":{\n        \"id\":1,\n        \"name\": \"Hopes - Servicios de Salud\"\n    },\n    \"service\":{\n        \"id\":4,\n        \"name\": \"Cuidados paliativos\"\n    },\n    \"pathology\":{\n        \"id\":2,\n        \"name\": \"Reumatología\",\n        \"description\": \"Patologia Reumatología\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
