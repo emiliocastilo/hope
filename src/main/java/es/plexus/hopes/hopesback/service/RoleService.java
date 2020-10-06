@@ -124,9 +124,10 @@ public class RoleService {
 		return roleSet;
 	}
 
-	public Optional<RoleDTO> getRoleByName(String name) {
-		Role role = roleRepository.findByName(name).orElse(null);
-		return Optional.of(roleMapper.roleToRoleDTOConverter(role));
+	public RoleDTO getRoleByCode(String code) {
+		Role role = roleRepository.findByCode(code).orElse(null);
+
+		return roleMapper.roleToRoleDTOConverter(role);
 	}
 
 	public MenuDTO getMenuByRole(final Long id) throws ServiceException {

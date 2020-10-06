@@ -160,7 +160,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findMonthlyConsume(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsume(2);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -175,7 +175,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findMonthlyConsumeAcumulated(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAcumulated(2);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -190,7 +190,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findMonthlyConsumeAvg(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAvg(2);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -205,7 +205,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findMonthlyConsumeAcumulatedAvg(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAcumulatedAvg(2);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -220,7 +220,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findTotalCostTreatment(2, "D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatment(2, "D11AH05");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -235,7 +235,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findTotalCostTreatmentAcumulated(2, "D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAcumulated(2, "D11AH05");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -250,7 +250,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findTotalCostTreatmentAvg(2,"D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAvg(2,"D11AH05");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -265,7 +265,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, String>> response = dispensationDetailController.findTotalCostTreatmentAcumulatedAvg(2, "D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAcumulatedAvg(2, "D11AH05");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -297,10 +297,10 @@ public class DispensationDetailControllerTest {
 	}
 	
 	//Mocks
-	private Map<String, Map<String, String>> mockMapMapStringString() {
-		Map<String, Map<String, String>> map = new HashMap<>();
-		Map<String, String> subMap = new HashMap<>();
-		subMap.put("Type", "Value");
+	private Map<String, Map<String, BigDecimal>> mockMapMapStringString() {
+		Map<String, Map<String, BigDecimal>> map = new HashMap<>();
+		Map<String, BigDecimal> subMap = new HashMap<>();
+		subMap.put("Type", BigDecimal.ONE);
 		map.put("key", subMap);
 		return map;
 	}
