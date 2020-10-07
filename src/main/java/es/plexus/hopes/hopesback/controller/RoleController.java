@@ -47,17 +47,22 @@ public class RoleController {
 	@ApiOperation("Recuperar todos los roles")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public Page<RoleDTO> getAllRoles(@PageableDefault(size = 5) Pageable pageable) {
+	public Page<RoleDTO> getAllRoles(
+			@ApiParam(value = "ID role usuario loggeado")
+			@RequestParam(value = "idRoleSelected") Long idRoleSelected,
+			@PageableDefault(size = 5) Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return roleService.getAllRoles(pageable);
+		return roleService.getAllRoles(idRoleSelected, pageable);
 	}
 
 	@ApiOperation("Recuperar todos los roles")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(ROLE_LIST_MAPPING)
-	public List<RoleDTO> getAllRoles() {
+	public List<RoleDTO> getAllRoles(
+			@ApiParam(value = "ID role usuario loggeado")
+			@RequestParam(value = "idRoleSelected") Long idRoleSelected) {
 		log.debug(CALLING_SERVICE);
-		return roleService.getAllRoles();
+		return roleService.getAllRoles(idRoleSelected);
 	}
 
 	@ApiOperation("Recuperar un rol por identificador")

@@ -56,9 +56,12 @@ public class UserController {
 	@ApiOperation("Recuperar todos los usuarios")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public Page<UserDTO> getAllUsers(@PageableDefault(size = 5) Pageable pageable) {
+	public Page<UserDTO> getAllUsers(
+			@ApiParam(value = "ID role usuario loggeado")
+			@RequestParam(value = "idRoleSelected") Long idRoleSelected,
+			@PageableDefault(size = 5) Pageable pageable) {
 		log.info("Get all users");
-		return userService.getAllUsers(pageable);
+		return userService.getAllUsers(idRoleSelected, pageable);
 	}
 
 	@ApiOperation("Recuperar un usuario por identificador")

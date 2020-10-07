@@ -39,10 +39,10 @@ public class RoleControllerTest {
 	public void getAllRolesShouldBeStatusOk() {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
-		given(roleService.getAllRoles(any(Pageable.class))).willReturn(getPageableRole(pageRequest));
+		given(roleService.getAllRoles(anyLong(), any(Pageable.class))).willReturn(getPageableRole(pageRequest));
 
 		// when
-		Page<RoleDTO> response = roleController.getAllRoles(pageRequest);
+		Page<RoleDTO> response = roleController.getAllRoles(1L, pageRequest);
 
 		// then
 		assertNotNull(response);
@@ -51,10 +51,10 @@ public class RoleControllerTest {
 	@Test
 	public void getAllRolesListShouldBeStatusOk() {
 		// given
-		given(roleService.getAllRoles()).willReturn(Collections.singletonList(mockRoleDTO()));
+		given(roleService.getAllRoles(anyLong())).willReturn(Collections.singletonList(mockRoleDTO()));
 
 		// when
-		List<RoleDTO> response = roleController.getAllRoles();
+		List<RoleDTO> response = roleController.getAllRoles(1L);
 
 		// then
 		assertNotNull(response);

@@ -46,10 +46,10 @@ public class UserControllerTest {
 	public void getAllUserShouldBeStatusOk() {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
-		given(userService.getAllUsers(any(Pageable.class))).willReturn(new PageImpl<>(Collections.singletonList(mockFullUser()), pageRequest, 1));
+		given(userService.getAllUsers(anyLong(), any(Pageable.class))).willReturn(new PageImpl<>(Collections.singletonList(mockFullUser()), pageRequest, 1));
 
 		// when
-		Page<UserDTO> response = userController.getAllUsers(pageRequest);
+		Page<UserDTO> response = userController.getAllUsers(1L, pageRequest);
 
 		// then
 		assertNotNull(response);

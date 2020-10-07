@@ -28,4 +28,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " OR CAST(usr.collegeNumber as text) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(usr.email) like CONCAT('%',LOWER(:search),'%') ")
     Page<User> findUsersBySearch(@Param("search") String search, Pageable pageable);
+
+    @Query(value = "select distinct usr from User usr" +
+            " JOIN usr.roles rol" +
+            " WHERE rol.hospital.id = (select rol1.hospital.id from Role rol1 where rol1.id = :idRole)" +
+            " AND rol.service.id = (SELECT rol1.service.id FROM Role rol1 where rol1.id = :idRole)" +
+            " AND rol.pathology.id = (SELECT rol1.pathology.id FROM Role rol1 where rol1.id = :idRole)")
+    Page<User> findUsersByRoleSelected(@Param("idRole") Long idRole, Pageable pageable);
 }

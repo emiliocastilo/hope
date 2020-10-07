@@ -1348,7 +1348,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users?page=0&size=5&sort=name,asc",
+							"raw": "{{dev}}/v1/users?idRoleSelected=1&page=0&size=5&sort=name,asc",
 							"host": [
 								"{{dev}}"
 							],
@@ -1357,6 +1357,10 @@
 								"users"
 							],
 							"query": [
+								{
+									"key": "idRoleSelected",
+									"value": "1"
+								},
 								{
 									"key": "page",
 									"value": "0"
@@ -1801,14 +1805,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/hospitals/1",
+							"raw": "{{dev}}/v1/hospitals",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"hospitals",
-								"1"
+								"hospitals"
 							]
 						}
 					},
@@ -3365,13 +3368,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/roles",
+							"raw": "{{dev}}/v1/roles?idRoleSelected=3",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"roles"
+							],
+							"query": [
+								{
+									"key": "idRoleSelected",
+									"value": "3"
+								}
 							]
 						}
 					},

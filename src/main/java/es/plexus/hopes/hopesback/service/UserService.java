@@ -8,6 +8,7 @@ import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.TokenRepository;
 import es.plexus.hopes.hopesback.repository.UserRepository;
+import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.repository.model.TokenType;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -43,18 +44,20 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final RoleService roleService;
 	private final UserRepository userRepository;
-	private final HospitalService hospitalService;
 	private final PasswordManagementService passwordManagementService;
 	private final MailService mailService;
 	private final TokenRepository tokenRepository;
 	private final MailTemplateConfiguration mailTemplateConfiguration;
 	private static final String EVERY_30_MINUTES = "0 0/30 * * * ?";
-	private final ServiceService serviceService;
-	private final PathologyService pathologyService;
 
+	public Page<UserDTO> getAllUsers(Long idRoleSelected, Pageable pageable) {
+		RoleDTO role = roleService.getOneRoleById(idRoleSelected);
 
-	public Page<UserDTO> getAllUsers(Pageable pageable) {
-		return userRepository.findAll(pageable).map(userMapper::userToUserDTOConverter);
+		if (role.getName().equals(Constants.ROLE_ADMIN)){
+			return userRepository.findAll(pageable).map(userMapper::userToUserDTOConverter);
+		} else {
+			return userRepository.findUsersByRoleSelected(idRoleSelected, pageable).map(userMapper::userToUserDTOConverter);
+		}
 	}
 
 	public UserDTO getOneUserById(final Long id) {

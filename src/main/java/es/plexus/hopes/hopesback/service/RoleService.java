@@ -8,7 +8,6 @@ import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
-import es.plexus.hopes.hopesback.service.mapper.HospitalMapper;
 import es.plexus.hopes.hopesback.service.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -36,20 +35,27 @@ public class RoleService {
 	private final MenuService menuService;
 	private final HospitalService hospitalService;
 	private final PathologyService pathologyService;
-	private final HospitalMapper hospitalMapper;
 
-	public Page<RoleDTO> getAllRoles(final Pageable pageable) {
+	public Page<RoleDTO> getAllRoles(Long idRoleSelected, final Pageable pageable) {
+		RoleDTO role = getOneRoleById(idRoleSelected);
 		log.debug("Calling BD. Obtener todos los roles...");
-		Page<Role> roles = roleRepository.findAll(pageable);
-
-		return roles.map(roleMapper::roleToRoleDTOConverter);
+		if (role.getName().equals(Constants.ROLE_ADMIN)) {
+			Page<Role> roles = roleRepository.findAll(pageable);
+			return roles.map(roleMapper::roleToRoleDTOConverter);
+		} else {
+			return roleRepository.findRolesByRoleSelected(idRoleSelected, pageable).map(roleMapper::roleToRoleDTOConverter);
+		}
 	}
 
-	public List<RoleDTO> getAllRoles() {
+	public List<RoleDTO> getAllRoles(Long idRoleSelected) {
+		RoleDTO role = getOneRoleById(idRoleSelected);
 		log.debug("Calling BD. Obtener todos los roles...");
-		List<Role> roles = roleRepository.findAll();
-
-		return roles.stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
+		if (role.getName().equals(Constants.ROLE_ADMIN)) {
+			List<Role> roles = roleRepository.findAll();
+			return roles.stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
+		} else {
+			return roleRepository.findRolesByRoleSelected(idRoleSelected).stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
+		}
 	}
 
 	public RoleDTO getOneRoleById(final Long id) {
