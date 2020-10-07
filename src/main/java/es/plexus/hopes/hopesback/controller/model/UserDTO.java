@@ -25,9 +25,6 @@ public class UserDTO {
 	@ApiModelProperty(position = 50, example = "[1, 2]", value = "Lista de roles que tiene el usuario")
 	private Set<Long> roles;
 
-	@ApiModelProperty(position = 60, example = "1", value = "Identificador del hospital al que pertenece el usuario")
-	private Long hospitalId;
-
 	@ApiModelProperty(position = 70, example = "carlos", value = "Nombre del usuario")
 	private String name;
 

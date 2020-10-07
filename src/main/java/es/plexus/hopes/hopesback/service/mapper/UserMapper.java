@@ -7,7 +7,6 @@ import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.controller.model.UserViewDTO;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.User;
 import org.hibernate.service.spi.ServiceException;
@@ -26,42 +25,32 @@ public interface UserMapper {
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
 	@Mappings({
-			@Mapping(source = "hospital", target = "hospitalId", qualifiedByName = "userToHospitalIdConverter"),
 			@Mapping(source = "roles", target = "roles", qualifiedByName = "rolesToRoleIdListConverter")
 	})
 	UserDTO userToUserDTOConverter(final User user);
 
 	@Mappings({
-			@Mapping(source = "hospital", target = "hospitalId", qualifiedByName = "userToHospitalIdConverter"),
 			@Mapping(source = "roles", target = "roles", qualifiedByName = "rolesToRoleIdListConverter")
 	})
 	@Named("userToUserSimpleDTOConverter")
 	UserSimpleDTO userToUserSimpleDTOConverter(final User user);
 
 	@Mappings({
-			@Mapping(target = "roles", ignore = true),
-			@Mapping(target = "hospital", ignore = true)
+			@Mapping(target = "roles", ignore = true)
 	})
 	User userDTOToUserConverter(final UserDTO userDTO);
 
 	@Mappings({
-			@Mapping(source = "hospital", target = "hospitalId", qualifiedByName = "userToHospitalIdConverter"),
 			@Mapping(source = "roles", target = "roles", qualifiedByName = "rolesToRoleIdListConverter")
 	})
 	UserViewDTO userToUserViewDTOConverter(final User user);
 
 	@Mappings({
-			@Mapping(target = "roles", ignore = true),
-			@Mapping(target = "hospital", ignore = true)
+			@Mapping(target = "roles", ignore = true)
 	})
 	User userViewDTOToUserConverter(final UserViewDTO userViewDTO);
 
 	UserDTO userUpdateDTOToUserDTOConverter(final UserUpdateDTO userUpdateDTO);
-
-	@Named("userToHospitalIdConverter")
-	default Long userToHospitalIdConverter(Hospital hospital) {
-		return hospital.getId();
-	}
 
 	@Named("rolesToRoleIdListConverter")
 	default Set<Long> rolesToRoleIdListConverter(Set<Role> roles) {

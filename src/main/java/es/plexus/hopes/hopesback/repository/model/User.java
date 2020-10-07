@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -47,10 +46,6 @@ public class User extends AbstractAudit {
 	@Column(name = "usr_email")
 	@Email
 	private String email;
-
-	@ManyToOne
-	@JoinColumn(name = "usr_hos_id")
-	private Hospital hospital;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles",

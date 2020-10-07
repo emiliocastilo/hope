@@ -1,9 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
-import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
 import es.plexus.hopes.hopesback.controller.model.RequestPasswordChangeDTO;
-import es.plexus.hopes.hopesback.controller.model.ServiceDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.model.Token;
@@ -150,7 +148,6 @@ public class UserControllerTest {
 		user.setUsername("User Username");
 		user.setEmail("User email");
 		user.setRoles(new HashSet<>(Arrays.asList(1L, 2L)));
-		user.setHospitalId(1L);
 		user.setCollegeNumber(1L);
 		user.setDni("User DNI");
 		user.setName("User Name");

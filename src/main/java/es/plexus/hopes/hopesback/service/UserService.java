@@ -8,7 +8,6 @@ import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.TokenRepository;
 import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.repository.model.TokenType;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -128,10 +127,6 @@ public class UserService {
 		validateEmail(userDTO);
 		final User user = userMapper.userDTOToUserConverter(userDTO);
 
-		if (userDTO.getHospitalId() != null) {
-			user.setHospital(searchHospital(userDTO));
-		}
-
 		if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
 			user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
 		}
@@ -156,18 +151,6 @@ public class UserService {
 			throw ServiceExceptionCatalog.USERNAME_DUPLICATE_EXCEPTION.exception(
 					String.format("User with name %s already exists", userDTO.getUsername()));
 		}
-	}
-
-	private Hospital searchHospital(UserDTO userDTO) throws ServiceException {
-		final Optional<Hospital> hospital = hospitalService.getOneHospitalById(userDTO.getHospitalId());
-
-		if (!hospital.isPresent()) {
-			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
-					String.format("Hospital con id %d no encontrado. El hospital es requerido para el usuario.",
-							userDTO.getHospitalId()));
-		}
-
-		return hospital.get();
 	}
 
 	//ToDo Hasta el 23-04-2020 solo se puede desactivar un usuario por BD
@@ -328,7 +311,6 @@ public class UserService {
 		if (userOri.isPresent()){
 			user.setPassword(userOri.get().getPassword());
 			user.setRoles(userOri.get().getRoles());
-			user.setHospital(userOri.get().getHospital());
 			user.setActive(userOri.get().isActive());
 
 			if (user.getCollegeNumber() == null) {

@@ -4,6 +4,7 @@ ALTER TABLE hopes.users ADD COLUMN usr_surname varchar(100); --NOT NULL;
 ALTER TABLE hopes.users ADD COLUMN usr_phone varchar(11); --NOT NULL;
 ALTER TABLE hopes.users ADD COLUMN usr_dni varchar(9); --NOT NULL;
 ALTER TABLE hopes.users ADD COLUMN usr_college_number bigint; --NOT NULL
+ALTER TABLE hopes.users DROP COLUMN usr_hos_id;
 
 COMMENT ON COLUMN hopes.users.usr_name IS 'Columna que contiene el nombre del usuario';
 COMMENT ON COLUMN hopes.users.usr_surname IS 'Columna que contiene los apellidos del usuario';
