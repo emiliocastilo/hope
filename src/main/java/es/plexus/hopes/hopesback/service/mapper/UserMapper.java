@@ -40,8 +40,7 @@ public interface UserMapper {
 
 	@Mappings({
 			@Mapping(target = "roles", ignore = true),
-			@Mapping(target = "hospital", ignore = true),
-			@Mapping(target = "service", ignore = true)
+			@Mapping(target = "hospital", ignore = true)
 	})
 	User userDTOToUserConverter(final UserDTO userDTO);
 
