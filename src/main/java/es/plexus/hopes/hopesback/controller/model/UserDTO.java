@@ -44,7 +44,4 @@ public class UserDTO {
 
 	@ApiModelProperty(position = 110, example = "075566666", value = "Número de colegiado del médico")
 	private Long collegeNumber;
-
-	@ApiModelProperty(position = 120, example = "1", value = "Identificador del servicio que relaciona al médico")
-	private Long serviceId;
 }

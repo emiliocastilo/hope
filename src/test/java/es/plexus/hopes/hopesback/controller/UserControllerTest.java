@@ -156,7 +156,6 @@ public class UserControllerTest {
 		user.setName("User Name");
 		user.setSurname("User Surname");
 		user.setPhone("User Phone");
-		user.setServiceId(1L);
 
 		return user;
 	}

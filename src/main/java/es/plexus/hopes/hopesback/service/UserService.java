@@ -99,7 +99,6 @@ public class UserService {
 	}
 
 	public UserDTO addUser(final UserDTO userDTO) throws ServiceException {
-		checkServiceExistence(userDTO);
 		User user = addUserAndReturnEntity(userDTO);
 		final String password = setGeneratedPasswordForUser(user);
 		user = userRepository.save(user);
@@ -135,11 +134,6 @@ public class UserService {
 
 		if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
 			user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
-		}
-
-		if (userDTO.getServiceId() != null){
-			Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService.getOneServiceById(userDTO.getServiceId());
-			service.ifPresent(user::setService);
 		}
 
 		updateAccountStatus(userDTO, user);
@@ -335,7 +329,6 @@ public class UserService {
 			user.setPassword(userOri.get().getPassword());
 			user.setRoles(userOri.get().getRoles());
 			user.setHospital(userOri.get().getHospital());
-			user.setService(userOri.get().getService());
 			user.setActive(userOri.get().isActive());
 
 			if (user.getCollegeNumber() == null) {
@@ -368,21 +361,5 @@ public class UserService {
 
 		log.debug(String.format("Llamando a la BD para borrar el registro de usuarios con id=%d...", id));
 		userRepository.deleteById(id);
-	}
-
-	private void checkServiceExistence(UserDTO userDTO) {
-		if (userDTO.getServiceId() != null) {
-			final Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceService
-					.getOneServiceById(userDTO.getServiceId());
-
-			if (!service.isPresent()) {
-				throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
-						String.format("Servicio con el id %d no encontrado. El servicio es requerido en usuarios con número de colegiado",
-								userDTO.getServiceId()));
-			}
-		} else if (userDTO.getCollegeNumber() != null) {
-			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
-					.exception("El servicio es requerido en usuarios con número de colegiado");
-		}
 	}
 }
