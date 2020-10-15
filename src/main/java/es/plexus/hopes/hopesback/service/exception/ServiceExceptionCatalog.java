@@ -14,6 +14,7 @@ import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalo
 import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.NOT_HISTORIFY_FORM_MESSAGE;
 import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.NOT_PATIENT_IN_FORM_MESSAGE;
 import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.PHONE_VIOLATION_CONSTRAINT_MESSAGE;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.ROLE_CODE_VIOLATION_CONSTRAINT_MESSAGE;
 import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.ROLE_NAME_VIOLATION_CONSTRAINT_MESSAGE;
 
 @Getter
@@ -38,7 +39,8 @@ public enum ServiceExceptionCatalog {
 	NOT_GRAPHS_FORM_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-017", NOT_GRAPHS_FORM_MESSAGE),
 	NOT_DATE_HISTORIFY_FORM_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-018", NOT_DATE_HISTORIFY_FORM_MESSAGE),
 	NOT_PATIENT_IN_FORM_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-019", NOT_PATIENT_IN_FORM_MESSAGE),
-	NOT_DATE_IN_FORM_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-020", NOT_DATE_IN_FORM_MESSAGE);
+	NOT_DATE_IN_FORM_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-020", NOT_DATE_IN_FORM_MESSAGE),
+	ROLE_CODE_VIOLATION_CONSTRAINT_EXCEPTION(HttpStatus.BAD_REQUEST, "IE-021", ROLE_CODE_VIOLATION_CONSTRAINT_MESSAGE);
 
 	private final HttpStatus httpStatus;
 	private final String errorCode;

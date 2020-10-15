@@ -16,5 +16,6 @@ public class ConstantsServiceCatalog {
 	public static final String NOT_DATE_HISTORIFY_FORM_MESSAGE = "Fecha no válida. Comprobar la configuración de la plantilla (campo nameHistoricalDate)";
 	public static final String NOT_PATIENT_IN_FORM_MESSAGE = "No se ha podido encontrar el paciente";
 	public static final String NOT_DATE_IN_FORM_MESSAGE = "No hay fecha en el formulario";
+	public static final String ROLE_CODE_VIOLATION_CONSTRAINT_MESSAGE = "Ya existe el valor del campo código";
 
 }

@@ -1330,46 +1330,8 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Doctor",
+			"name": "User",
 			"item": [
-				{
-					"name": "Add",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Leo\",\n    \"surname\": \"Messi\",\n    \"phone\": 123456789,\n    \"dni\": \"12345678Z\",\n    \"collegeNumber\": 12345678,\n    \"userDTO\": {\n        \"username\": \"leo.messi2\",\n        \"password\": \"password\",\n        \"email\": \"leo.messi2@plexus.es\",\n        \"roles\": [\n            2\n        ],\n        \"hospitalId\": 1\n    },\n    \"serviceDTO\": {\n    \t\"id\" : 1\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/doctors",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"doctors"
-							]
-						},
-						"description": "Usuario y correo deben ser unicos"
-					},
-					"response": []
-				},
 				{
 					"name": "GetAll",
 					"request": {
@@ -1386,15 +1348,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctors?page=0&size=5&sort=name,asc",
+							"raw": "{{dev}}/v1/users?idRoleSelected=1&page=0&size=5&sort=name,asc",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctors"
+								"users"
 							],
 							"query": [
+								{
+									"key": "idRoleSelected",
+									"value": "1"
+								},
 								{
 									"key": "page",
 									"value": "0"
@@ -1408,12 +1374,13 @@
 									"value": "name,asc"
 								}
 							]
-						}
+						},
+						"description": "Devuelve todos los usuarios"
 					},
 					"response": []
 				},
 				{
-					"name": "FindDoctorsBySearch",
+					"name": "Find by Searches",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1428,13 +1395,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctors/searches?page=0&size=5&sort=name,asc&search=ant",
+							"raw": "{{dev}}/v1/users/searches?page=0&size=5&sort=name,asc&search=d",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctors",
+								"users",
 								"searches"
 							],
 							"query": [
@@ -1452,15 +1419,16 @@
 								},
 								{
 									"key": "search",
-									"value": "ant"
+									"value": "d"
 								}
 							]
-						}
+						},
+						"description": "Buscador de usuarios por un texto"
 					},
 					"response": []
 				},
 				{
-					"name": "FilterDoctors",
+					"name": "Find by ID",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1475,13 +1443,43 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/doctors/filters?page=0&size=5&sort=name,asc&doctor={\"name\":\"Antonio\"}",
+							"raw": "{{dev}}/v1/users/10",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
-								"doctors",
+								"users",
+								"10"
+							]
+						},
+						"description": "Devuelve un usuario dado su ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Find By Filter",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/users/filters?page=0&size=5&sort=name,asc",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users",
 								"filters"
 							],
 							"query": [
@@ -1496,126 +1494,13 @@
 								{
 									"key": "sort",
 									"value": "name,asc"
-								},
-								{
-									"key": "doctor",
-									"value": "{\"name\":\"Antonio\"}"
 								}
 							]
-						}
+						},
+						"description": "Devuelve usuarios según un filtro dado"
 					},
 					"response": []
 				},
-				{
-					"name": "GetOne",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{dev}}/v1/doctors/1",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"doctors",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": 11,\r\n    \"name\": \"Antoine\",\r\n    \"surname\": \"Griezmann\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"user\": {\r\n        \"id\": 8,\r\n        \"username\": \"antoine.griezmann1\",\r\n        \"password\": \"$2a$10$9V4XbSY0uLgN6qwtHeODOeK44E8rQnz7lbX7q5GNYKrZVlokM3L4e\",\r\n        \"email\": \"antoine.griezmann1@plexus.es\",\r\n        \"roles\": [\r\n            2\r\n        ],\r\n        \"hospitalId\": 4\r\n    },\r\n    \"service\": {\r\n        \"id\": 1,\r\n        \"name\": \"Dermatologia\"\r\n    }\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/doctors",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"doctors"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "9",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{dev}}/v1/doctors/1",
-							"host": [
-								"{{dev}}"
-							],
-							"path": [
-								"v1",
-								"doctors",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "User",
-			"item": [
 				{
 					"name": "Add User",
 					"request": {
@@ -1633,7 +1518,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"victor.gonzales1\",\n    \"password\": \"password\",\n    \"email\": \"victor.gonzales1@plexus.es\",\n    \"roles\": [1,2],\n    \"hospitalId\": 4\n}",
+							"raw": "{\n    \"username\": \"pruebaUser\",\n    \"password\": \"password\",\n    \"email\": \"prueba@plexus.es\",\n    \"roles\": [1,2],\n    \"hospitalId\": 1,\n    \"name\": \"Prueba\",\n    \"surname\": \"Apellido\",\n    \"phone\": \"600000000\",\n    \"dni\": \"52201960X\",\n    \"collegeNumber\": \"075566666\",\n    \"serviceId\": 4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1648,6 +1533,73 @@
 							"path": [
 								"v1",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 14,\r\n    \"name\": \"Nprueba\",\r\n    \"surname\": \"Aprueba\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"username\": \"Nprueba.Aprueba\",\r\n    \"email\": \"antoine.griezmann1@plexus.es\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{dev}}/v1/users",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						},
+						"description": "actualizar un usuario"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/users/14",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"14"
 							]
 						}
 					},
@@ -1894,6 +1846,35 @@
 							"path": [
 								"v1",
 								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findByid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{dev}}/v1/services/1",
+							"host": [
+								"{{dev}}"
+							],
+							"path": [
+								"v1",
+								"services",
+								"1"
 							]
 						}
 					},
@@ -3387,13 +3368,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/roles",
+							"raw": "{{dev}}/v1/roles?idRoleSelected=3",
 							"host": [
 								"{{dev}}"
 							],
 							"path": [
 								"v1",
 								"roles"
+							],
+							"query": [
+								{
+									"key": "idRoleSelected",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -3509,7 +3496,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Enfermeria\",\n    \"description\": \"Abarca la atención autónoma y en colaboración dispensada a personas de todas las edades, familias, grupos y comunidades, enfermos o no, y en todas circunstancias\"\n}",
+							"raw": "{\n    \"name\": \"PruebaRol\",\n    \"description\": \"Rol de prueba\",\n    \"hospital\":{\n        \"id\":1,\n        \"name\": \"Hopes - Servicios de Salud\"\n    },\n    \"service\":{\n        \"id\":4,\n        \"name\": \"Cuidados paliativos\"\n    },\n    \"pathology\":{\n        \"id\":2,\n        \"name\": \"Reumatología\",\n        \"description\": \"Patologia Reumatología\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"

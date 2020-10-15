@@ -1,14 +1,17 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.controller.model.HospitalDTO;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.repository.RoleRepository;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.RoleMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,32 +27,35 @@ import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalo
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class RoleService {
 
 	private final RoleRepository roleRepository;
 	private final RoleMapper roleMapper;
 	private final MenuService menuService;
+	private final HospitalService hospitalService;
+	private final PathologyService pathologyService;
 
-	@Autowired
-	public RoleService(final RoleRepository roleRepository, final RoleMapper roleMapper,
-					   final MenuService menuService) {
-		this.roleRepository = roleRepository;
-		this.roleMapper = roleMapper;
-		this.menuService = menuService;
+	public Page<RoleDTO> getAllRoles(Long idRoleSelected, final Pageable pageable) {
+		RoleDTO role = getOneRoleById(idRoleSelected);
+		log.debug("Calling BD. Obtener todos los roles...");
+		if (role.getName().equals(Constants.ROLE_ADMIN)) {
+			Page<Role> roles = roleRepository.findAll(pageable);
+			return roles.map(roleMapper::roleToRoleDTOConverter);
+		} else {
+			return roleRepository.findRolesByRoleSelected(idRoleSelected, pageable).map(roleMapper::roleToRoleDTOConverter);
+		}
 	}
 
-	public Page<RoleDTO> getAllRoles(final Pageable pageable) {
+	public List<RoleDTO> getAllRoles(Long idRoleSelected) {
+		RoleDTO role = getOneRoleById(idRoleSelected);
 		log.debug("Calling BD. Obtener todos los roles...");
-		Page<Role> roles = roleRepository.findAll(pageable);
-
-		return roles.map(roleMapper::roleToRoleDTOConverter);
-	}
-
-	public List<RoleDTO> getAllRoles() {
-		log.debug("Calling BD. Obtener todos los roles...");
-		List<Role> roles = roleRepository.findAll();
-
-		return roles.stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
+		if (role.getName().equals(Constants.ROLE_ADMIN)) {
+			List<Role> roles = roleRepository.findAll();
+			return roles.stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
+		} else {
+			return roleRepository.findRolesByRoleSelected(idRoleSelected).stream().map(roleMapper::roleToRoleDTOConverter).collect(Collectors.toList());
+		}
 	}
 
 	public RoleDTO getOneRoleById(final Long id) {
@@ -67,11 +73,19 @@ public class RoleService {
 	}
 
 	public RoleDTO addRole(final RoleDTO roleDTO) {
-		Role role = addRoleCommon(roleDTO);
+
+		roleDTO.setCode(codeRoleGenerator(roleDTO));
 
 		log.debug("Llamando DB. Guardando record.");
-		existRole(roleDTO);
-		role = roleRepository.save(role);
+		Role role = addRoleCommon(roleDTO);
+
+		try {
+			role = roleRepository.save(role);
+		} catch (DataIntegrityViolationException ex) {
+			throw ServiceExceptionCatalog.ROLE_CODE_VIOLATION_CONSTRAINT_EXCEPTION.exception(
+					String.format("El rol con code %s ya existe para el hospital %s con patología %s",
+							role.getCode(), roleDTO.getHospital().getName(), roleDTO.getPathology().getName()));
+		}
 
 		return roleMapper.roleToRoleDTOConverter(role);
 	}
@@ -94,12 +108,20 @@ public class RoleService {
 	}
 
 	public RoleDTO updateRole(final RoleDTO roleDTO) throws ServiceException {
+
 		checkRoleExistence(roleDTO.getId());
+		roleDTO.setCode(codeRoleGenerator(roleDTO));
 
 		Role role = addRoleCommon(roleDTO);
-		log.debug("Llamando DB. Registro actualizado con id=" + roleDTO.getId());
-		existRole(roleDTO);
-		role = roleRepository.save(role);
+
+		try {
+			log.debug("Llamando DB. Registro actualizado con id=" + roleDTO.getId());
+			role = roleRepository.save(role);
+		} catch (DataIntegrityViolationException ex) {
+			throw ServiceExceptionCatalog.ROLE_CODE_VIOLATION_CONSTRAINT_EXCEPTION.exception(
+					String.format("El rol con code %s ya existe para el hospital %s con patología %s",
+							role.getCode(), roleDTO.getHospital().getName(), roleDTO.getPathology().getName()));
+		}
 
 		return roleMapper.roleToRoleDTOConverter(role);
 	}
@@ -163,6 +185,50 @@ public class RoleService {
 		if (!storedRole.isPresent()) {
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
 					.exception(String.format("RoleDto con id = %s no encontrado ...", id));
+		}
+	}
+
+	/**
+	 * Método para generar un código basado en el nombre del rol, el hospital y la patología asociada.
+	 * El código es ROLE_NOMBRE ROLE_ID HOSPITAL + 2 CARACTERES DE CADA PALABRA DEL NOMBRE_ID PATOLOGIA +2 CARACTERES DE CADA PALABRA DEL NOMBRE
+	 *
+	 * @param roleDTO modelo
+	 * @return código autogenerado
+	 */
+	private String codeRoleGenerator(RoleDTO roleDTO) {
+
+		HospitalDTO hospitalDTO = hospitalService.findById(roleDTO.getHospital().getId());
+		Optional<Pathology> pathology = pathologyService.getOnePathologyById(roleDTO.getPathology().getId());
+		String split = "_";
+		StringBuilder code = new StringBuilder();
+
+		if (hospitalDTO != null && pathology.isPresent()) {
+			String roleName = roleDTO.getName().toUpperCase().replaceAll("\\s", "");
+			String[] hospitalNameArray = hospitalDTO.getName().toUpperCase().split(" ");
+			StringBuilder hospitalCode = new StringBuilder(String.valueOf(hospitalDTO.getId()));
+			String[] pathologyNameArray = pathology.get().getName().toUpperCase().split(" ");
+			StringBuilder pathologyCode = new StringBuilder(String.valueOf(pathology.get().getId()));
+
+			nameTrimmer(hospitalNameArray, hospitalCode);
+			nameTrimmer(pathologyNameArray, pathologyCode);
+
+			code.append("ROLE").append(split).append(roleName).append(split).append(hospitalCode).append(split)
+					.append(pathologyCode);
+		}
+
+		return code.toString();
+	}
+
+	/**
+	 * Método para acortar el nombre de un hospital o una patología, y así usarlo en el código del Rol
+	 *
+	 * @param nameArray   palabras que componen el nombre del hospital o la patología
+	 * @param codeBuilder código que se usará para componer el código del rol
+	 */
+	private void nameTrimmer(String[] nameArray, StringBuilder codeBuilder) {
+
+		for (String word : nameArray) {
+			codeBuilder.append(word.charAt(0)).append(word.length()>1?word.charAt(1):"");
 		}
 	}
 }

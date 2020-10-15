@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.User;
 import org.hibernate.service.spi.ServiceException;
@@ -86,18 +85,9 @@ public class UserDetailsServiceImplTest {
 		user.setUsername("User Name");
 		user.setPassword("User password");
 		user.setEmail("User email");
-		user.setHospital(mockFullHospital());
 		user.setRoles(new HashSet<>(Collections.singletonList(mockFullRole())));
 
 		return user;
-	}
-
-	private Hospital mockFullHospital() {
-		final Hospital hospital = new Hospital();
-		hospital.setId(1L);
-		hospital.setName("Hospital Name");
-
-		return hospital;
 	}
 
 	private Role mockFullRole() {

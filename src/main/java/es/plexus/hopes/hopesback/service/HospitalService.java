@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,5 +46,15 @@ public class HospitalService {
 		}
 		return hospitalMapper.hospitalToHospitalDTOConverter(optionalHospital.get());
 
+	}
+
+	public HospitalDTO findByName(String name) {
+		Optional<Hospital> hospital = hospitalRepository.findByName(name);
+		if (hospital.isPresent()) {
+			return hospitalMapper.hospitalToHospitalDTOConverter(hospital.get());
+		} else {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+					MessageFormat.format("Hospital con id {0} no encontrado. El hospital es requerido.", name));
+		}
 	}
 }

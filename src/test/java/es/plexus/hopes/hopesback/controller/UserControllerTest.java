@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.controller;
 import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
 import es.plexus.hopes.hopesback.controller.model.RequestPasswordChangeDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
+import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.service.UserService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -11,6 +12,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -18,7 +24,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,10 +45,11 @@ public class UserControllerTest {
 	@Test
 	public void getAllUserShouldBeStatusOk() {
 		// given
-		given(userService.getAllUsers()).willReturn(Collections.singletonList(mockFullUser()));
+		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
+		given(userService.getAllUsers(anyLong(), any(Pageable.class))).willReturn(new PageImpl<>(Collections.singletonList(mockFullUser()), pageRequest, 1));
 
 		// when
-		List<UserDTO> response = userController.getAllUsers();
+		Page<UserDTO> response = userController.getAllUsers(1L, pageRequest);
 
 		// then
 		assertNotNull(response);
@@ -76,12 +82,77 @@ public class UserControllerTest {
 		assertNotNull(response);
 	}
 
+	@Test
+	public void findUsersBySearchShouldBeStatusOk() {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
+		given(userService.findUsersBySearch(any(String.class), any(Pageable.class)))
+				.willReturn(getPageableUser(pageRequest));
+
+		// when
+		Page<UserDTO> response = userController
+				.findUsersBySearch(mockFullUser().getName(), pageRequest);
+
+		// then
+		assertNotNull(response);
+	}
+
+	@Test
+	public void filterUsersShouldBeStatusOk() {
+		// given
+		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
+		given(userService.filterUsers(any(String.class), any(Pageable.class)))
+				.willReturn(getPageableUser(pageRequest));
+
+		// when
+		Page<UserDTO> response = userController.filterUsers(mockJSONUser(), pageRequest);
+
+		// then
+		assertNotNull(response);
+	}
+
+	@Test
+	public void updateUserShouldBeStatusOk() throws ServiceException {
+		// given
+		given(userService.getOneUserById(anyLong())).willReturn(mockFullUser());
+		given(userService.updateUser(any(UserUpdateDTO.class))).willReturn(mockFullUser());
+
+		// when
+		UserDTO response = userController.updateUser(mockUserUpdateDTO());
+
+		// then
+		assertNotNull(response);
+	}
+
+	@Test(expected = ServiceException.class)
+	public void updateUserShouldBeBadRequestWhenNotFound() throws ServiceException {
+		// when
+		userController.updateUser(mockUserUpdateDTO());
+	}
+
+	@Test
+	public void deleteDoctorShouldBeOk() throws ServiceException {
+		// given
+		given(userService.getOneUserById(anyLong())).willReturn(mockFullUser());
+
+		// when
+		userController.deleteUser(1L);
+
+		// then
+		verify(userService, times(1)).deleteUser(anyLong());
+	}
+
 	private UserDTO mockFullUser() {
 		final UserDTO user = new UserDTO();
 		user.setId(1L);
-		user.setUsername("User Name");
+		user.setUsername("User Username");
 		user.setEmail("User email");
 		user.setRoles(new HashSet<>(Arrays.asList(1L, 2L)));
+		user.setCollegeNumber(1L);
+		user.setDni("User DNI");
+		user.setName("User Name");
+		user.setSurname("User Surname");
+		user.setPhone("User Phone");
 
 		return user;
 	}
@@ -142,5 +213,25 @@ public class UserControllerTest {
 		String response = userController.updatePassword(mockPassword());
 
 		assertNotNull(response);
+	}
+
+	private PageImpl<UserDTO> getPageableUser(PageRequest pageRequest) {
+		return new PageImpl<>(Collections.singletonList(mockFullUser()), pageRequest, 1);
+	}
+
+	private String mockJSONUser() {
+		return "{\"name\":\"" + mockFullUser().getName() + "\"}";
+	}
+
+	private UserUpdateDTO mockUserUpdateDTO() {
+		UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
+		userUpdateDTO.setCollegeNumber(2L);
+		userUpdateDTO.setDni("User DNI update");
+		userUpdateDTO.setEmail("User Email update");
+		userUpdateDTO.setId(1L);
+		userUpdateDTO.setName("User Name update");
+		userUpdateDTO.setPhone("User Phone update");
+
+		return userUpdateDTO;
 	}
 }

@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
@@ -35,7 +33,7 @@ public class User extends AbstractAudit {
 
 	@NotBlank
 	@Size(max = 500)
-	@Column(name = "usr_name")
+	@Column(name = "usr_username")
 	private String username;
 
 	@NotBlank
@@ -49,10 +47,6 @@ public class User extends AbstractAudit {
 	@Email
 	private String email;
 
-	@ManyToOne
-	@JoinColumn(name = "usr_hos_id")
-	private Hospital hospital;
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles",
 			joinColumns = @JoinColumn(name = "uro_user_id"),
@@ -62,8 +56,22 @@ public class User extends AbstractAudit {
 	@Column(name = "usr_active")
 	private boolean active = true;
 
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-	private Doctor doctor;
+	@NotBlank
+	@Size(max = 500)
+	@Column(name = "usr_name")
+	private String name;
+
+	@Column(name = "usr_surname")
+	private String surname;
+
+	@Column(name = "usr_phone")
+	private String phone;
+
+	@Column(name = "usr_dni")
+	private String dni;
+
+	@Column(name = "usr_college_number")
+	private Long collegeNumber;
 
 }
 

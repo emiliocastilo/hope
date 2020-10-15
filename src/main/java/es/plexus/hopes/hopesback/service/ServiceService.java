@@ -30,4 +30,13 @@ public class ServiceService {
 	public Optional<es.plexus.hopes.hopesback.repository.model.Service> getOneServiceById(final Long id) {
 		return serviceRepository.findById(id);
 	}
+
+	public ServiceDTO findById(Long id) {
+		Optional<es.plexus.hopes.hopesback.repository.model.Service> service = serviceRepository.findById(id);
+		ServiceDTO serviceDTO = null;
+		if (service.isPresent()){
+			serviceDTO =  serviceMapper.serviceToServiceDTOConverter(service.get());
+		}
+		return serviceDTO;
+	}
 }

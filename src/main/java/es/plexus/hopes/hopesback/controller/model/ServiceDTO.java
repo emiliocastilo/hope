@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @ApiModel
 @Data
@@ -16,4 +17,8 @@ public class ServiceDTO {
 	@ApiModelProperty(position = 20, example = "Servicio Dermatología", value = "Nombre del servicio")
 	@NotBlank
 	private String name;
+
+	@ApiModelProperty(position = 30, example = "['Pathology 1']", value = "Patologías asociadas al Servicio")
+	private Set<PathologyDTO> pathologies;
+
 }

@@ -8,7 +8,7 @@ import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.TokenRepository;
 import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.repository.model.TokenType;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -17,8 +17,12 @@ import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mail.MailService;
 import es.plexus.hopes.hopesback.service.mail.TemplateMail;
 import es.plexus.hopes.hopesback.service.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -28,46 +32,32 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.FIRST_TOKEN_EXPIRATION_TIME;
 
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class UserService {
 
 	private final UserMapper userMapper;
 	private final RoleService roleService;
 	private final UserRepository userRepository;
-	private final HospitalService hospitalService;
 	private final PasswordManagementService passwordManagementService;
 	private final MailService mailService;
 	private final TokenRepository tokenRepository;
 	private final MailTemplateConfiguration mailTemplateConfiguration;
 	private static final String EVERY_30_MINUTES = "0 0/30 * * * ?";
 
-	//ToDo refactorizar para eliminar la sobrecarga del constructor
-	@Autowired
-	public UserService(final UserRepository userRepository, final UserMapper userMapper,
-					   final RoleService roleService, final HospitalService hospitalService,
-					   final PasswordManagementService passwordManagementService,
-					   final MailService mailService,
-					   final TokenRepository tokenRepository,
-					   final MailTemplateConfiguration mailTemplateConfiguration) {
-		this.userRepository = userRepository;
-		this.userMapper = userMapper;
-		this.roleService = roleService;
-		this.hospitalService = hospitalService;
-		this.passwordManagementService = passwordManagementService;
-		this.mailService = mailService;
-		this.tokenRepository = tokenRepository;
-		this.mailTemplateConfiguration = mailTemplateConfiguration;
-	}
+	public Page<UserDTO> getAllUsers(Long idRoleSelected, Pageable pageable) {
+		RoleDTO role = roleService.getOneRoleById(idRoleSelected);
 
-
-	public List<UserDTO> getAllUsers() {
-		return userRepository.findAll().stream().map(userMapper::userToUserDTOConverter).collect(Collectors.toList());
+		if (role.getName().equals(Constants.ROLE_ADMIN)){
+			return userRepository.findAll(pageable).map(userMapper::userToUserDTOConverter);
+		} else {
+			return userRepository.findUsersByRoleSelected(idRoleSelected, pageable).map(userMapper::userToUserDTOConverter);
+		}
 	}
 
 	public UserDTO getOneUserById(final Long id) {
@@ -94,10 +84,10 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserSimpleDTO getOneSimpleUserByName(final String name, String roleCode) {
+	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String roleCode) {
 		UserSimpleDTO userSimpleDTO = null;
 
-		final Optional<User> user = userRepository.findByUsername(name);
+		final Optional<User> user = userRepository.findByUsername(username);
 
 		if (user.isPresent()) {
 			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
@@ -140,10 +130,6 @@ public class UserService {
 		validateEmail(userDTO);
 		final User user = userMapper.userDTOToUserConverter(userDTO);
 
-		if (userDTO.getHospitalId() != null) {
-			user.setHospital(searchHospital(userDTO));
-		}
-
 		if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
 			user.setRoles(roleService.getAllRolesByIdSet(userDTO.getRoles()));
 		}
@@ -168,18 +154,6 @@ public class UserService {
 			throw ServiceExceptionCatalog.USERNAME_DUPLICATE_EXCEPTION.exception(
 					String.format("User with name %s already exists", userDTO.getUsername()));
 		}
-	}
-
-	private Hospital searchHospital(UserDTO userDTO) throws ServiceException {
-		final Optional<Hospital> hospital = hospitalService.getOneHospitalById(userDTO.getHospitalId());
-
-		if (!hospital.isPresent()) {
-			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
-					String.format("Hospital con id %d no encontrado. El hospital es requerido para el usuario.",
-							userDTO.getHospitalId()));
-		}
-
-		return hospital.get();
 	}
 
 	//ToDo Hasta el 23-04-2020 solo se puede desactivar un usuario por BD
@@ -311,5 +285,66 @@ public class UserService {
 
 	public boolean existUserEmail(String email){
 		return userRepository.existsByEmail(email);
+	}
+
+	public Page<UserDTO> findUsersBySearch(String search, Pageable pageable) {
+		Page<User> users = userRepository.findUsersBySearch(search, pageable);
+		return users.map(userMapper::userToUserDTOConverter);
+	}
+
+	public Page<UserDTO> filterUsers(String user, Pageable pageable) {
+		UserDTO userDTO = UserMapper.INSTANCE.jsonToUserDTOConverter(user);
+		log.debug("Llamando al servicio...");
+
+		ExampleMatcher matcher = ExampleMatcher.matchingAll().withIgnoreCase(true).withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+		User userEx = userMapper.userDTOToUserConverter(userDTO);
+
+		Example<User> spec = Example.of(userEx, matcher);
+		Page<User> users = userRepository.findAll(spec, pageable);
+
+		return users.map(userMapper::userToUserDTOConverter);
+	}
+
+	public UserDTO updateUser(UserUpdateDTO userUpdateDTO) {
+		UserDTO userDTO = userMapper.userUpdateDTOToUserDTOConverter(userUpdateDTO);
+		Optional<User> userOri= userRepository.findById(userDTO.getId());
+
+		User user = userMapper.userDTOToUserConverter(userDTO);
+
+		if (userOri.isPresent()){
+			user.setPassword(userOri.get().getPassword());
+			user.setRoles(userOri.get().getRoles());
+			user.setActive(userOri.get().isActive());
+
+			if (user.getCollegeNumber() == null) {
+				user.setCollegeNumber(userOri.get().getCollegeNumber());
+			}
+			if (user.getDni() == null) {
+				user.setDni(userOri.get().getDni());
+			}
+			if (user.getEmail() == null) {
+				user.setEmail(userOri.get().getEmail());
+			}
+			if (user.getName() == null) {
+				user.setUsername(userOri.get().getUsername());
+			}
+			if (user.getSurname() == null) {
+				user.setSurname(userOri.get().getSurname());
+			}
+			if (user.getUsername() == null) {
+				user.setUsername(userOri.get().getUsername());
+			}
+			if (user.getPhone() == null) {
+				user.setPhone(userOri.get().getPhone());
+			}
+		}
+
+		return userMapper.userToUserDTOConverter(userRepository.save(user));
+	}
+
+	public void deleteUser(Long id) {
+
+		log.debug(String.format("Llamando a la BD para borrar el registro de usuarios con id=%d...", id));
+		userRepository.deleteById(id);
 	}
 }

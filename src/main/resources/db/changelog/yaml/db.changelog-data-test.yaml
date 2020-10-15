@@ -12,3 +12,15 @@ databaseChangeLog:
 - include:
     file: ../sql/data-test/005-rol-code.sql
     relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/006-patients_treatments_graphs-actualizar_datos.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/007-rel_services_pathologies.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/008-relacion_rol_hospital_servicio_patologia.sql
+    relativeToChangelogFile: true
+- include:
+    file: ../sql/data-test/009-login_actualizado.sql
+    relativeToChangelogFile: true
