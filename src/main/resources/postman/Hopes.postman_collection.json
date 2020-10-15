@@ -2931,7 +2931,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D23S34\",\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mágicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"commercialization\": \"true\" \r\n    }\r\n}",
+							"raw": "{\r\n\t\"actIngredients\": \"Acido acetilsalicilico\",\r\n    \"codeAct\": \"D23S34\",\r\n    \"acronym\": \"AAS\",\r\n    \"nationalCode\": \"211415P\",\r\n    \"description\": \"Medicamento con propiedades mágicas\",\r\n    \"presentation\": \"ABACAVIR/LAMIVUDINA DR. REDDYS 600MG/300MG COMPRIMIDOS RECUBIERTOS CON PELICULA EFG 30 comprimidos\",\r\n    \"content\": \"1 comprimido\",\r\n    \"authorizationDate\": \"2020-01-01\",\r\n    \"authorized\": true,\r\n    \"endDateAuthorization\": \"2021-01-01\",\r\n    \"commercialization\": \"true\",\r\n    \"commercializationDate\": \"2020-01-01\",\r\n    \"endDateCommercialization\": \"2021-01-01\",\r\n    \"units\": 50,\r\n    \"pvl\": 5,\r\n    \"pvlUnitary\": 0.20,\r\n    \"pvp\": 10,\r\n    \"pathology\": \"DERMATOLOGÍA\",\r\n    \"biologic\": true,\r\n    \"viaAdministration\": \"oral\",\r\n    \"family\": \"BIOLOGICO\",\r\n    \"subfamily\": \"anti-integrina_CTLA4\",\r\n    \"brand\": \"Iniston\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

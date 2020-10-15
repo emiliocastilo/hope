@@ -3,11 +3,15 @@ package es.plexus.hopes.hopesback.configuration.security;
 import es.plexus.hopes.hopesback.service.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -16,7 +20,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
+import static es.plexus.hopes.hopesback.configuration.security.Constants.AUTHORITIES_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.SECRET_KEY;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_HOPES_KEY;
 
 
@@ -61,8 +70,19 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 			userName = TokenProvider.getUserName(tokenHopes);
 		}
 
-		UserDetails user = userDetailsService.loadUserByUsername(userName);
-		return TokenProvider.getAuthentication(tokenHopes, user);
+		try {
+			UserDetails user = userDetailsService.loadUserByUsername(userName);
+			return TokenProvider.getAuthentication(tokenHopes, user);
+		} catch (UsernameNotFoundException ex) {
+			// cuando el usuario es de LDAP
+			JwtParser jwtParser = Jwts.parser().setSigningKey(SECRET_KEY);
+			Jws<Claims> claims = jwtParser.parseClaimsJws(token);
+			Collection<SimpleGrantedAuthority> authorities =
+					Arrays.stream(claims.getBody().get(AUTHORITIES_KEY).toString().split(","))
+							.map(SimpleGrantedAuthority::new)
+							.collect(Collectors.toList());
+			return new UsernamePasswordAuthenticationToken(claims.getBody().getSubject(), claims.getSignature(), authorities);
+		}
 	}
 
 	private boolean isRequestPostPhoto(final HttpServletRequest httpServletRequest) {
