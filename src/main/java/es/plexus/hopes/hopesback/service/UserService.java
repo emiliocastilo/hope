@@ -8,7 +8,6 @@ import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.TokenRepository;
 import es.plexus.hopes.hopesback.repository.UserRepository;
-import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.repository.model.TokenType;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -24,13 +23,17 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.FIRST_TOKEN_EXPIRATION_TIME;
@@ -84,17 +87,35 @@ public class UserService {
 		return userDTO;
 	}
 
-	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String roleCode) {
-		UserSimpleDTO userSimpleDTO = null;
+	public UserSimpleDTO getOneSimpleUserByUsername(final String username, String roleCode, Collection<? extends GrantedAuthority> authorities) {
+		UserSimpleDTO userSimpleDTO = new UserSimpleDTO();
 
 		final Optional<User> user = userRepository.findByUsername(username);
 
 		if (user.isPresent()) {
 			userSimpleDTO = userMapper.userToUserSimpleDTOConverter(user.get());
-			RoleDTO role = roleService.getRoleByCode(roleCode);
-			if (role != null) {
-				userSimpleDTO.setRolSelected(role);
+		} else {
+			// Si el usuario es de LDAP no estará en BBDD
+			userSimpleDTO.setUsername(username);
+
+			Set<Long> rolesId = new HashSet<>();
+			if (!authorities.isEmpty()) {
+				for (GrantedAuthority authority : authorities) {
+					RoleDTO roleDTO = this.roleService.getRoleByCode(authority.getAuthority());
+
+					if (roleDTO != null) {
+						rolesId.add(roleDTO.getId());
+					}
+				}
+
+				userSimpleDTO.setRoles(rolesId);
 			}
+		}
+
+		RoleDTO role = roleService.getRoleByCode(roleCode);
+
+		if (role != null) {
+			userSimpleDTO.setRolSelected(role);
 		}
 
 		return userSimpleDTO;
