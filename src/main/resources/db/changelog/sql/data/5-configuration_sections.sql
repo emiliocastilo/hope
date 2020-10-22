@@ -1,3 +1,4 @@
+DELETE FROM hopes.sections;
 ----------------------- Configuration Menú  ----------------------------------------
 -- Section: Hopes
 INSERT INTO hopes.sections(

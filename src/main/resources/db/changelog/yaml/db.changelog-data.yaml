@@ -1,15 +1,18 @@
 databaseChangeLog:
 - include:
-      file: ../sql/data/001-catalogues.sql
+      file: ../sql/data/1-catalogues.sql
       relativeToChangelogFile: true
 - include:
-      file: ../sql/data/002-configuration_sections.sql
+      file: ../sql/data/2-configuration_hospital_path_user.sql
       relativeToChangelogFile: true
 - include:
-      file: ../sql/data/003-configuration_hospital_path_user.sql
+      file: ../sql/data/3-services_hospitals.sql
       relativeToChangelogFile: true
 - include:
-      file: ../sql/data/004-services_hospitals.sql
+      file: ../sql/data/4-configuration_roles.sql
+      relativeToChangelogFile: true
+- include:
+      file: ../sql/data/5-configuration_sections.sql
       relativeToChangelogFile: true
 - include:
       file: ../sql/data/005-Configuration_Recommendations.sql
