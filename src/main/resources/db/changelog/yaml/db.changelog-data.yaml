@@ -23,3 +23,6 @@ databaseChangeLog:
 - include:
       file: ../sql/data/007-changes_sections.sql
       relativeToChangelogFile: true
+- include:
+      file: ../sql/data/008-configuration_sections.sql
+      relativeToChangelogFile: true

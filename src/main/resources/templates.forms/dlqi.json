@@ -1,6 +1,6 @@
 {
     "key": "dlqi",
-    "form": "[{'type':'title','name':'DLQI'}, {'type': 'datepicker','name':'evaluationDate', 'label':'Fecha de evaluación'}, {'type': 'input', 'name': 'dlqiScore', 'label': ''}]",
+    "form": "[{'type':'title', 'name':'DLQI'},{'type': 'datepicker','name':'evaluationDate', 'label':'Fecha de evaluación'}, {'type':'button', 'name': 'buttonCuestionary', 'label': 'Comenzar Cuestionario', 'formula':'openQuestionnaire', 'button_click': 'openQuestionnaire' , 'params':[{'name':'dlqiScore'}], 'template':'questionnairedlqi'},{'type': 'input', 'name': 'dlqiScore', 'label': 'Score'}, {'type':'input','label':'Clasificacion','name':'clasificationScore','placeholder':'clasification','calculated_front':true,'formula':'clasificationDlqi','params':['dlqiScore']}]",
     "buttons": "['save', 'clean', 'graphsBack']",
     "historify": true,
     "nameHistoricalDate": "evaluationDate",
