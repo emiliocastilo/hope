@@ -1,4 +1,6 @@
-﻿INSERT INTO hopes.cies_nine (cin_code, cin_description) VALUES('001', 'COLERA');
+﻿DELETE FROM hopes.cies_nine;
+
+INSERT INTO hopes.cies_nine (cin_code, cin_description) VALUES('001', 'COLERA');
 INSERT INTO hopes.cies_nine (cin_code, cin_description) VALUES('001.0', 'COLERA DEBIDA A VIBRIO CHOLERAE');
 INSERT INTO hopes.cies_nine (cin_code, cin_description) VALUES('001.1', 'COLERA DEBIDA A VIBRIO CHOLERAE EL TOR');
 INSERT INTO hopes.cies_nine (cin_code, cin_description) VALUES('001.9', 'COLERA, SIN ESPECIFICAR');
