@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
-import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.controller.model.UserViewDTO;
 import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.User;
@@ -49,8 +48,6 @@ public interface UserMapper {
 			@Mapping(target = "roles", ignore = true)
 	})
 	User userViewDTOToUserConverter(final UserViewDTO userViewDTO);
-
-	UserDTO userUpdateDTOToUserDTOConverter(final UserUpdateDTO userUpdateDTO);
 
 	@Named("rolesToRoleIdListConverter")
 	default Set<Long> rolesToRoleIdListConverter(Set<Role> roles) {

@@ -5,7 +5,6 @@ import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
-import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.TokenRepository;
 import es.plexus.hopes.hopesback.repository.UserRepository;
 import es.plexus.hopes.hopesback.repository.model.Token;
@@ -138,11 +137,6 @@ public class UserService {
 	}
 
 	User addUserAndReturnEntity(final UserDTO userDTO) throws ServiceException {
-		return addUserAndReturnEntityCommon(userDTO);
-	}
-
-	User addUserAndReturnEntity(final UserUpdateDTO userUpdateDTO) throws ServiceException {
-		UserDTO userDTO = userMapper.userUpdateDTOToUserDTOConverter(userUpdateDTO);
 		return addUserAndReturnEntityCommon(userDTO);
 	}
 
@@ -326,15 +320,12 @@ public class UserService {
 		return users.map(userMapper::userToUserDTOConverter);
 	}
 
-	public UserDTO updateUser(UserUpdateDTO userUpdateDTO) {
-		UserDTO userDTO = userMapper.userUpdateDTOToUserDTOConverter(userUpdateDTO);
-		Optional<User> userOri= userRepository.findById(userDTO.getId());
-
-		User user = userMapper.userDTOToUserConverter(userDTO);
+	public UserDTO updateUser(UserDTO userUpdateDTO) {
+		Optional<User> userOri= userRepository.findById(userUpdateDTO.getId());
+		User user = userMapper.userDTOToUserConverter(userUpdateDTO);
 
 		if (userOri.isPresent()){
 			user.setPassword(userOri.get().getPassword());
-			user.setRoles(userOri.get().getRoles());
 			user.setActive(userOri.get().isActive());
 
 			if (user.getCollegeNumber() == null) {
@@ -347,7 +338,7 @@ public class UserService {
 				user.setEmail(userOri.get().getEmail());
 			}
 			if (user.getName() == null) {
-				user.setUsername(userOri.get().getUsername());
+				user.setName(userOri.get().getName());
 			}
 			if (user.getSurname() == null) {
 				user.setSurname(userOri.get().getSurname());
@@ -357,6 +348,11 @@ public class UserService {
 			}
 			if (user.getPhone() == null) {
 				user.setPhone(userOri.get().getPhone());
+			}
+			if (userUpdateDTO.getRoles() == null || userUpdateDTO.getRoles().isEmpty()) {
+				user.setRoles(userOri.get().getRoles());
+			} else {
+				user.setRoles(roleService.getAllRolesByIdSet(userUpdateDTO.getRoles()));
 			}
 		}
 
