@@ -19,11 +19,15 @@ public interface PatientRepository extends JpaRepository<Patient, Long>,PatientR
 	Page<Patient> findByPathologies(@Param("pathologies") Collection pathologies, Pageable pageable);
 	
 	@Query("select pac from Patient pac join pac.pathologies pat WHERE pat.id in (:pathologies) "
-			+ " AND (LOWER(pac.name) like CONCAT('%',LOWER(:search),'%') "
+			+ " AND ("
+			+ " LOWER(pac.name) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(pac.firstSurname) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(pac.lastSurname) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(pac.nhc) like CONCAT('%',LOWER(:search),'%') "
-			+ " OR LOWER(pac.healthCard) like CONCAT('%',LOWER(:search),'%')) ")
+			+ " OR LOWER(pac.healthCard) like CONCAT('%',LOWER(:search),'%') "
+			+ " OR LOWER(pac.dni) like CONCAT('%',LOWER(:search),'%') "
+			+ " OR LOWER(pac.phone) like CONCAT('%',LOWER(:search),'%') "
+			+ " ) ")
 	Page<Patient> findPatientBySearch(@Param("pathologies") Collection pathologies, @Param("search")String search,
 									  Pageable pageable);
 
