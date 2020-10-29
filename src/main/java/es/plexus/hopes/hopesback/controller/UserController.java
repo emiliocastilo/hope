@@ -5,7 +5,6 @@ import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
 import es.plexus.hopes.hopesback.controller.model.RequestPasswordChangeDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
 import es.plexus.hopes.hopesback.controller.model.UserSimpleDTO;
-import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.service.UserService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -106,7 +105,7 @@ public class UserController {
 	@ApiOperation("Actualizar un usuario")
 	@ResponseStatus(HttpStatus.OK)
 	@PutMapping
-	public UserDTO updateUser(@RequestBody @Valid final UserUpdateDTO userUpdateDTO) {
+	public UserDTO updateUser(@RequestBody @Valid final UserDTO userUpdateDTO) {
 
 		if (userService.getOneUserById(userUpdateDTO.getId()) == null) {
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception("Usuario no encontrado con id=" + userUpdateDTO.getId());
