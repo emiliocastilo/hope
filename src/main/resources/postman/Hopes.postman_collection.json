@@ -1518,7 +1518,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"pruebaUser\",\n    \"password\": \"password\",\n    \"email\": \"prueba@plexus.es\",\n    \"roles\": [1,2],\n    \"hospitalId\": 1,\n    \"name\": \"Prueba\",\n    \"surname\": \"Apellido\",\n    \"phone\": \"600000000\",\n    \"dni\": \"52201960X\",\n    \"collegeNumber\": \"075566666\",\n    \"serviceId\": 4\n}",
+							"raw": "{\n    \"username\": \"pruebaUser\",\n    \"password\": \"password\",\n    \"email\": \"prueba@plexus.es\",\n    \"roles\": [1,2],\n    \"name\": \"Prueba\",\n    \"surname\": \"Apellido\",\n    \"phone\": \"600000000\",\n    \"dni\": \"52201960X\",\n    \"collegeNumber\": \"075566666\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1555,7 +1555,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 14,\r\n    \"name\": \"Nprueba\",\r\n    \"surname\": \"Aprueba\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"username\": \"Nprueba.Aprueba\",\r\n    \"email\": \"antoine.griezmann1@plexus.es\"\r\n}",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Nprueba\",\r\n    \"surname\": \"Aprueba\",\r\n    \"phone\": \"123456789\",\r\n    \"dni\": \"12345678Z\",\r\n    \"collegeNumber\": 12345678,\r\n    \"username\": \"Nprueba.Aprueba\",\r\n    \"roles\": [3],\r\n    \"email\": \"prueba@plexus.es\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

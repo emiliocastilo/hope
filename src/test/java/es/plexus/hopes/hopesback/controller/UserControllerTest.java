@@ -3,7 +3,6 @@ package es.plexus.hopes.hopesback.controller;
 import es.plexus.hopes.hopesback.controller.model.PasswordDTO;
 import es.plexus.hopes.hopesback.controller.model.RequestPasswordChangeDTO;
 import es.plexus.hopes.hopesback.controller.model.UserDTO;
-import es.plexus.hopes.hopesback.controller.model.UserUpdateDTO;
 import es.plexus.hopes.hopesback.repository.model.Token;
 import es.plexus.hopes.hopesback.service.UserService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -115,7 +114,7 @@ public class UserControllerTest {
 	public void updateUserShouldBeStatusOk() throws ServiceException {
 		// given
 		given(userService.getOneUserById(anyLong())).willReturn(mockFullUser());
-		given(userService.updateUser(any(UserUpdateDTO.class))).willReturn(mockFullUser());
+		given(userService.updateUser(any(UserDTO.class))).willReturn(mockFullUser());
 
 		// when
 		UserDTO response = userController.updateUser(mockUserUpdateDTO());
@@ -223,8 +222,8 @@ public class UserControllerTest {
 		return "{\"name\":\"" + mockFullUser().getName() + "\"}";
 	}
 
-	private UserUpdateDTO mockUserUpdateDTO() {
-		UserUpdateDTO userUpdateDTO = new UserUpdateDTO();
+	private UserDTO mockUserUpdateDTO() {
+		UserDTO userUpdateDTO = new UserDTO();
 		userUpdateDTO.setCollegeNumber(2L);
 		userUpdateDTO.setDni("User DNI update");
 		userUpdateDTO.setEmail("User Email update");
