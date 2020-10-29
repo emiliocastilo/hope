@@ -1,13 +1,13 @@
 -- INITIALIZE A DATABASE --
-DELETE FROM hopes.hospitals_services;
-DELETE FROM hopes.sections_roles;
-DELETE FROM hopes.users_roles;
-DELETE FROM hopes.roles;
-DELETE FROM hopes.hospitals;
-DELETE FROM hopes.indications;
-DELETE FROM hopes.services_pathologies;
-DELETE FROM hopes.pathologies;
-DELETE FROM hopes.users;
+DELETE FROM  hopes.hospitals_services;
+DELETE FROM  hopes.sections_roles;
+DELETE FROM  hopes.users_roles;
+DELETE FROM  hopes.roles;
+DELETE FROM  hopes.hospitals;
+DELETE FROM  hopes.indications;
+DELETE FROM  hopes.services_pathologies;
+DELETE FROM  hopes.pathologies;
+DELETE FROM  hopes.users;
 
 -- Configuration Initial - Hospitals
 INSERT INTO hopes.hospitals (hos_id, hos_name, hos_cie) VALUES (nextval('hopes.hospitals_hos_id_seq'), 'Hopes - Servicios de Salud', 'CIE9');
