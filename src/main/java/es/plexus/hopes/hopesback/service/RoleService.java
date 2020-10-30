@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.service;
 import es.plexus.hopes.hopesback.controller.model.HospitalDTO;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
+import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.repository.RoleRepository;
 import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Role;
@@ -35,6 +36,7 @@ public class RoleService {
 	private final MenuService menuService;
 	private final HospitalService hospitalService;
 	private final PathologyService pathologyService;
+	private final SectionService sectionService;
 
 	public Page<RoleDTO> getAllRoles(Long idRoleSelected, final Pageable pageable) {
 		RoleDTO role = getOneRoleById(idRoleSelected);
@@ -87,7 +89,15 @@ public class RoleService {
 							role.getCode(), roleDTO.getHospital().getName(), roleDTO.getPathology().getName()));
 		}
 
-		return roleMapper.roleToRoleDTOConverter(role);
+		RoleDTO roleInsertedDTO = roleMapper.roleToRoleDTOConverter(role);
+		// Por defecto en todos los roles se añade la relacion con la seccion padre
+		if (role.getId() != null) {
+			SectionDTO sectionDTO = sectionService.findByFatherSectionIsNull();
+			sectionDTO.getRoles().add(roleInsertedDTO);
+			sectionService.save(sectionDTO);
+		}
+
+		return roleInsertedDTO;
 	}
 
 	private void existRole(RoleDTO roleDTO) {
