@@ -6,7 +6,7 @@ databaseChangeLog:
       file: ../sql/data/2-configuration_hospital_path_user_v2.sql
       relativeToChangelogFile: true
 - include:
-      file: ../sql/data/3-services_hospitals.sql
+      file: ../sql/data/3-services_hospitals_v2.sql
       relativeToChangelogFile: true
 - include:
       file: ../sql/data/4-configuration_roles_v2.sql
