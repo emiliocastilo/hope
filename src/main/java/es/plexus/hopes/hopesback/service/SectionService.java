@@ -68,5 +68,12 @@ public class SectionService {
 		return tree;
 	}
 
-
+    public SectionDTO findByFatherSectionIsNull() {
+		Optional<Section> section = sectionRepository.findByFatherSectionIsNull();
+		SectionDTO sectionDTO = null;
+		if (section.isPresent()){
+			sectionDTO = SectionMapper.INSTANCE.entityToDto(section.get());
+		}
+		return sectionDTO;
+	}
 }

@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SectionRepository extends JpaRepository<Section, Long> {
@@ -16,4 +17,6 @@ public interface SectionRepository extends JpaRepository<Section, Long> {
 
     @Query("select s from Section s join s.roles r WHERE r.name = :name order by s.fatherSection, s.order" )
     List<Section> findSectionsByRolName(@Param("name")String name);
+
+    Optional<Section> findByFatherSectionIsNull();
 }
