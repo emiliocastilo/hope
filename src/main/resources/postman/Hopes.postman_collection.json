@@ -830,7 +830,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"patient\",\n    \"firstSurname\": \"numero\",\n    \"lastSurname\": \"45\",\n    \"nhc\": \"MDMD210604237712\",\n    \"healthCard\": \"2112375698\",\n    \"dni\": \"94736562J\",\n    \"address\": \"Calle 21, 24, Segovia, Segovia, España CP: 28080\",\n    \"phone\":\"+34668795263\",\n    \"email\":\"patient.numero.cinco@hopes.com\",\n    \"birthDate\": \"1981-01-01T00:00:00Z\",\n    \"hospital\":{\n    \t\"id\":\"1\"\n    },\n    \"genderCode\":\"F\",\n    \"pathologies\":[\n    \t{\"id\":\"1\"}\n    ]\n}",
+							"raw": "{\n    \"name\": \"patient\",\n    \"firstSurname\": \"numero\",\n    \"lastSurname\": \"45\",\n    \"nhc\": \"MDMD210604237712\",\n    \"healthCard\": \"2112375698\",\n    \"dni\": \"94736562J\",\n    \"address\": \"Calle 21, 24, Segovia, Segovia, España CP: 28080\",\n    \"city\": \"Palma\",\n    \"province\": \"Baleares\",\n    \"cp\": \"07008\",\n    \"originCountry\": \"España\",\n    \"phone\":\"+34668795263\",\n    \"email\":\"patient.numero.cinco@hopes.com\",\n    \"birthDate\": \"1981-01-01T00:00:00Z\",\n    \"hospital\":{\n    \t\"id\":\"1\"\n    },\n    \"genderCode\":\"F\",\n    \"pathologies\":[\n    \t{\"id\":\"1\"}\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
