@@ -61,6 +61,18 @@ public class Patient {
     @Column(name = "pac_address",  length = 200)
     private String address;
 
+    @Column(name = "pac_city",  length = 200)
+    private String city;
+
+    @Column(name = "pac_province",  length = 200)
+    private String province;
+
+    @Column(name = "pac_cp",  length = 5)
+    private String cp;
+
+    @Column(name = "pac_origin_country",  length = 200)
+    private String originCountry;
+
     @Basic
     @Column(name = "pac_phone",  length = 15)
     private String phone;

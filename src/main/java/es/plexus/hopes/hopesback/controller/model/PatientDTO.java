@@ -21,6 +21,10 @@ public class PatientDTO {
     private String healthCard;
     private String dni;
     private String address;
+    private String city;
+    private String province;
+    private String cp;
+    private String originCountry;
     private String phone;
     private String email;
     @ApiModelProperty(position = 20, example = "1981-01-01T00:00:00Z", value = "Fecha de carga de las dispensaciones")
