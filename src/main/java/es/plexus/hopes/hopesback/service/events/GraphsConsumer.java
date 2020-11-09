@@ -30,7 +30,7 @@ public class GraphsConsumer {
 	private final PatientService patientService;
 	private final DispensationDetailService dispensationDetailService;
 
-	@EventListener(condition = "#graphsEvent.name eq 'adherence-to-treatment-morisky' or #graphsEvent.name eq 'adherence-to-treatment-haynes'")
+	@EventListener(condition = "#graphsEvent.name eq 'adherence-to-treatment-morisky' or #graphsEvent.name eq 'adherence-to-treatment-haynes' or #graphsEvent.name eq 'adherence-to-treatment-SMAQ'")
 	public void handleAddAdherenceGraphs(GraphsEvent graphsEvent) {
 		PatientDTO patient = patientService.findById(Long.valueOf(graphsEvent.getPatientId()));
 
