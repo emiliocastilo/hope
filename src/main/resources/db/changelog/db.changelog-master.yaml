@@ -2,8 +2,8 @@ databaseChangeLog:
 - include:
     file: yaml/db.changelog-schema.yaml
     relativeToChangelogFile: true
-    context: dev or prod
+    context: dev or local or prod
 - include:
     file: yaml/db.changelog-data.yaml
     relativeToChangelogFile: true
-    context: dev or prod
+    context: dev or local or prod
