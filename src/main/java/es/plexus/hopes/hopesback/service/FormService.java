@@ -144,7 +144,7 @@ public class FormService {
             inputDTOList = forms.get(0).getData().stream().filter(inputDTO -> name.equals(inputDTO.getName())).collect(Collectors.toList());
         }
 
-        return CollectionUtils.isNotEmpty(inputDTOList)?inputDTOList.get(0).getValue():new Object();
+        return CollectionUtils.isNotEmpty(inputDTOList)?inputDTOList.get(0).getValue():new InputDTO().getValue();
     }
 
     public List<GraphHistorifyDinamycFormDTO> graphHistorifyDinamycFormByTemplateAndPatientId(String template, Integer patientId) {
