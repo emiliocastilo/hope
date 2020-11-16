@@ -48,8 +48,7 @@ public class User extends AbstractAudit {
 	@Email
 	private String email;
 
-	@ManyToMany(fetch = FetchType.EAGER,
-			cascade = CascadeType.REMOVE)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles",
 			joinColumns = @JoinColumn(name = "uro_user_id"),
 			inverseJoinColumns = @JoinColumn(name = "uro_rol_id"))
