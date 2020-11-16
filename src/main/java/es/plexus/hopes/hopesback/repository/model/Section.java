@@ -76,8 +76,7 @@ public class Section {
 			inverseJoinColumns = @JoinColumn(name = "scf_form_id"))
 	private Set<Form> forms = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.EAGER,
-			cascade = CascadeType.REMOVE)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "sections_roles",
 			joinColumns = @JoinColumn(name = "scr_section_id"),
 			inverseJoinColumns = @JoinColumn(name = "scr_role_id"),
@@ -88,6 +87,9 @@ public class Section {
 	@MapKey(name = "locale")
     @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     private Map<String, LocalizedSection> localizations = new HashMap<>();
+
+	@Column(name = "sec_visible")
+	private boolean visible;
 
 	public LocalizedSection getLocale() {
 		LocalizedSection localizedSection = localizations.get(LocaleContextHolder.getLocale().getLanguage());
