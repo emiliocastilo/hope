@@ -17,5 +17,6 @@ public class ConstantsServiceCatalog {
 	public static final String NOT_PATIENT_IN_FORM_MESSAGE = "No se ha podido encontrar el paciente";
 	public static final String NOT_DATE_IN_FORM_MESSAGE = "No hay fecha en el formulario";
 	public static final String ROLE_CODE_VIOLATION_CONSTRAINT_MESSAGE = "Ya existe el valor del campo código";
+	public static final String SECTION_ROOT_VIOLATION_CONSTRAINT_MESSAGE = "La sección no se puede eliminar porque tiene subsecciones";
 
 }

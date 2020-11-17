@@ -88,6 +88,9 @@ public class Section {
     @Cache(usage = CacheConcurrencyStrategy.TRANSACTIONAL)
     private Map<String, LocalizedSection> localizations = new HashMap<>();
 
+	@Column(name = "sec_visible")
+	private boolean visible;
+
 	public LocalizedSection getLocale() {
 		LocalizedSection localizedSection = localizations.get(LocaleContextHolder.getLocale().getLanguage());
 		return localizedSection;

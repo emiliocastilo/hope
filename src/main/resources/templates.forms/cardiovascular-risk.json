@@ -1,0 +1,14 @@
+{
+  "key": "cardiovascular-risk",
+  "form": "[{'type':'title','name':'Riesgo cardiovascular'},{'type':'datepicker','label':'Fecha de registro','name':'date','disabled':false,'max':'today','defaultValue':'today'},{'type':'select','name':'genderCode','disabled':false,'label':'Sexo','options':[{'name':'Hombre','value':'Hombre'},{'name':'Mujer','value':'Mujer'}],'placeholder':'','validation':'Validators.required'},{'type':'datepicker','label':'Fecha de nacimiento','name':'birthDate','disabled':false,'max':'today','defaultValue':'today','validation':'Validators.required'},{'type':'input','label':'Edad','name':'age','disabled':true,'calculated_front':true,'formula':'moriskyAdherence','params':['birthDate']},{'type':'checkbox','label':'Diabetes','name':'diabetes'},{'type':'datepicker','label':'Fecha de recogida de existencia de la comorbilidad','name':'collectDate','disabled':false,'defaultValue':'today','enableWhen':['diabetes',true]},{'type':'checkbox','label':'Definida estándar','name':'standart','enableWhen':['diabetes',true]},{'type':'checkbox','label':'Diagnosticada','name':'diagnosed','enableWhen':['diabetes',true]},{'type':'checkbox','label':'En tratamiento','name':'underTreatment','enableWhen':['diabetes',true]},{'type':'checkbox','label':'Consumo de tabaco','name':'smoker'},{'type':'input','label':'PAS (mmHg)','name':'pas','disabled':false,'placeholder':'','validation':'Validators.decimal(2)'},{'type':'input','label':'PAD (mmHg)','name':'pad','disabled':false,'placeholder':'','validation':'Validators.decimal(2)'},{'type':'input','label':'Colesterol total (mg/dL)','name':'cholesterol','disabled':false,'placeholder':'','validation':'Validators.decimal(2)'},{'type':'input','label':'HDL (mg/dL)','name':'hdl','disabled':false,'placeholder':'','validation':'Validators.decimal(2)'},{'type':'input','label':'Probabilidad de accidente vascular','name':'probability','disabled':true},{'type':'select','name':'risk','disabled':false,'label':'Riesgo','options':[{'name':'≥ 15%','value':'≥ 15%'},{'name':'10-14%','value':'10-14%'},{'name':'5-9%','value':'5-9%'},{'name':'<5%','value':'<5%'}],'placeholder':''}]",
+  "buttons": "['save', 'clean', 'graphsBack']",
+  "historify": true,
+  "nameHistoricalDate": "date",
+  "fieldsToGraph": [
+    "pas",
+    "pad",
+    "cholesterol",
+    "hdl",
+    "risk"
+  ]
+}

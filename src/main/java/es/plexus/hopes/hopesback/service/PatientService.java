@@ -61,14 +61,9 @@ public class PatientService {
 	}
 
 	public PatientDTO save(PatientDTO patient) throws ServiceException {
-		if (null != patient.getPathologies() && patient.getPathologies().size() == 1){
-			validatePatient(patient);
-				return PatientMapper.INSTANCE.
-						entityToDto(patientRepository.save(PatientMapper.INSTANCE.dtoToEntity(patient)));
-		} else {
-			throw ServiceExceptionCatalog.TOO_MANY_ELEMENTS_EXCEPTION
-					.exception("Error: Too much pathologies");
-		}
+		validatePatient(patient);
+		return PatientMapper.INSTANCE.
+				entityToDto(patientRepository.save(PatientMapper.INSTANCE.dtoToEntity(patient)));
 
 
 	}

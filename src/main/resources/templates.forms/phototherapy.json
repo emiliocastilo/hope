@@ -1,0 +1,8 @@
+{
+    "key": "phototherapy",
+    "form": "[{'type':'title','name':'Tratamientos no farmacológicos'},{'type':'input','label':'Indicación','name':'indication'},{'type':'checkbox','label':'Indicación especial','name':'specialIndication'},{'type':'checkbox','label':'Gran Impacto psicológico','name':'bigPsychologicalImpact'},{'type':'checkbox','label':'Lesiones visibles','name':'visibleInjury'},{'type':'input','label':'Otras','name':'others'},{'type':'checkbox','label':'UVB','name':'uvb'},{'type':'checkbox','label':'Psoraleno + UVA','name':'psoralenoPlusUva'},{'type':'input','label':'Logitud de onda (nm)','name':'waveLongitude'},{'type':'input','label':'Número de sesiones','name':'sessionNumbers','validation':'Validators.required'},{'type':'input','label':'Pauta (veces por semana)','name':'timesAWeek','validation':'Validators.required'},{'type':'datepicker','label':'Fecha de prescipción','name':'datePrescription','validation':'Validators.required'},{'type':'datepicker','label':'Fecha de inicio','name':'dateStart','validation':'Validators.required'},{'type':'datepicker','label':'Fecha prevista de finalización','name':'expectedEndDate'},{'type':'textarea','label':'Observaciones','name':'observations'},{'type':'select','name':'reasonChangeOrSuspension','label':'Motivo','disabled':false,'options':[{'name':'Cambio','value':'Cambio'},{'name':'Suspensión','value':'Suspensión'}]}]",
+    "buttons": "['save']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}

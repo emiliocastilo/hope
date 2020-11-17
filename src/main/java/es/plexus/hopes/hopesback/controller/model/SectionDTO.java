@@ -49,4 +49,7 @@ public class SectionDTO {
 	@ApiModelProperty(position = 100, example = "[{id=1},{id=2}]", value = "Roles con permisos para poder visualizar esta sección")
 	private Set<RoleDTO> roles = new HashSet<>();
 
+	@ApiModelProperty(position = 110, example = "true", value = "Si quieres que la sección sea visible independientemente si está activa o no. Por defecto siempre es TRUE")
+	private boolean visible;
+
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static es.plexus.hopes.hopesback.service.Constants.ROLE_ADMIN;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.SECTION_ROOT_VIOLATION_CONSTRAINT_MESSAGE;
 
 @Log4j2
 @Service
@@ -48,8 +49,14 @@ public class SectionService {
 	public void deleteById(Long id) throws ServiceException {
 		log.debug(CALLING_DB);
 		Optional<Section> section = sectionRepository.findById(id);
-		if(!section.isPresent()) {
+
+		if (!section.isPresent()) {
 			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(NOT_FOUND_ID + id);
+		} else {
+			Optional<Section> sectionsChildren = sectionRepository.findByFatherSection(section.get());
+			if (sectionsChildren.isPresent()) {
+				throw ServiceExceptionCatalog.SECTION_ROOT_VIOLATION_CONSTRAINT_EXCEPTION.exception(SECTION_ROOT_VIOLATION_CONSTRAINT_MESSAGE);
+			}
 		}
 		sectionRepository.delete(section.get());
 	}

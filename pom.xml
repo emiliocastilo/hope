@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.plexus.hopes</groupId>
-    <artifactId>hopes-back</artifactId>
+    <artifactId>hopes-back_dev</artifactId>
     <version>3.0.0-SNAPSHOT</version>
-    <name>hopes-back</name>
-    <description>Hopes Back</description>
+    <name>hopes-back_dev</name>
+    <description>Hopes Back_dev</description>
 
     <properties>
         <compiler.version>1.8</compiler.version>
@@ -32,9 +32,26 @@
 
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>local</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <spring.profiles.active>local</spring.profiles.active>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <spring.profiles.active>dev</spring.profiles.active>
