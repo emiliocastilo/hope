@@ -35,6 +35,7 @@ public final class MenuUtils {
                 parent.setActive(section.isActive());
                 parent.setPrincipal(section.isActive());
                 parent.setChildren(new ArrayList<>());
+                parent.setVisible(section.isVisible());
 
                 remainingSections.remove(section);
                 buildTree(remainingSections, parent);

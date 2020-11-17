@@ -16,5 +16,6 @@ public class MenuDTO {
     private boolean active;
     private boolean principal;
     private List<MenuDTO> children;
+    private boolean visible;
 }
 
