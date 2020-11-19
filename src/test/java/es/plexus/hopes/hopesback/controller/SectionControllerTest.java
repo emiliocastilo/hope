@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
+import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.service.SectionService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -14,6 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -79,11 +81,13 @@ public class SectionControllerTest {
 
 	@Test
 	public void callFindAllShouldBeStatusOk() throws ServiceException {
+		RoleDTO roleDTO = new RoleDTO();
+
 		// given
-		given(sectionService.findAllSections()).willReturn(mockMenuDto());
+		given(sectionService.findAllSectionsByRole(roleDTO)).willReturn(mockMenuDto());
 
 		// when
-		MenuDTO response = sectionController.findAll();
+		MenuDTO response = sectionController.findAllByRole(any());
 
 		// then
 		Assert.assertNotNull(response);

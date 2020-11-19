@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
+import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.service.SectionService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -68,9 +69,10 @@ public class SectionController {
 	@ApiOperation("Recuperar todas las seccioens")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public MenuDTO findAll() throws ServiceException {
+	public MenuDTO findAllByRole(@ApiParam(value = "Rol seleccionado")
+							   @RequestBody final RoleDTO roleDTO) throws ServiceException {
 		log.debug(CALLING_SERVICE);
-		return sectionService.findAllSections();
+		return sectionService.findAllSectionsByRole(roleDTO);
 	}
 
 }
