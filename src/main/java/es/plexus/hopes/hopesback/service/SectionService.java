@@ -63,7 +63,7 @@ public class SectionService {
 	}
 
 	public MenuDTO findAllSectionsByRole(RoleDTO roleDTO) throws ServiceException {
-		MenuDTO tree = new MenuDTO(); 
+		MenuDTO tree = new MenuDTO();
 
 		List<Section> sections = sectionRepository.findSectionsByRolName(roleDTO.getName());
 

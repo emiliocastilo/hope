@@ -1,8 +1,11 @@
 package es.plexus.hopes.hopesback.controller;
 
+import es.plexus.hopes.hopesback.controller.model.HospitalDTO;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
+import es.plexus.hopes.hopesback.controller.model.PathologyDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
+import es.plexus.hopes.hopesback.controller.model.ServiceDTO;
 import es.plexus.hopes.hopesback.service.SectionService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import org.junit.Assert;
@@ -82,12 +85,21 @@ public class SectionControllerTest {
 	@Test
 	public void callFindAllShouldBeStatusOk() throws ServiceException {
 		RoleDTO roleDTO = new RoleDTO();
+		roleDTO.setCode("ROLE_CODE");
+		roleDTO.setDescription("Descripción rol");
+		HospitalDTO hospitalDTO = new HospitalDTO();
+		roleDTO.setHospital(hospitalDTO);
+		ServiceDTO serviceDTO = new ServiceDTO();
+		roleDTO.setService(serviceDTO);
+		PathologyDTO pathologyDTO = new PathologyDTO();
+		roleDTO.setPathology(pathologyDTO);
+		roleDTO.setName("Nombre rol");
 
 		// given
-		given(sectionService.findAllSectionsByRole(roleDTO)).willReturn(mockMenuDto());
+		given(sectionService.findAllSectionsByRole(any())).willReturn(mockMenuDto());
 
 		// when
-		MenuDTO response = sectionController.findAllByRole(any());
+		MenuDTO response = sectionController.findAllByRole(roleDTO);
 
 		// then
 		Assert.assertNotNull(response);
