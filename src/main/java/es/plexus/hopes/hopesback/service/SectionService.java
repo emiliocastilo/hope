@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
+import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.repository.SectionRepository;
 import es.plexus.hopes.hopesback.repository.model.Section;
@@ -61,10 +62,10 @@ public class SectionService {
 		sectionRepository.delete(section.get());
 	}
 
-	public MenuDTO findAllSections() throws ServiceException {
+	public MenuDTO findAllSectionsByRole(RoleDTO roleDTO) throws ServiceException {
 		MenuDTO tree = new MenuDTO();
 
-		List<Section> sections = sectionRepository.findSectionsByRolName(ROLE_ADMIN);
+		List<Section> sections = sectionRepository.findSectionsByRolName(roleDTO.getName());
 
 		if (!sections.isEmpty()) {
 			MenuUtils.buildTree(sections, tree);
