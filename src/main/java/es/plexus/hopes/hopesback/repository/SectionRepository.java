@@ -19,4 +19,6 @@ public interface SectionRepository extends JpaRepository<Section, Long> {
     List<Section> findSectionsByRolName(@Param("name")String name);
 
     Optional<Section> findByFatherSectionIsNull();
+
+    Optional<Section> findByFatherSection(Section fatherSection);
 }

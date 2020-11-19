@@ -1,0 +1,8 @@
+{
+  "key": "viral-tropism-vih",
+  "form": "[{'type':'title','name':'Tropismo viral'},{'type':'datepicker','label':'Fecha','name':'date','disabled':false,'defaultValue':'today'},{'type':'radio','label':'CCR5','name':'ccr5','radioButton':[{'optionName':'Sí','value':'Sí'},{'optionName':'No','value':'No'},{'optionName':'Desconocido','value':'Desconocido'}]},{'type':'radio','label':'CXCR4','name':'cxcr4','radioButton':[{'optionName':'Sí','value':'Sí'},{'optionName':'No','value':'No'},{'optionName':'Desconocido','value':'Desconocido'}]},{'type':'radio','label':'Tropismo fenotipico FPR','name':'fpr','radioButton':[{'optionName':'Sí','value':'Sí'},{'optionName':'No','value':'No'},{'optionName':'Desconocido','value':'Desconocido'}]}]",
+  "buttons": "['save','clean']",
+  "historify": false,
+  "nameHistoricalDate": null,
+  "fieldsToGraph": null
+}
