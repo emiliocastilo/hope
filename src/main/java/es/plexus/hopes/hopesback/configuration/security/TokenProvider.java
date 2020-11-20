@@ -85,16 +85,14 @@ public class TokenProvider {
 		return claimsJws.getBody().getSubject();
 	}
 
-	public static List<String> getRoles(String token) {
+	public static String getRoleSelected(String token) {
 		final JwtParser jwtParser = Jwts.parser().setSigningKey(SECRET_KEY);
 
 		token = token.replace(TOKEN_BEARER_PREFIX, "");
 
 		final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
-		String roles = claimsJws.getBody().get(AUTHORITIES_KEY).toString();
-
-		return Arrays.asList(roles.split(","));
+		return claimsJws.getBody().get(AUTHORITIES_KEY).toString();
 	}
 
 	/**

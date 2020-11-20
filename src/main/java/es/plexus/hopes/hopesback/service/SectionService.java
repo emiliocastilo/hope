@@ -65,13 +65,8 @@ public class SectionService {
 	}
 
 	public MenuDTO findAllSectionsByRole(String token) throws ServiceException {
-		List<String> rolesCode = TokenProvider.getRoles(token);
-		String roleCode = "";
+		String roleCode = TokenProvider.getRoleSelected(token);
 		MenuDTO tree = new MenuDTO();
-
-		if (!rolesCode.isEmpty()) {
-			roleCode = rolesCode.get(0);
-		}
 
 		Optional<Role> role = roleRepository.findByCode(roleCode);
 
