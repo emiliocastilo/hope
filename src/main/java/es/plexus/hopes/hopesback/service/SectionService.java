@@ -1,9 +1,11 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
-import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
+import es.plexus.hopes.hopesback.repository.RoleRepository;
 import es.plexus.hopes.hopesback.repository.SectionRepository;
+import es.plexus.hopes.hopesback.repository.model.Role;
 import es.plexus.hopes.hopesback.repository.model.Section;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static es.plexus.hopes.hopesback.service.Constants.ROLE_ADMIN;
 import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.SECTION_ROOT_VIOLATION_CONSTRAINT_MESSAGE;
 
 @Log4j2
@@ -29,6 +30,7 @@ public class SectionService {
 	private static final String NOT_ROLE_ADMIN = "No existe ningún administrador";
 
 	private final SectionRepository sectionRepository;
+	private final RoleRepository roleRepository;
 
 	public SectionDTO save(SectionDTO sectionDTO) {
 		Section section = SectionMapper.INSTANCE.dtoToEntity(sectionDTO);
@@ -62,15 +64,24 @@ public class SectionService {
 		sectionRepository.delete(section.get());
 	}
 
-	public MenuDTO findAllSectionsByRole(RoleDTO roleDTO) throws ServiceException {
+	public MenuDTO findAllSectionsByRole(String token) throws ServiceException {
+		String roleCode = TokenProvider.getRoleSelected(token);
 		MenuDTO tree = new MenuDTO();
 
-		List<Section> sections = sectionRepository.findSectionsByRolName(roleDTO.getName());
+		Optional<Role> role = roleRepository.findByCode(roleCode);
+
+		if (!role.isPresent()) {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception("No se ha encontrado el rol con el code: " + roleCode);
+		}
+
+		List<Section> sections = sectionRepository.findByRolCode(roleCode);
 
 		if (!sections.isEmpty()) {
 			MenuUtils.buildTree(sections, tree);
-		}else {
-			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(NOT_ROLE_ADMIN);
+		} else {
+			throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION
+					.exception("No se han encontrado secciones con el id role: " + role.get().getId() );
 		}
 
 		return tree;
