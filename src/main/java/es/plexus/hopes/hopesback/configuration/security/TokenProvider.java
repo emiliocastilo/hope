@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.AUTHORITIES_KEY;
@@ -23,6 +24,7 @@ import static es.plexus.hopes.hopesback.configuration.security.Constants.PATIENT
 import static es.plexus.hopes.hopesback.configuration.security.Constants.QR_TOKEN_EXPIRATION_TIME;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.SECRET_KEY;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.SECRET_QR_KEY;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_BEARER_PREFIX;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.TOKEN_HOPES_KEY;
 import static es.plexus.hopes.hopesback.configuration.security.Constants.USERNAME_HOPES_KEY;
 
@@ -81,6 +83,18 @@ public class TokenProvider {
 		final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
 		return claimsJws.getBody().getSubject();
+	}
+
+	public static List<String> getRoles(String token) {
+		final JwtParser jwtParser = Jwts.parser().setSigningKey(SECRET_KEY);
+
+		token = token.replace(TOKEN_BEARER_PREFIX, "");
+
+		final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
+
+		String roles = claimsJws.getBody().get(AUTHORITIES_KEY).toString();
+
+		return Arrays.asList(roles.split(","));
 	}
 
 	/**

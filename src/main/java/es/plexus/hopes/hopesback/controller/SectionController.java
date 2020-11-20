@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
-import es.plexus.hopes.hopesback.controller.model.RoleDTO;
 import es.plexus.hopes.hopesback.controller.model.SectionDTO;
 import es.plexus.hopes.hopesback.service.SectionService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,10 +69,10 @@ public class SectionController {
 	@ApiOperation("Recuperar todas las seccioens")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
-	public MenuDTO findAllByRole(@ApiParam(value = "Rol seleccionado")
-							   @RequestBody final RoleDTO roleDTO) throws ServiceException {
+	public MenuDTO findAll(@RequestHeader(name = "Authorization") final String token) throws ServiceException {
 		log.debug(CALLING_SERVICE);
-		return sectionService.findAllSectionsByRole(roleDTO);
+
+		return sectionService.findAllSectionsByRole(token);
 	}
 
 }
