@@ -67,7 +67,7 @@ public class PatientRepositoryImpl implements PatientRepositoryCustom{
 		return query;
 	}
 
-	private String getQueryStringDetailPatientsUnderTreatment( Boolean indication, Boolean medicine){
+	private String getQueryStringDetailPatientsUnderTreatment( boolean indication, boolean medicine){
 		String queryStr = QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION;
 		String joinString = "";
 		String whereString = WHERE_CLAUSULE + FILTER_PTR_ACTIVE_TRUE +FILTER_PTR_TYPE ;
