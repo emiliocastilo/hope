@@ -128,18 +128,18 @@ public class PatientTreatmentService {
 	}
 
 	@Transactional
-	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication, final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, final String medicine, final Pageable pageable) {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication);
+		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, medicine);
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 		return page;
 	}
 
 	@Transactional
-	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication) {
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, String medicine) {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication);
+		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, medicine);
 		return fillGraphPatientDetailDtoList(patients);
 	}
 
