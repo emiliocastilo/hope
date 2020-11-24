@@ -46,26 +46,45 @@ public class PatientRepositoryImpl implements PatientRepositoryCustom{
 	@Override
 	public List<Patient> getDetailPatientsUnderTreatment(String type, String indication, String medicine) {
 		List<Patient> result;
-		TypedQuery<Patient> query;
-		String queryStr;
-
-		if (StringUtils.isBlank(medicine)){
-			queryStr = QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION;
-		} else {
-			queryStr = QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION_AND_MEDICINE;
-		}
-
-		query = entityManager.createQuery(queryStr, Patient.class)
-				.setParameter("type", type)
-				.setParameter("indication", indication);
-
-		if (StringUtils.isNotBlank(medicine)){
-			query.setParameter("medicine", medicine);
-		}
+		TypedQuery<Patient> query = getQueryDetailPatientsUnderTreatment(type, indication, medicine);
 
 		result = query.getResultList();
 		return result;
 	}
+
+	private TypedQuery<Patient> getQueryDetailPatientsUnderTreatment(String type, String indication, String medicine){
+		String queryStr = getQueryStringDetailPatientsUnderTreatment(StringUtils.isNotBlank(indication), StringUtils.isNotBlank(medicine));
+		TypedQuery<Patient> query = entityManager.createQuery(queryStr, Patient.class).setParameter("type", type);
+
+		if (StringUtils.isNotBlank(indication)) {
+			query.setParameter("indication", indication);
+		}
+
+		if (StringUtils.isNotBlank(medicine)) {
+			query.setParameter("medicine", medicine);
+		}
+
+		return query;
+	}
+
+	private String getQueryStringDetailPatientsUnderTreatment( Boolean indication, Boolean medicine){
+		String queryStr = QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION;
+		String joinString = "";
+		String whereString = WHERE_CLAUSULE + FILTER_PTR_ACTIVE_TRUE +FILTER_PTR_TYPE ;
+
+		if ( indication ){
+			joinString += JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID;
+			whereString += FILTER_INDICATION_DESCRIPTION;
+		}
+		if ( medicine ){
+			joinString += JOIN_MEDICINES_MED_ON_MED_MED_ID_PTR_MED_ID;
+			whereString += FILTER_MEDICINE_ACT_INGREDIENTS;
+		}
+
+		queryStr += joinString + whereString;
+		return queryStr;
+	}
+
 
 }
 
