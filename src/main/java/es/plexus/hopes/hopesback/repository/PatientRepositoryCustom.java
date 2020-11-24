@@ -15,6 +15,7 @@ public interface PatientRepositoryCustom {
 	List<Patient> findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears(
 			@Param("endCause")String endCause, @Param("reason")String reason, @Param("initDate") LocalDateTime initDate);
 
-	List<Patient> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication);
+	List<Patient> getDetailPatientsUnderTreatment(@Param("type")String type, @Param("indication")String indication, String medicine);
+
 }
 

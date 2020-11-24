@@ -276,6 +276,18 @@ public class QueryConstants {
 
 	public static final String ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT = "order by pt.initDate ";
 
+	public static final String JOIN_MEDICINES_MED_ON_MED_MED_ID_PTR_MED_ID = " join fetch Medicine med on med.id  = ptr.medicine.id ";
+	public static final String QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION_AND_MEDICINE =
+			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
+					JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
+					JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID +
+					JOIN_MEDICINES_MED_ON_MED_MED_ID_PTR_MED_ID +
+					WHERE_CLAUSULE +
+					FILTER_PTR_ACTIVE_TRUE +
+					"and LOWER(ptr.type) = LOWER(:type) " +
+					"and LOWER(ind.description) = LOWER(:indication) " +
+					"and LOWER(med.actIngredients)  = LOWER(:medicine) ";
+
 	public static final String QUERY_ACTUAL_TREATMENTS_BY_PATIENT_ID =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
