@@ -49,7 +49,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1)), null), 1)) ,
         (select sec_id from hopes.sections where sec_title ='Hopes' LIMIT 1),
-        'assets/img/modules/paciente.png',
+        'assets/img/modules/planes-atencion.png',
         '/hopes/pathology/patients');
 
 --##################### Section: Calendario
@@ -110,7 +110,7 @@ VALUES (nextval('hopes.sections_sec_id_seq'),
         true,
         (SELECT COALESCE( NULLIF((select max(sec_order)+1 from hopes.sections where sec_section_root = (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1)), null), 1)) ,
         (select sec_id from hopes.sections where sec_title ='Administración' LIMIT 1),
-        'assets/img/modules/gestion-paciente.png',
+        'assets/img/modules/planes-atencion.png',
         '/hopes/management/patients');
 
 --##################### Section: Administración 	Gestión de Roles
