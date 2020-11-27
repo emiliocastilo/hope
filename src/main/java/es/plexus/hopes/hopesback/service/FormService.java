@@ -445,4 +445,8 @@ public class FormService {
         return  graphList;
     }
 
+    public List<FormDTO> findByTemplateAndJob(String template, boolean toProcess) {
+        List<FormMongo> formsMongo = formMongoRepository.findByTemplateAndJob(template, toProcess);
+        return formMapper.listEntityToListDto(formsMongo);
+    }
 }

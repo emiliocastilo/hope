@@ -121,27 +121,31 @@ public class MigrationService {
 	@Scheduled(cron = "${cronexpression.treatment}")
 	public void migrationDataPharmacologyTreatmentFromNoRelationalToRelational() {
 		log.debug(START_PHARMACOLOGY_TREATMENT);
-		List<FormDTO> formsDTO = formService.findByTemplate(TEMPLATE_PHARMACOLOGY_TREATMENT);
+		List<FormDTO> formsDTO = formService.findByTemplateAndJob(TEMPLATE_PHARMACOLOGY_TREATMENT, true);
 
 		formsDTO
-				.forEach(fPharmacologyTreatment -> {
+				.forEach(formTreatments -> {
 					//TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
-					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(fPharmacologyTreatment.getPatientId().longValue());
+					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(formTreatments.getPatientId().longValue());
 					List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis);
-					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) fPharmacologyTreatment.getData().get(0).getValue();
+					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) formTreatments.getData().get(0).getValue();
 
 					// Mapeamos el HasMap de Mongo al modelo PatientTreatment
 					List<PatientTreatment>  patientTreatmentsMongo = patientTreatmentsInMongo
 							.stream()
-							.map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, fPharmacologyTreatment.getPatientId().longValue()))
+							.map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, formTreatments))
 							.collect(Collectors.toList());
 					// Eliminar tratamientos en Postgres que no estén en Mongo
 					deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
 
 					// Actualizamos o insertamos tratamientos en Postgres
-					upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, fPharmacologyTreatment);
+					upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, formTreatments);
 				});
 
+		formsDTO.forEach(formDTO -> {
+			formDTO.setJob(false);
+			formService.updateData(formDTO, "userJob");
+		});
 		log.debug(END_PHARMACOLOGY_TREATMENT);
 	}
 
@@ -166,7 +170,7 @@ public class MigrationService {
 	private void upsertPatientTreatmentInPostgres(ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo, FormDTO fPharmacologyTreatment) {
 		patientTreatmentsInMongo.forEach(patientTreatmentMongoMap -> {
 
-			PatientTreatment patientTreatmentMongo = getPatientTreatmentInMongo(patientTreatmentMongoMap, fPharmacologyTreatment.getPatientId().longValue());
+			PatientTreatment patientTreatmentMongo = getPatientTreatmentInMongo(patientTreatmentMongoMap, fPharmacologyTreatment);
 			String masterFormulaCheck = obtainStringValue(fPharmacologyTreatment, patientTreatmentMongoMap, TAGNAME_MASTER_FORMULA_CHECK);
 			PatientTreatment patientTreatment = new PatientTreatment();
 
@@ -207,34 +211,31 @@ public class MigrationService {
 		});
 	}
 
-	private PatientTreatment getPatientTreatmentInMongo(LinkedHashMap<String, Object> patientTreatmentMongo, Long patientId){
+	private PatientTreatment getPatientTreatmentInMongo(LinkedHashMap<String, Object> patientTreatmentMongo, FormDTO formDTO){
 
 		PatientTreatment patientTreatment = new PatientTreatment();
-		DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-				.appendPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-				.parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-				.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-				.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-				.toFormatter();
 
-		patientTreatment.setType(((LinkedHashMap<String, Object>) patientTreatmentMongo.get(TAGNAME_TYPE)).get("id").toString());
-		patientTreatment.setDose(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_DOSE)) ? ((LinkedHashMap<String, Object>) patientTreatmentMongo.get(TAGNAME_DOSE)).get("name").toString() : null);
+		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo,TAGNAME_TYPE, "id"));
 		patientTreatment.setMasterFormula(patientTreatmentMongo.get(TAGNAME_MASTER_FORMULA_DESCRIPTION).toString());
 		patientTreatment.setMasterFormulaDose(patientTreatmentMongo.get(TAGNAME_MASTER_FORMULA_DOSES).toString());
-		patientTreatment.setRegimen(((LinkedHashMap<String, Object>)patientTreatmentMongo.get(TAGNAME_REGIMEN_TREATMENT)).get("name").toString());
-		patientTreatment.setInitDate(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_DATE_START)) ? LocalDateTime.parse(patientTreatmentMongo.get(TAGNAME_DATE_START).toString(), formatter) : null);
-		patientTreatment.setFinalDate(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_DATE_SUSPENSION)) ? LocalDateTime.parse(patientTreatmentMongo.get(TAGNAME_DATE_SUSPENSION).toString()) : null);
-		patientTreatment.setReason(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_REASON_CHANGE_OR_SUSPENSION)) ? patientTreatmentMongo.get(TAGNAME_REASON_CHANGE_OR_SUSPENSION).toString() : null);
+		patientTreatment.setRegimen(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REGIMEN_TREATMENT,"name"));
+		patientTreatment.setInitDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_START));
+		patientTreatment.setFinalDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_SUSPENSION));
+		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION));
 
 		if (patientTreatmentMongo.get(TAGNAME_MEDICINE) != null && !patientTreatmentMongo.get(TAGNAME_MEDICINE).toString().isEmpty()) {
+			String medicineId = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE, "id");
 			Medicine medicine = medicineRepository.findById(
-					Long.valueOf(((LinkedHashMap<String, Object>) patientTreatmentMongo.get(TAGNAME_MEDICINE))
-							.get("id").toString())).orElse(null);
+					medicineId!= null ? Long.valueOf(medicineId) : null).orElse(null);
 			patientTreatment.setMedicine(medicine);
 		}
+
+		String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE,"name");
+		patientTreatment.setDose(dose);
+
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
 			Indication indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
-			PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(patientId, indication.getId()).orElse(null) : null;
+			PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), indication.getId()).orElse(null) : null;
 			patientTreatment.setPatientDiagnose(patientDiagnose);
 		}
 
@@ -326,18 +327,17 @@ public class MigrationService {
 		return valueString;
 	}
 
-	private String obtainValueFromObject(FormDTO form, LinkedHashMap<String, Object> field, String tagName){
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	private String obtainStringValue(FormDTO form, LinkedHashMap<String, Object> field, String firtsTagName, String secondTagName){
 		String valueString = null;
 		try {
-			InputDTO inputDTO = mapper.convertValue(getValueByTagName(form, field, tagName), new TypeReference<InputDTO>() {});
-			valueString = inputDTO != null ? inputDTO.getName() : null;
-
+			Object value = getValueByTagName(form, field, firtsTagName);
+			if (value != null) {
+				value = getValueByTagName(form, (LinkedHashMap<String, Object>) value, secondTagName);
+				valueString = value != null ? value.toString() : null;
+			}
 		} catch (Exception e){
 			log.error(LOG_ERROR,
-					form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
+					form.getTemplate(), form.getPatientId(), firtsTagName, e.getMessage());
 		}
 		return valueString;
 	}
