@@ -1,9 +1,17 @@
 ---
+# Server settings
+server:
+  port: ${portBack}
+  servlet:
+    context-path: "/v1"
+  tomcat:
+    uri-encoding: UTF-8
+
 spring:
   profiles:
-    active: pre
+    active: ${spring.profiles.active}
   liquibase:
-    contexts: dev
+    contexts: ${spring.profiles.active}
   # Data base access configuration
   datasource:
     driver-class-name: org.postgresql.Driver

@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.plexus.hopes</groupId>
-    <artifactId>hopes-back_dev</artifactId>
+    <artifactId>hopes-back-${spring.profiles.active}</artifactId>
     <version>3.0.0-SNAPSHOT</version>
-    <name>hopes-back_dev</name>
-    <description>Hopes Back_dev</description>
+    <name>hopes-back</name>
+    <description>Hopes Back</description>
 
     <properties>
         <compiler.version>1.8</compiler.version>
@@ -34,10 +34,11 @@
         <profile>
             <id>local</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <spring.profiles.active>local</spring.profiles.active>
+                <portBack>8080</portBack>
             </properties>
             <build>
                 <resources>
@@ -55,6 +56,7 @@
             </activation>
             <properties>
                 <spring.profiles.active>dev</spring.profiles.active>
+                <portBack>9080</portBack>
             </properties>
             <build>
                 <resources>
@@ -68,10 +70,11 @@
         <profile>
             <id>pre</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <spring.profiles.active>pre</spring.profiles.active>
+                <portBack>8080</portBack>
             </properties>
             <build>
                 <resources>
@@ -89,6 +92,7 @@
             </activation>
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
+                <portBack>8080</portBack>
             </properties>
             <build>
                 <resources>
