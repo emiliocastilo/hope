@@ -1,7 +1,7 @@
 ---
 # Server settings
 server:
-  port: ${portBack}
+  port: ${configuration.port.back}
   servlet:
     context-path: "/v1"
   tomcat:
@@ -42,7 +42,12 @@ spring:
       starttls:
         enable: true
     test-connection: true
-
+  ldap:
+    #TEST LDAP
+    embedded:
+      ldif: classpath:test-server.ldif
+      base-dn: dc=springframework,dc=org
+      port: ${configuration.port.ldap}
 # Image gallery
 imagegallery:
-  url: http://192.168.110.45:8081/v1
+  url: http://192.168.110.45:${configuration.port.back-image}/v1
