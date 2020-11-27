@@ -1,7 +1,7 @@
 ---
 # Server settings
 server:
-  port: 9080
+  port: ${portBack}
   servlet:
     context-path: "/v1"
   tomcat:
@@ -9,9 +9,9 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: ${spring.profiles.active}
   liquibase:
-    contexts: dev
+    contexts: ${spring.profiles.active}
   # Data base access configuration
   datasource:
     driver-class-name: org.postgresql.Driver
