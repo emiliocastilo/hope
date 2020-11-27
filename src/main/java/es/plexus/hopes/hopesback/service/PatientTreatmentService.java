@@ -417,14 +417,4 @@ public class PatientTreatmentService {
 	public void save(PatientTreatment patientTreatment) {
 		patientTreatmentRepository.saveAndFlush(patientTreatment);
 	}
-
-	public PatientTreatmentDTO findByPatientDiagnoseAndMedicineAndInitDate(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment) {
-		PatientTreatment patientTreatment = patientTreatmentRepository.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose, medicine, initDateTreatment).orElse(null);
-		return PatientTreatmentMapper.INSTANCE.entityToDto(patientTreatment);
-	}
-
-	public PatientTreatmentDTO findByMasterFormulaAndMasterFormulaDose(String masterFormula, String masterFormulaDose) {
-		PatientTreatment patientTreatment = patientTreatmentRepository.findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(masterFormula, masterFormulaDose).orElse(null);
-		return PatientTreatmentMapper.INSTANCE.entityToDto(patientTreatment);
-	}
 }

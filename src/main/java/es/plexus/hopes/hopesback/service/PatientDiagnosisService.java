@@ -188,11 +188,6 @@ public class PatientDiagnosisService {
 		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
 	}
 
-	public PatientDiagnosisDTO findByPatientAndIndication(Patient patient, Indication indication) {
-		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientAndIndication(patient, indication).orElse(null);
-		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
-	}
-
 	/**
 	 * Method that build the map with the patients by indication and it having count the indicator artritis
 	 * @param patientsByIndicationMap

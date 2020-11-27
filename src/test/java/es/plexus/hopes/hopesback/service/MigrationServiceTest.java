@@ -1,9 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.FormDTO;
-import es.plexus.hopes.hopesback.controller.model.IndicationDTO;
 import es.plexus.hopes.hopesback.controller.model.InputDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientDiagnosisDTO;
 import es.plexus.hopes.hopesback.repository.IndicationRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
@@ -48,13 +46,7 @@ public class MigrationServiceTest {
     private FormService formService;
 
     @Mock
-    private PatientService patientService;
-
-    @Mock
     private PatientDiagnosisService patientDiagnosisService;
-
-    @Mock
-    private IndicationService indicationService;
 
     @Mock
     private PatientRepository patientRepository;
@@ -78,9 +70,9 @@ public class MigrationServiceTest {
         formDTOList.add(mockPrincipalDiagnosis());
         //given
         given(formService.findByTemplate(anyString())).willReturn(formDTOList);
-        given(patientService.findById(anyLong())).willReturn(MockUtils.mockPatientDTO());
-        given(patientDiagnosisService.findByPatient(any(Patient.class))).willReturn(mockPatientDiagnosisDTO());
-        given(indicationService.getIndicationByDescription(anyString())).willReturn(mockIndicationDTO());
+        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
+        given(patientDiagnosisRepository.findByPatient(any(Patient.class))).willReturn(mockPatientDiagnosis());
+        given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
         //when
         migrationService.migrationDataDiagnosisFromNoRelationalToRelational();
         //then
@@ -96,8 +88,8 @@ public class MigrationServiceTest {
         given(formService.findByTemplate(anyString())).willReturn(formDTOList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
         given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
-        given(patientDiagnosisRepository.findByPatientAndIndication(any(Patient.class), any(Indication.class))).willReturn(mockPatientDiagnosis());
-        given(patientTreatmentRepository.findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(anyString(), anyString())).willReturn(mockPatientTreatment());
+        given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
+        given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());
         given(medicineRepository.findByNationalCode(anyString())).willReturn(mockMedicine());
         //when
         migrationService.migrationDataPharmacologyTreatmentFromNoRelationalToRelational();
@@ -134,21 +126,7 @@ public class MigrationServiceTest {
         return formDTO;
     }
 
-    private PatientDiagnosisDTO mockPatientDiagnosisDTO() {
-
-        PatientDiagnosisDTO patientDiagnosisDTO = new PatientDiagnosisDTO();
-        patientDiagnosisDTO.setCieCode("001");
-        patientDiagnosisDTO.setCieDescription("COLERA");
-        patientDiagnosisDTO.setDerivationDate(LocalDateTime.now());
-        patientDiagnosisDTO.setId(1L);
-        patientDiagnosisDTO.setIndication(mockIndicationDTO());
-        patientDiagnosisDTO.setInitDate(LocalDateTime.now());
-        patientDiagnosisDTO.setPatient(MockUtils.mockPatientDTO());
-
-        return patientDiagnosisDTO;
-    }
-
-    private Optional<PatientDiagnose> mockPatientDiagnosis() {
+    private PatientDiagnose mockPatientDiagnosis() {
 
         PatientDiagnose patientDiagnosisDTO = new PatientDiagnose();
         patientDiagnosisDTO.setCieCode("001");
@@ -159,16 +137,7 @@ public class MigrationServiceTest {
         patientDiagnosisDTO.setInitDate(LocalDateTime.now());
         patientDiagnosisDTO.setPatient(new Patient());
 
-        return Optional.of(patientDiagnosisDTO);
-    }
-
-    private IndicationDTO mockIndicationDTO() {
-
-        IndicationDTO indicationDTO = new IndicationDTO();
-        indicationDTO.setDescription("descripción");
-        indicationDTO.setId(1L);
-        indicationDTO.setPathologyId(2L);
-        return indicationDTO;
+        return patientDiagnosisDTO;
     }
 
     private Optional<Indication> mockIndication() {

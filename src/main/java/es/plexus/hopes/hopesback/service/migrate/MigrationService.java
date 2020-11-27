@@ -3,6 +3,9 @@
  */
 package es.plexus.hopes.hopesback.service.migrate;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import es.plexus.hopes.hopesback.controller.model.FormDTO;
 import es.plexus.hopes.hopesback.controller.model.InputDTO;
 import es.plexus.hopes.hopesback.repository.IndicationRepository;
@@ -16,13 +19,8 @@ import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.FormService;
-import es.plexus.hopes.hopesback.service.IndicationService;
 import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
-import es.plexus.hopes.hopesback.service.PatientService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
-import es.plexus.hopes.hopesback.service.mapper.IndicationMapper;
-import es.plexus.hopes.hopesback.service.mapper.PatientDiagnosisMapper;
-import es.plexus.hopes.hopesback.service.mapper.PatientMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author jose.estevezbarroso
@@ -67,20 +66,18 @@ public class MigrationService {
 	private static final String TAGNAME_DOSE = "dose";
 	private static final String TAGNAME_REGIMEN_TREATMENT = "regimenTreatment";
 	private static final String TAGNAME_DATE_START = "dateStart";
-	private static final String TAGNAME_TREATMENT_CONTINUE = "treatmentContinue";
 	private static final String TAGNAME_REASON_CHANGE_OR_SUSPENSION = "reasonChangeOrSuspension";
 	private static final String TAGNAME_DATE_SUSPENSION = "dateSuspension";
-	private static final String TAGNAME_TYPE = "type";
-	private static final String TAGNAME_MASTER_FORMULA = "masterFormula";
-	private static final String TAGNAME_MASTER_FORMULA_DESCRIPTION = "masterFormulaDescription";
-	private static final String TAGNAME_MASTER_FORMULA_DOSES = "masterFormulaDosis";
+	private static final String TAGNAME_TYPE = "treatmentType";
+	private static final String TAGNAME_MASTER_FORMULA_CHECK = "opcionFormulaMagistral";
+	private static final String TAGNAME_MASTER_FORMULA_DESCRIPTION = "descripcionFormulaMagistral";
+	private static final String TAGNAME_MASTER_FORMULA_DOSES = "dosisFormulaMagistral";
+	private static final String TAGNAME_MEDICINE = "medicine";
 
 	private static final String LOG_ERROR ="Template: {} PatientId: {} TagName: {} . Error: {}";
 
 	private final FormService formService;
 	private final PatientDiagnosisService patientDiagnosisService;
-	private final PatientService patientService;
-	private final IndicationService indicationService;
 	private final PatientTreatmentService patientTreatmentService;
 	private final PatientRepository patientRepository;
 	private final IndicationRepository indicationRepository;
@@ -96,23 +93,26 @@ public class MigrationService {
 		formsDTO
 		.forEach(f -> {
 
-			Patient patient = PatientMapper.INSTANCE.dtoToEntity(patientService.findById(f.getPatientId().longValue()));
-			PatientDiagnose patientDiagnose = PatientDiagnosisMapper.INSTANCE.dtoToEntity(patientDiagnosisService.findByPatient(patient));
+			Optional<Patient> patient = patientRepository.findById(f.getPatientId().longValue());
+			if (patient.isPresent()) {
+				PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatient(patient.get());
+				Optional<Indication> indication = indicationRepository.findByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE));
 
-			if (patientDiagnose == null) {
-				patientDiagnose = new PatientDiagnose();
+				if (patientDiagnose == null) {
+					patientDiagnose = new PatientDiagnose();
+				}
+
+				patientDiagnose.setPatient(patient.get());
+				patientDiagnose.setIndication(indication.orElse(null));
+				patientDiagnose.setOthersIndications(obtainStringValue(f, TAGNAME_ANOTHER_PSORIASIS));
+				patientDiagnose.setInitDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
+				patientDiagnose.setSymptomsDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_SYMPTOM));
+				patientDiagnose.setDerivationDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_DERIVATION));
+				patientDiagnose.setCieCode(obtainStringValue(f, TAGNAME_CIE_CODE));
+				patientDiagnose.setCieDescription(obtainStringValue(f, TAGNAME_CIE_DESCRIPTION));
+
+				patientDiagnosisService.save(patientDiagnose);
 			}
-
-			patientDiagnose.setPatient(patient);
-			patientDiagnose.setIndication(IndicationMapper.INSTANCE.dtoToEntity(indicationService.getIndicationByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE))));
-			patientDiagnose.setOthersIndications(obtainStringValue(f, TAGNAME_ANOTHER_PSORIASIS));
-			patientDiagnose.setInitDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
-			patientDiagnose.setSymptomsDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_SYMPTOM));
-			patientDiagnose.setDerivationDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_DERIVATION));
-			patientDiagnose.setCieCode(obtainStringValue(f, TAGNAME_CIE_CODE));
-			patientDiagnose.setCieDescription(obtainStringValue(f, TAGNAME_CIE_DESCRIPTION));
-
-			patientDiagnosisService.save(patientDiagnose);
 		});
 
 		log.debug(END_DIAGNOSIS);
@@ -124,61 +124,138 @@ public class MigrationService {
 		List<FormDTO> formsDTO = formService.findByTemplate(TEMPLATE_PHARMACOLOGY_TREATMENT);
 
 		formsDTO
-				.forEach(fPharmacologyTreatment ->
+				.forEach(fPharmacologyTreatment -> {
+					//TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
+					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(fPharmacologyTreatment.getPatientId().longValue());
+					List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis);
+					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) fPharmacologyTreatment.getData().get(0).getValue();
 
-					((ArrayList<LinkedHashMap<String, Object>>) fPharmacologyTreatment.getData().get(0).getValue()).forEach(field -> {
+					// Mapeamos el HasMap de Mongo al modelo PatientTreatment
+					List<PatientTreatment>  patientTreatmentsMongo = patientTreatmentsInMongo
+							.stream()
+							.map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, fPharmacologyTreatment.getPatientId().longValue()))
+							.collect(Collectors.toList());
+					// Eliminar tratamientos en Postgres que no estén en Mongo
+					deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
 
-						Optional<PatientTreatment> patientTreatmentOptional = Optional.empty();
-						PatientTreatment patientTreatment = new PatientTreatment();
-						Optional<Medicine> medicine = Optional.empty();
-						LocalDateTime initDateTreatment = obtainLocalDateTimeValue(fPharmacologyTreatment, field, TAGNAME_DATE_START);
-						String masterFormula = obtainStringValue(fPharmacologyTreatment, field, TAGNAME_MASTER_FORMULA_DESCRIPTION);
-						String masterFormulaDose = obtainStringValue(fPharmacologyTreatment, field, TAGNAME_MASTER_FORMULA_DOSES);
-						Optional<Patient> patient = patientRepository.findById(fPharmacologyTreatment.getPatientId().longValue());
-						Optional<Indication> indication = indicationRepository.findByDescription(obtainStringValue(fPharmacologyTreatment, field, TAGNAME_INDICATION));
-						Optional<PatientDiagnose> patientDiagnose = Optional.empty();
-
-						if (patient.isPresent() && indication.isPresent()) {
-							patientDiagnose = patientDiagnosisRepository.findByPatientAndIndication(patient.get(), indication.get());
-						}
-
-						if (Boolean.TRUE.equals(getValueByTagName(fPharmacologyTreatment, field, TAGNAME_MASTER_FORMULA))) {
-							patientTreatmentOptional = patientTreatmentRepository.findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(masterFormula, masterFormulaDose);
-						} else {
-							medicine = medicineRepository.findByNationalCode(obtainStringValue(fPharmacologyTreatment, field, TAGNAME_NATIONAL_CODE));
-							// Averiguar qué Tratamiento tengo que actualizar, mirar medicamento y diagnóstico.
-							if (patientDiagnose.isPresent() && medicine.isPresent()) {
-								patientTreatmentOptional = patientTreatmentRepository.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose.get(), medicine.get(), initDateTreatment);
-							}
-						}
-
-						if (patientTreatmentOptional.isPresent()) {
-							patientTreatment = patientTreatmentOptional.get();
-						}
-
-						patientTreatment.setPatientDiagnose(patientDiagnose.orElse(null));
-						patientTreatment.setMedicine(medicine.orElse(null));
-						patientTreatment.setActive(Boolean.TRUE.equals(getValueByTagName(fPharmacologyTreatment, field, TAGNAME_TREATMENT_CONTINUE)));
-						patientTreatment.setType(obtainStringValue(fPharmacologyTreatment, field, TAGNAME_TYPE));
-						patientTreatment.setDose(obtainStringValueFromSelect(fPharmacologyTreatment, field, TAGNAME_DOSE));
-						patientTreatment.setMasterFormula(masterFormula);
-						patientTreatment.setMasterFormulaDose(masterFormulaDose);
-						patientTreatment.setRegimen(obtainStringValueFromSelect(fPharmacologyTreatment, field, TAGNAME_REGIMEN_TREATMENT));
-						patientTreatment.setInitDate(initDateTreatment);
-						patientTreatment.setFinalDate(obtainLocalDateTimeValue(fPharmacologyTreatment, field, TAGNAME_DATE_SUSPENSION));
-						patientTreatment.setReason(obtainStringValue(fPharmacologyTreatment, field, TAGNAME_REASON_CHANGE_OR_SUSPENSION));
-
-						if (patientTreatment.getFinalDate() != null) {
-							patientTreatment.setEndCause("Suspension");
-						} else {
-							patientTreatment.setEndCause("Cambio");
-						}
-
-						patientTreatmentService.save(patientTreatment);
-					})
-				);
+					// Actualizamos o insertamos tratamientos en Postgres
+					upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, fPharmacologyTreatment);
+				});
 
 		log.debug(END_PHARMACOLOGY_TREATMENT);
+	}
+
+	private void deletePatientTreatmentInPostgres(List<PatientTreatment> patientTreatmentsPostgres, List<PatientTreatment> patientTreatmentsMongo){
+		List<PatientTreatment> patientTreatmentsToDelete = new ArrayList<>();
+		if (!patientTreatmentsPostgres.isEmpty()) {
+			for (PatientTreatment patientTreatmentPostgres : patientTreatmentsPostgres){
+				int counter = 0;
+				for (PatientTreatment patientTreatmentMongo : patientTreatmentsMongo){
+					if (isSamePatientTreatment(patientTreatmentPostgres, patientTreatmentMongo)){
+						counter=+1;
+					}
+				}
+				if (counter == 0 ){
+					patientTreatmentsToDelete.add(patientTreatmentPostgres);
+				}
+			}
+			patientTreatmentRepository.deleteAll(patientTreatmentsToDelete);
+		}
+	}
+
+	private void upsertPatientTreatmentInPostgres(ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo, FormDTO fPharmacologyTreatment) {
+		patientTreatmentsInMongo.forEach(patientTreatmentMongoMap -> {
+
+			PatientTreatment patientTreatmentMongo = getPatientTreatmentInMongo(patientTreatmentMongoMap, fPharmacologyTreatment.getPatientId().longValue());
+			String masterFormulaCheck = obtainStringValue(fPharmacologyTreatment, patientTreatmentMongoMap, TAGNAME_MASTER_FORMULA_CHECK);
+			PatientTreatment patientTreatment = new PatientTreatment();
+
+			if (patientTreatmentMongo.getPatientDiagnose() != null) {
+				if (masterFormulaCheck != null && !masterFormulaCheck.isEmpty()) {
+					patientTreatment = patientTreatmentRepository
+							.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(
+									patientTreatmentMongo.getPatientDiagnose(),
+									patientTreatmentMongo.getMasterFormula(),
+									patientTreatmentMongo.getMasterFormulaDose(),
+									patientTreatmentMongo.getType())
+							.orElse(new PatientTreatment());
+				} else if (patientTreatmentMongo.getMedicine() != null) {
+					// Averiguar qué Tratamiento tengo que actualizar, mirar medicamento y diagnóstico.
+					patientTreatment = patientTreatmentRepository
+							.findByPatientDiagnoseAndMedicineAndInitDateAndTypeIgnoreCase(
+									patientTreatmentMongo.getPatientDiagnose(),
+									patientTreatmentMongo.getMedicine(),
+									patientTreatmentMongo.getInitDate(),
+									patientTreatmentMongo.getType()).orElse(new PatientTreatment());
+				}
+
+				patientTreatment.setPatientDiagnose(patientTreatmentMongo.getPatientDiagnose());
+				patientTreatment.setMedicine(patientTreatmentMongo.getMedicine());
+				patientTreatment.setType(patientTreatmentMongo.getType());
+				patientTreatment.setDose(patientTreatmentMongo.getDose());
+				patientTreatment.setMasterFormula(patientTreatmentMongo.getMasterFormula());
+				patientTreatment.setMasterFormulaDose(patientTreatmentMongo.getMasterFormulaDose());
+				patientTreatment.setRegimen(patientTreatmentMongo.getRegimen());
+				patientTreatment.setInitDate(patientTreatmentMongo.getInitDate());
+				patientTreatment.setFinalDate(patientTreatmentMongo.getFinalDate());
+				patientTreatment.setReason(patientTreatmentMongo.getReason());
+				patientTreatment.setEndCause(patientTreatmentMongo.getEndCause());
+				patientTreatment.setActive(patientTreatmentMongo.isActive());
+
+				patientTreatmentService.save(patientTreatment);
+			}
+		});
+	}
+
+	private PatientTreatment getPatientTreatmentInMongo(LinkedHashMap<String, Object> patientTreatmentMongo, Long patientId){
+
+		PatientTreatment patientTreatment = new PatientTreatment();
+		DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+				.appendPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+				.parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+				.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+				.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+				.toFormatter();
+
+		patientTreatment.setType(((LinkedHashMap<String, Object>) patientTreatmentMongo.get(TAGNAME_TYPE)).get("id").toString());
+		patientTreatment.setDose(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_DOSE)) ? ((LinkedHashMap<String, Object>) patientTreatmentMongo.get(TAGNAME_DOSE)).get("name").toString() : null);
+		patientTreatment.setMasterFormula(patientTreatmentMongo.get(TAGNAME_MASTER_FORMULA_DESCRIPTION).toString());
+		patientTreatment.setMasterFormulaDose(patientTreatmentMongo.get(TAGNAME_MASTER_FORMULA_DOSES).toString());
+		patientTreatment.setRegimen(((LinkedHashMap<String, Object>)patientTreatmentMongo.get(TAGNAME_REGIMEN_TREATMENT)).get("name").toString());
+		patientTreatment.setInitDate(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_DATE_START)) ? LocalDateTime.parse(patientTreatmentMongo.get(TAGNAME_DATE_START).toString(), formatter) : null);
+		patientTreatment.setFinalDate(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_DATE_SUSPENSION)) ? LocalDateTime.parse(patientTreatmentMongo.get(TAGNAME_DATE_SUSPENSION).toString()) : null);
+		patientTreatment.setReason(Objects.nonNull(patientTreatmentMongo.get(TAGNAME_REASON_CHANGE_OR_SUSPENSION)) ? patientTreatmentMongo.get(TAGNAME_REASON_CHANGE_OR_SUSPENSION).toString() : null);
+
+		if (patientTreatmentMongo.get(TAGNAME_MEDICINE) != null && !patientTreatmentMongo.get(TAGNAME_MEDICINE).toString().isEmpty()) {
+			Medicine medicine = medicineRepository.findById(
+					Long.valueOf(((LinkedHashMap<String, Object>) patientTreatmentMongo.get(TAGNAME_MEDICINE))
+							.get("id").toString())).orElse(null);
+			patientTreatment.setMedicine(medicine);
+		}
+		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
+			Indication indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
+			PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(patientId, indication.getId()).orElse(null) : null;
+			patientTreatment.setPatientDiagnose(patientDiagnose);
+		}
+
+		if (patientTreatment.getFinalDate() != null) {
+			patientTreatment.setEndCause("Suspension");
+			patientTreatment.setActive(false);
+		} else {
+			patientTreatment.setEndCause("Cambio");
+			patientTreatment.setActive(true);
+		}
+
+		return patientTreatment;
+	}
+
+	private boolean isSamePatientTreatment(PatientTreatment patientTreatmentPostgres, PatientTreatment patientTreatmentMongo){
+		return patientTreatmentPostgres.getPatientDiagnose().getIndication().getDescription().equals(patientTreatmentMongo.getPatientDiagnose().getIndication().getDescription())
+				&& (patientTreatmentPostgres.getMedicine() != null && patientTreatmentMongo.getMedicine() != null && patientTreatmentPostgres.getMedicine().getId().equals(patientTreatmentMongo.getMedicine().getId())
+				|| patientTreatmentPostgres.getMasterFormula().equals(patientTreatmentMongo.getMasterFormula()))
+				&& patientTreatmentPostgres.getInitDate().isEqual(patientTreatmentMongo.getInitDate())
+				&& patientTreatmentPostgres.getType().equals(patientTreatmentMongo.getType())
+				&& (patientTreatmentPostgres.getFinalDate() == null || patientTreatmentPostgres.getFinalDate().isEqual(patientTreatmentMongo.getFinalDate()));
 	}
 
 	private LocalDateTime obtainLocalDateTimeValue(FormDTO form, String tagName) {
@@ -249,11 +326,15 @@ public class MigrationService {
 		return valueString;
 	}
 
-	private String obtainStringValueFromSelect(FormDTO form, LinkedHashMap<String, Object> field, String tagName){
+	private String obtainValueFromObject(FormDTO form, LinkedHashMap<String, Object> field, String tagName){
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		String valueString = null;
 		try {
-			LinkedHashMap<String, Object> value = (LinkedHashMap<String, Object>)getValueByTagName(form, field, tagName);
-			valueString = value != null ? value.get("name").toString(): null;
+			InputDTO inputDTO = mapper.convertValue(getValueByTagName(form, field, tagName), new TypeReference<InputDTO>() {});
+			valueString = inputDTO != null ? inputDTO.getName() : null;
+
 		} catch (Exception e){
 			log.error(LOG_ERROR,
 					form.getTemplate(), form.getPatientId(), tagName, e.getMessage());

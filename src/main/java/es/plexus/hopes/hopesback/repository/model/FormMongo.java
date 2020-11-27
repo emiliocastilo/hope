@@ -28,5 +28,6 @@ public class FormMongo {
     private String user;
     private String data;
     private LocalDateTime dateTime;
+    private boolean job;
 
 }
