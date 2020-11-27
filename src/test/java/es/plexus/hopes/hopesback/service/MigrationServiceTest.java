@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -85,7 +86,7 @@ public class MigrationServiceTest {
         List<FormDTO> formDTOList = new ArrayList<>();
         formDTOList.add(mockPharmacologyTreatment());
         //given
-        given(formService.findByTemplate(anyString())).willReturn(formDTOList);
+        given(formService.findByTemplateAndJob(anyString(), anyBoolean())).willReturn(formDTOList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
         given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
         given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
@@ -160,6 +161,10 @@ public class MigrationServiceTest {
     private FormDTO mockPharmacologyTreatment() {
         ArrayList<LinkedHashMap<String, Object>> array = new ArrayList<>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        LinkedHashMap<String, Object> treatmentTypeMap = new LinkedHashMap<>();
+        treatmentTypeMap.put("id", "BIOLOGICO");
+        treatmentTypeMap.put("name", "BIOLOGICO");
+        map.put("treatmentType", treatmentTypeMap);
         map.put("indication", "OTRAS");
         map.put("specialIndication", false);
         map.put("bigPsychologicalImpact", false);
@@ -167,6 +172,7 @@ public class MigrationServiceTest {
         map.put("others", "");
         LinkedHashMap<String, Object> medicineMap = new LinkedHashMap<>();
         medicineMap.put("actIngredients", "ibuprofeno");
+        medicineMap.put("id", "1");
         map.put("medicine", medicineMap);
         map.put("family", "QUÍMICO");
         map.put("atc", "M01AE01");

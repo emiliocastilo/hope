@@ -3,9 +3,6 @@
  */
 package es.plexus.hopes.hopesback.service.migrate;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import es.plexus.hopes.hopesback.controller.model.FormDTO;
 import es.plexus.hopes.hopesback.controller.model.InputDTO;
 import es.plexus.hopes.hopesback.repository.IndicationRepository;
@@ -23,6 +20,7 @@ import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +51,7 @@ public class MigrationService {
 
 	private static final String TEMPLATE_DIAGNOSIS = "principal-diagnosis";
 	private static final String TEMPLATE_PHARMACOLOGY_TREATMENT = "farmacology-treatment";
+	private static final String TEMPLATE_NO_PHARMACOLOGY_TREATMENT = "phototherapy";
 
 	private static final String TAGNAME_DATE_PRINCIPAL_DIAGNOSES = "datePrincipalDiagnoses";
 	private static final String TAGNAME_DATE_SYMPTOM = "dateSymptom";
@@ -62,8 +61,8 @@ public class MigrationService {
 	private static final String TAGNAME_CIE_DESCRIPTION = "cieDescription";
 	private static final String TAGNAME_DATE_DERIVATION = "dateDerivation";
 	private static final String TAGNAME_INDICATION = "indication";
-	private static final String TAGNAME_NATIONAL_CODE = "cn";
 	private static final String TAGNAME_DOSE = "dose";
+	private static final String TAGNAME_OTHERDOSE = "otherDosis";
 	private static final String TAGNAME_REGIMEN_TREATMENT = "regimenTreatment";
 	private static final String TAGNAME_DATE_START = "dateStart";
 	private static final String TAGNAME_REASON_CHANGE_OR_SUSPENSION = "reasonChangeOrSuspension";
@@ -121,9 +120,11 @@ public class MigrationService {
 	@Scheduled(cron = "${cronexpression.treatment}")
 	public void migrationDataPharmacologyTreatmentFromNoRelationalToRelational() {
 		log.debug(START_PHARMACOLOGY_TREATMENT);
-		List<FormDTO> formsDTO = formService.findByTemplateAndJob(TEMPLATE_PHARMACOLOGY_TREATMENT, true);
+		List<FormDTO> formsDTOFarmacology = formService.findByTemplateAndJob(TEMPLATE_PHARMACOLOGY_TREATMENT, true);
+		// Fixme pendiente de terminar
+		List<FormDTO> formsDTOPhototherapy = formService.findByTemplateAndJob(TEMPLATE_NO_PHARMACOLOGY_TREATMENT, true);
 
-		formsDTO
+		formsDTOFarmacology
 				.forEach(formTreatments -> {
 					//TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
 					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(formTreatments.getPatientId().longValue());
@@ -142,7 +143,7 @@ public class MigrationService {
 					upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, formTreatments);
 				});
 
-		formsDTO.forEach(formDTO -> {
+		formsDTOFarmacology.forEach(formDTO -> {
 			formDTO.setJob(false);
 			formService.updateData(formDTO, "userJob");
 		});
@@ -150,20 +151,15 @@ public class MigrationService {
 	}
 
 	private void deletePatientTreatmentInPostgres(List<PatientTreatment> patientTreatmentsPostgres, List<PatientTreatment> patientTreatmentsMongo){
-		List<PatientTreatment> patientTreatmentsToDelete = new ArrayList<>();
-		if (!patientTreatmentsPostgres.isEmpty()) {
-			for (PatientTreatment patientTreatmentPostgres : patientTreatmentsPostgres){
-				int counter = 0;
-				for (PatientTreatment patientTreatmentMongo : patientTreatmentsMongo){
-					if (isSamePatientTreatment(patientTreatmentPostgres, patientTreatmentMongo)){
-						counter=+1;
-					}
-				}
-				if (counter == 0 ){
-					patientTreatmentsToDelete.add(patientTreatmentPostgres);
-				}
+		if (CollectionUtils.isNotEmpty(patientTreatmentsPostgres)) {
+
+			List<PatientTreatment> patientTreatmentsToDelete = patientTreatmentsPostgres.stream()
+					.filter(ptPostgres -> patientTreatmentsMongo.stream().noneMatch(ptMongo -> isSamePatientTreatment(ptPostgres, ptMongo)))
+					.collect(Collectors.toList());
+
+			if (CollectionUtils.isNotEmpty(patientTreatmentsToDelete)) {
+				patientTreatmentRepository.deleteAll(patientTreatmentsToDelete);
 			}
-			patientTreatmentRepository.deleteAll(patientTreatmentsToDelete);
 		}
 	}
 
@@ -216,21 +212,24 @@ public class MigrationService {
 		PatientTreatment patientTreatment = new PatientTreatment();
 
 		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo,TAGNAME_TYPE, "id"));
-		patientTreatment.setMasterFormula(patientTreatmentMongo.get(TAGNAME_MASTER_FORMULA_DESCRIPTION).toString());
-		patientTreatment.setMasterFormulaDose(patientTreatmentMongo.get(TAGNAME_MASTER_FORMULA_DOSES).toString());
+		patientTreatment.setMasterFormula(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DESCRIPTION));
+		patientTreatment.setMasterFormulaDose(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DOSES));
 		patientTreatment.setRegimen(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REGIMEN_TREATMENT,"name"));
 		patientTreatment.setInitDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_START));
 		patientTreatment.setFinalDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_SUSPENSION));
 		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION));
 
-		if (patientTreatmentMongo.get(TAGNAME_MEDICINE) != null && !patientTreatmentMongo.get(TAGNAME_MEDICINE).toString().isEmpty()) {
+		LinkedHashMap<String, Object>  medicineString = (LinkedHashMap<String, Object>) getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
+		if ( medicineString != null && !medicineString.isEmpty()) {
 			String medicineId = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE, "id");
-			Medicine medicine = medicineRepository.findById(
-					medicineId!= null ? Long.valueOf(medicineId) : null).orElse(null);
+			Medicine medicine = medicineRepository.findById(Long.valueOf(medicineId)).orElse(null);
 			patientTreatment.setMedicine(medicine);
 		}
 
 		String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE,"name");
+		if (dose != null && dose.equals("Otra")){
+			dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_OTHERDOSE);
+		}
 		patientTreatment.setDose(dose);
 
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {

@@ -7,7 +7,6 @@ import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.repository.model.Indication;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientData;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;

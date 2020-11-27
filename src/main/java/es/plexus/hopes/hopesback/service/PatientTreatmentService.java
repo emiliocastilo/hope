@@ -1,13 +1,10 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
