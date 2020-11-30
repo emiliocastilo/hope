@@ -47,7 +47,7 @@ public class MigrationService {
 	private static final String START_DIAGNOSIS = "Starting migration diagnosis data";
 	private static final String END_DIAGNOSIS = "Finished migration diagnosis data";
 	private static final String START_PHARMACOLOGY_TREATMENT = "Starting migration pharmacology treatment data";
-	private static final String END_PHARMACOLOGY_TREATMENT= "Finished migration pharmacology treatment data";
+	private static final String END_TREATMENT = "Finished migration treatment data";
 
 	private static final String TEMPLATE_DIAGNOSIS = "principal-diagnosis";
 	private static final String TEMPLATE_PHARMACOLOGY_TREATMENT = "farmacology-treatment";
@@ -118,7 +118,7 @@ public class MigrationService {
 	}
 
 	@Scheduled(cron = "${cronexpression.treatment}")
-	public void migrationDataPharmacologyTreatmentFromNoRelationalToRelational() {
+	public void migrationDataTreatmentFromNoRelationalToRelational() {
 		log.debug(START_PHARMACOLOGY_TREATMENT);
 		List<FormDTO> formsDTOFarmacology = formService.findByTemplateAndJob(TEMPLATE_PHARMACOLOGY_TREATMENT, true);
 		// Fixme pendiente de terminar
@@ -147,7 +147,8 @@ public class MigrationService {
 			formDTO.setJob(false);
 			formService.updateData(formDTO, "userJob");
 		});
-		log.debug(END_PHARMACOLOGY_TREATMENT);
+
+		log.debug(END_TREATMENT);
 	}
 
 	private void deletePatientTreatmentInPostgres(List<PatientTreatment> patientTreatmentsPostgres, List<PatientTreatment> patientTreatmentsMongo){
@@ -211,13 +212,13 @@ public class MigrationService {
 
 		PatientTreatment patientTreatment = new PatientTreatment();
 
-		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo,TAGNAME_TYPE, "id"));
+		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo,TAGNAME_TYPE));
 		patientTreatment.setMasterFormula(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DESCRIPTION));
 		patientTreatment.setMasterFormulaDose(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DOSES));
 		patientTreatment.setRegimen(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REGIMEN_TREATMENT,"name"));
 		patientTreatment.setInitDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_START));
 		patientTreatment.setFinalDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_SUSPENSION));
-		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION));
+		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION, "name"));
 
 		LinkedHashMap<String, Object>  medicineString = (LinkedHashMap<String, Object>) getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
 		if ( medicineString != null && !medicineString.isEmpty()) {
@@ -250,7 +251,9 @@ public class MigrationService {
 	}
 
 	private boolean isSamePatientTreatment(PatientTreatment patientTreatmentPostgres, PatientTreatment patientTreatmentMongo){
-		return patientTreatmentPostgres.getPatientDiagnose().getIndication().getDescription().equals(patientTreatmentMongo.getPatientDiagnose().getIndication().getDescription())
+		return patientTreatmentPostgres.getPatientDiagnose() != null && patientTreatmentPostgres.getPatientDiagnose().getIndication() != null
+				&& patientTreatmentMongo.getPatientDiagnose() != null && patientTreatmentMongo.getPatientDiagnose().getIndication() != null
+				&& patientTreatmentPostgres.getPatientDiagnose().getIndication().getDescription().equals(patientTreatmentMongo.getPatientDiagnose().getIndication().getDescription())
 				&& (patientTreatmentPostgres.getMedicine() != null && patientTreatmentMongo.getMedicine() != null && patientTreatmentPostgres.getMedicine().getId().equals(patientTreatmentMongo.getMedicine().getId())
 				|| patientTreatmentPostgres.getMasterFormula().equals(patientTreatmentMongo.getMasterFormula()))
 				&& patientTreatmentPostgres.getInitDate().isEqual(patientTreatmentMongo.getInitDate())

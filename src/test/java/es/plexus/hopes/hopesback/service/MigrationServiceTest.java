@@ -93,7 +93,7 @@ public class MigrationServiceTest {
         given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());
         given(medicineRepository.findByNationalCode(anyString())).willReturn(mockMedicine());
         //when
-        migrationService.migrationDataPharmacologyTreatmentFromNoRelationalToRelational();
+        migrationService.migrationDataTreatmentFromNoRelationalToRelational();
         //then
         verify(patientTreatmentService, times(1)).save(any(PatientTreatment.class));
     }
