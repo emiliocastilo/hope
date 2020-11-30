@@ -38,7 +38,9 @@
             </activation>
             <properties>
                 <spring.profiles.active>local</spring.profiles.active>
-                <portBack>8080</portBack>
+                <configuration.port.back>8080</configuration.port.back>
+                <configuration.port.ldap>8389</configuration.port.ldap>
+                <configuration.port.back-image>8081</configuration.port.back-image>
             </properties>
             <build>
                 <resources>
@@ -56,7 +58,9 @@
             </activation>
             <properties>
                 <spring.profiles.active>dev</spring.profiles.active>
-                <portBack>9080</portBack>
+                <configuration.port.back>9080</configuration.port.back>
+                <configuration.port.ldap>9389</configuration.port.ldap>
+                <configuration.port.back-image>9081</configuration.port.back-image>
             </properties>
             <build>
                 <resources>
@@ -74,7 +78,9 @@
             </activation>
             <properties>
                 <spring.profiles.active>pre</spring.profiles.active>
-                <portBack>8080</portBack>
+                <configuration.port.back>8080</configuration.port.back>
+                <configuration.port.ldap>8389</configuration.port.ldap>
+                <configuration.port.back-image>8081</configuration.port.back-image>
             </properties>
             <build>
                 <resources>
@@ -92,7 +98,9 @@
             </activation>
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
-                <portBack>8080</portBack>
+                <configuration.port.back>8080</configuration.port.back>
+                <configuration.port.ldap>8389</configuration.port.ldap>
+                <configuration.port.back-image>8081</configuration.port.back-image>
             </properties>
             <build>
                 <resources>
