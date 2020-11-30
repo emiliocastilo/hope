@@ -240,27 +240,29 @@ public class MigrationService {
 	private PatientTreatment getPatientTreatmentInMongo(LinkedHashMap<String, Object> patientTreatmentMongo, FormDTO formDTO){
 
 		PatientTreatment patientTreatment = new PatientTreatment();
-
 		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo,TAGNAME_TYPE));
-		patientTreatment.setMasterFormula(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DESCRIPTION));
-		patientTreatment.setMasterFormulaDose(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DOSES));
-		patientTreatment.setRegimen(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REGIMEN_TREATMENT,"name"));
 		patientTreatment.setInitDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_START));
 		patientTreatment.setFinalDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_SUSPENSION));
 		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION, "name"));
 
-		LinkedHashMap<String, Object>  medicineString = (LinkedHashMap<String, Object>) getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
-		if ( medicineString != null && !medicineString.isEmpty()) {
-			String medicineId = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE, "id");
-			Medicine medicine = medicineRepository.findById(Long.valueOf(medicineId)).orElse(null);
-			patientTreatment.setMedicine(medicine);
-		}
+		if (formDTO.getTemplate().equalsIgnoreCase(TEMPLATE_PHARMACOLOGY_TREATMENT)){
 
-		String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE,"name");
-		if (dose != null && dose.equals("Otra")){
-			dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_OTHERDOSE);
+			LinkedHashMap<String, Object>  medicineString = (LinkedHashMap<String, Object>) getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
+			if ( medicineString != null && !medicineString.isEmpty()) {
+				String medicineId = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE, "id");
+				Medicine medicine = medicineRepository.findById(Long.valueOf(medicineId)).orElse(null);
+				patientTreatment.setMedicine(medicine);
+			}
+
+			String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE,"name");
+			if (dose != null && dose.equals("Otra")){
+				dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_OTHERDOSE);
+			}
+			patientTreatment.setDose(dose);
+			patientTreatment.setMasterFormula(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DESCRIPTION));
+			patientTreatment.setMasterFormulaDose(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DOSES));
+			patientTreatment.setRegimen(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REGIMEN_TREATMENT,"name"));
 		}
-		patientTreatment.setDose(dose);
 
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
 			Indication indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);

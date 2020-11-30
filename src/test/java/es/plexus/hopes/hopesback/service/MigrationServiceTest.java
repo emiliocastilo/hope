@@ -86,9 +86,10 @@ public class MigrationServiceTest {
         List<FormDTO> formDTOList = new ArrayList<>();
         formDTOList.add(mockPharmacologyTreatment());
         List<FormDTO> formDTOPhototherapyList = new ArrayList<>();
-        formDTOPhototherapyList.add(mockPharmacologyTreatment());
+        formDTOPhototherapyList.add(mockPhototherapyTreatment());
         //given
         given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
+        given(formService.findByTemplateAndJob("phototherapy", true)).willReturn(formDTOPhototherapyList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
         given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
         given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
@@ -97,7 +98,7 @@ public class MigrationServiceTest {
         //when
         migrationService.migrationDataTreatmentFromNoRelationalToRelational();
         //then
-        verify(patientTreatmentService, times(1)).save(any(PatientTreatment.class));
+        verify(patientTreatmentService, times(2)).save(any(PatientTreatment.class));
     }
 
     private Optional<PatientTreatment> mockPatientTreatment() {
@@ -209,6 +210,34 @@ public class MigrationServiceTest {
         formDTO.setDateTime(LocalDateTime.now());
         formDTO.setPatientId(34);
         formDTO.setTemplate("farmacology-treatment");
+        formDTO.setData(inputDTOList);
+
+        return formDTO;
+    }
+
+    private FormDTO mockPhototherapyTreatment() {
+        ArrayList<LinkedHashMap<String, Object>> array = new ArrayList<>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        map.put("treatmentType", "FOTOTERAPIA");
+        map.put("indication", "OTRAS");
+        map.put("datePrescription", "2020-11-23T00:00:00.000Z\"");
+        map.put("dateStart", "2020-11-30T00:00:00.000Z");
+        map.put("observations", "");
+        map.put("reasonChangeOrSuspension", null);
+        map.put("dateSuspension", null);
+        array.add(map);
+        InputDTO inputDTO = new InputDTO();
+        inputDTO.setName("table");
+        inputDTO.setType("phototherapy");
+        inputDTO.setValue(array);
+
+        List<InputDTO> inputDTOList = new ArrayList<>();
+        inputDTOList.add(inputDTO);
+
+        FormDTO formDTO = new FormDTO();
+        formDTO.setDateTime(LocalDateTime.now());
+        formDTO.setPatientId(34);
+        formDTO.setTemplate("phototherapy");
         formDTO.setData(inputDTOList);
 
         return formDTO;
