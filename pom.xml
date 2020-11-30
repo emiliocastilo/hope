@@ -68,7 +68,7 @@
         <profile>
             <id>pre</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <spring.profiles.active>pre</spring.profiles.active>
