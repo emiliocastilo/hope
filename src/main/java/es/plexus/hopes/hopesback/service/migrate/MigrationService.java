@@ -72,6 +72,8 @@ public class MigrationService {
 	private static final String TAGNAME_MASTER_FORMULA_DESCRIPTION = "descripcionFormulaMagistral";
 	private static final String TAGNAME_MASTER_FORMULA_DOSES = "dosisFormulaMagistral";
 	private static final String TAGNAME_MEDICINE = "medicine";
+	public static final String TAGNAME_NAME = "name";
+	public static final String TYPE_TREATMENT_PHOTOTHERAPY = "FOTOTERAPIA";
 
 	private static final String LOG_ERROR ="Template: {} PatientId: {} TagName: {} . Error: {}";
 
@@ -129,7 +131,7 @@ public class MigrationService {
 					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(formTreatments.getPatientId().longValue());
 					List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis)
 							.stream()
-							.filter(patientTreatment -> !"FOTOTERAPIA".equalsIgnoreCase(patientTreatment.getType()))
+							.filter(patientTreatment -> !TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
 							.collect(Collectors.toList());
 					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) formTreatments.getData().get(0).getValue();
 
@@ -156,7 +158,7 @@ public class MigrationService {
 					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(formTreatments.getPatientId().longValue());
 					List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis)
 							.stream()
-							.filter(patientTreatment -> "FOTOTERAPIA".equalsIgnoreCase(patientTreatment.getType()))
+							.filter(patientTreatment -> TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
 							.collect(Collectors.toList());
 					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) formTreatments.getData().get(0).getValue();
 
@@ -243,7 +245,7 @@ public class MigrationService {
 		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo,TAGNAME_TYPE));
 		patientTreatment.setInitDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_START));
 		patientTreatment.setFinalDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_SUSPENSION));
-		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION, "name"));
+		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION, TAGNAME_NAME));
 
 		if (formDTO.getTemplate().equalsIgnoreCase(TEMPLATE_PHARMACOLOGY_TREATMENT)){
 
@@ -254,14 +256,14 @@ public class MigrationService {
 				patientTreatment.setMedicine(medicine);
 			}
 
-			String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE,"name");
+			String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE,TAGNAME_NAME);
 			if (dose != null && dose.equals("Otra")){
 				dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_OTHERDOSE);
 			}
 			patientTreatment.setDose(dose);
 			patientTreatment.setMasterFormula(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DESCRIPTION));
 			patientTreatment.setMasterFormulaDose(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MASTER_FORMULA_DOSES));
-			patientTreatment.setRegimen(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REGIMEN_TREATMENT,"name"));
+			patientTreatment.setRegimen(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REGIMEN_TREATMENT,TAGNAME_NAME));
 		}
 
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
@@ -282,7 +284,7 @@ public class MigrationService {
 	}
 
 	private boolean isSamePatientTreatment(PatientTreatment patientTreatmentPostgres, PatientTreatment patientTreatmentMongo){
-		if (!"FOTOTERAPIA".equalsIgnoreCase(patientTreatmentPostgres.getType())) {
+		if (!TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatmentPostgres.getType())) {
 			return patientTreatmentPostgres.getPatientDiagnose() != null && patientTreatmentPostgres.getPatientDiagnose().getIndication() != null
 					&& patientTreatmentMongo.getPatientDiagnose() != null && patientTreatmentMongo.getPatientDiagnose().getIndication() != null
 					&& patientTreatmentPostgres.getPatientDiagnose().getIndication().getDescription().equals(patientTreatmentMongo.getPatientDiagnose().getIndication().getDescription())
