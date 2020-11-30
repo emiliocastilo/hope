@@ -1,0 +1,1428 @@
+﻿{
+    "datos_generales": [
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "1/31/83",
+            "sexo": "M",
+            "imc": "24.784",
+            "peso": "83",
+            "estatura": "1.83",
+            "tipo_psoriasis": "Otras",
+            "fecha_diagnostico": "12/31/99",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "0",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "\\N",
+            "CIRROSIS": "\\N",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "\\N",
+            "HIPERTENSION": "\\N",
+            "INSUF_RENAL": "\\N"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "10/18/83",
+            "sexo": "M",
+            "imc": "29.861",
+            "peso": "100",
+            "estatura": "1.83",
+            "tipo_psoriasis": "Otras",
+            "fecha_diagnostico": "12/31/08",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "0",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "\\N",
+            "CIRROSIS": "\\N",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "\\N",
+            "HIPERTENSION": "\\N",
+            "INSUF_RENAL": "\\N"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "3/25/44",
+            "sexo": "M",
+            "imc": "28.251",
+            "peso": "67",
+            "estatura": "1.54",
+            "tipo_psoriasis": "Otras",
+            "fecha_diagnostico": "12/31/17",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "\\N",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "\\N",
+            "CIRROSIS": "\\N",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "\\N",
+            "HIPERTENSION": "\\N",
+            "INSUF_RENAL": "\\N"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "11/11/91",
+            "sexo": "M",
+            "imc": "25.165",
+            "peso": "88",
+            "estatura": "1.87",
+            "tipo_psoriasis": "Otras",
+            "fecha_diagnostico": "12/31/10",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "\\N",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "\\N",
+            "CIRROSIS": "\\N",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "\\N",
+            "HIPERTENSION": "\\N",
+            "INSUF_RENAL": "\\N"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "5/2/61",
+            "sexo": "F",
+            "imc": "18.93",
+            "peso": "34.5",
+            "estatura": "1.35",
+            "tipo_psoriasis": "En placas",
+            "fecha_diagnostico": "2/6/94",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "0",
+            "ALCOHOL_HABITUAL": "0",
+            "ANSIEDAD": "0",
+            "ARTRITIS_PSORIASICA": "1",
+            "CIRROSIS": "0",
+            "DEPRESION_MAYOR": "0",
+            "DISFUN_TIROIDEA": "0",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "0",
+            "HIPERLIPIDEMIA": "0",
+            "HIPERTENSION": "0",
+            "INSUF_RENAL": "0"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "6/2/97",
+            "sexo": "M",
+            "imc": "25.42",
+            "peso": "87",
+            "estatura": "1.85",
+            "tipo_psoriasis": "En placas",
+            "fecha_diagnostico": "1/1/08",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "1",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "\\N",
+            "CIRROSIS": "\\N",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "\\N",
+            "HIPERTENSION": "\\N",
+            "INSUF_RENAL": "\\N"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "11/3/92",
+            "sexo": "M",
+            "imc": "28.387",
+            "peso": "93",
+            "estatura": "1.81",
+            "tipo_psoriasis": "Otras",
+            "fecha_diagnostico": "12/31/17",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "1",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "\\N",
+            "CIRROSIS": "\\N",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "\\N",
+            "HIPERTENSION": "\\N",
+            "INSUF_RENAL": "\\N"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "7/22/95",
+            "sexo": "M",
+            "imc": "40.573",
+            "peso": "130",
+            "estatura": "1.79",
+            "tipo_psoriasis": "Otras",
+            "fecha_diagnostico": "12/31/04",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "0",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "\\N",
+            "CIRROSIS": "\\N",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "\\N",
+            "HIPERTENSION": "\\N",
+            "INSUF_RENAL": "\\N"
+        },
+        {
+            "paciente": "40487696Z",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "1/4/76",
+            "sexo": "M",
+            "imc": "29.761",
+            "peso": "85",
+            "estatura": "1.69",
+            "tipo_psoriasis": "En placas",
+            "fecha_diagnostico": "1/1/94",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "0",
+            "ALCOHOL_HABITUAL": "0",
+            "ANSIEDAD": "1",
+            "ARTRITIS_PSORIASICA": "0",
+            "CIRROSIS": "0",
+            "DEPRESION_MAYOR": "0",
+            "DISFUN_TIROIDEA": "0",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "0",
+            "HIPERTENSION": "1",
+            "INSUF_RENAL": "0"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_nacimiento": "12/4/73",
+            "sexo": "M",
+            "imc": "26.446",
+            "peso": "72",
+            "estatura": "1.65",
+            "tipo_psoriasis": "En placas",
+            "fecha_diagnostico": "5/1/03",
+            "FECHA_PRIMEROS_SINTOMAS": "\\N",
+            "DIABETES": "\\N",
+            "ALCOHOL_HABITUAL": "0",
+            "ANSIEDAD": "\\N",
+            "ARTRITIS_PSORIASICA": "0",
+            "CIRROSIS": "0",
+            "DEPRESION_MAYOR": "\\N",
+            "DISFUN_TIROIDEA": "\\N",
+            "ENFERMEDAD_DENTAL": "\\N",
+            "ESCLEROSIS_MULTIPLE": "\\N",
+            "HIPERLIPIDEMIA": "0",
+            "HIPERTENSION": "0",
+            "INSUF_RENAL": "\\N"
+        }
+    ],
+    "pasi_bsa_pga": [
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "4.800000191",
+            "bsa": "7",
+            "pga": "3",
+            "fecha": "6/10/20"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "1.5",
+            "bsa": "3",
+            "pga": "1",
+            "fecha": "7/10/19"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "22.5",
+            "bsa": "58",
+            "pga": "3",
+            "fecha": "4/24/19"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "25.39999962",
+            "bsa": "43.5",
+            "pga": "4",
+            "fecha": "3/20/19"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "12.19999981",
+            "bsa": "36",
+            "pga": "3",
+            "fecha": "2/5/19"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "7",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/3/17"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "5.400000095",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "1/3/17"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "4.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "10/3/16"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/3/16"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/3/16"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "1",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "1/3/16"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "10/3/15"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "39",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/3/15"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "3.400000095",
+            "bsa": "3",
+            "pga": "2",
+            "fecha": "9/18/20"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "3.700000048",
+            "bsa": "2",
+            "pga": "2",
+            "fecha": "3/22/19"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "8",
+            "bsa": "7",
+            "pga": "4",
+            "fecha": "2/6/19"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "9.600000381",
+            "bsa": "7",
+            "pga": "3",
+            "fecha": "1/10/19"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "5/2/17"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "2/2/17"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "11/2/16"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "8/2/16"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "5/2/16"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "2/2/16"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "11/2/15"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "8/2/15"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "5/2/15"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "2/2/15"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "11/2/14"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "8/2/14"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "5/2/14"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "2/2/14"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "11/2/13"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "8/2/13"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "1",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "5/2/13"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "2/2/13"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "12",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "11/2/12"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "4/5/19"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "7.599999905",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "9/19/18"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "8/1/17"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "7.199999809",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "5/1/17"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2",
+            "bsa": "1",
+            "pga": "2",
+            "fecha": "8/14/20"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "3.5",
+            "bsa": "2.5",
+            "pga": "3",
+            "fecha": "3/6/20"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2",
+            "bsa": "1",
+            "pga": "1",
+            "fecha": "9/27/19"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2.400000095",
+            "bsa": "1",
+            "pga": "2",
+            "fecha": "6/28/19"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2.5",
+            "bsa": "1.5",
+            "pga": "1",
+            "fecha": "4/5/19"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/20/17"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/20/17"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "1/20/17"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "10/20/16"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/20/16"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/20/16"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "15",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "1/20/16"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "1.600000024",
+            "bsa": "1",
+            "pga": "2",
+            "fecha": "4/16/15"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "1.200000048",
+            "bsa": "2",
+            "pga": "1",
+            "fecha": "9/16/20"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "1.200000048",
+            "bsa": "8",
+            "pga": "1",
+            "fecha": "7/9/20"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "3.599999905",
+            "bsa": "5",
+            "pga": "2",
+            "fecha": "1/29/20"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2.599999905",
+            "bsa": "4",
+            "pga": "2",
+            "fecha": "12/4/19"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.600000024",
+            "bsa": "2",
+            "pga": "1",
+            "fecha": "10/4/19"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "4.800000191",
+            "bsa": "6",
+            "pga": "2",
+            "fecha": "6/21/19"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "7.599999905",
+            "bsa": "28",
+            "pga": "\\N",
+            "fecha": "4/26/19"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "12.10000038",
+            "bsa": "28",
+            "pga": "3",
+            "fecha": "3/22/19"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "4.400000095",
+            "bsa": "8",
+            "pga": "2",
+            "fecha": "1/23/19"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "3",
+            "bsa": "4",
+            "pga": "1",
+            "fecha": "11/28/18"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "19.20000076",
+            "bsa": "32",
+            "pga": "3",
+            "fecha": "2/23/18"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "3/6/20"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "9.899999619",
+            "bsa": "9.5",
+            "pga": "2",
+            "fecha": "2/7/20"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "4.5",
+            "bsa": "6",
+            "pga": "2",
+            "fecha": "9/18/19"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "3/8/19"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "2.900000095",
+            "bsa": "3",
+            "pga": "1",
+            "fecha": "12/4/18"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "10/4/19"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0.600000024",
+            "bsa": "1",
+            "pga": "1",
+            "fecha": "5/31/19"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/11/17"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/11/17"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "1/11/17"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "10/11/16"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/11/16"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/11/16"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "1/11/16"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "10/11/15"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "3.5",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/11/15"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "9",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/11/15"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "10.80000019",
+            "bsa": "36",
+            "pga": "3",
+            "fecha": "2/20/20"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "24.29999924",
+            "bsa": "27",
+            "pga": "4",
+            "fecha": "1/21/20"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "7.400000095",
+            "bsa": "6",
+            "pga": "3",
+            "fecha": "4/4/19"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "7/27/17"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "4/27/17"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "5.699999809",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "1/27/17"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "30",
+            "bsa": "\\N",
+            "pga": "\\N",
+            "fecha": "10/27/16"
+        },
+        {
+            "paciente": "40487696Z",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "7/29/20"
+        },
+        {
+            "paciente": "40487696Z",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "16.39999962",
+            "bsa": "15.5",
+            "pga": "3",
+            "fecha": "2/16/18"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "3/3/20"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "9/11/19"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "1.600000024",
+            "bsa": "4",
+            "pga": "1",
+            "fecha": "6/19/19"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "16.79999924",
+            "bsa": "23",
+            "pga": "4",
+            "fecha": "5/22/19"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "5.599999905",
+            "bsa": "4",
+            "pga": "4",
+            "fecha": "1/23/19"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "0",
+            "bsa": "0",
+            "pga": "0",
+            "fecha": "7/17/18"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "pasi": "11.60000038",
+            "bsa": "20",
+            "pga": "2",
+            "fecha": "4/18/18"
+        }
+    ],
+    "dlqi": [
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "4",
+            "fecha": "2/5/19"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "2",
+            "fecha": "1/10/19"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "3",
+            "fecha": "1/11/19"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "30",
+            "fecha": "1/11/19"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "1",
+            "fecha": "3/6/20"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "0",
+            "fecha": "2/23/18"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "0",
+            "fecha": "12/4/18"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "12",
+            "fecha": "2/7/20"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "0",
+            "fecha": "5/31/19"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "21",
+            "fecha": "1/21/20"
+        },
+        {
+            "paciente": "40487696Z",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "14",
+            "fecha": "2/16/18"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "dlqi": "5",
+            "fecha": "4/18/18"
+        }
+    ],
+    "biologicos": [
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "3/20/19",
+            "fecha_prescripcion": "3/20/19",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "100 mg en inyección subcutánea en las semanas 0 y 4, seguida de una dosis de mantenimiento cada 8 semanas",
+            "p_activo": "Guselkumab",
+            "atc": "L04AC16",
+            "presentacion": "TREMFYA 100 mg SOLUCION INYECTABLE, 1 jeringa precargada de 1 ml",
+            "marca": "TREMFYA®",
+            "codigo_nacional": "720058",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "5/10/17",
+            "fecha_prescripcion": "5/10/17",
+            "regimen_tratamiento": "\\N",
+            "dosis": "\\N",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "9/1/18",
+            "fecha_prescripcion": "1/1/70",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "45 mg  cada 12 semanas",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "8/14/20",
+            "fecha_prescripcion": "8/14/20",
+            "regimen_tratamiento": "Dosis/frecuencia intensificada",
+            "dosis": "Otras",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 90 mg SOLUCIÃ“N INYECTABLE 1 JERINGA PRECARGADA",
+            "marca": "STELARA®",
+            "codigo_nacional": "713432",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "3/22/19",
+            "fecha_prescripcion": "3/22/19",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "100 mg en inyección subcutánea en las semanas 0 y 4, seguida de una dosis de mantenimiento cada 8 semanas",
+            "p_activo": "Guselkumab",
+            "atc": "L04AC16",
+            "presentacion": "TREMFYA 100 mg SOLUCION INYECTABLE, 1 jeringa precargada de 1 ml",
+            "marca": "TREMFYA®",
+            "codigo_nacional": "720058",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "2/7/20",
+            "fecha_prescripcion": "2/7/20",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "100 mg en inyección subcutánea en las semanas 0 y 4, seguida de una dosis de mantenimiento cada 8 semanas",
+            "p_activo": "Guselkumab",
+            "atc": "L04AC16",
+            "presentacion": "TREMFYA 100 mg SOLUCION INYECTABLE, 1 jeringa precargada de 1 ml",
+            "marca": "TREMFYA®",
+            "codigo_nacional": "720058",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "89774533J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "3/28/17",
+            "fecha_prescripcion": "3/28/17",
+            "regimen_tratamiento": "\\N",
+            "dosis": "\\N",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "46180494J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "1/11/17",
+            "fecha_prescripcion": "1/11/17",
+            "dosis": "\\N",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "40487696Z",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "2/16/18",
+            "fecha_prescripcion": "2/16/18",
+            "dosis": "90 mg  cada 12 semanas",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 90 mg SOLUCIÃ“N INYECTABLE 1 JERINGA PRECARGADA",
+            "marca": "STELARA®",
+            "codigo_nacional": "713432",
+            "tipo_tratamiento": "BIOLOGICO"
+        },
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "5/22/19",
+            "fecha_prescripcion": "5/22/19",
+            "dosis": "100 mg en inyección subcutánea en las semanas 0 y 4, seguida de una dosis de mantenimiento cada 8 semanas",
+            "p_activo": "Guselkumab",
+            "atc": "L04AC16",
+            "presentacion": "TREMFYA 100 mg SOLUCION INYECTABLE, 1 jeringa precargada de 1 ml",
+            "marca": "TREMFYA®",
+            "codigo_nacional": "720058",
+            "tipo_tratamiento": "BIOLOGICO"
+        }
+    ],
+    "biologicos_ant": [
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "4/11/17",
+            "fecha_fin": "2/5/19",
+            "fecha_prescripcion": "4/11/17",
+            "dosis": "300 mg cada mes",
+            "p_activo": "Secukinumab",
+            "atc": "L04AC10",
+            "presentacion": "COSENTYX 150 mg SOLUCIÃ“N INYECTABLE EN PLUMA PRECARGADA 2 plumas precargadas de 1 ml",
+            "marca": "COSENTYX®",
+            "codigo_nacional": "705433",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Fallo secundario (perdida de PASI 75)"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "4/3/17",
+            "fecha_fin": "4/10/17",
+            "fecha_prescripcion": "4/3/17",
+            "regimen_tratamiento": "\\N",
+            "dosis": "\\N",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "\\N"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "2/22/17",
+            "fecha_fin": "4/2/17",
+            "fecha_prescripcion": "2/22/17",
+            "regimen_tratamiento": "\\N",
+            "dosis": "\\N",
+            "p_activo": "Secukinumab",
+            "atc": "L04AC10",
+            "presentacion": "COSENTYX 150 mg SOLUCIÃ“N INYECTABLE EN PLUMA PRECARGADA 2 plumas precargadas de 1 ml",
+            "marca": "COSENTYX®",
+            "codigo_nacional": "705433",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "\\N"
+        },
+        {
+            "paciente": "02497366A",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "10/3/16",
+            "fecha_fin": "4/3/17",
+            "fecha_prescripcion": "\\N",
+            "regimen_tratamiento": "Dosis/frecuencia intensificada",
+            "dosis": "Otras",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "No especificada",
+            "marca": "\\N",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Fallo secundario (perdida de PASI 75)"
+        },
+        {
+            "paciente": "52706819L",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "11/2/12",
+            "fecha_fin": "8/2/17",
+            "fecha_prescripcion": "\\N",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "45 mg  cada 12 semanas",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "No especificada",
+            "marca": "\\N",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Otros"
+        },
+        {
+            "paciente": "35199021M",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "2/14/17",
+            "fecha_fin": "9/25/17",
+            "fecha_prescripcion": "2/14/17",
+            "regimen_tratamiento": "\\N",
+            "dosis": "\\N",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "\\N"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "4/16/15",
+            "fecha_fin": "2/9/18",
+            "fecha_prescripcion": "\\N",
+            "regimen_tratamiento": "\\N",
+            "dosis": "45 mg  cada 12 semanas",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Otros"
+        },
+        {
+            "paciente": "92697325B",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "2/9/18",
+            "fecha_fin": "8/14/02",
+            "fecha_prescripcion": "2/9/18",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "90 mg  cada 12 semanas",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 90 mg SOLUCIÃ“N INYECTABLE 1 JERINGA PRECARGADA",
+            "marca": "STELARA®",
+            "codigo_nacional": "713432",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Otros"
+        },
+        {
+            "paciente": "24081311N",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "2/23/18",
+            "fecha_fin": "3/21/19",
+            "fecha_prescripcion": "2/23/18",
+            "regimen_tratamiento": "Dosis/frecuencia intensificada",
+            "dosis": "45 mg  cada 12 semanas",
+            "p_activo": "Ustekinumab",
+            "atc": "L04AC05",
+            "presentacion": "STELARA 45 mg SOLUCIÃ“N INYECTABLE EN JERINGA PRECARGADA, 1 jeringa precargada de 0,5 ml",
+            "marca": "STELARA®",
+            "codigo_nacional": "665779",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Fallo secundario (perdida de PASI 75)"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "9/4/13",
+            "fecha_fin": "1/7/20",
+            "fecha_prescripcion": "9/4/13",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "25 mg cada 7 días ",
+            "p_activo": "Etanercept",
+            "atc": "L04AB01",
+            "presentacion": "ENBREL 25 mg SOLUCIÃ“N INYECTABLE EN JERINGAS PRECARGADAS, 4 jeringas precargadas de 1 ml",
+            "marca": "ENBREL®",
+            "codigo_nacional": "655950",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Fallo secundario (perdida de PASI 75)"
+        },
+        {
+            "paciente": "32304348C",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "9/4/13",
+            "fecha_fin": "9/10/19",
+            "fecha_prescripcion": "9/4/13",
+            "regimen_tratamiento": "Tratamiento a dosis estandar",
+            "dosis": "25 mg cada 7 días ",
+            "p_activo": "Etanercept",
+            "atc": "L04AB01",
+            "presentacion": "ENBREL 50 mg SOLUCIÃ“N INYECTABLE EN PLUMAS PRECARGADAS, 4 plumas precargadas de 1 ml",
+            "marca": "ENBREL®",
+            "codigo_nacional": "663133",
+            "tipo_tratamiento": "BIOLOGICO",
+            "motivo_cambio": "Fallo secundario (perdida de PASI 75)"
+        }
+    ],
+    "quimicos_ant": [
+        {
+            "paciente": "14560439J",
+            "centro": "HOSPITAL GENERAL UNIVERSITARIO DE VALENCIA",
+            "fecha_inicio": "5/2/18",
+            "fecha_fin": "5/22/19",
+            "fecha_prescripcion": "\\N",
+            "regimen_tratamiento": "\\N",
+            "dosis": "\\N",
+            "p_activo": "Apremilast",
+            "atc": "L04AA32",
+            "presentacion": "OTEZLA 10 mg 20 mg 30 mg COMPRIMIDOS RECUBIERTOS CON PELÃCULA, 27 comprimidos",
+            "marca": "OTEZLA®",
+            "codigo_nacional": "704966",
+            "tipo_tratamiento": "QUIMICO",
+            "motivo_cambio": "Fallo secundario (perdida de PASI 75)"
+        }
+    ]
+}
