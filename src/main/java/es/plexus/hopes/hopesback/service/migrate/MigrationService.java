@@ -121,14 +121,16 @@ public class MigrationService {
 	public void migrationDataTreatmentFromNoRelationalToRelational() {
 		log.debug(START_PHARMACOLOGY_TREATMENT);
 		List<FormDTO> formsDTOFarmacology = formService.findByTemplateAndJob(TEMPLATE_PHARMACOLOGY_TREATMENT, true);
-		// Fixme pendiente de terminar
 		List<FormDTO> formsDTOPhototherapy = formService.findByTemplateAndJob(TEMPLATE_NO_PHARMACOLOGY_TREATMENT, true);
 
 		formsDTOFarmacology
 				.forEach(formTreatments -> {
 					//TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
 					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(formTreatments.getPatientId().longValue());
-					List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis);
+					List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis)
+							.stream()
+							.filter(patientTreatment -> !"FOTOTERAPIA".equalsIgnoreCase(patientTreatment.getType()))
+							.collect(Collectors.toList());
 					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) formTreatments.getData().get(0).getValue();
 
 					// Mapeamos el HasMap de Mongo al modelo PatientTreatment
@@ -148,6 +150,33 @@ public class MigrationService {
 			formService.updateData(formDTO, null);
 		});
 
+		formsDTOPhototherapy
+				.forEach(formTreatments -> {
+					//TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
+					PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(formTreatments.getPatientId().longValue());
+					List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis)
+							.stream()
+							.filter(patientTreatment -> "FOTOTERAPIA".equalsIgnoreCase(patientTreatment.getType()))
+							.collect(Collectors.toList());
+					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) formTreatments.getData().get(0).getValue();
+
+					// Mapeamos el HasMap de Mongo al modelo PatientTreatment
+					List<PatientTreatment>  patientTreatmentsMongo = patientTreatmentsInMongo
+							.stream()
+							.map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, formTreatments))
+							.collect(Collectors.toList());
+					// Eliminar tratamientos en Postgres que no estén en Mongo
+					deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
+
+					// Actualizamos o insertamos tratamientos en Postgres
+					upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, formTreatments);
+
+				});
+
+		formsDTOPhototherapy.forEach(formDTO -> {
+			formDTO.setJob(false);
+			formService.updateData(formDTO, null);
+		});
 		log.debug(END_TREATMENT);
 	}
 
@@ -251,14 +280,23 @@ public class MigrationService {
 	}
 
 	private boolean isSamePatientTreatment(PatientTreatment patientTreatmentPostgres, PatientTreatment patientTreatmentMongo){
-		return patientTreatmentPostgres.getPatientDiagnose() != null && patientTreatmentPostgres.getPatientDiagnose().getIndication() != null
-				&& patientTreatmentMongo.getPatientDiagnose() != null && patientTreatmentMongo.getPatientDiagnose().getIndication() != null
-				&& patientTreatmentPostgres.getPatientDiagnose().getIndication().getDescription().equals(patientTreatmentMongo.getPatientDiagnose().getIndication().getDescription())
-				&& (patientTreatmentPostgres.getMedicine() != null && patientTreatmentMongo.getMedicine() != null && patientTreatmentPostgres.getMedicine().getId().equals(patientTreatmentMongo.getMedicine().getId())
-				|| patientTreatmentPostgres.getMasterFormula().equals(patientTreatmentMongo.getMasterFormula()))
-				&& patientTreatmentPostgres.getInitDate().isEqual(patientTreatmentMongo.getInitDate())
-				&& patientTreatmentPostgres.getType().equals(patientTreatmentMongo.getType())
-				&& (patientTreatmentPostgres.getFinalDate() == null || patientTreatmentPostgres.getFinalDate().isEqual(patientTreatmentMongo.getFinalDate()));
+		if (!"FOTOTERAPIA".equalsIgnoreCase(patientTreatmentPostgres.getType())) {
+			return patientTreatmentPostgres.getPatientDiagnose() != null && patientTreatmentPostgres.getPatientDiagnose().getIndication() != null
+					&& patientTreatmentMongo.getPatientDiagnose() != null && patientTreatmentMongo.getPatientDiagnose().getIndication() != null
+					&& patientTreatmentPostgres.getPatientDiagnose().getIndication().getDescription().equals(patientTreatmentMongo.getPatientDiagnose().getIndication().getDescription())
+					&& (patientTreatmentPostgres.getMedicine() != null && patientTreatmentMongo.getMedicine() != null && patientTreatmentPostgres.getMedicine().getId().equals(patientTreatmentMongo.getMedicine().getId())
+					|| (patientTreatmentPostgres.getMasterFormula() != null && patientTreatmentPostgres.getMasterFormula().equals(patientTreatmentMongo.getMasterFormula())))
+					&& patientTreatmentPostgres.getInitDate().isEqual(patientTreatmentMongo.getInitDate())
+					&& patientTreatmentPostgres.getType().equals(patientTreatmentMongo.getType())
+					&& (patientTreatmentPostgres.getFinalDate() == null || patientTreatmentPostgres.getFinalDate().isEqual(patientTreatmentMongo.getFinalDate()));
+		} else {
+			return patientTreatmentPostgres.getPatientDiagnose() != null && patientTreatmentPostgres.getPatientDiagnose().getIndication() != null
+					&& patientTreatmentMongo.getPatientDiagnose() != null && patientTreatmentMongo.getPatientDiagnose().getIndication() != null
+					&& patientTreatmentPostgres.getPatientDiagnose().getIndication().getDescription().equals(patientTreatmentMongo.getPatientDiagnose().getIndication().getDescription())
+					&& patientTreatmentPostgres.getInitDate().isEqual(patientTreatmentMongo.getInitDate())
+					&& patientTreatmentPostgres.getType().equals(patientTreatmentMongo.getType())
+					&& (patientTreatmentPostgres.getFinalDate() == null || patientTreatmentPostgres.getFinalDate().isEqual(patientTreatmentMongo.getFinalDate()));
+		}
 	}
 
 	private LocalDateTime obtainLocalDateTimeValue(FormDTO form, String tagName) {

@@ -81,12 +81,14 @@ public class MigrationServiceTest {
     }
 
     @Test
-    public void callMigrationDataPharmacologyTreatmentFromNoRelationalToRelationalShouldBeStatusOk() {
+    public void callMigrationDataTreatmentFromNoRelationalToRelationalShouldBeStatusOk() {
 
         List<FormDTO> formDTOList = new ArrayList<>();
         formDTOList.add(mockPharmacologyTreatment());
+        List<FormDTO> formDTOPhototherapyList = new ArrayList<>();
+        formDTOPhototherapyList.add(mockPharmacologyTreatment());
         //given
-        given(formService.findByTemplateAndJob(anyString(), anyBoolean())).willReturn(formDTOList);
+        given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
         given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
         given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
@@ -161,10 +163,7 @@ public class MigrationServiceTest {
     private FormDTO mockPharmacologyTreatment() {
         ArrayList<LinkedHashMap<String, Object>> array = new ArrayList<>();
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        LinkedHashMap<String, Object> treatmentTypeMap = new LinkedHashMap<>();
-        treatmentTypeMap.put("id", "BIOLOGICO");
-        treatmentTypeMap.put("name", "BIOLOGICO");
-        map.put("treatmentType", treatmentTypeMap);
+        map.put("treatmentType", "BIOLOGICO");
         map.put("indication", "OTRAS");
         map.put("specialIndication", false);
         map.put("bigPsychologicalImpact", false);
