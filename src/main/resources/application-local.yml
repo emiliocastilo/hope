@@ -1,9 +1,9 @@
 ---
 spring:
   profiles:
-    active: local
+    active: ${spring.profiles.active}
   liquibase:
-    contexts: local
+    contexts: ${spring.profiles.active}
   # Data base access configuration
   datasource:
     driver-class-name: org.postgresql.Driver

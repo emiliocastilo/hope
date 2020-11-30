@@ -1,7 +1,7 @@
 ---
 # Server settings
 server:
-  port: ${portBack}
+  port: 9080
   servlet:
     context-path: "/v1"
   tomcat:
@@ -42,6 +42,12 @@ spring:
       starttls:
         enable: true
     test-connection: true
+  ldap:
+    #TEST LDAP
+    embedded:
+      ldif: classpath:test-server.ldif
+      base-dn: dc=springframework,dc=org
+      port: 9389
 
 # Image gallery
 imagegallery:

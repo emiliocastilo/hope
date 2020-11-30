@@ -1,9 +1,17 @@
 ---
+# Server settings
+server:
+  port: 8080
+  servlet:
+    context-path: "/v1"
+  tomcat:
+    uri-encoding: UTF-8
+
 spring:
   profiles:
-    active: prod
+    active: ${spring.profiles.active}
   liquibase:
-    contexts: prod
+    contexts: ${spring.profiles.active}
   # Data base access configuration
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -21,17 +29,25 @@ spring:
   # Mail
   mail:
     host: "localhost"
-    port: 1025
-    username:
-    password:
+    port: 587
+    username: "support-hopes@plexus.services"
+    password: "2B4yrH3s9i9ZE"
     default-encoding: "UTF-8"
     protocol: smtp
     smtp:
-      auth: false
+      auth: true
+      connectiontimeout: 5000
+      timeout: 5000
+      writetimeout: 5000
       starttls:
-        enable: false
-    test-connection: false
-
+        enable: true
+    test-connection: true
+  ldap:
+    #TEST LDAP
+    embedded:
+      ldif: classpath:test-server.ldif
+      base-dn: dc=springframework,dc=org
+      port: 8389
 # Image gallery
 imagegallery:
   url: http://localhost:8081/v1

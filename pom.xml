@@ -38,7 +38,6 @@
             </activation>
             <properties>
                 <spring.profiles.active>local</spring.profiles.active>
-                <portBack>8080</portBack>
             </properties>
             <build>
                 <resources>
@@ -56,7 +55,6 @@
             </activation>
             <properties>
                 <spring.profiles.active>dev</spring.profiles.active>
-                <portBack>9080</portBack>
             </properties>
             <build>
                 <resources>
@@ -70,11 +68,10 @@
         <profile>
             <id>pre</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <properties>
                 <spring.profiles.active>pre</spring.profiles.active>
-                <portBack>8080</portBack>
             </properties>
             <build>
                 <resources>
@@ -92,7 +89,6 @@
             </activation>
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
-                <portBack>8080</portBack>
             </properties>
             <build>
                 <resources>
