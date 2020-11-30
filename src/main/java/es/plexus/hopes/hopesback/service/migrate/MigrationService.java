@@ -145,7 +145,7 @@ public class MigrationService {
 
 		formsDTOFarmacology.forEach(formDTO -> {
 			formDTO.setJob(false);
-			formService.updateData(formDTO, "userJob");
+			formService.updateData(formDTO, null);
 		});
 
 		log.debug(END_TREATMENT);

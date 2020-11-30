@@ -112,7 +112,7 @@ public class FormService {
 
             formMongoRepository.delete(formMongo);
 
-            this.saveData(dto, user);
+            this.saveData(dto, user != null ? user : formMongo.getUser());
         }
         else {
             throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(NOT_FOUND_FORM_MESSAGE);
