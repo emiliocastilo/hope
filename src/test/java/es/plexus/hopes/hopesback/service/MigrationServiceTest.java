@@ -1,11 +1,14 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.FormDTO;
-import es.plexus.hopes.hopesback.controller.model.IndicationDTO;
 import es.plexus.hopes.hopesback.controller.model.InputDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientDiagnosisDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
+import es.plexus.hopes.hopesback.repository.IndicationRepository;
+import es.plexus.hopes.hopesback.repository.MedicineRepository;
+import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
+import es.plexus.hopes.hopesback.repository.PatientRepository;
+import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.Indication;
+import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
@@ -19,9 +22,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -41,13 +47,22 @@ public class MigrationServiceTest {
     private FormService formService;
 
     @Mock
-    private PatientService patientService;
-
-    @Mock
     private PatientDiagnosisService patientDiagnosisService;
 
     @Mock
-    private IndicationService indicationService;
+    private PatientRepository patientRepository;
+
+    @Mock
+    private IndicationRepository indicationRepository;
+
+    @Mock
+    private PatientDiagnosisRepository patientDiagnosisRepository;
+
+    @Mock
+    private PatientTreatmentRepository patientTreatmentRepository;
+
+    @Mock
+    private MedicineRepository medicineRepository;
 
     @Test
     public void callMigrationDataDiagnosisFromNoRelationalToRelationalShouldBeStatusOk() {
@@ -56,9 +71,9 @@ public class MigrationServiceTest {
         formDTOList.add(mockPrincipalDiagnosis());
         //given
         given(formService.findByTemplate(anyString())).willReturn(formDTOList);
-        given(patientService.findById(anyLong())).willReturn(MockUtils.mockPatientDTO());
-        given(patientDiagnosisService.findByPatient(any(Patient.class))).willReturn(mockPatientDiagnosisDTO());
-        given(indicationService.getIndicationByDescription(anyString())).willReturn(mockIndicationDTO());
+        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
+        given(patientDiagnosisRepository.findByPatient(any(Patient.class))).willReturn(mockPatientDiagnosis());
+        given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
         //when
         migrationService.migrationDataDiagnosisFromNoRelationalToRelational();
         //then
@@ -66,30 +81,34 @@ public class MigrationServiceTest {
     }
 
     @Test
-    public void callMigrationDataPharmacologyTreatmentFromNoRelationalToRelationalShouldBeStatusOk() {
+    public void callMigrationDataTreatmentFromNoRelationalToRelationalShouldBeStatusOk() {
 
         List<FormDTO> formDTOList = new ArrayList<>();
         formDTOList.add(mockPharmacologyTreatment());
+        List<FormDTO> formDTOPhototherapyList = new ArrayList<>();
+        formDTOPhototherapyList.add(mockPhototherapyTreatment());
         //given
-        given(formService.findByTemplate(anyString())).willReturn(formDTOList);
-        given(patientService.findById(anyLong())).willReturn(MockUtils.mockPatientDTO());
-        given(indicationService.getIndicationByDescription(anyString())).willReturn(mockIndicationDTO());
-        given(patientDiagnosisService.findByPatientAndIndication(any(Patient.class), any(Indication.class))).willReturn(mockPatientDiagnosisDTO());
-        given(patientTreatmentService.findByMasterFormulaAndMasterFormulaDose(anyString(), anyString())).willReturn(mockPatientTreatmentDTO());
+        given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
+        given(formService.findByTemplateAndJob("phototherapy", true)).willReturn(formDTOPhototherapyList);
+        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
+        given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
+        given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
+        given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());
+        given(medicineRepository.findByNationalCode(anyString())).willReturn(mockMedicine());
         //when
-        migrationService.migrationDataPharmacologyTreatmentFromNoRelationalToRelational();
+        migrationService.migrationDataTreatmentFromNoRelationalToRelational();
         //then
-        verify(patientTreatmentService, times(1)).save(any(PatientTreatment.class));
+        verify(patientTreatmentService, times(2)).save(any(PatientTreatment.class));
     }
 
-    private PatientTreatmentDTO mockPatientTreatmentDTO() {
-        PatientTreatmentDTO patientTreatmentDTO = new PatientTreatmentDTO();
-        patientTreatmentDTO.setActive(true);
-        patientTreatmentDTO.setDose("dosis");
-        patientTreatmentDTO.setInitDate(LocalDateTime.now());
-        patientTreatmentDTO.setFinalDate(LocalDateTime.now());
+    private Optional<PatientTreatment> mockPatientTreatment() {
+        PatientTreatment patientTreatment = new PatientTreatment();
+        patientTreatment.setActive(true);
+        patientTreatment.setDose("dosis");
+        patientTreatment.setInitDate(LocalDateTime.now());
+        patientTreatment.setFinalDate(LocalDateTime.now());
 
-        return patientTreatmentDTO;
+        return Optional.of(patientTreatment);
     }
 
     private FormDTO mockPrincipalDiagnosis() {
@@ -111,34 +130,78 @@ public class MigrationServiceTest {
         return formDTO;
     }
 
-    private PatientDiagnosisDTO mockPatientDiagnosisDTO() {
+    private PatientDiagnose mockPatientDiagnosis() {
 
-        PatientDiagnosisDTO patientDiagnosisDTO = new PatientDiagnosisDTO();
+        PatientDiagnose patientDiagnosisDTO = new PatientDiagnose();
         patientDiagnosisDTO.setCieCode("001");
         patientDiagnosisDTO.setCieDescription("COLERA");
         patientDiagnosisDTO.setDerivationDate(LocalDateTime.now());
         patientDiagnosisDTO.setId(1L);
-        patientDiagnosisDTO.setIndication(mockIndicationDTO());
+        patientDiagnosisDTO.setIndication(new Indication());
         patientDiagnosisDTO.setInitDate(LocalDateTime.now());
-        patientDiagnosisDTO.setPatient(MockUtils.mockPatientDTO());
+        patientDiagnosisDTO.setPatient(new Patient());
 
         return patientDiagnosisDTO;
     }
 
-    private IndicationDTO mockIndicationDTO() {
+    private Optional<Indication> mockIndication() {
 
-        IndicationDTO indicationDTO = new IndicationDTO();
-        indicationDTO.setDescription("descripción");
-        indicationDTO.setId(1L);
-        indicationDTO.setPathologyId(2L);
-        return indicationDTO;
+        Indication indication = new Indication();
+        indication.setDescription("descripción");
+        indication.setId(1L);
+        indication.setPathologyId(2L);
+        return Optional.of(indication);
+    }
+
+    private Optional<Medicine> mockMedicine() {
+
+        Medicine medicine = new Medicine();
+        medicine.setDescription("descripción");
+        medicine.setId(1L);
+        return Optional.of(medicine);
     }
 
     private FormDTO mockPharmacologyTreatment() {
+        ArrayList<LinkedHashMap<String, Object>> array = new ArrayList<>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        map.put("treatmentType", "BIOLOGICO");
+        map.put("indication", "OTRAS");
+        map.put("specialIndication", false);
+        map.put("bigPsychologicalImpact", false);
+        map.put("visibleInjury", false);
+        map.put("others", "");
+        LinkedHashMap<String, Object> medicineMap = new LinkedHashMap<>();
+        medicineMap.put("actIngredients", "ibuprofeno");
+        medicineMap.put("id", "1");
+        map.put("medicine", medicineMap);
+        map.put("family", "QUÍMICO");
+        map.put("atc", "M01AE01");
+        map.put("cn", "653306");
+        map.put("tract", "oral");
+        LinkedHashMap<String, Object> doseMap = new LinkedHashMap<>();
+        doseMap.put("name", "ibuprofeno");
+        map.put("dose", doseMap);
+        map.put("otherDosis", "");
+        LinkedHashMap<String, Object> regimenTreatmentMap = new LinkedHashMap<>();
+        regimenTreatmentMap.put("name", "Estandar");
+        map.put("regimenTreatment", regimenTreatmentMap);
+        map.put("datePrescription", "2020-11-23T00:00:00.000Z\"");
+        map.put("dateStart", "2020-11-30T00:00:00.000Z");
+        map.put("expectedEndDate", "");
+        map.put("observations", "");
+        map.put("otherDosis", "prueba de ibuprofeno");
+        map.put("treatmentContinue", false);
+        map.put("treatmentPulsatil", false);
+        map.put("reasonChangeOrSuspension", null);
+        map.put("dateSuspension", null);
+        map.put("principle", "ibuprofeno");
+        map.put("brand", "Motrin");
+        map.put("type", "QUÍMICO");
+        array.add(map);
         InputDTO inputDTO = new InputDTO();
-        inputDTO.setName("masterFormula");
-        inputDTO.setType("checkbox");
-        inputDTO.setValue(true);
+        inputDTO.setName("table");
+        inputDTO.setType("principal-treatment");
+        inputDTO.setValue(array);
 
         List<InputDTO> inputDTOList = new ArrayList<>();
         inputDTOList.add(inputDTO);
@@ -147,6 +210,34 @@ public class MigrationServiceTest {
         formDTO.setDateTime(LocalDateTime.now());
         formDTO.setPatientId(34);
         formDTO.setTemplate("farmacology-treatment");
+        formDTO.setData(inputDTOList);
+
+        return formDTO;
+    }
+
+    private FormDTO mockPhototherapyTreatment() {
+        ArrayList<LinkedHashMap<String, Object>> array = new ArrayList<>();
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        map.put("treatmentType", "FOTOTERAPIA");
+        map.put("indication", "OTRAS");
+        map.put("datePrescription", "2020-11-23T00:00:00.000Z\"");
+        map.put("dateStart", "2020-11-30T00:00:00.000Z");
+        map.put("observations", "");
+        map.put("reasonChangeOrSuspension", null);
+        map.put("dateSuspension", null);
+        array.add(map);
+        InputDTO inputDTO = new InputDTO();
+        inputDTO.setName("table");
+        inputDTO.setType("phototherapy");
+        inputDTO.setValue(array);
+
+        List<InputDTO> inputDTOList = new ArrayList<>();
+        inputDTOList.add(inputDTO);
+
+        FormDTO formDTO = new FormDTO();
+        formDTO.setDateTime(LocalDateTime.now());
+        formDTO.setPatientId(34);
+        formDTO.setTemplate("phototherapy");
         formDTO.setData(inputDTOList);
 
         return formDTO;

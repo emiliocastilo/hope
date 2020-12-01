@@ -21,4 +21,6 @@ public interface FormMongoRepository extends MongoRepository<FormMongo, String> 
 
     @Query(value= "{'template':'?0', 'patientId':'?1'}", sort = "{'dateTime': -1}")
     List<FormMongo> findFormsByTemplateAndPatientId(String template, Integer patientId);
+
+    List<FormMongo>  findByTemplateAndJob(String template, boolean toProcess);
 }

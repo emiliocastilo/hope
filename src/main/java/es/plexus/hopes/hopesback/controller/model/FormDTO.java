@@ -22,4 +22,6 @@ public class FormDTO {
     private List<InputDTO> data;
 
     private LocalDateTime dateTime;
+
+    private boolean job;
 }

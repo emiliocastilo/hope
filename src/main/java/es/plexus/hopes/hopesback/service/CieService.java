@@ -6,6 +6,7 @@ import es.plexus.hopes.hopesback.repository.Cie9Repository;
 import es.plexus.hopes.hopesback.repository.model.Cie10;
 import es.plexus.hopes.hopesback.repository.model.Cie9;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.Cie10Mapper;
 import es.plexus.hopes.hopesback.service.mapper.Cie9Mapper;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -30,10 +31,15 @@ public class CieService {
 
     public Page<CieDTO> findAll(Long hospitalId, final Pageable pageable) {
         log.debug(CALLING_DB);
-        Hospital hospital = hospitalService.getOneHospitalById(hospitalId).orElse(null);
+        Optional<Hospital> hospital = hospitalService.getOneHospitalById(hospitalId);
         Page<CieDTO> cieDTOPage;
 
-        if (CIE_9.equalsIgnoreCase(Objects.requireNonNull(hospital).getCie())) {
+        if (!hospital.isPresent()) {
+            throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+                    String.format("Hospital con id %d no encontrado. El hospital es requerido.", hospitalId));
+        }
+
+        if (CIE_9.equalsIgnoreCase(hospital.get().getCie())) {
             Page<Cie9> cie9Page = cie9Repository.findAll(pageable);
             cieDTOPage = cie9Page.map(Cie9Mapper.INSTANCE::entityToDto);
         } else {
@@ -47,10 +53,15 @@ public class CieService {
 
     public Page<CieDTO> findCieByCodeOrSearch(Long hospitalId, String search, Pageable pageable) {
         log.debug(CALLING_DB);
-        Hospital hospital = hospitalService.getOneHospitalById(hospitalId).orElse(null);
+        Optional<Hospital> hospital = hospitalService.getOneHospitalById(hospitalId);
         Page<CieDTO> cieDTOPage;
 
-        if (CIE_9.equalsIgnoreCase(Objects.requireNonNull(hospital).getCie())) {
+        if (!hospital.isPresent()) {
+            throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(
+                    String.format("Hospital con id %d no encontrado. El hospital es requerido.", hospitalId));
+        }
+
+        if (CIE_9.equalsIgnoreCase(hospital.get().getCie())) {
             Page<Cie9> cie9Page = cie9Repository.findCieByCodeOrSearch(search, pageable);
             cieDTOPage = cie9Page.map(Cie9Mapper.INSTANCE::entityToDto);
         } else {

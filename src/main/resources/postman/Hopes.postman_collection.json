@@ -24,9 +24,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/indications",
+							"raw": "{{local}}/v1/patients-diagnoses/indications",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -53,9 +53,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/indications/patients?indication=Psoriasis pustulosa",
+							"raw": "{{local}}/v1/patients-diagnoses/indications/patients?indication=Psoriasis pustulosa",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -89,9 +89,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/indications/patients-export?indication=Psoriasis pustulosa",
+							"raw": "{{local}}/v1/patients-diagnoses/indications/patients-export?indication=Psoriasis pustulosa",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -125,9 +125,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/treatments",
+							"raw": "{{local}}/v1/patients-diagnoses/treatments",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -154,9 +154,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
+							"raw": "{{local}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -190,9 +190,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/treatments/patients-export?treatmentType=biologico",
+							"raw": "{{local}}/v1/patients-diagnoses/treatments/patients-export?treatmentType=biologico",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -226,9 +226,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments",
+							"raw": "{{local}}/v1/patients-diagnoses/combined-treatments",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -255,9 +255,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments/patients",
+							"raw": "{{local}}/v1/patients-diagnoses/combined-treatments/patients",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -291,9 +291,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/combined-treatments/patients-export?combinedTreatment=Biologico+Quimico",
+							"raw": "{{local}}/v1/patients-diagnoses/combined-treatments/patients-export?combinedTreatment=Biologico+Quimico",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -327,9 +327,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie?hospitalId=1",
+							"raw": "{{local}}/v1/patients-diagnoses/cie?hospitalId=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -362,9 +362,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie/patients?cieDescription=COLERA&hospitalId=1",
+							"raw": "{{local}}/v1/patients-diagnoses/cie/patients?cieDescription=COLERA&hospitalId=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -402,9 +402,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/cie/patients-export?cieDescription=COLERA&hospitalId=1",
+							"raw": "{{local}}/v1/patients-diagnoses/cie/patients-export?cieDescription=COLERA&hospitalId=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -442,9 +442,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes?endCause=Cambio",
+							"raw": "{{local}}/v1/patients-diagnoses/end-causes?endCause=Cambio",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -477,9 +477,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes/patients?endCause=cambio&reason=blanqueamiento",
+							"raw": "{{local}}/v1/patients-diagnoses/end-causes/patients?endCause=cambio&reason=blanqueamiento",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -517,9 +517,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes/patients-export?endCause=Cambio&reason=ineficacia",
+							"raw": "{{local}}/v1/patients-diagnoses/end-causes/patients-export?endCause=Cambio&reason=ineficacia",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -557,9 +557,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years?endCause=cambio",
+							"raw": "{{local}}/v1/patients-diagnoses/end-causes-last-years?endCause=cambio",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -592,9 +592,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years/patients?endCause=cambio&reason=blanqueamiento&years=2",
+							"raw": "{{local}}/v1/patients-diagnoses/end-causes-last-years/patients?endCause=cambio&reason=blanqueamiento&years=2",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -636,9 +636,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/end-causes-last-years/patients-export?endCause=cambio&reason=ineficacia&years=2",
+							"raw": "{{local}}/v1/patients-diagnoses/end-causes-last-years/patients-export?endCause=cambio&reason=ineficacia&years=2",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -680,9 +680,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/number-changes",
+							"raw": "{{local}}/v1/patients-diagnoses/number-changes",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -709,9 +709,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/number-changes/patients?numberChanges=3",
+							"raw": "{{local}}/v1/patients-diagnoses/number-changes/patients?numberChanges=3",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -745,9 +745,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/number-changes/patients-export?numberChanges=3",
+							"raw": "{{local}}/v1/patients-diagnoses/number-changes/patients-export?numberChanges=3",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -766,7 +766,7 @@
 					"response": []
 				},
 				{
-					"name": "{{dev}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
+					"name": "{{local}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -781,9 +781,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
+							"raw": "{{local}}/v1/patients-diagnoses/treatments/patients?treatmentType=biologico",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -838,9 +838,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/patients",
+							"raw": "{{local}}/v1/patients",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -886,9 +886,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients?pth=1",
+							"raw": "{{local}}/v1/patients?pth=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -921,9 +921,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients/searches?pth=1&pageable=0&size=7&sort=name,asc",
+							"raw": "{{local}}/v1/patients/searches?pth=1&pageable=0&size=7&sort=name,asc",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -968,9 +968,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients/3",
+							"raw": "{{local}}/v1/patients/3",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -998,9 +998,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients/3",
+							"raw": "{{local}}/v1/patients/3",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1037,9 +1037,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/patients",
+							"raw": "{{local}}/v1/patients",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1065,9 +1065,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients/filters?page=0&size=5&sort=name,asc",
+							"raw": "{{local}}/v1/patients/filters?page=0&size=5&sort=name,asc",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1120,9 +1120,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/menus",
+							"raw": "{{local}}/v1/menus",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1171,9 +1171,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/login",
+							"raw": "{{local}}/v1/login",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1226,9 +1226,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/users/choose-profiles",
+							"raw": "{{local}}/v1/users/choose-profiles",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1255,9 +1255,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/",
+							"raw": "{{local}}/v1/users/",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1284,9 +1284,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/admin",
+							"raw": "{{local}}/v1/users/admin",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1313,9 +1313,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/doctor",
+							"raw": "{{local}}/v1/users/doctor",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1348,9 +1348,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users?idRoleSelected=1&page=0&size=5&sort=name,asc",
+							"raw": "{{local}}/v1/users?idRoleSelected=1&page=0&size=5&sort=name,asc",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1395,9 +1395,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/searches?page=0&size=5&sort=name,asc&search=d",
+							"raw": "{{local}}/v1/users/searches?page=0&size=5&sort=name,asc&search=d",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1443,9 +1443,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/10",
+							"raw": "{{local}}/v1/users/10",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1473,9 +1473,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/filters?page=0&size=5&sort=name,asc",
+							"raw": "{{local}}/v1/users/filters?page=0&size=5&sort=name,asc",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1526,9 +1526,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/users",
+							"raw": "{{local}}/v1/users",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1563,9 +1563,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/users",
+							"raw": "{{local}}/v1/users",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1592,9 +1592,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/14",
+							"raw": "{{local}}/v1/users/14",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1630,9 +1630,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/users/update-passwords",
+							"raw": "{{local}}/v1/users/update-passwords",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1668,9 +1668,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/users/request-password-changes",
+							"raw": "{{local}}/v1/users/request-password-changes",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1706,9 +1706,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/users/save-new-passwords",
+							"raw": "{{local}}/v1/users/save-new-passwords",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1735,9 +1735,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/users/reset-passwords?token=e2b360db-e8d0-460c-9d8f-fa04090cb97f",
+							"raw": "{{local}}/v1/users/reset-passwords?token=e2b360db-e8d0-460c-9d8f-fa04090cb97f",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1777,9 +1777,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/hospitals",
+							"raw": "{{local}}/v1/hospitals",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1805,9 +1805,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/hospitals",
+							"raw": "{{local}}/v1/hospitals",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1839,9 +1839,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/services",
+							"raw": "{{local}}/v1/services",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1867,9 +1867,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/services/1",
+							"raw": "{{local}}/v1/services/1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1911,9 +1911,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/templates",
+							"raw": "{{local}}/v1/templates",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1948,9 +1948,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/templates",
+							"raw": "{{local}}/v1/templates",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -1985,9 +1985,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/template",
+							"raw": "{{local}}/v1/template",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2022,9 +2022,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/templates",
+							"raw": "{{local}}/v1/templates",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2059,9 +2059,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/templates",
+							"raw": "{{local}}/v1/templates",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2096,9 +2096,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/templates",
+							"raw": "{{local}}/v1/templates",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2136,9 +2136,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/templates?key=PLANTILLA_PRUEBA",
+							"raw": "{{local}}/v1/templates?key=PLANTILLA_PRUEBA",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2191,9 +2191,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details",
+							"raw": "{{local}}/v1/dispensation-details",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2239,9 +2239,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details?dsp=1",
+							"raw": "{{local}}/v1/dispensation-details?dsp=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2274,9 +2274,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/3",
+							"raw": "{{local}}/v1/dispensation-details/3",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2304,9 +2304,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/33",
+							"raw": "{{local}}/v1/dispensation-details/33",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2343,9 +2343,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details",
+							"raw": "{{local}}/v1/dispensation-details",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2371,9 +2371,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/filters?page=0&size=2&sort=id,desc&dispensationDetail={\"date\":\"24\"}",
+							"raw": "{{local}}/v1/dispensation-details/filters?page=0&size=2&sort=id,desc&dispensationDetail={\"date\":\"24\"}",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2418,9 +2418,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/searches?page=0&size=2&sort=date,desc&search=NH098",
+							"raw": "{{local}}/v1/dispensation-details/searches?page=0&size=2&sort=date,desc&search=NH098",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2465,9 +2465,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/find-monthly-consumes",
+							"raw": "{{local}}/v1/dispensation-details/find-monthly-consumes",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2494,9 +2494,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensations/findMonthlyConsumeAccumulated",
+							"raw": "{{local}}/v1/dispensations/findMonthlyConsumeAccumulated",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2523,9 +2523,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/find-monthly-consumes-accumulated-avg?lastYears=2&code=L04AA24",
+							"raw": "{{local}}/v1/dispensation-details/find-monthly-consumes-accumulated-avg?lastYears=2&code=L04AA24",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2562,9 +2562,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/find-monthly-consumes-accumulated-avg",
+							"raw": "{{local}}/v1/dispensation-details/find-monthly-consumes-accumulated-avg",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2591,9 +2591,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/find-total-cost-treatments?code=D11AH05",
+							"raw": "{{local}}/v1/dispensation-details/find-total-cost-treatments?code=D11AH05",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2626,9 +2626,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/findTotalCostTreatment?code=D11AH05",
+							"raw": "{{local}}/v1/dispensation-details/findTotalCostTreatment?code=D11AH05",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2661,9 +2661,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/findTotalCostTreatment?code=D11AH05",
+							"raw": "{{local}}/v1/dispensation-details/findTotalCostTreatment?code=D11AH05",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2696,9 +2696,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensation-details/find-total-cost-treatments-accumulated-avg?code=D11AH05",
+							"raw": "{{local}}/v1/dispensation-details/find-total-cost-treatments-accumulated-avg?code=D11AH05",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2776,9 +2776,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/dispensations",
+							"raw": "{{local}}/v1/dispensations",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2829,9 +2829,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensations",
+							"raw": "{{local}}/v1/dispensations",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2858,9 +2858,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensations/11",
+							"raw": "{{local}}/v1/dispensations/11",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2888,9 +2888,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/dispensations/11",
+							"raw": "{{local}}/v1/dispensations/11",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -2939,9 +2939,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/medicines",
+							"raw": "{{local}}/v1/medicines",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3003,9 +3003,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/medicines/createAll",
+							"raw": "{{local}}/v1/medicines/createAll",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3057,9 +3057,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines",
+							"raw": "{{local}}/v1/medicines",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3086,9 +3086,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/1",
+							"raw": "{{local}}/v1/medicines/1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3116,9 +3116,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/1",
+							"raw": "{{local}}/v1/medicines/1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3155,9 +3155,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/medicines",
+							"raw": "{{local}}/v1/medicines",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3183,9 +3183,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/filters?medicines={\"acronym\":\"A\"}",
+							"raw": "{{local}}/v1/medicines/filters?medicines={\"acronym\":\"A\"}",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3233,9 +3233,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/searches?page=0&size=10&sort=id,asc&search=ORENCIA",
+							"raw": "{{local}}/v1/medicines/searches?page=0&size=10&sort=id,asc&search=ORENCIA",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3280,9 +3280,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/medicines/doses?medicineId=11",
+							"raw": "{{local}}/v1/medicines/doses?medicineId=11",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3333,9 +3333,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/recommendations",
+							"raw": "{{local}}/v1/recommendations",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3368,9 +3368,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/roles?idRoleSelected=3",
+							"raw": "{{local}}/v1/roles?idRoleSelected=3",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3402,9 +3402,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/roles/all",
+							"raw": "{{local}}/v1/roles/all",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3431,9 +3431,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/roles/searches?name=doctor",
+							"raw": "{{local}}/v1/roles/searches?name=doctor",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3466,9 +3466,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/roles/1",
+							"raw": "{{local}}/v1/roles/1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3504,9 +3504,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/roles",
+							"raw": "{{local}}/v1/roles",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3541,9 +3541,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/roles",
+							"raw": "{{local}}/v1/roles",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3576,9 +3576,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/roles/10",
+							"raw": "{{local}}/v1/roles/10",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3605,9 +3605,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/roles/menus/7",
+							"raw": "{{local}}/v1/roles/menus/7",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3656,9 +3656,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/sections",
+							"raw": "{{local}}/v1/sections",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3692,9 +3692,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/sections/81",
+							"raw": "{{local}}/v1/sections/81",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3734,9 +3734,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/sections",
+							"raw": "{{local}}/v1/sections",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3763,9 +3763,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/sections/81",
+							"raw": "{{local}}/v1/sections/81",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3802,9 +3802,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/sections",
+							"raw": "{{local}}/v1/sections",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3867,9 +3867,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/forms",
+							"raw": "{{local}}/v1/forms",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3907,9 +3907,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{local}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -3957,9 +3957,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
+							"raw": "{{local}}/v1/forms?template=PLANTILLA_PRUEBA&patientId=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4004,9 +4004,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/forms",
+							"raw": "{{local}}/v1/forms",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4038,9 +4038,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/find-patients-under-treatment?type=Biologico&indication=\"r\"",
+							"raw": "{{local}}/v1/patients-treatments/find-patients-under-treatment?type=Biologico&indication=\"r\"",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4077,9 +4077,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/find-info-patients-doses",
+							"raw": "{{local}}/v1/patients-treatments/find-info-patients-doses",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4106,9 +4106,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-under-treatment?type=BIOLÓGICO&indication=EN PLACAS",
+							"raw": "{{local}}/v1/patients-treatments/get-detail-patients-under-treatment?type=BIOLÓGICO&indication=EN PLACAS",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4145,9 +4145,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-under-treatment-export?type=BIOLOGICO",
+							"raw": "{{local}}/v1/patients-treatments/get-detail-patients-under-treatment-export?type=BIOLOGICO",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4180,9 +4180,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-per-doses?regimen=INTENSIFICADA",
+							"raw": "{{local}}/v1/patients-treatments/get-detail-patients-per-doses?regimen=INTENSIFICADA",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4215,9 +4215,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-treatments/get-detail-patients-per-doses-export",
+							"raw": "{{local}}/v1/patients-treatments/get-detail-patients-per-doses-export",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4250,9 +4250,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/find-results-by-types?type=PASI",
+							"raw": "{{local}}/v1/health-outcomes/find-results-by-types?type=PASI",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4294,9 +4294,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/save-score-data-by-index-type",
+							"raw": "{{local}}/v1/health-outcomes/save-score-data-by-index-type",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4323,9 +4323,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type?indexType=PASI&result=Prueba PASI 6",
+							"raw": "{{local}}/v1/health-outcomes/get-detail-results-by-type?indexType=PASI&result=Prueba PASI 6",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4362,9 +4362,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/health-outcomes/get-detail-results-by-type-export?indexType=PASI&result=Prueba PASI 6",
+							"raw": "{{local}}/v1/health-outcomes/get-detail-results-by-type-export?indexType=PASI&result=Prueba PASI 6",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4423,9 +4423,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/photos?pac=1&pth=2",
+							"raw": "{{local}}/v1/photos?pac=1&pth=2",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4470,9 +4470,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/photos",
+							"raw": "{{local}}/v1/photos",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4498,9 +4498,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/photos/1",
+							"raw": "{{local}}/v1/photos/1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4536,9 +4536,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/photos",
+							"raw": "{{local}}/v1/photos",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4564,9 +4564,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/photos",
+							"raw": "{{local}}/v1/photos",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4604,9 +4604,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/photos/qr?pac=21&pth=1",
+							"raw": "{{local}}/v1/photos/qr?pac=21&pth=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4658,9 +4658,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{dev}}/v1/support",
+							"raw": "{{local}}/v1/support",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4692,9 +4692,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-dashboards/1",
+							"raw": "{{local}}/v1/patients-dashboards/1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4721,9 +4721,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/patients-dashboards/evolution-indices-clinical?indicesTypes=PASI,DLQI,BSA&patId=1",
+							"raw": "{{local}}/v1/patients-dashboards/evolution-indices-clinical?indicesTypes=PASI,DLQI,BSA&patId=1",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4767,9 +4767,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/cies?hospitalId=1&page=10",
+							"raw": "{{local}}/v1/cies?hospitalId=1&page=10",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
@@ -4805,9 +4805,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{dev}}/v1/cies/searches?hospitalId=2&search=B4&page=0&size=10&sort=code,desc",
+							"raw": "{{local}}/v1/cies/searches?hospitalId=2&search=B4&page=0&size=10&sort=code,desc",
 							"host": [
-								"{{dev}}"
+								"{{local}}"
 							],
 							"path": [
 								"v1",
