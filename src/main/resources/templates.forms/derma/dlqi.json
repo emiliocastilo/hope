@@ -1,6 +1,6 @@
 {
     "key": "dlqi",
-    "form": "[{'type':'title', 'name':'DLQI'},{'type': 'datepicker','name':'evaluationDate', 'label':'Fecha de evaluación'}, {'type':'button', 'name': 'buttonCuestionary', 'label': 'Comenzar Cuestionario', 'formula':'openQuestionnaire', 'button_click': 'openQuestionnaire' , 'params':[{'name':'dlqiScore'}], 'template':'questionnairedlqi'},{'type': 'input', 'name': 'dlqiScore', 'label': 'Score'}, {'type':'input','label':'Clasificacion','name':'clasificationScore','placeholder':'clasification','calculated_front':true,'formula':'clasificationDlqi','params':['dlqiScore']}]",
+    "form": "[{'type':'title','name':'DLQI'},{'type':'datepicker','name':'evaluationDate','css':'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12','label':'Fecha de evaluación'},{'type':'button','name':'buttonCuestionary','css':'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12','label':'Comenzar Cuestionario','formula':'openQuestionnaire','button_click':'openQuestionnaire','params':[{'name':'dlqiScore'}],'template':'questionnairedlqi'},{'type':'input','name':'dlqiScore','css':'col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6','label':'Score'},{'type':'input','label':'Clasificacion','css':'col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6','name':'clasificationScore','placeholder':'clasification','calculated_front':true,'formula':'clasificationDlqi','params':['dlqiScore']}]",
     "buttons": "['save', 'clean', 'graphsBack']",
     "historify": true,
     "nameHistoricalDate": "evaluationDate",
