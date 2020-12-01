@@ -23,6 +23,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -249,8 +250,8 @@ public class MigrationService {
 
 		if (formDTO.getTemplate().equalsIgnoreCase(TEMPLATE_PHARMACOLOGY_TREATMENT)){
 
-			LinkedHashMap<String, Object>  medicineString = (LinkedHashMap<String, Object>) getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
-			if ( medicineString != null && !medicineString.isEmpty()) {
+			Object  medicineString = getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
+			if (medicineString != null && !StringUtils.isEmpty(medicineString.toString())) {
 				String medicineId = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE, "id");
 				Medicine medicine = medicineRepository.findById(Long.valueOf(medicineId)).orElse(null);
 				patientTreatment.setMedicine(medicine);
