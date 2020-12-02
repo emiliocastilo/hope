@@ -1,6 +1,5 @@
 package es.plexus.hopes.hopesback.repository;
 
-import es.plexus.hopes.hopesback.repository.model.Indication;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
@@ -25,6 +24,8 @@ public interface PatientDiagnosisRepository extends JpaRepository<PatientDiagnos
 
     PatientDiagnose findByPatient(Patient patient);
 
-    Optional<PatientDiagnose> findByPatientAndIndication(Patient patient, Indication indication);
+    Optional<PatientDiagnose> findByPatientIdAndIndicationId(Long patient, Long indication);
+
+    PatientDiagnose findByPatientId(long patientId);
 }
 

@@ -1,7 +1,7 @@
 ---
 # Server settings
 server:
-  port: 9080
+  port: ${configuration.port.back}
   servlet:
     context-path: "/v1"
   tomcat:
@@ -9,9 +9,9 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: ${spring.profiles.active}
   liquibase:
-    contexts: dev
+    contexts: ${spring.profiles.active}
   # Data base access configuration
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -42,7 +42,13 @@ spring:
       starttls:
         enable: true
     test-connection: true
+  ldap:
+    #TEST LDAP
+    embedded:
+      ldif: classpath:test-server.ldif
+      base-dn: dc=springframework,dc=org
+      port: ${configuration.port.ldap}
 
 # Image gallery
 imagegallery:
-  url: http://192.168.110.45:9081/v1
+  url: http://192.168.110.45:${configuration.port.back-image}/v1

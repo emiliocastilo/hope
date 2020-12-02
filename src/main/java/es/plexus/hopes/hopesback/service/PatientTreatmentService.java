@@ -1,13 +1,10 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
@@ -128,18 +125,18 @@ public class PatientTreatmentService {
 	}
 
 	@Transactional
-	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication, final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, final String medicine, final Pageable pageable) {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication);
+		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, medicine);
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 		return page;
 	}
 
 	@Transactional
-	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String  indication) {
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, String medicine) {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication);
+		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, medicine);
 		return fillGraphPatientDetailDtoList(patients);
 	}
 
@@ -416,15 +413,5 @@ public class PatientTreatmentService {
 
 	public void save(PatientTreatment patientTreatment) {
 		patientTreatmentRepository.saveAndFlush(patientTreatment);
-	}
-
-	public PatientTreatmentDTO findByPatientDiagnoseAndMedicineAndInitDate(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment) {
-		PatientTreatment patientTreatment = patientTreatmentRepository.findByPatientDiagnoseAndMedicineAndInitDate(patientDiagnose, medicine, initDateTreatment).orElse(null);
-		return PatientTreatmentMapper.INSTANCE.entityToDto(patientTreatment);
-	}
-
-	public PatientTreatmentDTO findByMasterFormulaAndMasterFormulaDose(String masterFormula, String masterFormulaDose) {
-		PatientTreatment patientTreatment = patientTreatmentRepository.findByMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCase(masterFormula, masterFormulaDose).orElse(null);
-		return PatientTreatmentMapper.INSTANCE.entityToDto(patientTreatment);
 	}
 }

@@ -14,7 +14,6 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -51,17 +50,12 @@ public class FormService {
 
     private final ApplicationEventPublisher publisher;
 
-    private final PatientService patientService;
-    private final DispensationDetailService dispensationDetailService;
-
     @Autowired
-    public FormService(FormMongoRepository formMongoRepository, FormMapper formMapper, MongoTemplate mongoTemplate, TemplateService templateService, ApplicationEventPublisher publisher, PatientService patientService, DispensationDetailService dispensationDetailService) {
+    public FormService(FormMongoRepository formMongoRepository, FormMapper formMapper, TemplateService templateService, ApplicationEventPublisher publisher) {
         this.formMongoRepository = formMongoRepository;
         this.formMapper = formMapper;
         this.templateService = templateService;
         this.publisher = publisher;
-        this.patientService = patientService;
-        this.dispensationDetailService = dispensationDetailService;
     }
 
     public void saveData(FormDTO formDto, String user) {
@@ -118,7 +112,7 @@ public class FormService {
 
             formMongoRepository.delete(formMongo);
 
-            this.saveData(dto, user);
+            this.saveData(dto, user != null ? user : formMongo.getUser());
         }
         else {
             throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(NOT_FOUND_FORM_MESSAGE);
@@ -445,4 +439,8 @@ public class FormService {
         return  graphList;
     }
 
+    public List<FormDTO> findByTemplateAndJob(String template, boolean toProcess) {
+        List<FormMongo> formsMongo = formMongoRepository.findByTemplateAndJob(template, toProcess);
+        return formMapper.listEntityToListDto(formsMongo);
+    }
 }

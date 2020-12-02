@@ -50,16 +50,18 @@ public class PatientTreatmentController {
 	
 	@ApiOperation("Detalle de pacientes bajo tratamiento")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT)
-	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication, @PageableDefault(size = 5) final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication,
+																	   @RequestParam(value="medicine", required = false) String medicine,@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, pageable);
+		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, medicine, pageable);
 	}
 	
 	@ApiOperation("Detalle de pacientes bajo tratamiento para exportar")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT_EXPORT)
-	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication) {
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication,
+																	   @RequestParam(value = "medicine", required = false) String medicine) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication);
+		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, medicine);
 	}
 	
 	@ApiOperation("Detalle de pacientes/dosis")

@@ -7,7 +7,6 @@ import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.repository.model.Indication;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientData;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
@@ -185,11 +184,6 @@ public class PatientDiagnosisService {
 	public PatientDiagnosisDTO findByPatient(Patient patient) {
 		log.debug(CALLING_DB);
 		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatient(patient);
-		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
-	}
-
-	public PatientDiagnosisDTO findByPatientAndIndication(Patient patient, Indication indication) {
-		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientAndIndication(patient, indication).orElse(null);
 		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
 	}
 

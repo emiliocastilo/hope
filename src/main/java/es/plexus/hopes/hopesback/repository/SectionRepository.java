@@ -15,8 +15,8 @@ public interface SectionRepository extends JpaRepository<Section, Long> {
     @Query("select s from Section s join s.roles r WHERE s.active= true and r.code IN (:roles) order by s.fatherSection, s.order")
     List<Section> findByMenuTrueAndRoles(@Param("roles")List<String> roles);
 
-    @Query("select s from Section s join s.roles r WHERE r.name = :name order by s.fatherSection, s.order" )
-    List<Section> findSectionsByRolName(@Param("name")String name);
+    @Query("select s from Section s join s.roles r WHERE r.code = :roleCode order by s.fatherSection, s.order" )
+    List<Section> findByRolCode(@Param("roleCode") String roleCode);
 
     Optional<Section> findByFatherSectionIsNull();
 

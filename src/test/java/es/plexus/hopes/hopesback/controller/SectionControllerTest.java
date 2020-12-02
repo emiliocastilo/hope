@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -79,11 +80,12 @@ public class SectionControllerTest {
 
 	@Test
 	public void callFindAllShouldBeStatusOk() throws ServiceException {
+
 		// given
-		given(sectionService.findAllSections()).willReturn(mockMenuDto());
+		given(sectionService.findAllSectionsByRole(any())).willReturn(mockMenuDto());
 
 		// when
-		MenuDTO response = sectionController.findAll();
+		MenuDTO response = sectionController.findAll("token");
 
 		// then
 		Assert.assertNotNull(response);
