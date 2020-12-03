@@ -308,4 +308,9 @@ public class QueryConstants {
 					"join Medicine m on m.id = pt.medicine.id and m.nationalCode = CAST(dd.nationalCode as text) " +
 					WHERE_PT_ACTIVE_TRUE +
 					"and p.id = :patId ";
+
+	public static final String QUERY_FIND_PATIENT_BY_CLINICAL_DATA =
+			" select pdc from Patient pat join PatientClinicalData  pdc on pdc.patient.id = pat.id ";
+	public static final String FILTER_PCD_NAME = " pdc.name = :name ";
+	public static final String FILTER_PCD_VALUE = " pdc.value in ( :values )";
 }
