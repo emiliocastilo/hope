@@ -31,3 +31,4 @@ build/
 .vscode/
 /hopes-back.log
 /hopes-back-dev.log
+*.log
