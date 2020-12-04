@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.repository.model;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 
@@ -13,7 +15,7 @@ public class PatientClinicalData {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pcd_pac_id", referencedColumnName = "pac_id")
     private Patient patient;
 

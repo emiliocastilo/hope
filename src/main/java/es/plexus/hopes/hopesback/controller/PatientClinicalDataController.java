@@ -24,9 +24,9 @@ public class PatientClinicalDataController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/by-name")
-    public Map<String, Long> getData(
+    public Map<String, String> getPatientClinicalDataByType(
             @ApiParam(value = "Tipo de dato que se quiere obtener", example = "CVP", required = true)
             @RequestParam(value = "type") String type) {
-        return patientsClinicalDataService.getPatientsCVP();
+        return patientsClinicalDataService.getPatientClinicalDataByType(type);
     }
 }
