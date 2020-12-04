@@ -70,44 +70,28 @@ values('Coste total/medio del paciente', 'Coste total/medio del paciente VIH', t
 insert into hopes.sections (sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
 values('Coste por pautas', 'Coste por pautas VIH', true, 2, (select s.sec_id from hopes.sections s where s.sec_title = 'Información Farmaeconómicos'), '', '#', false, true);
 
--- SECCIÓN PACIENTE VIH
-INSERT INTO hopes.sections
-(sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Paciente', 'Paciente VIH', true, 3,
-(select s.sec_id from hopes.sections s where s.sec_section_root isnull),
-'assets/img/modules/paciente.png', '/hopes/pathology/patients', false, true);
+-- SECCIÓN PACIENTE y SECCIÓN CUADRO DE MANDOS se utiliza la misma que usa Derma
 
 -- RESTO DE SECCIONES NUEVAS
 INSERT INTO hopes.sections
-(sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Cuadro de Mando Paciente', 'Cuadro de Mando Paciente VIH', true, 1,
-(select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'),
-'', '/hopes/pathology/patients/dashboard', false, true);
-
-INSERT INTO hopes.sections
-(sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Datos del paciente', 'Datos del paciente VIH', true, 2,
-(select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'),
-'', '#', false, true);
-INSERT INTO hopes.sections
 (  sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES( 'Datos sociodemográficos', 'Datos sociodemográficos VIH', true, 2, (select s.sec_id from hopes.sections s where s.sec_description = 'Datos del paciente VIH'),
+VALUES( 'Datos sociodemográficos', 'Datos sociodemográficos VIH', true, 2, (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'),
 '', '/hopes/pathology/patients/sociodemographic-data-vih', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Tratamiento datos personales', 'Tratamiento datos personales VIH', true, 3, (select s.sec_id from hopes.sections s where s.sec_description = 'Datos del paciente VIH'), '', '#', false, true);
+VALUES('Tratamiento datos personales', 'Tratamiento datos personales VIH', true, 3, (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'), '', '#', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES( 'Ensayos clínicos y grupos de trabajo', 'Ensayos clínicos y grupos de trabajo VIH', true, 4, (select s.sec_id from hopes.sections s where s.sec_description = 'Datos del paciente VIH'),
+VALUES( 'Ensayos clínicos y grupos de trabajo', 'Ensayos clínicos y grupos de trabajo VIH', true, 4, (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'),
 '', '/hopes/pathology/patients/work-groups-vih', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES( 'Situación del paciente', 'Situación del paciente VIH', true, 5, (select s.sec_id from hopes.sections s where s.sec_description = 'Datos del paciente VIH'),
+VALUES( 'Situación del paciente', 'Situación del paciente VIH', true, 5, (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'),
 '', '/hopes/pathology/patients/patient-situation-vih', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Datos generales', 'Datos generales VIH', true, 3, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), '', '#', false, true);
+VALUES('Datos generales', 'Datos generales VIH', true, 3, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'), '', '#', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
 VALUES('Evaluación del estado físico', 'Evaluación del estado físico VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_description = 'Datos generales VIH'),
@@ -127,36 +111,39 @@ VALUES('Factores de riesgo', 'Factores de riesgo VIH', true, 4, (select s.sec_id
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Diagnósticos', 'Diagnósticos VIH', true, 4, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), '', '#', false, true);
-INSERT INTO hopes.sections
-( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Diagnóstico principal', 'Diagnóstico principal VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos VIH'),
+VALUES('Diagnóstico principal', 'Diagnóstico principal VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'),
 '', '/hopes/pathology/patients/diagnosis/principal-diagnosis-vih', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Diagnósticos Secundarios', 'Diagnósticos Secundarios VIH', true, 2, (select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos VIH'),
+VALUES('Diagnósticos Secundarios', 'Diagnósticos Secundarios VIH', true, 2, (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'),
 '', '/hopes/pathology/patients/diagnosis/secundary-diagnosis-vih', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Comorbilidades y coinfecciones', 'Comorbilidades y coinfecciones VIH', true, 3, (select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos VIH'),
-'', '/hopes/pathology/patients/diagnosis/comorbidities-coinfections-vih', false, true);
+VALUES('Comorbilidades y coinfecciones', 'Comorbilidades y coinfecciones VIH', true, 3, (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'),
+'', '/hopes/pathology/patients/comorbidities-coinfections-vih', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Enfermedades de transmisión sexual', 'Enfermedades de transmisión sexual VIH', true, 4, (select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos VIH'),
+VALUES('Enfermedades de transmisión sexual', 'Enfermedades de transmisión sexual VIH', true, 4, (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'),
 '', '/hopes/pathology/patients/diagnosis/sexually-transmitted-diseases-vih', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Tratamientos', 'Tratamientos VIH', true, 5, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), '', '#', false, true);
+VALUES('Tratamientos actuales', 'Tratamientos actuales VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_title = 'Tratamientos'), '', '#', false, true);
+INSERT INTO hopes.sections
+( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
+VALUES('Tratamientos concomitantes', 'Tratamientos concomitantes VIH', true, 2, (select s.sec_id from hopes.sections s where s.sec_title = 'Tratamientos'), '', '#', false, true);
+INSERT INTO hopes.sections
+( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
+VALUES('Tratamientos anteriores', 'Tratamientos anteriores VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_title = 'Tratamientos'), '', '#', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Seguimiento', 'Seguimiento VIH', true, 6, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'),
+VALUES('Seguimiento', 'Seguimiento VIH', true, 6, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'),
 '', '/hopes/pathology/patients/tracing-vih', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Análisis clínicos', 'Análisis clínicos VIH', true, 7, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), '', '#', false, true);
+VALUES('Análisis clínicos', 'Análisis clínicos VIH', true, 7, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'), '', '#', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
 VALUES('Hemograma', 'Hemograma VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_description = 'Análisis clínicos VIH'),
@@ -184,7 +171,7 @@ VALUES('Serología', 'Serología VIH', true, 6, (select s.sec_id from hopes.sect
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Fenotipo viral: tropismo y mutaciones', 'Fenotipo viral: tropismo y mutaciones VIH', true, 8, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'),
+VALUES('Fenotipo viral: tropismo y mutaciones', 'Fenotipo viral: tropismo y mutaciones VIH', true, 8, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'),
 '', '#', false, true);
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
@@ -197,29 +184,26 @@ VALUES('Genotipado/ Resistencias', 'Genotipado/ Resistencias VIH', true, 2, (sel
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Exploraciones complementarias de imagen', 'Exploraciones complementarias de imagen VIH', true, 9, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'),
+VALUES('Exploraciones complementarias de imagen', 'Exploraciones complementarias de imagen VIH', true, 9, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'),
 '', '/hopes/pathology/patients/complementary-imaging-scans-vih', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Farmacia', 'Farmacia VIH', true, 10, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), '', '#', false, true);
+VALUES('Farmacia', 'Farmacia VIH', true, 10, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'), '', '#', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Adherencia al tratamiento', 'Adherencia al tratamiento VIH', true, 11, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), '', '#', false, true);
-INSERT INTO hopes.sections
-( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Cuestionario SMAQ', 'Cuestionario SMAQ VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_description = 'Adherencia al tratamiento VIH'),
+VALUES('Cuestionario SMAQ', 'Cuestionario SMAQ VIH', true, 1, (select s.sec_id from hopes.sections s where s.sec_title = 'Adherencia al tratamiento'),
 '', '/hopes/pathology/patients/adherence-to-treatment-SMAQ', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Paciente compartido', 'Paciente compartido VIH', true, 12, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'),
+VALUES('Paciente compartido', 'Paciente compartido VIH', true, 12, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'),
 '', '/hopes/pathology/patients/shared-patients-vih', false, true);
 
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Exportar', 'Exportar VIH', true, 13, (select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), '', '#', false, true);
+VALUES('Exportar', 'Exportar VIH', true, 13, (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'), '', '#', false, true);
 
 -- RELACIÓN SECCIONES-ROLES
 
@@ -295,15 +279,42 @@ where not exists (select sr.scr_id from hopes.sections_roles sr
 where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
 and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Información Farmaeconómicos'));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Cuadro de Mando Paciente'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Cuadro de Mando Paciente'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
 select (select s.sec_id from hopes.sections s where s.sec_title = 'Datos personales'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
 where not exists (select sr.scr_id from hopes.sections_roles sr
 where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
 and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Datos personales'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Adherencia al tratamiento'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Adherencia al tratamiento'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Tratamientos'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Tratamientos'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'));
 
 -- Relación con las nuevas secciones para Administrador VIH
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Cuadro de Mando Paciente VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Datos del paciente VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Datos sociodemográficos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamiento datos personales VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Ensayos clínicos y grupos de trabajo VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
@@ -313,12 +324,13 @@ INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Riesgo cardiovascular VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Ginecología: Embarazo y parto VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Factores de riesgo VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Diagnóstico principal VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos Secundarios VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Comorbilidades y coinfecciones VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Enfermedades de transmisión sexual VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos actuales VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos concomitantes VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos anteriores VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Seguimiento VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Análisis clínicos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Hemograma VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
@@ -332,7 +344,6 @@ INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Genotipado/ Resistencias VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Exploraciones complementarias de imagen VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Farmacia VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Adherencia al tratamiento VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Cuestionario SMAQ VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Paciente compartido VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Exportar VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Administrador VIH')));
@@ -385,17 +396,42 @@ where not exists (select sr.scr_id from hopes.sections_roles sr
 where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
 and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Información Farmaeconómicos'));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Paciente'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Cuadro de Mando Paciente'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Cuadro de Mando Paciente'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Datos del paciente'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
 select (select s.sec_id from hopes.sections s where s.sec_title = 'Datos personales'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
 where not exists (select sr.scr_id from hopes.sections_roles sr
 where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
 and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Datos personales'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Adherencia al tratamiento'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Adherencia al tratamiento'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Tratamientos'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Tratamientos'));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
+select (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+where not exists (select sr.scr_id from hopes.sections_roles sr
+where sr.scr_role_id = (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH'))
+and sr.scr_section_id = (select s.sec_id from hopes.sections s where s.sec_title = 'Diagnósticos'));
 
 -- Relación con las nuevas secciones para Médico VIH
---INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Cuadro de Mando VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Paciente VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Cuadro de Mando Paciente VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Datos del paciente VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
---INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Datos personales VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Datos sociodemográficos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamiento datos personales VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Ensayos clínicos y grupos de trabajo VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
@@ -405,12 +441,13 @@ INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Riesgo cardiovascular VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Ginecología: Embarazo y parto VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Factores de riesgo VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Diagnóstico principal VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Diagnósticos Secundarios VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Comorbilidades y coinfecciones VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Enfermedades de transmisión sexual VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos actuales VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos concomitantes VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
+INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Tratamientos anteriores VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Seguimiento VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Análisis clínicos VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Hemograma VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
@@ -424,7 +461,6 @@ INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Genotipado/ Resistencias VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Exploraciones complementarias de imagen VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Farmacia VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
-INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Adherencia al tratamiento VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Cuestionario SMAQ VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Paciente compartido VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id) VALUES((select s.sec_id from hopes.sections s where s.sec_description = 'Exportar VIH'), (select r.rol_id from hopes.roles r where upper(r.rol_name) = upper('Médico VIH')));
