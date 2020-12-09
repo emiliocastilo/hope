@@ -36,7 +36,7 @@ public class PatientClinicalDataController {
 
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/by-name-ind")
+    @GetMapping("/by-name-indication")
     public Page<GraphPatientDetailDTO> getPatientClinicalDataByTypeAndIndication(
             @ApiParam(value = "Tipo de dato que se quiere obtener", example = "CVP", required = true)
             @RequestParam(value = "type") String type,

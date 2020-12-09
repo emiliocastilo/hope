@@ -50,6 +50,12 @@ public class PatientsClinicalDataService {
     private final String PATIENS_BY_RNA_VHC_NEGATIVO = "RNA-VHC negativo";
     private final String PATIENS_BY_RNA_VHC_SIN_DATOS = "Sin datos para RNA-VHC";
 
+    private final String CVP = "CVP";
+    private final String CD4 = "CD4";
+    private final String RISK = "RISK";
+    private final String VHC = "VHC";
+    private final String VIRAL = "VIRAL";
+
     private final PatientClinicalDataRepository patientClinicalDataRepository;
 
     public PatientsClinicalDataService(PatientClinicalDataRepository patientClinicalDataRepository) {
@@ -57,30 +63,30 @@ public class PatientsClinicalDataService {
     }
 
     public Map<String,String> getPatientClinicalDataWithCVP() {
-        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName("CPV");
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(CVP);
         return getPatientsGroupByCPV(patients);
     }
 
     public Map<String,String> getPatientClinicalDataWithCD4() {
-        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName("CD4");
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(CD4);
         return getPatientsGroupByCD4(patients);
     }
     public Map<String,String> getPatientClinicalDataWithRiskGroup() {
-        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName("RISKGROUP");
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(RISK);
         return getPatientsGroupByRiskGroup(patients);
     }
     public Map<String,String> getPatientClinicalDataWithViralInfection() {
-        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName("VIRALINFECTION");
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(VIRAL);
         return getPatientsGroupByViralInfection(patients);
     }
     public Map<String,String> getPatientClinicalDataWithVhc() {
-        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName("VHC");
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(VHC);
         return getPatientsGroupByVhc(patients);
     }
 
 
     public List<GraphPatientDetailDTO> getPatientClinicalDataWithCVP(Collection<String> values) {
-        List<PatientClinicalData> patientClinicalData = patientClinicalDataRepository.findByPCDNameAndValues("CPV", values);
+        List<PatientClinicalData> patientClinicalData = patientClinicalDataRepository.findByPCDNameAndValues(CVP, values);
 
         List<Patient> patientList = new ArrayList<>();
         patientClinicalData.stream().forEach(pcd -> {
@@ -92,7 +98,7 @@ public class PatientsClinicalDataService {
     }
 
     public Page<GraphPatientDetailDTO> getPatientClinicalDataWithCVP(Collection<String> values, final Pageable pageable) {
-        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDNameAndValues("CPV", values);
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDNameAndValues(CVP, values);
 
         List<Patient> patientList = new ArrayList<>();
         patients.stream().forEach(pcd -> {
@@ -107,19 +113,19 @@ public class PatientsClinicalDataService {
     public Map<String, String> getPatientClinicalDataByType(String type) {
         Map<String, String> patientsClinicalData = new HashMap<>();
         switch (type){
-            case "CPV":
+            case (CVP):
                 patientsClinicalData =  getPatientClinicalDataWithCVP();
                 break;
-            case "CD4":
+            case CD4:
                 patientsClinicalData =  getPatientClinicalDataWithCD4();
                 break;
-            case "RISK":
+            case RISK:
                 patientsClinicalData =  getPatientClinicalDataWithRiskGroup();
                 break;
-            case "VIRAL":
+            case VIRAL:
                 patientsClinicalData = getPatientClinicalDataWithViralInfection();
                 break;
-            case "VHC":
+            case VHC:
                 patientsClinicalData = getPatientClinicalDataWithVhc();
                 break;
 
@@ -132,20 +138,24 @@ public class PatientsClinicalDataService {
         Collection<String> values = new ArrayList<>();
         values.add(indication);
         switch (type){
-            case "CVP":
+            case CVP:
                 return getPatientClinicalDataWithCVP(values, pageable);
-          /*  case "CD4":
-                patientsClinicalData =  getPatientClinicalDataWithCD4();
-                break;
-            case "RISK":
-                patientsClinicalData =  getPatientClinicalDataWithRiskGroup();
-                break;
-            case "VIRAL":
-                patientsClinicalData = getPatientClinicalDataWithViralInfection();
-                break;
-            case "VHC":
-                patientsClinicalData = getPatientClinicalDataWithVhc();
+            case CD4:
+                //patientsClinicalData =  getPatientClinicalDataWithCD4();
+                return  null;
+                //break;
+            case RISK:
+                return  null;
+                //patientsClinicalData =  getPatientClinicalDataWithRiskGroup();
+                //break;
+            case VIRAL:
+                /*patientsClinicalData = getPatientClinicalDataWithViralInfection();
+                break;*/
+                return  null;
+            case VHC:
+                /*patientsClinicalData = getPatientClinicalDataWithVhc();
                 break*/
+                return  null;
 
         }
         return patientsClinicalData;
