@@ -92,7 +92,7 @@ public class PatientsClinicalDataService {
     }
 
     public Page<GraphPatientDetailDTO> getPatientClinicalDataWithCVP(Collection<String> values, final Pageable pageable) {
-        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDNameAndValues("CVP", values);
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDNameAndValues("CPV", values);
 
         List<Patient> patientList = new ArrayList<>();
         patients.stream().forEach(pcd -> {
@@ -107,7 +107,7 @@ public class PatientsClinicalDataService {
     public Map<String, String> getPatientClinicalDataByType(String type) {
         Map<String, String> patientsClinicalData = new HashMap<>();
         switch (type){
-            case "CVP":
+            case "CPV":
                 patientsClinicalData =  getPatientClinicalDataWithCVP();
                 break;
             case "CD4":
