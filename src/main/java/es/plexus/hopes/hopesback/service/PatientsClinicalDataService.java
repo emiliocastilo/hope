@@ -50,11 +50,37 @@ public class PatientsClinicalDataService {
     private final String PATIENS_BY_RNA_VHC_NEGATIVO = "RNA-VHC negativo";
     private final String PATIENS_BY_RNA_VHC_SIN_DATOS = "Sin datos para RNA-VHC";
 
+    private final String PATIENS_BY_RAMS_SNC = "Toxicidad S.N.C.";
+    private final String PATIENS_BY_RAMS_GASTRO_INSTESTINAL = "Toxicidad gastro-intestinal";
+    private final String PATIENS_BY_RAMS_RENAL = "Toxicidad renal";
+    private final String PATIENS_BY_RAMS_CUTANEA = "Toxicidad cutánea";
+    private final String PATIENS_BY_RAMS_OSEA = "Toxicidad ósea";
+
+    private final String PATIENTS_BY_TREATMENT_NAIVE_CHANGE = "Naive";
+    private final String PATIENTS_BY_TREATMENT_FIRST_CHANGE = "1er cambio de tratamiento";
+    private final String PATIENTS_BY_TREATMENT_SECOND_CHANGE = "2º cambio de tratamiento";
+    private final String PATIENTS_BY_TREATMENT_THIRD_CHANGE = "3er cambio de tratamiento";
+    private final String PATIENTS_BY_TREATMENT_OTHER_CHANGE = "Más de 3 cambios";
+
+    private final String PATIENTS_BY_CAUSE_VIRAL_FAIL = "Fallo viral";
+    private final String PATIENTS_BY_CAUSE_RAMS = "RAMs";
+    private final String PATIENTS_BY_CAUSE_SIMPLIFICATION = "Simplificaciones";
+    private final String PATIENTS_BY_CAUSE_VIRAL_INTERACTIONS = "Interacciones";
+    private final String PATIENTS_BY_CAUSE_VIRAL_PREGNANCY = "Embarazo";
+    private final String PATIENTS_BY_CAUSE_PATIENT_PREFERENCES = "Patient preferences";
+    private final String PATIENTS_BY_CAUSE_OTHER = "Otros";
+
     private final String CVP = "CVP";
     private final String CD4 = "CD4";
     private final String RISK = "RISK";
     private final String VHC = "VHC";
     private final String VIRAL = "VIRAL";
+    private final String RAMS = "RAMS";
+    private final String FAILURE = "FAILURE";
+    private final String TREATMENT_CHANGE = "CHANGEQUANTITY";
+    private final String CAUSE = "CAUSE";
+
+
 
     private final PatientClinicalDataRepository patientClinicalDataRepository;
 
@@ -83,10 +109,29 @@ public class PatientsClinicalDataService {
         List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(VHC);
         return getPatientsGroupByVhc(patients);
     }
+    public Map<String,String> getPatientClinicalDataWithRams() {
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(RAMS);
+        return getPatientsGroupByRams(patients);
+    }
+
+    public Map<String,String> getPatientClinicalDataWithViralFailure() {
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(FAILURE);
+        return getPatientsGroupByViralFailure(patients);
+    }
+
+    public Map<String,String> getPatientClinicalDataWithTreatmentChange() {
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(TREATMENT_CHANGE);
+        return getPatientsGroupByNumberTreatmentChanges(patients);
+    }
+
+    public Map<String,String> getPatientClinicalDataWithCause() {
+        List<PatientClinicalData> patients = patientClinicalDataRepository.findByPCDName(CAUSE);
+        return getPatientsGroupByCause(patients);
+    }
 
 
-    public List<GraphPatientDetailDTO> getPatientClinicalDataWithCVP(Collection<String> values) {
-        List<PatientClinicalData> patientClinicalData = patientClinicalDataRepository.findByPCDNameAndValues(CVP, values);
+    public List<GraphPatientDetailDTO> getPatientClinicalDataWithViralFailure(Collection<String> values) {
+        List<PatientClinicalData> patientClinicalData = patientClinicalDataRepository.findByPCDNameAndValues(VIRAL, values);
 
         List<Patient> patientList = new ArrayList<>();
         patientClinicalData.stream().forEach(pcd -> {
@@ -112,7 +157,7 @@ public class PatientsClinicalDataService {
 
     public Map<String, String> getPatientClinicalDataByType(String type) {
         Map<String, String> patientsClinicalData = new HashMap<>();
-        switch (type){
+        switch (type.toUpperCase()){
             case (CVP):
                 patientsClinicalData =  getPatientClinicalDataWithCVP();
                 break;
@@ -128,7 +173,18 @@ public class PatientsClinicalDataService {
             case VHC:
                 patientsClinicalData = getPatientClinicalDataWithVhc();
                 break;
-
+            case RAMS:
+                patientsClinicalData = getPatientClinicalDataWithRams();
+                break;
+            case FAILURE:
+                patientsClinicalData = getPatientClinicalDataWithViralFailure();
+                break;
+            case TREATMENT_CHANGE:
+                patientsClinicalData = getPatientClinicalDataWithTreatmentChange();
+                break;
+            case CAUSE:
+                patientsClinicalData = getPatientClinicalDataWithCause();
+                break;
         }
         return patientsClinicalData;
     }
@@ -294,27 +350,170 @@ public class PatientsClinicalDataService {
 
     private Map<String, String> getPatientsGroupByVhc(List<PatientClinicalData> patients) {
         Map<String, String> patientsMapped = new HashMap<>();
-        int vhcPositivo = 0;
-        int vhcNegativo = 0;
-        int vhcSinDatos = 0;
+        int vhcPositive = 0;
+        int vhcNegative = 0;
+        int vhcNoData = 0;
 
         for ( PatientClinicalData pdc : patients){
             switch ( pdc.getValue().toLowerCase().trim() ){
                 case "vhcpositivo":
-                    vhcPositivo++;
+                    vhcPositive++;
                     break;
                 case "vhcnegativo":
-                    vhcNegativo++;
+                    vhcNegative++;
                     break;
                 case "vhcsindatos":
-                    vhcSinDatos++;
+                    vhcNoData++;
                     break;
             }
         }
 
-        patientsMapped.put(PATIENS_BY_RNA_VHC_POSITIVO, String.valueOf(vhcPositivo));
-        patientsMapped.put(PATIENS_BY_RNA_VHC_NEGATIVO, String.valueOf(vhcNegativo));
-        patientsMapped.put(PATIENS_BY_RNA_VHC_SIN_DATOS, String.valueOf(vhcSinDatos));
+        patientsMapped.put(PATIENS_BY_RNA_VHC_POSITIVO, String.valueOf(vhcPositive));
+        patientsMapped.put(PATIENS_BY_RNA_VHC_NEGATIVO, String.valueOf(vhcNegative));
+        patientsMapped.put(PATIENS_BY_RNA_VHC_SIN_DATOS, String.valueOf(vhcNoData));
+
+        return patientsMapped;
+    }
+
+    private Map<String, String> getPatientsGroupByRams(List<PatientClinicalData> patients) {
+        Map<String, String> patientsMapped = new HashMap<>();
+        int toxicidadSNC = 0;
+        int toxicidadGastrointestinal = 0;
+        int toxicidadRenal = 0;
+        int toxicidadCutanea = 0;
+        int toxicidaOsea = 0;
+
+        for ( PatientClinicalData pdc : patients){
+            switch ( pdc.getValue().toLowerCase().trim() ){
+                case "toxicidadsnc":
+                    toxicidadSNC++;
+                    break;
+                case "toxicidadgastrointestinal":
+                    toxicidadGastrointestinal++;
+                    break;
+                case "toxicidadrenal":
+                    toxicidadRenal++;
+                    break;
+                case "toxicidadcutanea":
+                    toxicidadCutanea++;
+                    break;
+                case "toxicidaosea":
+                    toxicidaOsea++;
+                    break;
+            }
+        }
+
+        patientsMapped.put(PATIENS_BY_RAMS_SNC, String.valueOf(toxicidadSNC));
+        patientsMapped.put(PATIENS_BY_RAMS_GASTRO_INSTESTINAL, String.valueOf(toxicidadGastrointestinal));
+        patientsMapped.put(PATIENS_BY_RAMS_RENAL, String.valueOf(toxicidadRenal));
+        patientsMapped.put(PATIENS_BY_RAMS_CUTANEA, String.valueOf(toxicidadCutanea));
+        patientsMapped.put(PATIENS_BY_RAMS_OSEA, String.valueOf(toxicidaOsea));
+
+        return patientsMapped;
+    }
+
+    private Map<String, String> getPatientsGroupByViralFailure(List<PatientClinicalData> patients) {
+        Map<String, String> patientsMapped = new HashMap<>();
+        int primaryFailure = 0;
+        int secondaryFailure = 0;
+
+        for ( PatientClinicalData pdc : patients){
+            switch ( pdc.getValue().toLowerCase().trim() ){
+                case "falloprimario":
+                    primaryFailure++;
+                    break;
+                case "fallosecundario":
+                    secondaryFailure++;
+                    break;
+            }
+        }
+
+        patientsMapped.put(PATIENS_BY_RAMS_SNC, String.valueOf(primaryFailure));
+        patientsMapped.put(PATIENS_BY_RAMS_GASTRO_INSTESTINAL, String.valueOf(secondaryFailure));
+
+        return patientsMapped;
+    }
+
+    private Map<String, String> getPatientsGroupByNumberTreatmentChanges(List<PatientClinicalData> patients) {
+        Map<String, String> patientsMapped = new HashMap<>();
+        int naive = 0;
+        int firstChange = 0;
+        int secondChange = 0;
+        int thirdChange = 0;
+        int otherChange = 0;
+
+        for ( PatientClinicalData pdc : patients){
+            switch ( pdc.getValue().toLowerCase().trim() ){
+                case "naive":
+                    naive++;
+                    break;
+                case "primercambio":
+                    firstChange++;
+                    break;
+                case "segundocambio":
+                    secondChange++;
+                    break;
+                case "tercercambio":
+                    thirdChange++;
+                    break;
+                case "mascambios":
+                    otherChange++;
+                    break;
+            }
+        }
+
+        patientsMapped.put(PATIENTS_BY_TREATMENT_NAIVE_CHANGE, String.valueOf(naive));
+        patientsMapped.put(PATIENTS_BY_TREATMENT_FIRST_CHANGE, String.valueOf(firstChange));
+        patientsMapped.put(PATIENTS_BY_TREATMENT_SECOND_CHANGE, String.valueOf(secondChange));
+        patientsMapped.put(PATIENTS_BY_TREATMENT_THIRD_CHANGE, String.valueOf(thirdChange));
+        patientsMapped.put(PATIENTS_BY_TREATMENT_OTHER_CHANGE, String.valueOf(otherChange));
+
+        return patientsMapped;
+    }
+
+    private Map<String, String> getPatientsGroupByCause(List<PatientClinicalData> patients) {
+        Map<String, String> patientsMapped = new HashMap<>();
+        int viralFail = 0;
+        int rams = 0;
+        int simplification = 0;
+        int interaction = 0;
+        int pregnancy = 0;
+        int patientPreferences = 0;
+        int otherCause = 0;
+
+        for ( PatientClinicalData pdc : patients){
+            switch ( pdc.getValue().toLowerCase().trim() ){
+                case "falloviral":
+                    viralFail++;
+                    break;
+                case "rams":
+                    rams++;
+                    break;
+                case "simplificacion":
+                    simplification++;
+                    break;
+                case "interaccion":
+                    interaction++;
+                    break;
+                case "embarazo":
+                    pregnancy++;
+                    break;
+                case "preferenciasPaciente":
+                    patientPreferences++;
+                    break;
+                case "otros":
+                    otherCause++;
+                    break;
+            }
+        }
+
+        patientsMapped.put(PATIENTS_BY_CAUSE_VIRAL_FAIL, String.valueOf(viralFail));
+        patientsMapped.put(PATIENTS_BY_CAUSE_RAMS, String.valueOf(rams));
+        patientsMapped.put(PATIENTS_BY_CAUSE_SIMPLIFICATION, String.valueOf(simplification));
+        patientsMapped.put(PATIENTS_BY_CAUSE_VIRAL_INTERACTIONS, String.valueOf(interaction));
+        patientsMapped.put(PATIENTS_BY_CAUSE_VIRAL_PREGNANCY, String.valueOf(pregnancy));
+        patientsMapped.put(PATIENTS_BY_CAUSE_PATIENT_PREFERENCES, String.valueOf(patientPreferences));
+        patientsMapped.put(PATIENTS_BY_CAUSE_OTHER, String.valueOf(otherCause));
 
         return patientsMapped;
     }
