@@ -42,7 +42,7 @@ public class FormulaService {
         } else if (riskLevel >= 5) {
             risk = "5-9%";
         } else if (riskLevel >= 0) {
-            risk = "<5";
+            risk = "<5%";
         } else {
             risk = "No hay resultado para los datos indicados";
         }
