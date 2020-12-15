@@ -308,4 +308,13 @@ public class QueryConstants {
 					"join Medicine m on m.id = pt.medicine.id and m.nationalCode = CAST(dd.nationalCode as text) " +
 					WHERE_PT_ACTIVE_TRUE +
 					"and p.id = :patId ";
+
+	public static final String QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE =
+			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( p.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount) " +
+					"from Patient p " +
+					"join PatientDiagnose pd  on p.id = pd.patient.id " +
+					"join PatientTreatment pt on pd.id = pt.patientDiagnose.id " +
+					"join Medicine m on pt.medicine.id = m.id " +
+					"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) " +
+					"group by  p.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount ";
 }
