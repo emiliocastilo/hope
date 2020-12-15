@@ -114,10 +114,10 @@ public class HealthOutcomeServiceTest {
 	public void callGetAllPatientsIdShouldBeStatusOk() {
 
 		// given
-		given(healthOutcomeRepository.getAllPatientsId()).willReturn(Collections.singletonList(1L));
+		given(healthOutcomeRepository.getAllPatientsId(1l)).willReturn(Collections.singletonList(1L));
 
 		// when
-		List<Long> response = healthOutcomeService.getAllPatientsId();
+		List<Long> response = healthOutcomeService.getAllPatientsId(1l);
 
 		// then
 		Assert.assertNotNull(response);

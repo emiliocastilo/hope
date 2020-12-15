@@ -1,5 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
+import es.plexus.hopes.hopesback.configuration.security.TokenProvider;
 import es.plexus.hopes.hopesback.controller.model.HospitalDTO;
 import es.plexus.hopes.hopesback.controller.model.MenuDTO;
 import es.plexus.hopes.hopesback.controller.model.RoleDTO;
@@ -189,7 +190,7 @@ public class RoleService {
 		return roleMapper.roleDTOToRoleConverter(roleDTO);
 	}
 
-	private void checkRoleExistence(Long id) throws ServiceException {
+	private void checkRoleExistence(Long id) {
 		final Optional<Role> storedRole = getOneRoleByIdCommon(id);
 		log.debug("Comprobando si record existe.");
 		if (!storedRole.isPresent()) {
@@ -241,4 +242,19 @@ public class RoleService {
 			codeBuilder.append(word.charAt(0)).append(word.length()>1?word.charAt(1):"");
 		}
 	}
+
+	public Pathology getPathologyByRoleSelected(String token) {
+		String roleSelected = TokenProvider.getRoleSelected(token);
+		return getPathologyByRole(roleSelected);
+	}
+
+	public Pathology getPathologyByRole (String code) {
+		Role role = roleRepository.findByCode(code).orElse(null);
+		Pathology pathology = new Pathology();
+		if (role != null && role.getPathology() != null) {
+			pathology = role.getPathology();
+		}
+		return pathology;
+	}
+
 }

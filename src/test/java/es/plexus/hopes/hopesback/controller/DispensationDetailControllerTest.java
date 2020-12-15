@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.controller;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -156,11 +157,11 @@ public class DispensationDetailControllerTest {
 	public void callFindMonthlyConsumeShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsume(2, false, null))
+		given(dispensationDetailService.findMonthlyConsume(2, false, null, 1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsume(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsume(2, "token");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -171,11 +172,11 @@ public class DispensationDetailControllerTest {
 	public void callFindMonthlyConsumeAcumulatedShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, false, null))
+		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, false, null, 1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAcumulated(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAcumulated(2, "token");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -186,11 +187,11 @@ public class DispensationDetailControllerTest {
 	public void callFindMonthlyConsumeAvgShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsume(2, true, null))
+		given(dispensationDetailService.findMonthlyConsume(2, true, null, 1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAvg(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAvg(2, anyString());
 
 		// then		
 		Assert.assertNotNull(response);
@@ -201,11 +202,11 @@ public class DispensationDetailControllerTest {
 	public void callFindMonthlyConsumeAccumulatedAvgShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, true, null))
+		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, true, null,1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAcumulatedAvg(2);
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findMonthlyConsumeAcumulatedAvg(2, "token");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -216,11 +217,11 @@ public class DispensationDetailControllerTest {
 	public void callFindTotalCostTreatmentShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsume(2, false, "D11AH05"))
+		given(dispensationDetailService.findMonthlyConsume(2, false, "D11AH05", 1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatment(2, "D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatment(2, "D11AH05", "token");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -231,11 +232,11 @@ public class DispensationDetailControllerTest {
 	public void callFindTotalCostTreatmentAcumulatedShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, false, "D11AH05"))
+		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, false, "D11AH05", 1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAcumulated(2, "D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAcumulated(2, "D11AH05", "token");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -246,11 +247,11 @@ public class DispensationDetailControllerTest {
 	public void callFindTotalCostTreatmentAvgShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsume(2, true, "D11AH05"))
+		given(dispensationDetailService.findMonthlyConsume(2, true, "D11AH05", 1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAvg(2,"D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAvg(2,"D11AH05", "token");
 
 		// then		
 		Assert.assertNotNull(response);
@@ -261,11 +262,11 @@ public class DispensationDetailControllerTest {
 	public void callFindTotalCostTreatmentAccumulatedAvgShouldBeStatusOk() {
 
 		// given
-		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, true, "D11AH05"))
+		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, true, "D11AH05", 1l))
 				.willReturn(mockMapMapStringString());
 
 		// when
-		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAcumulatedAvg(2, "D11AH05");
+		Map<String, Map<String, BigDecimal>> response = dispensationDetailController.findTotalCostTreatmentAcumulatedAvg(2, "D11AH05", "token");
 
 		// then		
 		Assert.assertNotNull(response);

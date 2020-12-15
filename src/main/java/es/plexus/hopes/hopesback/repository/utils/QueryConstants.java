@@ -95,6 +95,8 @@ public class QueryConstants {
 	
 	public static final String QUERY_ALL_PATIENTS_HEALHT_OUTCOME =
 			"select ho.patient.id from HealthOutcome ho " +
+			"join Patient pac on ho.patient.id = pac.id " +
+			"join pac.pathologies pat WHERE pat.id = :idPathology " +
 			"group by ho.patient.id";
 	
 	public static final String QUERY_NUMBER_PATIENTS_MONTH =
