@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -132,7 +133,7 @@ public class HealthOutcomeServiceTest {
 		healthOutcome.setId(1L);
 		healthOutcome.setIndexType("PASI");
 		healthOutcome.setResult("Result");
-		healthOutcome.setValue("0.0");
+		healthOutcome.setValue(new BigDecimal(0.0));
 		return healthOutcome;
 	}
 
