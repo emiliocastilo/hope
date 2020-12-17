@@ -106,14 +106,16 @@ public class HealthOutcomeService {
 
 	public List<HealthOutcomeDTO> saveScoreDataByIndexType(List<HealthOutcomeDTO> healthOutcomeDtos) {
 		log.debug(CALLING_DB);
-		List<HealthOutcome> healthOutcomesSaved = new ArrayList<>();
-		healthOutcomeDtos.stream().forEach(ho -> {
-			HealthOutcome healthOutcome = HealthOutcomeMapper.INSTANCE.dtoToEntity(ho);
-			healthOutcome.setPatient(patientService.getEntityPatientById(ho.getPatientId()).orElse(null));
-			HealthOutcome entitySaved = healthOutcomeRepository.saveAndFlush(healthOutcome);
-			healthOutcomesSaved.add(entitySaved);
+		List<HealthOutcome> healthOutcomesToSaveOrUpdate = new ArrayList<>();
+		healthOutcomeDtos.forEach(healthOutcomeDto -> {
+			HealthOutcome healthOutcomeToUpdate = healthOutcomeRepository
+					.findByPatientIdAndIndexTypeAndDate(healthOutcomeDto.getPatientId(), healthOutcomeDto.getIndexType(), healthOutcomeDto.getDate());
+			if (healthOutcomeToUpdate != null) {
+				healthOutcomeDto.setId(healthOutcomeToUpdate.getId());
+			}
+			healthOutcomesToSaveOrUpdate.add(HealthOutcomeMapper.INSTANCE.dtoToEntity(healthOutcomeDto));
 		});
 
-		return HealthOutcomeMapper.INSTANCE.entityToHealthOutcomeDtos(healthOutcomesSaved);
+		return HealthOutcomeMapper.INSTANCE.entityToHealthOutcomeDtos(healthOutcomeRepository.saveAll(healthOutcomesToSaveOrUpdate));
 	}
 }
