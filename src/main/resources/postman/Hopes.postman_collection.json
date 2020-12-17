@@ -3265,6 +3265,45 @@
 					"response": []
 				},
 				{
+					"name": "findMedicinesBySearchAndFamily",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/v1/medicines/searches?search=25&family=QUIMICO",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "25"
+								},
+								{
+									"key": "family",
+									"value": "QUIMICO"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "findDoseByMedicineId",
 					"request": {
 						"auth": {
