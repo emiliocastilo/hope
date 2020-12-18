@@ -44,19 +44,15 @@ public class PharmacyDTO {
 
     public PharmacyDTO(String nhc, LocalDateTime date, String nationalCode,
                        String presentation, String quantity, BigDecimal amount) {
-        // Fixme indican el ID Paciente pero entendemos que es el NHC del paciente
         this.nhc = nhc;
         this.date = date;
         this.nationalCode = nationalCode;
         this.presentation = presentation;
-        // Fixme no sabemos si es necesario este campo o se unificará al mgDispensed
-        this.quantity = "";
-        // Fixme la quantity de la tabla dispensation_details supuestamente debe venir un número siempre y serán los MG
-        this.mgDispensed = new BigDecimal(quantity);
-        // Fixme está por determinar cómo nos vendrán los datos de dispensaciones, por ahora se pone que el amount de la tabla será el coste unitario
+        this.quantity = quantity;
+        // TODO tanto coste unitario como coste total deberá venir de dispensaciones pero aún no nos han dado un archivo correcto para hacer los cambios en la tabla.
         this.unitCost = amount;
         this.totalCost = BigDecimal.ZERO;
-        // Fixme no está indicando cómo saber este dato o si realmente lo necesitan
+        // TODO nos indicarán cómo deberemos obtenerlo y después sabremos en que tabla insertarlo.
         this.testClinical = false;
     }
 

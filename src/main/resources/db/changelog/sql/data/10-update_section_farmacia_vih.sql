@@ -43,7 +43,7 @@ delete from hopes.sections where sec_id in (
 -- SECCION FARMACIA
 INSERT INTO hopes.sections
 ( sec_title, sec_description, sec_active, sec_order, sec_section_root, sec_icon, sec_url, sec_principal, sec_visible)
-VALUES('Farmacia', 'Farmacia', true, 5, (select s.sec_id from hopes.sections s where s.sec_section_root is null), '', '#', false, true);
+VALUES('Farmacia', 'Farmacia', true, 5, (select s.sec_id from hopes.sections s where s.sec_section_root is null), '', '/hopes/pharmacy', false, true);
 
 -- RELACIÓN SECCIONES-ROLES
 INSERT INTO hopes.sections_roles (scr_section_id, scr_role_id)
