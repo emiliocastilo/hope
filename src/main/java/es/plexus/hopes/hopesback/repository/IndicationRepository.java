@@ -3,12 +3,12 @@
  */
 package es.plexus.hopes.hopesback.repository;
 
-import java.util.Optional;
-
+import es.plexus.hopes.hopesback.repository.model.Indication;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.plexus.hopes.hopesback.repository.model.Indication;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author jose.estevezbarroso
@@ -18,4 +18,6 @@ import es.plexus.hopes.hopesback.repository.model.Indication;
 public interface IndicationRepository extends JpaRepository<Indication, Long> {
 
 	Optional<Indication> findByDescription(final String description);
+
+    List<Indication> findByPathologyId(Long id);
 }
