@@ -3265,6 +3265,45 @@
 					"response": []
 				},
 				{
+					"name": "findMedicinesBySearchAndFamily",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/v1/medicines/searches?search=25&family=QUIMICO",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"v1",
+								"medicines",
+								"searches"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "25"
+								},
+								{
+									"key": "family",
+									"value": "QUIMICO"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "findDoseByMedicineId",
 					"request": {
 						"auth": {
@@ -4286,7 +4325,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "[{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"NAPSI\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"EAV\",\n\t\"value\" : 20,\n\t\"result\" : \"Moderada\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"PGA\",\n\t\"value\" : 31.5,\n\t\"result\" : \"Severa\",\n\t\"date\" : \"2020-06-10T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"DLQI\",\n\t\"value\" : 36.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-12T12:10:03\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"BSA\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-11T12:10:03\"\n}]",
+							"raw": "[{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"NAPSI\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-10T00:00:00.000Z\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"EAV\",\n\t\"value\" : 20,\n\t\"result\" : \"Moderada\",\n\t\"date\" : \"2020-06-10T00:00:00.000Z\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"PGA\",\n\t\"value\" : 31.5,\n\t\"result\" : \"Severa\",\n\t\"date\" : \"2020-06-10T00:00:00.000Z\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"DLQI\",\n\t\"value\" : 36.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-12T00:00:00.000Z\"\n},{\n\t\"patientId\" : 1,\n\t\"indexType\" : \"BSA\",\n\t\"value\" : 34.5,\n\t\"result\" : \"Leve\",\n\t\"date\" : \"2020-06-11T00:00:00.000Z\"\n}]",
 							"options": {
 								"raw": {
 									"language": "json"
