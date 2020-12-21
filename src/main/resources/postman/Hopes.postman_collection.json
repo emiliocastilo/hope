@@ -4934,6 +4934,40 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Indications",
+			"item": [
+				{
+					"name": "findAll ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/v1/indications",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"v1",
+								"indications"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}

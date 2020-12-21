@@ -18,6 +18,9 @@ public class HospitalDTO {
 	@NotBlank
 	private String name;
 
-	@ApiModelProperty(position = 30, example = "['Servicio 1']", value = "Servicios asociados al Hospital")
+	@ApiModelProperty(position = 30, example = "CIE9", value = "CIE que corresponde al Hospital")
+	private String cie;
+
+	@ApiModelProperty(position = 40, example = "['Servicio 1']", value = "Servicios asociados al Hospital")
 	private Set<ServiceDTO> services;
 }
