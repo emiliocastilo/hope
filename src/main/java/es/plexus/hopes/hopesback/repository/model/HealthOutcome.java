@@ -47,4 +47,15 @@ public class HealthOutcome {
     @Column(name = "hou_date", columnDefinition = "TIMESTAMP")
     private LocalDateTime date;
 
+    public HealthOutcome() {
+    }
+
+    public HealthOutcome(Long id, Patient patient, String indexType, BigDecimal value, String result, LocalDateTime date) {
+        this.id = id;
+        this.patient = patient;
+        this.indexType = indexType;
+        this.value = value;
+        this.result = result;
+        this.date = date;
+    }
 }
