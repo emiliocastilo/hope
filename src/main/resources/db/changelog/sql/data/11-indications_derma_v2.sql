@@ -16,9 +16,6 @@ VALUES((select p.pth_id from hopes.pathologies p where p.pth_name = 'Dermatolog�
 'psoriasisPustulosa');
 INSERT INTO hopes.indications (ind_pth_id, ind_description)
 VALUES((select p.pth_id from hopes.pathologies p where p.pth_name = 'Dermatología') ,
-'psoriasicArthritis');
-INSERT INTO hopes.indications (ind_pth_id, ind_description)
-VALUES((select p.pth_id from hopes.pathologies p where p.pth_name = 'Dermatología') ,
 'atopicDermatitis');
 INSERT INTO hopes.indications (ind_pth_id, ind_description)
 VALUES((select p.pth_id from hopes.pathologies p where p.pth_name = 'Dermatología') ,
