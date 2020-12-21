@@ -4,6 +4,7 @@ import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
 import es.plexus.hopes.hopesback.repository.DispensationDetailRepository;
 import es.plexus.hopes.hopesback.repository.model.Dispensation;
 import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
+import es.plexus.hopes.hopesback.repository.model.PathologyType;
 import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.utils.CsvUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -137,11 +139,12 @@ public class DispensationDetailService {
 		
 		Map<String, Map<String, BigDecimal>> result = new HashMap<>();
 		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
-		List<Long> listPatients = healthOutcomeService.getAllPatientsId(idPathology);
+		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
 		
 		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
 			LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());			
-			fillMonthlyConsume(index, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, isAvg, code, result);
+			fillMonthlyConsume(index, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, isAvg, code, result,
+					idPathology);
 			dateStartPeriod = dateStopPeriod;				
 		}
 		
@@ -155,10 +158,17 @@ public class DispensationDetailService {
 		Map<String, Map<String, BigDecimal>> result = new HashMap<>();
 		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
 		LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
-		List<Long> listPatients = healthOutcomeService.getAllPatientsId(idPathology);
+
+		List<Long> listPatients = new ArrayList<>();
+		if (PathologyType.DERMATOLOGIA.getCodigo().equals(idPathology)) {
+			listPatients = healthOutcomeService.getAllPatientsId();
+		} else if (PathologyType.VIH.getCodigo().equals(idPathology)) {
+			//TODO sacar los pacientes de la tabla patients_clinical_data
+		}
 		
 		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
-			fillMonthlyConsume(index, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, isAvg, code, result);	
+			fillMonthlyConsume(index, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, isAvg, code, result,
+					idPathology);
 			dateStopPeriod = dateStopPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
 		}
 		
@@ -182,7 +192,7 @@ public class DispensationDetailService {
 	private void fillMonthlyConsume(int index,
 			LocalDateTime dateStartPeriod, LocalDateTime dateStopPeriod,
 			List<Long> listPatients, Boolean isAvg, String code,
-			Map<String, Map<String, BigDecimal>> result) {
+			Map<String, Map<String, BigDecimal>> result, Long idPathology) {
 		
 		YearMonth ymStopPeriod = YearMonth.from(dateStopPeriod);
 		YearMonth ymNow = YearMonth.from(LocalDateTime.now());
@@ -215,12 +225,19 @@ public class DispensationDetailService {
 			
 			if(Boolean.TRUE.equals(isAvg)) {
 				if(consumeByMonth > 0) {
-					List<String> listPatientsForAvg = dispensationDetailRepository.findPatiensMonth(
-							dateStopPeriod.plusMonths(-3), dateStopPeriod.plusSeconds(-1));
-					if(CollectionUtils.isNotEmpty(listPatientsForAvg)) {
-						consumeByMonth /= listPatientsForAvg.size();
-						consumeByPasi /= listPatientsForAvg.size();
+					Map<String, String> listPatientsByPathology = dispensationDetailRepository.
+							findPatientsByPatholy(idPathology);
+					//TODO hay que comprobar si esta lista crece mucho en memoria se debe paginar
+					for (Map.Entry<String, String> item : listPatientsByPathology.entrySet()) {
+						List<String> listPatientsForAvg = dispensationDetailRepository.findPatiensMonth(
+								dateStopPeriod.plusMonths(-3), dateStopPeriod.plusSeconds(-1), item.getKey(), item.getValue());
+
+						if (CollectionUtils.isNotEmpty(listPatientsForAvg)) {
+							consumeByMonth /= listPatientsForAvg.size();
+							consumeByPasi /= listPatientsForAvg.size();
+						}
 					}
+
 				} else {
 					consumeByMonth  = 0.00;
 					consumeByPasi = 0.00;

@@ -95,14 +95,26 @@ public class QueryConstants {
 	
 	public static final String QUERY_ALL_PATIENTS_HEALHT_OUTCOME =
 			"select ho.patient.id from HealthOutcome ho " +
-			"join Patient pac on ho.patient.id = pac.id " +
-			"join pac.pathologies pat WHERE pat.id = :idPathology " +
 			"group by ho.patient.id";
+
+//	public static final String QUERY_ALL_PATIENTS_HEALHT_OUTCOME =
+//			"select ho.patient.id from HealthOutcome ho " +
+//					"join Patient pac on ho.patient.id = pac.id " +
+//					"join pac.pathologies pat WHERE pat.id = :idPathology " +
+//					"group by ho.patient.id";
 	
 	public static final String QUERY_NUMBER_PATIENTS_MONTH =
 			"select dd.nhc from DispensationDetail dd " +
-			"where dd.date between :dateStart and :dateEnd " + 
+			"where dd.date between :dateStart and :dateEnd and dd.nhc = :nhc and dd.nationalCode = :nationalCode " +
 			"group by dd.nhc";
+
+	public static final String QUERY_PATIENTS_BY_PATHOLOGY =
+			"select p.nhc, m.nationalCode from Medicine m " +
+			"join PatientTreatment pt on pt.medicine.id = m.id " +
+			"join PatientDiagnose pd on pd.id = pt.patientDiagnose.id " +
+			"join Indication i on pd.indication.id = i.id " +
+			"join Patient p on p.id = pd.patient.id " +
+			"where i.pathologyId = :idPathology";
 
 	public static final String QUERY_VALUES_HEALHT_OUTCOME_BY_INDEX_TYPE_PATIENT_ID =
 			"select hou from HealthOutcome hou " +

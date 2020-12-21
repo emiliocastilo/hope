@@ -16,7 +16,7 @@ public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Lo
 	List<HealthOutcome> findResultsByTypes(@Param("type")String type);
 
 	@Query(QueryConstants.QUERY_ALL_PATIENTS_HEALHT_OUTCOME)
-	List<Long> getAllPatientsId(@Param("idPathology") Long idPathology);
+	List<Long> getAllPatientsId();
 
 	@Query(QueryConstants.QUERY_VALUES_HEALHT_OUTCOME_BY_INDEX_TYPE_PATIENT_ID)
 	List<HealthOutcome> findEvolutionClinicalIndicesByIndexTypeAndPatient(@Param("indexType")String indexType,

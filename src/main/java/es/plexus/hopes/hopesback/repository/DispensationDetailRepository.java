@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface DispensationDetailRepository extends JpaRepository<DispensationDetail, Long> {
@@ -32,7 +33,11 @@ public interface DispensationDetailRepository extends JpaRepository<Dispensation
 	Page<DispensationDetail> findDispensationDetailBySearch(@Param("search")String search, Pageable pageable);
 	
 	@Query(QueryConstants.QUERY_NUMBER_PATIENTS_MONTH)
-	List<String> findPatiensMonth(@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);
+	List<String> findPatiensMonth(@Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd,
+								  @Param("nhc") String nhc, @Param("nationalCode") String nationalCode);
+
+	@Query(QueryConstants.QUERY_PATIENTS_BY_PATHOLOGY)
+	Map<String, String> findPatientsByPatholy(@Param("idPathology") Long idPathology);
 	
 	/*@Query(QueryConstants.QUERY_FIND_RESULTS_ECO_TREATMENT_BY_MONTH)
 	Double findResultsAllPatiensByMonth(@Param("code")String code, @Param("dateStart")LocalDateTime dateStart, @Param("dateEnd")LocalDateTime dateEnd);*/

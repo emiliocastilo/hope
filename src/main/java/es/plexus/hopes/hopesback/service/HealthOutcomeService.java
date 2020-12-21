@@ -61,9 +61,9 @@ public class HealthOutcomeService {
 		return fillGraphPatientDetailDtoList(patients);
 	}
 	
-	public List<Long> getAllPatientsId(Long idPathology) {
+	public List<Long> getAllPatientsId() {
 		log.debug(CALLING_DB);		
-		return  healthOutcomeRepository.getAllPatientsId(idPathology);
+		return  healthOutcomeRepository.getAllPatientsId();
 	}
 	
 	private Map<String, Long> fillResultsByTypes(String type) {
