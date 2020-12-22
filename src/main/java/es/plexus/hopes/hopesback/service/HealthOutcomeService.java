@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
 
 @Log4j2
 @Service
@@ -67,25 +69,10 @@ public class HealthOutcomeService {
 	}
 	
 	private Map<String, Long> fillResultsByTypes(String type) {
-		Map<String, Long> result = new HashMap<>();
 
 		List<HealthOutcome> healthoutcomeResultList = healthOutcomeRepository.findResultsByTypes(type);
 		
-		Map<Patient, HealthOutcome> mapPatientMaxDate = healthoutcomeResultList.stream()
-        .collect(Collectors.toMap(
-        		HealthOutcome::getPatient,
-                Function.identity(),
-                BinaryOperator.maxBy(Comparator.comparing(HealthOutcome::getDate))));
-		
-		mapPatientMaxDate.entrySet().stream().forEach(m -> {			
-			long count = healthoutcomeResultList
-				.stream()
-				.filter(h -> (h.getPatient().equals(m.getKey()) && (h.getDate().equals(m.getValue().getDate()))))
-				.count();
-			result.put(m.getValue().getResult(), count);
-		});
-		
-		return result;
+		return healthoutcomeResultList.stream().collect(groupingBy(HealthOutcome::getResult, counting()));
 	}
 
 	public Map<String,List<GraphHealthOutcomeDTO>> findEvolutionClinicalIndicesByIndexTypeAndPatient(String indicesTypes, Long patId) {
@@ -106,14 +93,16 @@ public class HealthOutcomeService {
 
 	public List<HealthOutcomeDTO> saveScoreDataByIndexType(List<HealthOutcomeDTO> healthOutcomeDtos) {
 		log.debug(CALLING_DB);
-		List<HealthOutcome> healthOutcomesSaved = new ArrayList<>();
-		healthOutcomeDtos.stream().forEach(ho -> {
-			HealthOutcome healthOutcome = HealthOutcomeMapper.INSTANCE.dtoToEntity(ho);
-			healthOutcome.setPatient(patientService.getEntityPatientById(ho.getPatientId()).orElse(null));
-			HealthOutcome entitySaved = healthOutcomeRepository.saveAndFlush(healthOutcome);
-			healthOutcomesSaved.add(entitySaved);
+		List<HealthOutcome> healthOutcomesToSaveOrUpdate = new ArrayList<>();
+		healthOutcomeDtos.forEach(healthOutcomeDto -> {
+			HealthOutcome healthOutcomeToUpdate = healthOutcomeRepository
+					.findByPatientIdAndIndexTypeAndDate(healthOutcomeDto.getPatientId(), healthOutcomeDto.getIndexType(), healthOutcomeDto.getDate());
+			if (healthOutcomeToUpdate != null) {
+				healthOutcomeDto.setId(healthOutcomeToUpdate.getId());
+			}
+			healthOutcomesToSaveOrUpdate.add(HealthOutcomeMapper.INSTANCE.dtoToEntity(healthOutcomeDto));
 		});
 
-		return HealthOutcomeMapper.INSTANCE.entityToHealthOutcomeDtos(healthOutcomesSaved);
+		return HealthOutcomeMapper.INSTANCE.entityToHealthOutcomeDtos(healthOutcomeRepository.saveAll(healthOutcomesToSaveOrUpdate));
 	}
 }

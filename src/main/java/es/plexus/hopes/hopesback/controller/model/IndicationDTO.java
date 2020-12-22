@@ -11,7 +11,7 @@ public class IndicationDTO {
     @ApiModelProperty(position = 10, example = "1", value = "Identificador en la BD")
     private Long id;
 
-    @ApiModelProperty(position = 20, example = "EN PLACAS", value = "Descripción")
+    @ApiModelProperty(position = 20, example = "psoriasisPlacas", value = "Descripción")
     private String description;
 
     @ApiModelProperty(position = 30, example = "1", value = "Identificador de la patología")

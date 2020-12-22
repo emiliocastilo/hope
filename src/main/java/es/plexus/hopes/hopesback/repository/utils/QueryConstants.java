@@ -58,8 +58,10 @@ public class QueryConstants {
 					"group by pt.id, pt.patientDiagnose";
 
 	public static final String QUERY_FIND_RESULTS_BY_TYPES =
-			SELECT_HO_FROM_HEALTHOUTCOME_HO + 
-			"where ho.indexType = :type ";
+			"select new es.plexus.hopes.hopesback.repository.model.HealthOutcome(max(ho.id) , " +
+			"ho.patient, ho.indexType, max(ho.value), ho.result, max(ho.date )) from HealthOutcome ho " +
+			"where ho.indexType = :type " +
+			"group by ho.patient,  ho.indexType, ho.result";
 	
 	public static final String QUERY_FIND_INFO_PATIENTS_DOSES = 
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
