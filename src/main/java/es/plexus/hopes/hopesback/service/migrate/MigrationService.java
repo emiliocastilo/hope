@@ -59,7 +59,7 @@ public class MigrationService {
 	private static final String TAGNAME_PSORIASIS_TYPE = "psoriasisType";
 	private static final String TAGNAME_INDICATION_PRINCIPAL = "principalIndication";
 	private static final String TAGNAME_ANOTHER_PSORIASIS = "anotherPsoriasis";
-	private static final String TAGNAME_CIE_CODE = "cieCode";
+	private static final String TAGNAME_CIE_CODE = "cie";
 	private static final String TAGNAME_CIE_DESCRIPTION = "cieDescription";
 	private static final String TAGNAME_DATE_DERIVATION = "dateDerivation";
 	private static final String TAGNAME_INDICATION = "indication";
@@ -97,9 +97,11 @@ public class MigrationService {
 				.forEach(f -> {
 
 					Optional<Patient> patient = patientRepository.findById(f.getPatientId().longValue());
-					if (patient.isPresent()) {
+					String indicationId = obtainStringValue(f, TAGNAME_INDICATION_PRINCIPAL);
+
+					if (patient.isPresent() && indicationId != null) {
 						PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatient(patient.get());
-						Optional<Indication> indication = indicationRepository.findById(obtainLongValue(f, TAGNAME_INDICATION_PRINCIPAL));
+						Optional<Indication> indication = indicationRepository.findById(Long.valueOf(indicationId));
 
 						if (patientDiagnose == null) {
 							patientDiagnose = new PatientDiagnose();
@@ -271,7 +273,7 @@ public class MigrationService {
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
 			List<FormDTO> formsDTO = formService.findByTemplateAndPatientId(TEMPLATE_DIAGNOSIS, formDTO.getPatientId());
 			if (!CollectionUtils.isEmpty(formsDTO)) {
-				Optional<Indication> indication = indicationRepository.findById(obtainLongValue(formsDTO.get(0), TAGNAME_INDICATION_PRINCIPAL));
+				Optional<Indication> indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString());
 				PatientDiagnose patientDiagnose = indication.flatMap(value -> patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), value.getId())).orElse(null);
 				patientTreatment.setPatientDiagnose(patientDiagnose);
 			}
@@ -350,18 +352,6 @@ public class MigrationService {
 					form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
 			return null;
 		}
-	}
-
-	private Long obtainLongValue(FormDTO form, String tagName) {
-		Long value = null;
-		try {
-			value = (Long) getValueByTagNameFromForm(form, tagName);
-		} catch (Exception e) {
-			log.error(LOG_ERROR,
-					form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
-		}
-		return value;
-
 	}
 
 	private String obtainStringValue(FormDTO form, String tagName) {
