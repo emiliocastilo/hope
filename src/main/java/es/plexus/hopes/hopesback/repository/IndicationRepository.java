@@ -19,5 +19,7 @@ public interface IndicationRepository extends JpaRepository<Indication, Long> {
 
 	Optional<Indication> findByDescription(final String description);
 
+	Optional<Indication> findById(final Long id);
+
     List<Indication> findByPathologyId(Long id);
 }

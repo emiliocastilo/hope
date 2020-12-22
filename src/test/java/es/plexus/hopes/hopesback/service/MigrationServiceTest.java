@@ -91,7 +91,7 @@ public class MigrationServiceTest {
         given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
         given(formService.findByTemplateAndJob("phototherapy", true)).willReturn(formDTOPhototherapyList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
-        given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
+        given(indicationRepository.findById(anyLong())).willReturn(mockIndication());
         given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
         given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());
         given(medicineRepository.findByNationalCode(anyString())).willReturn(mockMedicine());
