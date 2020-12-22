@@ -44,6 +44,10 @@ public class GraphPatientDetailDTO {
 	@ApiModelProperty(position = 120, example = "1981/02/02T00:00:00Z", value = "Fecha de la última DLQI")
 	LocalDateTime dlqiDate;
 
+	@ApiModelProperty(position = 130, example = "50", value = "Resultado del CD4")
+	String cd4;
 
+	@ApiModelProperty(position = 140, example = "50", value = "Resultado del CVP")
+	String cvp;
 
 }

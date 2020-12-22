@@ -15,6 +15,18 @@ public interface PatientClinicalDataRepository extends JpaRepository<PatientClin
     @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA + QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME)
     List<PatientClinicalData> findByPCDName(@Param("name") String pcdName);
 
-    @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA +  QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME + " AND " + QueryConstants.FILTER_PCD_VALUE)
-    List<PatientClinicalData> findByPCDNameAndValues(@Param("name") String pcdName,@Param("values") Collection<String> values);
+    @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA +  QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME + " AND " + QueryConstants.FILTER_PCD_VALUE_LIKE)
+    List<PatientClinicalData> findByPCDNameAndIndicationLike(@Param("name") String pcdName, @Param("value") String value);
+
+    @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA +  QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME + " AND " + QueryConstants.FILTER_PCD_VALUE_MINUS_THAN)
+    List<PatientClinicalData> findByPCDNameAndIndicationMinusThan(@Param("name") String pcdName, @Param("value") String value);
+
+    @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA +  QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME + " AND " + QueryConstants.FILTER_PCD_VALUE_MORE_THAN)
+    List<PatientClinicalData> findByPCDNameAndIndicationMoreThan(@Param("name") String pcdName, @Param("value") String value);
+
+    @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA +  QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME + " AND " + QueryConstants.FILTER_PCD_VALUE_MORE_BETWEEN)
+    List<PatientClinicalData> findByPCDNameAndIndicationBetween(@Param("name") String pcdName, @Param("minValue") String minValue, @Param("maxValue") String maxValue);
+
+    @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA +  QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME + " AND " + QueryConstants.FILTER_PCD_PATIENT_ID)
+    PatientClinicalData findByPCDNameAndPatientId(@Param("name") String pcdName, @Param("patientId") Long patientId);
 }
