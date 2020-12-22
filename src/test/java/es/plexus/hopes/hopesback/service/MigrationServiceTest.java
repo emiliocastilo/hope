@@ -115,9 +115,9 @@ public class MigrationServiceTest {
     private FormDTO mockPrincipalDiagnosis() {
 
         InputDTO inputDTO = new InputDTO();
-        inputDTO.setName("psoriasisType");
+        inputDTO.setName("principalIndication");
         inputDTO.setType("select");
-        inputDTO.setValue("OTRAS");
+        inputDTO.setValue("1");
 
         List<InputDTO> inputDTOList = new ArrayList<>();
         inputDTOList.add(inputDTO);
