@@ -4865,6 +4865,75 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Formulas",
+			"item": [
+				{
+					"name": "cardiovascularRiskCalculator",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/v1/formulas/cardiovascularRiskCalculator?age=35&gender=hombre&diabetic=true&smoker=true&pas=60&pad=30&cholesterolTotal=100&hdl=20",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"v1",
+								"formulas",
+								"cardiovascularRiskCalculator"
+							],
+							"query": [
+								{
+									"key": "age",
+									"value": "35"
+								},
+								{
+									"key": "gender",
+									"value": "hombre"
+								},
+								{
+									"key": "diabetic",
+									"value": "true"
+								},
+								{
+									"key": "smoker",
+									"value": "true"
+								},
+								{
+									"key": "pas",
+									"value": "60"
+								},
+								{
+									"key": "pad",
+									"value": "30"
+								},
+								{
+									"key": "cholesterolTotal",
+									"value": "100"
+								},
+								{
+									"key": "hdl",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
