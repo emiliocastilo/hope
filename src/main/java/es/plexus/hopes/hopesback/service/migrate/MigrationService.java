@@ -269,9 +269,12 @@ public class MigrationService {
 		}
 
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
-			Indication indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
-			PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), indication.getId()).orElse(null) : null;
-			patientTreatment.setPatientDiagnose(patientDiagnose);
+			List<FormDTO> formsDTO = formService.findByTemplateAndPatientId(TEMPLATE_DIAGNOSIS, formDTO.getPatientId());
+			if (!CollectionUtils.isEmpty(formsDTO)) {
+				Optional<Indication> indication = indicationRepository.findById(obtainLongValue(formsDTO.get(0), TAGNAME_INDICATION_PRINCIPAL));
+				PatientDiagnose patientDiagnose = indication.flatMap(value -> patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), value.getId())).orElse(null);
+				patientTreatment.setPatientDiagnose(patientDiagnose);
+			}
 		}
 
 		if (patientTreatment.getFinalDate() != null) {
