@@ -29,4 +29,9 @@ public interface PatientClinicalDataRepository extends JpaRepository<PatientClin
 
     @Query(QueryConstants.QUERY_FIND_PATIENT_BY_CLINICAL_DATA +  QueryConstants.WHERE_CLAUSULE + QueryConstants.FILTER_PCD_NAME + " AND " + QueryConstants.FILTER_PCD_PATIENT_ID)
     PatientClinicalData findByPCDNameAndPatientId(@Param("name") String pcdName, @Param("patientId") Long patientId);
+
+    List<PatientClinicalData> findByName(String cvp);
+
+    List<PatientClinicalData> findByNameAndValueLike(String name, String value);
+
 }
