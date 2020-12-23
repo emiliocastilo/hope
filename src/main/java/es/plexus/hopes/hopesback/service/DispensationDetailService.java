@@ -139,7 +139,12 @@ public class DispensationDetailService {
 		
 		Map<String, Map<String, BigDecimal>> result = new HashMap<>();
 		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
-		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
+		List<Long> listPatients = new ArrayList<>();
+		if (PathologyType.DERMATOLOGIA.getCodigo().equals(idPathology)) {
+			listPatients = healthOutcomeService.getAllPatientsId();
+		} else if (PathologyType.VIH.getCodigo().equals(idPathology)) {
+			//TODO sacar los pacientes de la tabla patients_clinical_data
+		}
 		
 		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
 			LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());			
@@ -211,6 +216,7 @@ public class DispensationDetailService {
 		} else {
 
 			// Consumo de todos los pacientes separado por meses
+			//TODO JGL Mirar como filtrar por patologia
 			Double consumeByMonth = dispensationDetailRepository.findResultsAllPatiensByMonth(
 					dateStartPeriod, dateStopPeriod, code);
 
