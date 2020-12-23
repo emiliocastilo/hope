@@ -24,181 +24,183 @@ import java.util.stream.Collectors;
 @Log4j2
 public final class GraphPatientDetailUtils {
 
-    private static final String EMPTY_STRING = "";
-    public static final String DELIMITER_MEDICINES = ", ";
-    public static final String TARGET_DELIMITER_MEDICINES = ", , ";
-    private static final String DEBUG_QUERY_GRAPH_PATIENT_DETAIL = "----------------------------------- %s ------------------------------------------------------------------------";
+	private static final String EMPTY_STRING = "";
+	public static final String DELIMITER_MEDICINES = ", ";
+	public static final String TARGET_DELIMITER_MEDICINES = ", , ";
+	private static final String DEBUG_QUERY_GRAPH_PATIENT_DETAIL = "----------------------------------- %s ------------------------------------------------------------------------";
 
-    public static Page<GraphPatientDetailDTO> doPaginationGraphPatientDetailDTO(List<GraphPatientDetailDTO> graphPatientDetailList, Pageable pageable) {
+	public static Page<GraphPatientDetailDTO> doPaginationGraphPatientDetailDTO(List<GraphPatientDetailDTO> graphPatientDetailList, Pageable pageable) {
 
-        int start = Long.valueOf(pageable.getOffset()).intValue();
-        int end = (start + pageable.getPageSize()) > graphPatientDetailList.size() ?
-                graphPatientDetailList.size() : (start + pageable.getPageSize());
+		int start = Long.valueOf(pageable.getOffset()).intValue();
+		int end = (start + pageable.getPageSize()) > graphPatientDetailList.size() ?
+				graphPatientDetailList.size() : (start + pageable.getPageSize());
 
-        if (pageable.getSort().get().findFirst().isPresent()) {
-            orderGraphPatientDetailList(graphPatientDetailList, pageable.getSort());
-        }
+		if (pageable.getSort().get().findFirst().isPresent()) {
+			orderGraphPatientDetailList(graphPatientDetailList, pageable.getSort());
+		}
 
-        List<GraphPatientDetailDTO> resultList = graphPatientDetailList.subList(start, end);
+		List<GraphPatientDetailDTO> resultList = graphPatientDetailList.subList(start, end);
 
 
-        return new PageImpl<>(resultList, pageable, graphPatientDetailList.size());
-    }
+		return new PageImpl<>(resultList, pageable, graphPatientDetailList.size());
+	}
 
-    public static List<GraphPatientDetailDTO> fillGraphPatientDetailDtoList(List<Patient> patients) {
-        List<GraphPatientDetailDTO> graphPatientDetailDTOS = new ArrayList<>();
-        patients = patients.stream().distinct().collect(Collectors.toList());
-        if(CollectionUtils.isNotEmpty(patients)) {
-            log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find Patients"));
-            patients.forEach(
-                    patient -> {
+	public static List<GraphPatientDetailDTO> fillGraphPatientDetailDtoList(List<Patient> patients) {
+		List<GraphPatientDetailDTO> graphPatientDetailDTOS = new ArrayList<>();
+		patients = patients.stream().distinct().collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(patients)) {
+			log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find Patients"));
+			patients.forEach(
+					patient -> {
 
-                        GraphPatientDetailDTO graphPatientDetailDTO = new GraphPatientDetailDTO();
-                        graphPatientDetailDTO.setId(patient.getId());
-                        graphPatientDetailDTO.setNhc(patient.getNhc());
-                        graphPatientDetailDTO.setHealthCard(patient.getHealthCard());
-                        graphPatientDetailDTO.setFullName(String
-                                .format("%s %s %s", patient.getName(), patient.getFirstSurname(),
-                                        !StringUtils.isEmpty(patient.getLastSurname())?patient.getLastSurname(): EMPTY_STRING));
+						GraphPatientDetailDTO graphPatientDetailDTO = new GraphPatientDetailDTO();
+						graphPatientDetailDTO.setId(patient.getId());
+						graphPatientDetailDTO.setNhc(patient.getNhc());
+						graphPatientDetailDTO.setHealthCard(patient.getHealthCard());
+						graphPatientDetailDTO.setFullName(String
+								.format("%s %s %s", patient.getName(), patient.getFirstSurname(),
+										!StringUtils.isEmpty(patient.getLastSurname()) ? patient.getLastSurname() : EMPTY_STRING));
 
-                        fillPatientDiagnoseInfoIntoGraphPatientDetailDTO(patient, graphPatientDetailDTO);
+						fillPatientDiagnoseInfoIntoGraphPatientDetailDTO(patient, graphPatientDetailDTO);
 
-                        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PASI"));
-                        HealthOutcome pasiHealtOutcome = patient.getHealthOutcomes().stream()
-                                .filter(healthOutcome -> "PASI".equals(healthOutcome.getIndexType()))
-                                .max(Comparator.comparing(HealthOutcome::getDate))
-                                .orElseGet(HealthOutcome::new);
+						log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PASI"));
+						HealthOutcome pasiHealtOutcome = patient.getHealthOutcomes().stream()
+								.filter(healthOutcome -> "PASI".equals(healthOutcome.getIndexType()))
+								.max(Comparator.comparing(HealthOutcome::getDate))
+								.orElseGet(HealthOutcome::new);
 
-                        graphPatientDetailDTO.setPasi(pasiHealtOutcome.getResult());
-                        graphPatientDetailDTO.setPasiDate(pasiHealtOutcome.getDate());
-                        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PASI"));
+						graphPatientDetailDTO.setPasi(pasiHealtOutcome.getValue() != null ? pasiHealtOutcome.getValue().toString() : "");
+						graphPatientDetailDTO.setPasiDate(pasiHealtOutcome.getDate());
+						log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PASI"));
 
-                        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find DLQI"));
+						log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find DLQI"));
 
-                        HealthOutcome dlqiHealtOutcome = patient.getHealthOutcomes().stream()
-                                .filter(healthOutcome -> "DLQI".equals(healthOutcome.getIndexType()))
-                                .max(Comparator.comparing(HealthOutcome::getDate))
-                                .orElseGet(HealthOutcome::new);
+						HealthOutcome dlqiHealtOutcome = patient.getHealthOutcomes().stream()
+								.filter(healthOutcome -> "DLQI".equals(healthOutcome.getIndexType()))
+								.max(Comparator.comparing(HealthOutcome::getDate))
+								.orElseGet(HealthOutcome::new);
 
-                        graphPatientDetailDTO.setDlqi(dlqiHealtOutcome.getResult());
-                        graphPatientDetailDTO.setDlqiDate(dlqiHealtOutcome.getDate());
-                        graphPatientDetailDTOS.add(graphPatientDetailDTO);
+						graphPatientDetailDTO.setDlqi(dlqiHealtOutcome.getValue() != null ? dlqiHealtOutcome.getValue().toString() : "");
+						graphPatientDetailDTO.setDlqiDate(dlqiHealtOutcome.getDate());
+						graphPatientDetailDTOS.add(graphPatientDetailDTO);
 
-                        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "END: Fin DQLI"));
+						log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "END: Fin DQLI"));
 
-                        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find Patients"));
+						log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find Patients"));
 
-                    }
-            );
-        }
-        log.debug("--------------------------------------------------- Finish Graph ---------------------------------------------------");
+					}
+			);
+		}
+		log.debug("--------------------------------------------------- Finish Graph ---------------------------------------------------");
 
-        return graphPatientDetailDTOS;
-    }
-    public static void fillPatientDiagnoseInfoIntoGraphPatientDetailDTO(Patient patient, GraphPatientDetailDTO graphPatientDetailDTO) {
-        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PatientDiagnose"));
-        if(CollectionUtils.isNotEmpty(patient.getDiagnoses())) {
-            patient.getDiagnoses().forEach(patientDiagnose -> {
-                graphPatientDetailDTO.setPrincipalDiagnose(null!=patientDiagnose.getCieCode()
-                        && !StringUtils.isEmpty(patientDiagnose.getCieDescription())?
-                        patientDiagnose.getCieDescription(): EMPTY_STRING);
-                graphPatientDetailDTO.setPrincipalIndication(null!=patientDiagnose.getIndication()
-                        && !StringUtils.isEmpty(patientDiagnose.getIndication().getDescription())?
-                        patientDiagnose.getIndication().getDescription(): EMPTY_STRING);
-                fillPatientTreatmentInfoIntoGraphPatientDetailDTO(graphPatientDetailDTO, patientDiagnose);
-            });
-        }else{
-            graphPatientDetailDTO.setPrincipalDiagnose(EMPTY_STRING);
-            graphPatientDetailDTO.setPrincipalIndication(EMPTY_STRING);
-            graphPatientDetailDTO.setTreatment(EMPTY_STRING);
-        }
-        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "END: Find PatientDiagnose"));
-    }
+		return graphPatientDetailDTOS;
+	}
 
-    public static void fillPatientTreatmentInfoIntoGraphPatientDetailDTO(GraphPatientDetailDTO graphPatientDetailDTO, PatientDiagnose patientDiagnose) {
-        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PatientTreatment"));
-        if(CollectionUtils.isNotEmpty(patientDiagnose.getTreatments())) {
-            String treatments = patientDiagnose.getTreatments()
-                    .stream()
-                    .filter(PatientTreatment::isActive)
-                    .map(pt->null!=pt.getMedicine()
-                            &&!StringUtils.isEmpty(pt.getMedicine().getActIngredients())?
-                            pt.getMedicine().getActIngredients(): EMPTY_STRING)
-                    .collect(Collectors.joining(DELIMITER_MEDICINES))
-                    .replace(TARGET_DELIMITER_MEDICINES, EMPTY_STRING);
-            graphPatientDetailDTO.setTreatment(treatments);
-        }
-        log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "END: Find PatientDiagnose"));
-    }
-    public static void orderGraphPatientDetailList(List<GraphPatientDetailDTO> graphPatientDetailList, Sort sort){
-        Optional<Sort.Order> sortOrder = sort.get().findFirst();
-        if (sortOrder.isPresent()){
-            Sort.Order order = sortOrder.get();
-            switch (order.getProperty()){
-                case "nhc":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getNhc));
-                    break;
-                case "sip":
-                case "healthCard":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getHealthCard));
-                    break;
+	public static void fillPatientDiagnoseInfoIntoGraphPatientDetailDTO(Patient patient, GraphPatientDetailDTO graphPatientDetailDTO) {
+		log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PatientDiagnose"));
+		if (CollectionUtils.isNotEmpty(patient.getDiagnoses())) {
+			patient.getDiagnoses().forEach(patientDiagnose -> {
+				graphPatientDetailDTO.setPrincipalDiagnose(null != patientDiagnose.getCieCode()
+						&& !StringUtils.isEmpty(patientDiagnose.getCieDescription()) ?
+						patientDiagnose.getCieDescription() : EMPTY_STRING);
+				graphPatientDetailDTO.setPrincipalIndication(null != patientDiagnose.getIndication()
+						&& !StringUtils.isEmpty(patientDiagnose.getIndication().getDescription()) ?
+						patientDiagnose.getIndication().getDescription() : EMPTY_STRING);
+				fillPatientTreatmentInfoIntoGraphPatientDetailDTO(graphPatientDetailDTO, patientDiagnose);
+			});
+		} else {
+			graphPatientDetailDTO.setPrincipalDiagnose(EMPTY_STRING);
+			graphPatientDetailDTO.setPrincipalIndication(EMPTY_STRING);
+			graphPatientDetailDTO.setTreatment(EMPTY_STRING);
+		}
+		log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "END: Find PatientDiagnose"));
+	}
 
-                case "fullName":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getFullName));
-                    break;
+	public static void fillPatientTreatmentInfoIntoGraphPatientDetailDTO(GraphPatientDetailDTO graphPatientDetailDTO, PatientDiagnose patientDiagnose) {
+		log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PatientTreatment"));
+		if (CollectionUtils.isNotEmpty(patientDiagnose.getTreatments())) {
+			String treatments = patientDiagnose.getTreatments()
+					.stream()
+					.filter(PatientTreatment::isActive)
+					.map(pt -> null != pt.getMedicine()
+							&& !StringUtils.isEmpty(pt.getMedicine().getActIngredients()) ?
+							pt.getMedicine().getActIngredients() : EMPTY_STRING)
+					.collect(Collectors.joining(DELIMITER_MEDICINES))
+					.replace(TARGET_DELIMITER_MEDICINES, EMPTY_STRING);
+			graphPatientDetailDTO.setTreatment(treatments);
+		}
+		log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "END: Find PatientDiagnose"));
+	}
 
-                case "principalIndication":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getPrincipalIndication));
-                    break;
+	public static void orderGraphPatientDetailList(List<GraphPatientDetailDTO> graphPatientDetailList, Sort sort) {
+		Optional<Sort.Order> sortOrder = sort.get().findFirst();
+		if (sortOrder.isPresent()) {
+			Sort.Order order = sortOrder.get();
+			switch (order.getProperty()) {
+				case "nhc":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getNhc));
+					break;
+				case "sip":
+				case "healthCard":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getHealthCard));
+					break;
 
-                case "principalDiagnose":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getPrincipalDiagnose));
-                    break;
+				case "fullName":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getFullName));
+					break;
 
-                case "treatment":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getTreatment));
-                    break;
+				case "principalIndication":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getPrincipalIndication));
+					break;
 
-                case "pasi":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getPasi));
-                    break;
+				case "principalDiagnose":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getPrincipalDiagnose));
+					break;
 
-                case "pasiDate":
-                    graphPatientDetailList
-                            .sort(obtainComparatorDate(order, GraphPatientDetailDTO::getPasiDate));
-                    break;
+				case "treatment":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getTreatment));
+					break;
 
-                case "dlqi":
-                    graphPatientDetailList
-                            .sort(obtainComparatorString(order, GraphPatientDetailDTO::getDlqi));
-                    break;
+				case "pasi":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getPasi));
+					break;
 
-                case "dlqiDate":
-                    graphPatientDetailList
-                            .sort(obtainComparatorDate(order, GraphPatientDetailDTO::getDlqiDate));
-                    break;
+				case "pasiDate":
+					graphPatientDetailList
+							.sort(obtainComparatorDate(order, GraphPatientDetailDTO::getPasiDate));
+					break;
 
-                default:
-                    break;
-            }
-        }
-    }
+				case "dlqi":
+					graphPatientDetailList
+							.sort(obtainComparatorString(order, GraphPatientDetailDTO::getDlqi));
+					break;
 
-    private static Comparator<GraphPatientDetailDTO> obtainComparatorString(Sort.Order order, Function<GraphPatientDetailDTO, String> sortBy) {
-        return order.isAscending()?
-                Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy)).reversed();
-    }
+				case "dlqiDate":
+					graphPatientDetailList
+							.sort(obtainComparatorDate(order, GraphPatientDetailDTO::getDlqiDate));
+					break;
 
-    private static Comparator<GraphPatientDetailDTO> obtainComparatorDate(Sort.Order order, Function<GraphPatientDetailDTO, LocalDateTime> sortBy) {
-        return order.isAscending()?
-                Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy).reversed());
-    }
+				default:
+					break;
+			}
+		}
+	}
+
+	private static Comparator<GraphPatientDetailDTO> obtainComparatorString(Sort.Order order, Function<GraphPatientDetailDTO, String> sortBy) {
+		return order.isAscending() ?
+				Comparator.nullsFirst(Comparator.comparing(sortBy)) : Comparator.nullsLast(Comparator.comparing(sortBy)).reversed();
+	}
+
+	private static Comparator<GraphPatientDetailDTO> obtainComparatorDate(Sort.Order order, Function<GraphPatientDetailDTO, LocalDateTime> sortBy) {
+		return order.isAscending() ?
+				Comparator.nullsFirst(Comparator.comparing(sortBy)) : Comparator.nullsLast(Comparator.comparing(sortBy).reversed());
+	}
 
 }
