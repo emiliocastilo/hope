@@ -56,8 +56,7 @@ public class MigrationService {
 
 	private static final String TAGNAME_DATE_PRINCIPAL_DIAGNOSES = "datePrincipalDiagnoses";
 	private static final String TAGNAME_DATE_SYMPTOM = "dateSymptom";
-	private static final String TAGNAME_PSORIASIS_TYPE = "psoriasisType";
-	private static final String TAGNAME_INDICATION_PRINCIPAL = "principalIndication";
+	private static final String TAGNAME_PRINCIPAL_INDICATION = "principalIndication";
 	private static final String TAGNAME_ANOTHER_PSORIASIS = "anotherPsoriasis";
 	private static final String TAGNAME_CIE_CODE = "cie";
 	private static final String TAGNAME_CIE_DESCRIPTION = "cieDescription";
@@ -96,12 +95,10 @@ public class MigrationService {
 		formsDTO
 				.forEach(f -> {
 
-					Optional<Patient> patient = patientRepository.findById(f.getPatientId().longValue());
-					String indicationId = obtainStringValue(f, TAGNAME_INDICATION_PRINCIPAL);
-
-					if (patient.isPresent() && indicationId != null) {
-						PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatient(patient.get());
-						Optional<Indication> indication = indicationRepository.findById(Long.valueOf(indicationId));
+			Optional<Patient> patient = patientRepository.findById(f.getPatientId().longValue());
+			if (patient.isPresent()) {
+				PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatient(patient.get());
+				Optional<Indication> indication = indicationRepository.findByCode(obtainStringValue(f, TAGNAME_PRINCIPAL_INDICATION));
 
 						if (patientDiagnose == null) {
 							patientDiagnose = new PatientDiagnose();
@@ -271,12 +268,16 @@ public class MigrationService {
 		}
 
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
-			List<FormDTO> formsDTO = formService.findByTemplateAndPatientId(TEMPLATE_DIAGNOSIS, formDTO.getPatientId());
-			if (!CollectionUtils.isEmpty(formsDTO)) {
-				Optional<Indication> indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString());
-				PatientDiagnose patientDiagnose = indication.flatMap(value -> patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), value.getId())).orElse(null);
-				patientTreatment.setPatientDiagnose(patientDiagnose);
-			}
+			// TODO: Revisar cual se ha de usar
+			Indication indication = indicationRepository.findByCode(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
+			PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), indication.getId()).orElse(null) : null;
+			patientTreatment.setPatientDiagnose(patientDiagnose);
+//			List<FormDTO> formsDTO = formService.findByTemplateAndPatientId(TEMPLATE_DIAGNOSIS, formDTO.getPatientId());
+//			if (!CollectionUtils.isEmpty(formsDTO)) {
+//				Optional<Indication> indication = indicationRepository.findByCode(patientTreatmentMongo.get(TAGNAME_INDICATION).toString());
+//				PatientDiagnose patientDiagnose = indication.flatMap(value -> patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), value.getId())).orElse(null);
+//				patientTreatment.setPatientDiagnose(patientDiagnose);
+//			}
 		}
 
 		if (patientTreatment.getFinalDate() != null) {

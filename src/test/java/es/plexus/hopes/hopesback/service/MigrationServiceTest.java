@@ -73,34 +73,33 @@ public class MigrationServiceTest {
         given(formService.findByTemplate(anyString())).willReturn(formDTOList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
         given(patientDiagnosisRepository.findByPatient(any(Patient.class))).willReturn(mockPatientDiagnosis());
-        given(indicationRepository.findById(anyLong())).willReturn(mockIndication());
+        given(indicationRepository.findByCode(anyString())).willReturn(mockIndication());
         //when
         migrationService.migrationDataDiagnosisFromNoRelationalToRelational();
         //then
         verify(patientDiagnosisService, times(1)).save(any(PatientDiagnose.class));
     }
 
-    //TODO revisar Mocks mal realizados.
-//    @Test
-//    public void callMigrationDataTreatmentFromNoRelationalToRelationalShouldBeStatusOk() {
-//
-//        List<FormDTO> formDTOList = new ArrayList<>();
-//        formDTOList.add(mockPharmacologyTreatment());
-//        List<FormDTO> formDTOPhototherapyList = new ArrayList<>();
-//        formDTOPhototherapyList.add(mockPhototherapyTreatment());
-//        //given
-//        given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
-//        given(formService.findByTemplateAndJob("phototherapy", true)).willReturn(formDTOPhototherapyList);
-//given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
-//        given(indicationRepository.findById(anyLong())).willReturn(mockIndication());
-//        given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
-//        given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());
-//        given(medicineRepository.findByNationalCode(anyString())).willReturn(mockMedicine());
-//        //when
-//        migrationService.migrationDataTreatmentFromNoRelationalToRelational();
-//        //then
-//        verify(patientTreatmentService, times(2)).save(any(PatientTreatment.class));
-//    }
+    @Test
+    public void callMigrationDataTreatmentFromNoRelationalToRelationalShouldBeStatusOk() {
+
+        List<FormDTO> formDTOList = new ArrayList<>();
+        formDTOList.add(mockPharmacologyTreatment());
+        List<FormDTO> formDTOPhototherapyList = new ArrayList<>();
+        formDTOPhototherapyList.add(mockPhototherapyTreatment());
+        //given
+        given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
+        given(formService.findByTemplateAndJob("phototherapy", true)).willReturn(formDTOPhototherapyList);
+        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
+        given(indicationRepository.findByCode(anyString())).willReturn(mockIndication());
+        given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
+        given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());
+        given(medicineRepository.findByNationalCode(anyString())).willReturn(mockMedicine());
+        //when
+        migrationService.migrationDataTreatmentFromNoRelationalToRelational();
+        //then
+        verify(patientTreatmentService, times(2)).save(any(PatientTreatment.class));
+    }
 
     private Optional<PatientTreatment> mockPatientTreatment() {
         PatientTreatment patientTreatment = new PatientTreatment();
@@ -115,9 +114,9 @@ public class MigrationServiceTest {
     private FormDTO mockPrincipalDiagnosis() {
 
         InputDTO inputDTO = new InputDTO();
-        inputDTO.setName("principalIndication");
+        inputDTO.setName("psoriasisType");
         inputDTO.setType("select");
-        inputDTO.setValue("1");
+        inputDTO.setValue("OTRAS");
 
         List<InputDTO> inputDTOList = new ArrayList<>();
         inputDTOList.add(inputDTO);
@@ -150,7 +149,8 @@ public class MigrationServiceTest {
         Indication indication = new Indication();
         indication.setDescription("descripción");
         indication.setId(1L);
-        indication.setPathologyId(1L);
+        indication.setPathologyId(2L);
+        indication.setCode("code");
         return Optional.of(indication);
     }
 
