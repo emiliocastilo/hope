@@ -56,9 +56,9 @@ public class MigrationService {
 
 	private static final String TAGNAME_DATE_PRINCIPAL_DIAGNOSES = "datePrincipalDiagnoses";
 	private static final String TAGNAME_DATE_SYMPTOM = "dateSymptom";
-	private static final String TAGNAME_PSORIASIS_TYPE = "psoriasisType";
+	private static final String TAGNAME_PRINCIPAL_INDICATION = "principalIndication";
 	private static final String TAGNAME_ANOTHER_PSORIASIS = "anotherPsoriasis";
-	private static final String TAGNAME_CIE_CODE = "cieCode";
+	private static final String TAGNAME_CIE_CODE = "cie";
 	private static final String TAGNAME_CIE_DESCRIPTION = "cieDescription";
 	private static final String TAGNAME_DATE_DERIVATION = "dateDerivation";
 	private static final String TAGNAME_INDICATION = "indication";
@@ -98,7 +98,7 @@ public class MigrationService {
 			Optional<Patient> patient = patientRepository.findById(f.getPatientId().longValue());
 			if (patient.isPresent()) {
 				PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatient(patient.get());
-				Optional<Indication> indication = indicationRepository.findByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE));
+				Optional<Indication> indication = indicationRepository.findByCode(obtainStringValue(f, TAGNAME_PRINCIPAL_INDICATION));
 
 				if (patientDiagnose == null) {
 					patientDiagnose = new PatientDiagnose();
@@ -268,7 +268,7 @@ public class MigrationService {
 		}
 
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
-			Indication indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
+			Indication indication = indicationRepository.findByCode(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
 			PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), indication.getId()).orElse(null) : null;
 			patientTreatment.setPatientDiagnose(patientDiagnose);
 		}
