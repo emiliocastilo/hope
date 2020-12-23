@@ -73,7 +73,7 @@ public class MigrationServiceTest {
         given(formService.findByTemplate(anyString())).willReturn(formDTOList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
         given(patientDiagnosisRepository.findByPatient(any(Patient.class))).willReturn(mockPatientDiagnosis());
-        given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
+        given(indicationRepository.findByCode(anyString())).willReturn(mockIndication());
         //when
         migrationService.migrationDataDiagnosisFromNoRelationalToRelational();
         //then
@@ -91,7 +91,7 @@ public class MigrationServiceTest {
         given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
         given(formService.findByTemplateAndJob("phototherapy", true)).willReturn(formDTOPhototherapyList);
         given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
-        given(indicationRepository.findByDescription(anyString())).willReturn(mockIndication());
+        given(indicationRepository.findByCode(anyString())).willReturn(mockIndication());
         given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
         given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());
         given(medicineRepository.findByNationalCode(anyString())).willReturn(mockMedicine());
@@ -150,6 +150,7 @@ public class MigrationServiceTest {
         indication.setDescription("descripción");
         indication.setId(1L);
         indication.setPathologyId(2L);
+        indication.setCode("code");
         return Optional.of(indication);
     }
 
