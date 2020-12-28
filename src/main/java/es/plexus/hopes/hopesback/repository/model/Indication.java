@@ -26,4 +26,7 @@ public class Indication {
     @Basic
     @Column(name = "ind_pth_id", nullable = false)
     private Long pathologyId;
+
+    @Column(name = "ind_code", nullable = false, unique = true)
+    private String code;
 }

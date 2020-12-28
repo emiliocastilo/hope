@@ -152,7 +152,7 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_BY_INDICATIONS =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
-			"where pdg.indication.description = :indication ";
+			"where UPPER(pdg.indication.code) = UPPER(:indication) ";
 
 	public static final String QUERY_PATIENTS_BY_CIE_9 =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
