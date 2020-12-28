@@ -92,7 +92,7 @@ public class PatientsClinicalDataService {
             } else {
                 textEdited = PATIENS_BY_CVP_BETWEEN_500_AND_1000;
             }
-
+            textEdited = textEdited.concat(" " + PATIENTS_BY_CVP_UNIT);
         } else if (name.equals(CD4)) {
 
             if (value < 100) {
@@ -120,7 +120,7 @@ public class PatientsClinicalDataService {
         if (type.equals(CD4) || type.equals(CVP)) {
             patientClinicalData = patientClinicalDataRepository.findByPCDNameAndIndicationBetween(type, "0", indication);
         } else {
-            patientClinicalData = patientClinicalDataRepository.findByNameAndValueLike(type, indication);
+            patientClinicalData = patientClinicalDataRepository.findByNameLikeIgnoreCaseAndValueLikeIgnoreCase(type, indication);
         }
 
         List<Long> patientsId = new ArrayList<>();

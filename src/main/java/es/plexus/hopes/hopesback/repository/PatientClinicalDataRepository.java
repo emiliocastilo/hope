@@ -32,6 +32,5 @@ public interface PatientClinicalDataRepository extends JpaRepository<PatientClin
 
     List<PatientClinicalData> findByName(String cvp);
 
-    List<PatientClinicalData> findByNameAndValueLike(String name, String value);
-
+    List<PatientClinicalData> findByNameLikeIgnoreCaseAndValueLikeIgnoreCase(String type, String indication);
 }
