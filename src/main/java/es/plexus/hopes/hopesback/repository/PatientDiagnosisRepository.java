@@ -5,6 +5,7 @@ import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public interface PatientDiagnosisRepository extends JpaRepository<PatientDiagnos
 
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSE_BY_CIE10)
 	List<PatientDiagnose> findPatientsDiagnosisGroupByCie10();
+
+	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSE_BY_PATIENT_ID)
+	List<PatientDiagnose> findPatientsDiagnosibyPatientId(@Param("patientId") Long patientId);
 
     PatientDiagnose findByPatient(Patient patient);
 
