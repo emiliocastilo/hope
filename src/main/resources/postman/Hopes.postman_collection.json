@@ -2988,7 +2988,7 @@
 									"key": "multipartFile",
 									"contentType": "",
 									"type": "file",
-									"src": "/C:/workspace/repos/hopes/hopes-back/src/main/resources/postman/Plantilla_BBDD_Medicamentos_v3.xlsx"
+									"src": "/C:/workspace/repos/hopes/hopes-back/src/main/resources/postman/medicamentos.xlsx"
 								},
 								{
 									"key": "",

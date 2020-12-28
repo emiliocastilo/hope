@@ -32,3 +32,4 @@ build/
 /hopes-back.log
 /hopes-back-dev.log
 *.log
+/src/main/resources/logs/excel/medicineAndDoses-Log.txt
