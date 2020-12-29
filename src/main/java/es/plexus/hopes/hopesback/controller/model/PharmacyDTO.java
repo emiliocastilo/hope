@@ -42,8 +42,11 @@ public class PharmacyDTO {
     @ApiModelProperty(position = 100, example = "true", value = "Ensayo clínico")
     private boolean testClinical;
 
+    @ApiModelProperty(position = 110, example = "1", value = "MG de las unidades del medicamneto")
+    private BigDecimal unitDose;
+
     public PharmacyDTO(String nhc, LocalDateTime date, String nationalCode,
-                       String presentation, String quantity, BigDecimal amount) {
+                       String presentation, String quantity, BigDecimal amount, BigDecimal unitDose) {
         this.nhc = nhc;
         this.date = date;
         this.nationalCode = nationalCode;
@@ -54,6 +57,7 @@ public class PharmacyDTO {
         this.totalCost = BigDecimal.ZERO;
         // TODO nos indicarán cómo deberemos obtenerlo y después sabremos en que tabla insertarlo.
         this.testClinical = false;
+        this.unitDose = unitDose;
     }
 
     public PharmacyDTO() {
