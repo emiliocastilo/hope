@@ -1,8 +1,9 @@
 {
     "key": "secundary-diagnosis-vih",
-    "form": "[{'type':'title','name':'DIAGNÓSTICO SECUNDARIO'},{'type':'table','label':'Diagnósticos secundarios','name':'secondaryDiagnosis','actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}],'button':'add','columns':4,'fields':[{'type':'datepicker','label':'Fecha','name':'dateCie','disabled':false},{'type':'search','label':'Código CIE','name':'cieCode','disabled':false,'placeholder':'cie','endpoint':'/cies/searches?hospitalId=${0}&search=${1}','params':['hospitalId','cie']},{'type':'input','label':'Descripción del diagnóstico CIE','name':'cieDescription','disabled':true}]}]",
+    "form": "[{'type':'title','name':'DIAGNÓSTICO SECUNDARIO'},{'type':'table','label':'Diagnósticos secundarios','name':'secondaryDiagnosis','actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}],'button':'add','columns':4,'fields':[{'type':'datepicker','label':'Fecha','name':'dateCie','disabled':false},{'type':'search','label':'Código CIE','name':'cieCode','disabled':false,'placeholder':'cie','endpoint':'/cies/searches?hospitalId=${0}&search=${1}','params':['hospitalId','cie']},{'type':'input','label':'Descripción del diagnóstico CIE','name':'cieDescription','readonly':true, 'disabled':false}]}]",
     "buttons": "['save']",
     "historify": false,
     "nameHistoricalDate": null,
     "fieldsToGraph": null
 }
+

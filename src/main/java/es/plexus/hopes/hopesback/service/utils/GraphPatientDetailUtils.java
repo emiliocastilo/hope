@@ -1,10 +1,7 @@
 package es.plexus.hopes.hopesback.service.utils;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
-import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import es.plexus.hopes.hopesback.repository.model.*;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.domain.Page;
@@ -72,7 +69,7 @@ public final class GraphPatientDetailUtils {
                         graphPatientDetailDTO.setPasi(pasiHealtOutcome.getResult());
                         graphPatientDetailDTO.setPasiDate(pasiHealtOutcome.getDate());
                         log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PASI"));
-
+                        List clinicals = patient.getPatientClinicalDatas();
                         log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find DLQI"));
 
                         HealthOutcome dlqiHealtOutcome = patient.getHealthOutcomes().stream()
@@ -95,6 +92,43 @@ public final class GraphPatientDetailUtils {
 
         return graphPatientDetailDTOS;
     }
+
+    public static List<GraphPatientDetailDTO> fillGraphPatientDetailDtoListVIH(List<Patient> patients) {
+        List<GraphPatientDetailDTO> graphPatientDetailDTOS = new ArrayList<>();
+
+        if(CollectionUtils.isNotEmpty(patients)) {
+            log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find Patients"));
+            patients.forEach(
+                    patient -> {
+                        GraphPatientDetailDTO graphPatientDetailDTO = new GraphPatientDetailDTO();
+                        graphPatientDetailDTO.setId(patient.getId());
+                        graphPatientDetailDTO.setNhc(patient.getNhc());
+                        graphPatientDetailDTO.setHealthCard(patient.getHealthCard());
+                        graphPatientDetailDTO.setFullName(String
+                                .format("%s %s %s", patient.getName(), patient.getFirstSurname(),
+                                        !StringUtils.isEmpty(patient.getLastSurname())?patient.getLastSurname(): EMPTY_STRING));
+
+
+                        Optional<PatientClinicalData> cd4 = patient.getPatientClinicalDatas().stream()
+                            .filter(patientClinicalData1 -> patientClinicalData1 != null && "CD4".equals(patientClinicalData1.getName())).findFirst();
+                        Optional<PatientClinicalData> cvp = patient.getPatientClinicalDatas().stream()
+                                .filter(patientClinicalData1 -> patientClinicalData1 != null && "CVP".equals(patientClinicalData1.getName())).findFirst();
+
+                        cd4.ifPresent(patientClinicalData -> graphPatientDetailDTO.setCd4(patientClinicalData.getValue()));
+
+                        cvp.ifPresent(patientClinicalData -> graphPatientDetailDTO.setCvp(patientClinicalData.getValue()));
+
+                        fillPatientDiagnoseInfoIntoGraphPatientDetailDTO(patient, graphPatientDetailDTO);
+                        graphPatientDetailDTOS.add(graphPatientDetailDTO);
+
+                    }
+            );
+        }
+
+        return graphPatientDetailDTOS;
+    }
+
+
     public static void fillPatientDiagnoseInfoIntoGraphPatientDetailDTO(Patient patient, GraphPatientDetailDTO graphPatientDetailDTO) {
         log.debug(String.format(DEBUG_QUERY_GRAPH_PATIENT_DETAIL, "INIT: Find PatientDiagnose"));
         if(CollectionUtils.isNotEmpty(patient.getDiagnoses())) {

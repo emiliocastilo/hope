@@ -56,9 +56,9 @@ public class MigrationService {
 
 	private static final String TAGNAME_DATE_PRINCIPAL_DIAGNOSES = "datePrincipalDiagnoses";
 	private static final String TAGNAME_DATE_SYMPTOM = "dateSymptom";
-	private static final String TAGNAME_PSORIASIS_TYPE = "psoriasisType";
+	private static final String TAGNAME_PRINCIPAL_INDICATION = "principalIndication";
 	private static final String TAGNAME_ANOTHER_PSORIASIS = "anotherPsoriasis";
-	private static final String TAGNAME_CIE_CODE = "cieCode";
+	private static final String TAGNAME_CIE_CODE = "cie";
 	private static final String TAGNAME_CIE_DESCRIPTION = "cieDescription";
 	private static final String TAGNAME_DATE_DERIVATION = "dateDerivation";
 	private static final String TAGNAME_INDICATION = "indication";
@@ -76,7 +76,7 @@ public class MigrationService {
 	public static final String TAGNAME_NAME = "name";
 	public static final String TYPE_TREATMENT_PHOTOTHERAPY = "FOTOTERAPIA";
 
-	private static final String LOG_ERROR ="Template: {} PatientId: {} TagName: {} . Error: {}";
+	private static final String LOG_ERROR = "Template: {} PatientId: {} TagName: {} . Error: {}";
 
 	private final FormService formService;
 	private final PatientDiagnosisService patientDiagnosisService;
@@ -93,29 +93,29 @@ public class MigrationService {
 		List<FormDTO> formsDTO = formService.findByTemplate(TEMPLATE_DIAGNOSIS);
 
 		formsDTO
-		.forEach(f -> {
+				.forEach(f -> {
 
 			Optional<Patient> patient = patientRepository.findById(f.getPatientId().longValue());
 			if (patient.isPresent()) {
 				PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatient(patient.get());
-				Optional<Indication> indication = indicationRepository.findByDescription(obtainStringValue(f, TAGNAME_PSORIASIS_TYPE));
+				Optional<Indication> indication = indicationRepository.findByCode(obtainStringValue(f, TAGNAME_PRINCIPAL_INDICATION));
 
-				if (patientDiagnose == null) {
-					patientDiagnose = new PatientDiagnose();
-				}
+						if (patientDiagnose == null) {
+							patientDiagnose = new PatientDiagnose();
+						}
 
-				patientDiagnose.setPatient(patient.get());
-				patientDiagnose.setIndication(indication.orElse(null));
-				patientDiagnose.setOthersIndications(obtainStringValue(f, TAGNAME_ANOTHER_PSORIASIS));
-				patientDiagnose.setInitDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
-				patientDiagnose.setSymptomsDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_SYMPTOM));
-				patientDiagnose.setDerivationDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_DERIVATION));
-				patientDiagnose.setCieCode(obtainStringValue(f, TAGNAME_CIE_CODE));
-				patientDiagnose.setCieDescription(obtainStringValue(f, TAGNAME_CIE_DESCRIPTION));
+						patientDiagnose.setPatient(patient.get());
+						patientDiagnose.setIndication(indication.orElse(null));
+						patientDiagnose.setOthersIndications(obtainStringValue(f, TAGNAME_ANOTHER_PSORIASIS));
+						patientDiagnose.setInitDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_PRINCIPAL_DIAGNOSES));
+						patientDiagnose.setSymptomsDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_SYMPTOM));
+						patientDiagnose.setDerivationDate(obtainLocalDateTimeValue(f, TAGNAME_DATE_DERIVATION));
+						patientDiagnose.setCieCode(obtainStringValue(f, TAGNAME_CIE_CODE));
+						patientDiagnose.setCieDescription(obtainStringValue(f, TAGNAME_CIE_DESCRIPTION));
 
-				patientDiagnosisService.save(patientDiagnose);
-			}
-		});
+						patientDiagnosisService.save(patientDiagnose);
+					}
+				});
 
 		log.debug(END_DIAGNOSIS);
 	}
@@ -137,7 +137,7 @@ public class MigrationService {
 					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) formTreatments.getData().get(0).getValue();
 
 					// Mapeamos el HasMap de Mongo al modelo PatientTreatment
-					List<PatientTreatment>  patientTreatmentsMongo = patientTreatmentsInMongo
+					List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
 							.stream()
 							.map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, formTreatments))
 							.collect(Collectors.toList());
@@ -164,7 +164,7 @@ public class MigrationService {
 					ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) formTreatments.getData().get(0).getValue();
 
 					// Mapeamos el HasMap de Mongo al modelo PatientTreatment
-					List<PatientTreatment>  patientTreatmentsMongo = patientTreatmentsInMongo
+					List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
 							.stream()
 							.map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, formTreatments))
 							.collect(Collectors.toList());
@@ -183,7 +183,7 @@ public class MigrationService {
 		log.debug(END_TREATMENT);
 	}
 
-	private void deletePatientTreatmentInPostgres(List<PatientTreatment> patientTreatmentsPostgres, List<PatientTreatment> patientTreatmentsMongo){
+	private void deletePatientTreatmentInPostgres(List<PatientTreatment> patientTreatmentsPostgres, List<PatientTreatment> patientTreatmentsMongo) {
 		if (CollectionUtils.isNotEmpty(patientTreatmentsPostgres)) {
 
 			List<PatientTreatment> patientTreatmentsToDelete = patientTreatmentsPostgres.stream()
@@ -240,25 +240,25 @@ public class MigrationService {
 		});
 	}
 
-	private PatientTreatment getPatientTreatmentInMongo(LinkedHashMap<String, Object> patientTreatmentMongo, FormDTO formDTO){
+	private PatientTreatment getPatientTreatmentInMongo(LinkedHashMap<String, Object> patientTreatmentMongo, FormDTO formDTO) {
 
 		PatientTreatment patientTreatment = new PatientTreatment();
-		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo,TAGNAME_TYPE));
+		patientTreatment.setType(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_TYPE));
 		patientTreatment.setInitDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_START));
 		patientTreatment.setFinalDate(obtainLocalDateTimeValue(formDTO, patientTreatmentMongo, TAGNAME_DATE_SUSPENSION));
 		patientTreatment.setReason(obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_REASON_CHANGE_OR_SUSPENSION));
 
-		if (formDTO.getTemplate().equalsIgnoreCase(TEMPLATE_PHARMACOLOGY_TREATMENT)){
+		if (formDTO.getTemplate().equalsIgnoreCase(TEMPLATE_PHARMACOLOGY_TREATMENT)) {
 
-			Object  medicineString = getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
+			Object medicineString = getValueByTagName(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE);
 			if (medicineString != null && !StringUtils.isEmpty(medicineString.toString())) {
 				String medicineId = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_MEDICINE, "id");
 				Medicine medicine = medicineRepository.findById(Long.valueOf(medicineId)).orElse(null);
 				patientTreatment.setMedicine(medicine);
 			}
 
-			String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE,TAGNAME_NAME);
-			if (dose != null && dose.equals("Otra")){
+			String dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_DOSE, TAGNAME_NAME);
+			if (dose != null && dose.equals("Otra")) {
 				dose = obtainStringValue(formDTO, patientTreatmentMongo, TAGNAME_OTHERDOSE);
 			}
 			patientTreatment.setDose(dose);
@@ -268,9 +268,16 @@ public class MigrationService {
 		}
 
 		if (patientTreatmentMongo.get(TAGNAME_INDICATION) != null) {
-			Indication indication = indicationRepository.findByDescription(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
+			// TODO: Revisar cual se ha de usar
+			Indication indication = indicationRepository.findByCode(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
 			PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), indication.getId()).orElse(null) : null;
 			patientTreatment.setPatientDiagnose(patientDiagnose);
+//			List<FormDTO> formsDTO = formService.findByTemplateAndPatientId(TEMPLATE_DIAGNOSIS, formDTO.getPatientId());
+//			if (!CollectionUtils.isEmpty(formsDTO)) {
+//				Optional<Indication> indication = indicationRepository.findByCode(patientTreatmentMongo.get(TAGNAME_INDICATION).toString());
+//				PatientDiagnose patientDiagnose = indication.flatMap(value -> patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), value.getId())).orElse(null);
+//				patientTreatment.setPatientDiagnose(patientDiagnose);
+//			}
 		}
 
 		if (patientTreatment.getFinalDate() != null) {
@@ -284,7 +291,7 @@ public class MigrationService {
 		return patientTreatment;
 	}
 
-	private boolean isSamePatientTreatment(PatientTreatment patientTreatmentPostgres, PatientTreatment patientTreatmentMongo){
+	private boolean isSamePatientTreatment(PatientTreatment patientTreatmentPostgres, PatientTreatment patientTreatmentMongo) {
 		if (!TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatmentPostgres.getType())) {
 			return patientTreatmentPostgres.getPatientDiagnose() != null && patientTreatmentPostgres.getPatientDiagnose().getIndication() != null
 					&& patientTreatmentMongo.getPatientDiagnose() != null && patientTreatmentMongo.getPatientDiagnose().getIndication() != null
@@ -317,7 +324,7 @@ public class MigrationService {
 		} catch (Exception e) {
 			// Don't stop the migration, just inform the problem related to date
 			log.error(LOG_ERROR,
-						form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
+					form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
 			return null;
 		}
 	}
@@ -331,7 +338,7 @@ public class MigrationService {
 					.parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
 					.parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
 					.toFormatter();
-			if (result != null && result.toString().contains("T")){
+			if (result != null && result.toString().contains("T")) {
 				formatter = new DateTimeFormatterBuilder()
 						.appendPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 						.parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
@@ -348,31 +355,32 @@ public class MigrationService {
 		}
 	}
 
-	private String obtainStringValue(FormDTO form, String tagName){
+	private String obtainStringValue(FormDTO form, String tagName) {
 		String valueString = null;
 		try {
 			Object value = getValueByTagNameFromForm(form, tagName);
 			valueString = value != null ? value.toString() : null;
-		} catch (Exception e){
-			log.error(LOG_ERROR,
-						form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
-		}
-		return valueString;
-	}
-
-	private String obtainStringValue(FormDTO form, LinkedHashMap<String, Object> field, String tagName){
-		String valueString = null;
-		try {
-			Object value = getValueByTagName(form, field, tagName);
-			valueString = value != null ? value.toString() : null;
-		} catch (Exception e){
+		} catch (Exception e) {
 			log.error(LOG_ERROR,
 					form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
 		}
 		return valueString;
 	}
 
-	private String obtainStringValue(FormDTO form, LinkedHashMap<String, Object> field, String firtsTagName, String secondTagName){
+	private String obtainStringValue(FormDTO form, LinkedHashMap<String, Object> field, String tagName) {
+		String valueString = null;
+		try {
+			Object value = getValueByTagName(form, field, tagName);
+			valueString = value != null ? value.toString() : null;
+		} catch (Exception e) {
+			log.error(LOG_ERROR,
+					form.getTemplate(), form.getPatientId(), tagName, e.getMessage());
+		}
+		return valueString;
+	}
+
+	private String obtainStringValue(FormDTO form, LinkedHashMap<String, Object> field, String
+			firtsTagName, String secondTagName) {
 		String valueString = null;
 		try {
 			Object value = getValueByTagName(form, field, firtsTagName);
@@ -380,7 +388,7 @@ public class MigrationService {
 				value = getValueByTagName(form, (LinkedHashMap<String, Object>) value, secondTagName);
 				valueString = value != null ? value.toString() : null;
 			}
-		} catch (Exception e){
+		} catch (Exception e) {
 			log.error(LOG_ERROR,
 					form.getTemplate(), form.getPatientId(), firtsTagName, e.getMessage());
 		}
@@ -393,10 +401,9 @@ public class MigrationService {
 				.findFirst();
 		if (result.isPresent()) {
 			return result.get().getValue();
-		}
-		else {
+		} else {
 			log.error("Template: {} PatientId: {} Error: No se ha encontrado la etiqueta: {}",
-						form.getTemplate(), form.getPatientId(), tagName);
+					form.getTemplate(), form.getPatientId(), tagName);
 			return null;
 		}
 	}

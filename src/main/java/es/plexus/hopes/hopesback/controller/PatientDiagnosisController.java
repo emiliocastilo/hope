@@ -143,9 +143,9 @@ public class PatientDiagnosisController {
 			@RequestParam final String cieDescription,
 			@ApiParam(value = "Identificador del hospital de la sesión", example = "1", required = true)
 			@RequestParam(value = "hospitalId") final Long hospitalId,
-			@PageableDefault(size = 5) Pageable pageable) {
+			@PageableDefault(size = 5) Pageable page) {
 		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findGraphPatientsDetailsByCie(cieDescription, hospitalId, pageable);
+		return patientDiagnosisService.findGraphPatientsDetailsByCie(cieDescription, hospitalId, page);
 	}
 
 	@ApiOperation("Listado de pacientes por cie - Información Diagnóstico")

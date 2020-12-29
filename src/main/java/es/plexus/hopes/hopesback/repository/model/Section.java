@@ -22,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -69,12 +68,6 @@ public class Section {
 	@ManyToOne
 	@JoinColumn(name = "sec_section_root", referencedColumnName = "sec_id")
 	private Section fatherSection;
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "sections_forms",
-			joinColumns = @JoinColumn(name = "scf_section_id"),
-			inverseJoinColumns = @JoinColumn(name = "scf_form_id"))
-	private Set<Form> forms = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "sections_roles",

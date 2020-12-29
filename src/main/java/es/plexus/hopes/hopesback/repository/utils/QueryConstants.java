@@ -58,8 +58,10 @@ public class QueryConstants {
 					"group by pt.id, pt.patientDiagnose";
 
 	public static final String QUERY_FIND_RESULTS_BY_TYPES =
-			SELECT_HO_FROM_HEALTHOUTCOME_HO + 
-			"where ho.indexType = :type ";
+			"select new es.plexus.hopes.hopesback.repository.model.HealthOutcome(max(ho.id) , " +
+			"ho.patient, ho.indexType, max(ho.value), ho.result, max(ho.date )) from HealthOutcome ho " +
+			"where ho.indexType = :type " +
+			"group by ho.patient,  ho.indexType, ho.result";
 	
 	public static final String QUERY_FIND_INFO_PATIENTS_DOSES = 
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
@@ -132,6 +134,9 @@ public class QueryConstants {
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
 					"join Cie10 c on c.code = pdg.cieCode";
 
+	public static final String QUERY_PATIENTS_DIAGNOSE_BY_PATIENT_ID =
+			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
+					WHERE_CLAUSULE + " pdg.patient.id = :patientId";
 
 	public static final String SELECT_PATIENT = "select pat " +
 			"from Patient pat ";
@@ -147,7 +152,7 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_BY_INDICATIONS =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
-			"where pdg.indication.description = :indication ";
+			"where UPPER(pdg.indication.code) = UPPER(:indication) ";
 
 	public static final String QUERY_PATIENTS_BY_CIE_9 =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
@@ -222,6 +227,8 @@ public class QueryConstants {
 			JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
 			WHERE_CLAUSULE +
 					"pat.id in (:patientsIds)";
+
+	public static final String QUERY_FIND_PATIENTS_BY_IDS = SELECT_PATIENT + WHERE_CLAUSULE + "pat.id in (:patientsIds)";
 
 	public static final String FILTER_PTR_ACTIVE_TRUE = "ptr.active = true ";
 	public static final String QUERY_PATIENTS_BY_COMBINED_TREATMENTS =
@@ -309,6 +316,15 @@ public class QueryConstants {
 					WHERE_PT_ACTIVE_TRUE +
 					"and p.id = :patId ";
 
+	public static final String QUERY_FIND_PATIENT_BY_CLINICAL_DATA =
+			" select pdc from PatientClinicalData pdc join Patient pat on pdc.patient.id = pat.id ";
+	public static final String FILTER_PCD_NAME = " upper(pdc.name) = upper(:name) ";
+	public static final String FILTER_PCD_PATIENT_ID = " pat.id = :patientId ";
+	public static final String FILTER_PCD_VALUE_LIKE = " upper(pdc.value) like upper(:value) ";
+	public static final String FILTER_PCD_VALUE_MINUS_THAN = " pdc.value < :value ";
+	public static final String FILTER_PCD_VALUE_MORE_THAN = " pdc.value > :value ";
+	public static final String FILTER_PCD_VALUE_MORE_BETWEEN = " pdc.value between  :minValue and :maxValue ";
+	
 	public static final String QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE =
 			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( p.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount) " +
 					"from Patient p " +
@@ -317,4 +333,5 @@ public class QueryConstants {
 					"join Medicine m on pt.medicine.id = m.id " +
 					"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) " +
 					"group by  p.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount ";
+
 }
