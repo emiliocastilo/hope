@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @ApiModel
@@ -93,4 +95,16 @@ public class MedicineDTO extends AbstractAudit {
 
     @ApiModelProperty(position = 240, example = "Iniston", value = "Marca del medicamento")
     private String brand;
+
+    @ApiModelProperty(position = 250, example = "Fluocinolona acetónido con antibióticos", value = "Tipo Código ATC del medicamento")
+    private String codeActType;
+
+    @ApiModelProperty(position = 260, example = "1", value = "MG de las unidades del medicamneto")
+    private BigDecimal unitDose;
+
+    @ApiModelProperty(position = 270, example = "QUÍMICO", value = "Tratamiento asociado al medicamento")
+    private String treatmentType;
+
+    @ApiModelProperty(position = 280, example = "DERMATOLOGÍA", value = "Patologías asociadas al medicamento")
+    private Set<PathologyDTO> pathologies = new HashSet<>();
 }
