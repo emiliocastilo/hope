@@ -38,11 +38,11 @@ public class PatientDashBoardControllerTest {
 	public void callFindDashboardPatientByPatientIdShouldBeStatusOk() {
 
 		// given
-		given(patientDashboardService.findDashboardPatientByPatientId(anyLong()))
+		given(patientDashboardService.findDashboardPatientByPatientId(anyLong(), anyString()))
 				.willReturn(mockPatientDashboardDetailDTO());
 
 		PatientDashboardDetailDTO response = patientDashBoardController
-				.findDashboardPatientByPatientId(3L);
+				.findDashboardPatientByPatientId(3L, "token");
 
 		// then
 		Assert.assertNotNull(response);
@@ -51,10 +51,10 @@ public class PatientDashBoardControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindDashboardPatientByPatientIdThrowException() throws ServiceException {
 		// given
-		given(patientDashboardService.findDashboardPatientByPatientId(anyLong()))
+		given(patientDashboardService.findDashboardPatientByPatientId(anyLong(), anyString()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
-		patientDashBoardController.findDashboardPatientByPatientId(3L);
+		patientDashBoardController.findDashboardPatientByPatientId(3L, "token");
 
 	}
 
