@@ -1,0 +1,9 @@
+{
+  "key": "treatment-vih",
+  "form": "[{'type':'title','name':'Tratamientos'},{'type':'input','label':'Indicación','name':'indication'},{'type':'input','label':'Familia','name':'family'},{'type':'input','label':'Código ATC','name':'atc'},{'type':'input','label':'Código Nacional','name':'cn'},{'type':'input','label':'Via','name':'tract'},{'type':'input','label':'Dosis','name':'dose'},{'type':'input','label':'Otra dosis','name':'otherDosis'},{'type':'input','label':'Régimen','name':'regimenTreatment'},{'type':'datepicker','label':'Fecha de prescripcion','name':'datePrescription'},{'type':'datepicker','label':'Fecha de inicio','name':'dateStart'},{'type':'datepicker','label':'Fecha fin prevista','name':'expectedEndDate'},{'type':'input','label':'Observaciones','name':'observations'},{'type':'checkbox','label':'Continuo','name':'treatmentContinue'},{'type':'checkbox','label':'Pulsátil','name':'treatmentPulsatil'},{'type':'input','name':'reasonChangeOrSuspension','label':'Razón'},{'type':'datepicker','name':'dateSuspension','label':'Fecha de suspensión'},{'type':'input','name':'principle','label':'Principio Activo'},{'type':'input','name':'brand','label':'Marca'},{'type':'input','name':'type','label':'Tipo'}]",
+  "buttons": "['save']",
+  "historify": false,
+  "isTable": null,
+  "nameHistoricalDate": null,
+  "fieldsToGraph": null
+}
