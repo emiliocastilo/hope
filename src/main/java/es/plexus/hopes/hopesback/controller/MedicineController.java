@@ -94,7 +94,8 @@ public class MedicineController {
 	public Page<MedicineDTO> findBySearch(
 			@ApiParam(value = "buscador")
 			@RequestParam(value = "search", required = false, defaultValue = "") final String search,
-			@ApiParam(value = "family") final String family,
+			@ApiParam(value = "family")
+			@RequestParam(value = "family", required = false) final String family,
 			@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return medicineService.findMedicinesBySearchOrSearchAndFamily(search, family, pageable);
