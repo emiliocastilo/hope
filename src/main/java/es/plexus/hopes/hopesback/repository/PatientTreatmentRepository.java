@@ -53,8 +53,11 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	@Query(QueryConstants.QUERY_ALL_BIOLOGICAL_TREATMENTS_BY_PATIENT_ID)
 	List<PatientTreatment> findBiologicalTreatmentsByPatientId(@Param("patId") Long patId);
 
-	@Query(QueryConstants.QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID)
+	@Query(QueryConstants.QUERY_ALL_FAME_DERMA_TREATMENTS_BY_PATIENT_ID)
 	List<PatientTreatment> findFameTreatmentsByPatientId(@Param("patId") Long patId);
+
+	@Query(QueryConstants.QUERY_ALL_VIH_TREATMENTS_BY_PATIENT_ID)
+	List<PatientTreatment> findVIHTreatmentsByPatientIdAndType(@Param("patId") Long patId, @Param("type") String type);
 
 	Optional<PatientTreatment> findByPatientDiagnoseAndMedicineAndInitDateAndTypeIgnoreCase(PatientDiagnose patientDiagnose, Medicine medicine, LocalDateTime initDateTreatment, String treatmentType);
 

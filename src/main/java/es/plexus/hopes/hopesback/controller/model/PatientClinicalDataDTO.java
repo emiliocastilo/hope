@@ -3,6 +3,9 @@ package es.plexus.hopes.hopesback.controller.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Data
 @ApiModel
@@ -25,4 +28,8 @@ public class PatientClinicalDataDTO {
 
     @ApiModelProperty(position = 50, example = "COLERA", value = "Descripción CIE")
     private String classification;
+
+    @ApiModelProperty(position = 20, example = "1981-01-01T00:00:00Z", value = "Fecha del dato")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime date;
 }

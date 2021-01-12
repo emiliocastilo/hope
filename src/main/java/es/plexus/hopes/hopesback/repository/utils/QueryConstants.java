@@ -66,7 +66,7 @@ public class QueryConstants {
 	public static final String QUERY_FIND_INFO_PATIENTS_DOSES = 
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					WHERE_PT_ACTIVE_TRUE;
-	
+
 	public static final String WHERE_CLAUSULE = "where ";
 
 
@@ -298,12 +298,26 @@ public class QueryConstants {
 					"and LOWER(pt.type) = 'biologico' " +
 					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
 
-	public static final String QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID =
+	public static final String QUERY_ALL_FAME_DERMA_TREATMENTS_BY_PATIENT_ID =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+					"join Indication i on pd.indication.id = i.id " +
+					"join Pathology p on i.pathologyId = p.id " +
 					WHERE_CLAUSULE +
 					" pd.patient.id = :patId " +
 					"and LOWER(pt.type) <> 'biologico' " +
+					"and LOWER(p.name) not like CONCAT('%','vih','%')" +
+					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
+
+	public static final String QUERY_ALL_VIH_TREATMENTS_BY_PATIENT_ID =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+					"join Indication i on pd.indication.id = i.id " +
+					"join Pathology p on i.pathologyId = p.id " +
+					WHERE_CLAUSULE +
+					" pd.patient.id = :patId " +
+					"and LOWER(pt.type) = LOWE(:type) " +
+					"and LOWER(p.name) like CONCAT('%','vih','%')" +
 					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
 
 	public static final String QUERY_FIND_DISPENSATION_DETAILS_BY_PATIENT_ID =

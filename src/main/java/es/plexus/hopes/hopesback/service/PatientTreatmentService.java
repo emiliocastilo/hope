@@ -27,6 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_BIOLOGICAL;
+import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_CHEMICAL;
 import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_FAME;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
@@ -274,6 +275,16 @@ public class PatientTreatmentService {
 		List<PatientTreatment> patientFameTreatmentList = patientTreatmentRepository
 															.findFameTreatmentsByPatientId(patId);
 		map.put(TYPE_TREATMENT_FAME,patientFameTreatmentList.stream()
+				.map(Mappers.getMapper(PatientTreatmentMapper.class)::entityToTreatmentDTO)
+				.collect(Collectors.toList()));
+		return map;
+	}
+
+	public Map<String,List<TreatmentDTO>> findVIHTreatmentsByPatientId(Long patId) {
+		Map<String, List<TreatmentDTO>> map = new HashMap<>();
+		List<PatientTreatment> patientFameTreatmentList = patientTreatmentRepository
+				.findVIHTreatmentsByPatientIdAndType(patId, TYPE_TREATMENT_CHEMICAL);
+		map.put(TYPE_TREATMENT_CHEMICAL,patientFameTreatmentList.stream()
 				.map(Mappers.getMapper(PatientTreatmentMapper.class)::entityToTreatmentDTO)
 				.collect(Collectors.toList()));
 		return map;
