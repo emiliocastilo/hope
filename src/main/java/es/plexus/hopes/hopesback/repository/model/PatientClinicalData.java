@@ -1,16 +1,10 @@
 package es.plexus.hopes.hopesback.repository.model;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -37,7 +31,11 @@ public class PatientClinicalData {
     @Column(name = "pcd_classification")
     private String classification;
 
-    public PatientClinicalData(Long id, Long patientId, String name, String value, String description, String classification) {
+    @Basic
+    @Column(name = "pcd_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime date;
+
+    public PatientClinicalData(Long id, Long patientId, String name, String value, String description, String classification, LocalDateTime date) {
         Patient patientAux = new Patient();
         patientAux.setId(patientId);
         this.id = id;
@@ -46,6 +44,7 @@ public class PatientClinicalData {
         this.value = value;
         this.description = description;
         this.classification = classification;
+        this.date = date;
     }
 
     public PatientClinicalData() {

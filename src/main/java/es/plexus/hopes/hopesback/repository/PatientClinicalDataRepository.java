@@ -33,7 +33,7 @@ public interface PatientClinicalDataRepository extends JpaRepository<PatientClin
 
     List<PatientClinicalData> findByNameLikeIgnoreCaseAndValueLikeIgnoreCase(String type, String indication);
 
-    @Query("SELECT new es.plexus.hopes.hopesback.repository.model.PatientClinicalData( pcd.id, p.id, pcd.name, pcd.value, pcd.description, pcd.classification) " +
+    @Query("SELECT new es.plexus.hopes.hopesback.repository.model.PatientClinicalData( pcd.id, p.id, pcd.name, pcd.value, pcd.description, pcd.classification, pcd.date) " +
             "from Patient p inner join PatientClinicalData pcd on pcd.patient.id = p.id " +
             "where lower(pcd.name) = lower(:name) and p.id = :patientId")
     List<PatientClinicalData> obtainPatientsClinicalDataByNameAndPatientId(@Param("name") String nameType, @Param("patientId") Long patientId);
