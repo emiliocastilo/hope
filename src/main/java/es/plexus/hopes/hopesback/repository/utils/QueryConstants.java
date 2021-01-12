@@ -326,7 +326,7 @@ public class QueryConstants {
 	public static final String FILTER_PCD_VALUE_MORE_BETWEEN = " pdc.value between  :minValue and :maxValue ";
 	
 	public static final String QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE =
-			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( dd.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount, m.unitDose) " +
+			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( dd.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount, m.unitDose, dd.botCode) " +
 					"from Medicine m " +
 					"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) ";
 
