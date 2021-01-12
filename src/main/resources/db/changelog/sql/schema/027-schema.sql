@@ -6,6 +6,7 @@ CREATE TABLE hopes.patients_clinical_data(
 	pcd_value VARCHAR(50),
 	pcd_description VARCHAR(50),
 	pcd_classification VARCHAR(50),
+	pcd_date TIMESTAMP,
 	CONSTRAINT pcd_id_pk PRIMARY KEY(pcd_id),
 	CONSTRAINT pcd_pac_id_fk FOREIGN KEY (pcd_pac_id) REFERENCES hopes.patients (pac_id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE RESTRICT
 );
