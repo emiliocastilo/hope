@@ -23,4 +23,9 @@ public class PatientDashboardDetailDTO {
 			value = "Adherencia al tratamiento del paciente. Listado de veces que ha recogido la medicación")
 	List<AdherenceDTO> adherence;
 
+	@ApiModelProperty(position = 10,
+			example = "{'CVP':['date':'1981-01-01T00:00:00Z', 'value':'2.5'], 'CD4':['date':'1981-01-01T00:00:00Z', 'value':'2.5']}",
+			value = "Evolución de los índices del paciente VIH")
+	Map<String, List<PatientClinicalDataDTO>> graphClinicalData;
+
 }

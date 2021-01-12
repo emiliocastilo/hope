@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,9 +34,10 @@ public class PatientDashboardController {
 	@ApiOperation("Obtiene el cuadro de mandos del paciente")
 	@GetMapping("/{id}")
 	public PatientDashboardDetailDTO findDashboardPatientByPatientId(
-			@ApiParam(value = "Id del paciente", example = "1L", required = true) @PathVariable Long id) {
+			@ApiParam(value = "Id del paciente", example = "1L", required = true) @PathVariable Long id,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientDashboardService.findDashboardPatientByPatientId(id);
+		return patientDashboardService.findDashboardPatientByPatientId(id, token);
 	}
 
 	@ApiOperation("Listado de valores de salud por tipo índice por paciente")

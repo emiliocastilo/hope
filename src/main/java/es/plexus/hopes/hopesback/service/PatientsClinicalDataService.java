@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.service;
 
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientClinicalDataDTO;
 import es.plexus.hopes.hopesback.repository.PatientClinicalDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
@@ -11,12 +12,14 @@ import es.plexus.hopes.hopesback.repository.model.PatientClinicalData;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import lombok.RequiredArgsConstructor;
+import es.plexus.hopes.hopesback.service.mapper.PatientClinicalDataMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.*;
 import static java.util.stream.Collectors.*;
@@ -64,6 +67,21 @@ public class PatientsClinicalDataService {
         patientsClinicalData = patients.stream().collect(groupingBy(PatientClinicalData::getValue, counting()));
 
         return patientsClinicalData;
+    }
+
+    public Map<String, List<PatientClinicalDataDTO>> findEvolutionClinicalDataByNameAndPatient(String nameTypes, Long patId) {
+        Map <String,List<PatientClinicalDataDTO>> mapEvolutionClinicalDataGraph = new HashMap<>();
+
+        Arrays.stream(nameTypes.replace(" ","").split(",")).forEach(nameType ->{
+
+            List<PatientClinicalData> clinicalDataResultList = patientClinicalDataRepository
+                    .obtainPatientsClinicalDataByNameAndPatientId(nameType, patId);
+            mapEvolutionClinicalDataGraph.put(nameType,clinicalDataResultList.stream()
+                    .map(PatientClinicalDataMapper.INSTANCE::entityToDto)
+                    .collect(Collectors.toList()));
+        });
+
+        return mapEvolutionClinicalDataGraph;
     }
 
     private String getTextByNameAndValue(String name, Long value) {
