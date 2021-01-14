@@ -5,8 +5,10 @@ import es.plexus.hopes.hopesback.controller.model.DoseDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
 import es.plexus.hopes.hopesback.repository.DoseRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
+import es.plexus.hopes.hopesback.repository.PathologyRepository;
 import es.plexus.hopes.hopesback.repository.model.Dose;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.DoseMapper;
@@ -45,6 +47,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -58,6 +61,7 @@ public class MedicineService {
 
 	private final MedicineRepository medicineRepository;
 	private final DoseRepository doseRepository;
+	private final PathologyRepository pathologyRepository;
 
 	public MedicineDTO save(MedicineDTO medicineDto) throws ServiceException {
 		Medicine medicine = MedicineMapper.INSTANCE.dtoToEntity(medicineDto);
@@ -100,7 +104,13 @@ public class MedicineService {
 			for (Cell cell : row) {
 				if (row.getRowNum() != 0) {
 					if (cell.getColumnIndex() == DoseExcelColumns.CODE_ACT.getNumber()) {
-						dose.setCodeAtc(cell.getStringCellValue());
+						String[] codeActPlusType = cell.getStringCellValue().toUpperCase().split("-");
+						codeActPlusType[0] = codeActPlusType[0].trim();
+						if (codeActPlusType.length > 1) {
+							codeActPlusType[1] = codeActPlusType[1].replaceFirst("^\\\\s+", "");
+							dose.setCodeAtcType(codeActPlusType[1]);
+						}
+						dose.setCodeAtc(codeActPlusType[0]);
 					} else if (cell.getColumnIndex() == DoseExcelColumns.DESCRIPTION.getNumber()) {
 						dose.setDescription(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == DoseExcelColumns.DOSE_INDICATED.getNumber()) {
@@ -130,7 +140,7 @@ public class MedicineService {
 				//Suponemos que nunca se cambiarán las columnas de sitio
 				if (row.getRowNum() != 0) {
 					if (cell.getColumnIndex() == MedicineExcelColumns.NATIONAL_CODE.getNumber()) {
-						medicine.setNationalCode(String.valueOf((int) cell.getNumericCellValue()));
+						medicine.setNationalCode(cell.getCellType() == CellType.STRING ? cell.getStringCellValue() : String.valueOf((int) cell.getNumericCellValue()));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.ACT_INGREDIENTS.getNumber()) {
 						medicine.setActIngredients(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.ACRONYM.getNumber()) {
@@ -142,7 +152,13 @@ public class MedicineService {
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PRESENTATION.getNumber()) {
 						medicine.setPresentation(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.CODE_ACT.getNumber()) {
-						medicine.setCodeAct(cell.getStringCellValue());
+						String[] codeActPlusType = cell.getStringCellValue().toUpperCase().split("-");
+						codeActPlusType[0] = codeActPlusType[0].trim();
+						if (codeActPlusType.length > 1) {
+							codeActPlusType[1] = codeActPlusType[1].replaceFirst("^\\\\s+", "");
+							medicine.setCodeActType(codeActPlusType[1]);
+						}
+						medicine.setCodeAct(codeActPlusType[0]);
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.AUTHORIZATION_DATE.getNumber()) {
 						if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
 							medicine.setAuthorizationDate(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
@@ -175,24 +191,37 @@ public class MedicineService {
 						medicine.setViaAdministration(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.BRAND.getNumber()) {
 						medicine.setBrand(cell.getStringCellValue());
-					} else if (cell.getColumnIndex() == MedicineExcelColumns.UNITS.getNumber()) {
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.UNITS_CONT.getNumber()) {
 						medicine.setUnits(BigDecimal.valueOf(cell.getNumericCellValue()));
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.UNITS_DOSE.getNumber()) {
+						medicine.setUnitDose(BigDecimal.valueOf(cell.getNumericCellValue()));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PVL.getNumber()) {
 						medicine.setPvl(BigDecimal.valueOf(cell.getNumericCellValue()));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PVP.getNumber()) {
 						medicine.setPvp(BigDecimal.valueOf(cell.getNumericCellValue()));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PATHOLOGY.getNumber()) {
-						medicine.setPathology(cell.getStringCellValue());
+						String[] pathologyNames = cell.getStringCellValue().toUpperCase().trim().split("/");
+						for(int i = 0; i < pathologyNames.length; ++i) {
+							if (pathologyNames[i].equalsIgnoreCase("DERMA")){
+								pathologyNames[i] = "DERMATOLOGÍA";
+							} else if (pathologyNames[i].equalsIgnoreCase("REUMA")){
+								pathologyNames[i] = "REUMATOLOGÍA";
+							}
+						}
+						Set<Pathology> pathologies = pathologyRepository.findByNameInIgnoreCase(pathologyNames);
+						medicine.setPathologies(pathologies);
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.FAMILY.getNumber()) {
-						medicine.setFamily(cell.getStringCellValue());
-						medicine.setBiologic(medicine.getFamily().contains("BIOLÓGICO"));
+						medicine.setFamily(cell.getStringCellValue().toUpperCase());
+						medicine.setBiologic(medicine.getFamily().contains("BIOLÓGICO") || medicine.getFamily().contains("BIOLÓGICOS"));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.SUBFAMILY.getNumber()) {
 						medicine.setSubfamily(cell.getStringCellValue());
+					} else if (cell.getColumnIndex() == MedicineExcelColumns.TREATMENT_TYPE.getNumber()) {
+						medicine.setTreatmentType(cell.getStringCellValue().toUpperCase());
 					}
 				}
 			}
 			if (row.getRowNum() != 0) {
-				if (BigDecimal.ZERO.compareTo(medicine.getUnits()) != 0) {
+				if (medicine.getPvl() != null && BigDecimal.ZERO.compareTo(medicine.getUnits()) != 0) {
 					medicine.setPvlUnitary(medicine.getPvl().divide(medicine.getUnits(), 2, RoundingMode.UP));
 				}
 

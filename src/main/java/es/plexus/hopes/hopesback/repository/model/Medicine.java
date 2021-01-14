@@ -8,9 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -28,6 +33,9 @@ public class Medicine extends AbstractAudit {
     @Basic
     @Column(name = "med_code_act", nullable = false, length = 7)
     private String codeAct;
+
+    @Column(name = "med_code_act_type", nullable = false, length = 100)
+    private String codeActType;
 
     @Basic
     @Column(name = "med_acronym", length = 15)
@@ -98,10 +106,6 @@ public class Medicine extends AbstractAudit {
     private BigDecimal pvp;
 
     @Basic
-    @Column(name = "med_pathology", length = 150)
-    private String pathology;
-
-    @Basic
     @Column(name = "med_biologic", nullable = false)
     private boolean biologic;
 
@@ -112,5 +116,17 @@ public class Medicine extends AbstractAudit {
     @Basic
     @Column(name = "med_subfamily", length = 150)
     private String subfamily;
+
+    @Column(name = "med_unit_dose")
+    private BigDecimal unitDose;
+
+    @Column(name = "med_treatment_type", length = 150)
+    private String treatmentType;
+
+    @ManyToMany
+    @JoinTable(name = "medicines_pathologies",
+            joinColumns = @JoinColumn(name = "mdp_med_id"),
+            inverseJoinColumns = @JoinColumn(name = "mdp_pth_id"))
+    private Set<Pathology> pathologies = new HashSet<>();
 
 }
