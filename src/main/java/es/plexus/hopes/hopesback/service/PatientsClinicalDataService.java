@@ -1,19 +1,18 @@
 package es.plexus.hopes.hopesback.service;
 
 
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientClinicalDataDTO;
+import es.plexus.hopes.hopesback.controller.model.*;
 import es.plexus.hopes.hopesback.repository.PatientClinicalDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientClinicalData;
-import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
-import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import es.plexus.hopes.hopesback.repository.model.*;
+import es.plexus.hopes.hopesback.service.mapper.DispensationMapper;
+import es.plexus.hopes.hopesback.service.mapper.SectionMapper;
 import lombok.RequiredArgsConstructor;
 import es.plexus.hopes.hopesback.service.mapper.PatientClinicalDataMapper;
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,7 @@ import static java.util.stream.Collectors.*;
 @RequiredArgsConstructor
 public class PatientsClinicalDataService {
 
+    private static final String CALLING_DB = "Calling BD...";
 
     private static final String PATIENS_BY_CVP_LESSER_THAN_20 = "<20";
     private static final String PATIENS_BY_CVP_BETWEEN_20_AND_50 = "<Entre 20 y <50";
@@ -178,5 +178,15 @@ public class PatientsClinicalDataService {
             return indication.replace(" )", "+)");
         }
         return indication;
+    }
+
+    public PatientClinicalDataDTO save(PatientClinicalDataDTO patientClinicalDataDTO) {
+        if(Objects.nonNull(patientClinicalDataDTO)){
+            log.debug(CALLING_DB);
+            PatientClinicalData pcd = patientClinicalDataRepository.save(PatientClinicalDataMapper.INSTANCE.patientClinicalDataDtoToEntity(patientClinicalDataDTO));
+            return PatientClinicalDataMapper.INSTANCE.entityToDto(patientClinicalDataRepository.save(pcd));
+        } else{
+            throw new ServiceException("Error: Object is null");
+        }
     }
 }

@@ -8,6 +8,7 @@ import es.plexus.hopes.hopesback.controller.model.TemplateDTO;
 import es.plexus.hopes.hopesback.repository.FormMongoRepository;
 import es.plexus.hopes.hopesback.repository.model.FormMongo;
 import es.plexus.hopes.hopesback.service.events.GraphsEvent;
+import es.plexus.hopes.hopesback.service.events.SaveEvent;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.FormMapper;
 import lombok.extern.log4j.Log4j2;
@@ -78,6 +79,10 @@ public class FormService {
 
 
         updateDataInDynamicForms(formDto, user, formMongo, stringDate);
+
+        if ( null != formMongo){
+            publisher.publishEvent(new SaveEvent(templateDto.getKey(), formDto.getPatientId(), formDto));
+        }
     }
 
     public FormDTO findFormByTemplateAndPatientId(String template, Integer patientId) {
