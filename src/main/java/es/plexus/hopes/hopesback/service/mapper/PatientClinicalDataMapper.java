@@ -10,4 +10,6 @@ public interface PatientClinicalDataMapper {
     PatientClinicalDataMapper INSTANCE = Mappers.getMapper(PatientClinicalDataMapper.class);
 
     PatientClinicalDataDTO entityToDto(PatientClinicalData entity);
+
+    PatientClinicalData patientClinicalDataDtoToEntity(PatientClinicalDataDTO dto);
 }
