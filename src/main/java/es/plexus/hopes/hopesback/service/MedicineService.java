@@ -30,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -53,6 +54,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MedicineService {
 
 	private static final String CALLING_DB = "Llamando a la DB...";
@@ -78,7 +80,7 @@ public class MedicineService {
 
 		// Creamos un fichero de errores
 		try {
-			Path newFolder = Paths.get("src", "main","resources", "logs","excel");
+			Path newFolder = Paths.get("src", "main", "resources", "logs", "excel");
 			Files.createDirectories(newFolder);
 			File fileLog = new File(newFolder + "/medicineAndDoses-Log.txt");
 
@@ -92,7 +94,7 @@ public class MedicineService {
 			}
 
 			bufferedWriter.close();
-		} catch (IOException e){
+		} catch (IOException e) {
 			throw ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception(e.getMessage());
 		}
 
@@ -201,10 +203,10 @@ public class MedicineService {
 						medicine.setPvp(BigDecimal.valueOf(cell.getNumericCellValue()));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PATHOLOGY.getNumber()) {
 						String[] pathologyNames = cell.getStringCellValue().toUpperCase().trim().split("/");
-						for(int i = 0; i < pathologyNames.length; ++i) {
-							if (pathologyNames[i].equalsIgnoreCase("DERMA")){
+						for (int i = 0; i < pathologyNames.length; ++i) {
+							if (pathologyNames[i].equalsIgnoreCase("DERMA")) {
 								pathologyNames[i] = "DERMATOLOGÍA";
-							} else if (pathologyNames[i].equalsIgnoreCase("REUMA")){
+							} else if (pathologyNames[i].equalsIgnoreCase("REUMA")) {
 								pathologyNames[i] = "REUMATOLOGÍA";
 							}
 						}
@@ -261,7 +263,7 @@ public class MedicineService {
 		MedicineDTO medicineDto = null;
 		log.debug(CALLING_DB);
 		Medicine dispensationDetail = medicineRepository.findById(id).orElse(null);
-		if(Objects.nonNull(dispensationDetail)) {
+		if (Objects.nonNull(dispensationDetail)) {
 			medicineDto = Optional.of(MedicineMapper.INSTANCE.entityToDto(dispensationDetail)).get();
 		}
 		return medicineDto;
