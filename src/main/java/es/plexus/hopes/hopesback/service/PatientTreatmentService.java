@@ -4,6 +4,7 @@ import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
+import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
@@ -36,6 +37,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PatientTreatmentService {
 
 	private static final String CALLING_DB = "Calling DB...";
@@ -123,6 +125,17 @@ public class PatientTreatmentService {
 		return infoPatientsDosesList
 				.stream()
 				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
+	}
+
+	public Map<Medicine, Map<String, Long>> findInfoPatientsDosesMedicines() {
+		log.debug(CALLING_DB);
+		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
+		for (PatientTreatment pt : infoPatientsDosesList) {
+			if(pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
+		}
+		return infoPatientsDosesList
+				.stream()
+				.collect(Collectors.groupingBy(PatientTreatment::getMedicine,Collectors.groupingBy(PatientTreatment::getRegimen,Collectors.counting())));
 	}
 
 	@Transactional
