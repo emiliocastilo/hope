@@ -228,7 +228,8 @@ public class MedicineService {
 				}
 
 				medicineRepository.findByNationalCode(medicine.getNationalCode()).ifPresent(medicineToUpdate -> medicine.setId(medicineToUpdate.getId()));
-				medicineRepository.save(medicine);
+				if ( medicine.getAcronym() != null && medicine.getNationalCode() != null && medicine.getDescription() != null)
+					medicineRepository.save(medicine);
 			}
 		} catch (IllegalStateException | DateTimeParseException e) {
 			bufferedWriter.write(LocalDateTime.now() + " ERROR " + getClass().getName() + " - En la fila del excel de Medicamentos: " + row.getRowNum() + " " + Throwables.getStackTraceAsString(e));
