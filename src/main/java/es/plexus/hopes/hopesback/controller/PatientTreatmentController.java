@@ -28,7 +28,7 @@ public class PatientTreatmentController {
 	
 	static final String FIND_PATIENTS_UDER_TREATMENT = "/find-patients-under-treatment";
 	static final String FIND_INFO_PATIENTS_DOSES = "/find-info-patients-doses";
-	static final String FIND_INFO_PATIENTS_DOSES_MEDECINE_DOSIS = "/find-info-patients-doses-medicines";
+	static final String FIND_INFO_PATIENTS_DOSES_MEDICINE_DOSIS = "/find-info-patients-doses-medicines";
 	static final String GET_DETAIL_PATIENTS_UDER_TREATMENT = "/get-detail-patients-under-treatment";
 	static final String GET_DETAIL_PATIENTS_UDER_TREATMENT_EXPORT= "/get-detail-patients-under-treatment-export";
 	static final String GET_DETAIL_PATIENTS_PER_DOSES = "/get-detail-patients-per-doses";
@@ -45,14 +45,14 @@ public class PatientTreatmentController {
 	}
 	
 	@ApiOperation("Recuperar los relacion de dosis - paciente")
-	@GetMapping(FIND_INFO_PATIENTS_DOSES_MEDECINE_DOSIS)
+	@GetMapping(FIND_INFO_PATIENTS_DOSES)
 	public Map<String, Long> findInfoPatientsDoses() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findInfoPatientsDoses();
 	}
 
 	@ApiOperation("Recuperar los relacion de dosis - paciente y Medicina")
-	@GetMapping(FIND_INFO_PATIENTS_DOSES)
+	@GetMapping(FIND_INFO_PATIENTS_DOSES_MEDICINE_DOSIS)
 	public List<MedicineDosis> findInfoPatientsDosesMedicine() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findInfoPatientsDosesMedicines();
