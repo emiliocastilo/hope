@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import io.swagger.annotations.Api;
@@ -44,15 +45,15 @@ public class PatientTreatmentController {
 	}
 	
 	@ApiOperation("Recuperar los relacion de dosis - paciente")
-	@GetMapping(FIND_INFO_PATIENTS_DOSES)
+	@GetMapping(FIND_INFO_PATIENTS_DOSES_MEDECINE_DOSIS)
 	public Map<String, Long> findInfoPatientsDoses() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findInfoPatientsDoses();
 	}
 
 	@ApiOperation("Recuperar los relacion de dosis - paciente y Medicina")
-	@GetMapping(FIND_INFO_PATIENTS_DOSES_MEDECINE_DOSIS)
-	public Map<Medicine,Map<String, Long>> findInfoPatientsDosesMedicine() {
+	@GetMapping(FIND_INFO_PATIENTS_DOSES)
+	public List<MedicineDosis> findInfoPatientsDosesMedicine() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findInfoPatientsDosesMedicines();
 	}

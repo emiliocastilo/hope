@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
@@ -127,16 +128,33 @@ public class PatientTreatmentService {
 				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
 	}
 
-	public Map<Medicine, Map<String, Long>> findInfoPatientsDosesMedicines() {
-		log.debug(CALLING_DB);
-		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
-		for (PatientTreatment pt : infoPatientsDosesList) {
-			if(pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
-		}
-		return infoPatientsDosesList
-				.stream()
-				.collect(Collectors.groupingBy(PatientTreatment::getMedicine,Collectors.groupingBy(PatientTreatment::getRegimen,Collectors.counting())));
-	}
+    public List<MedicineDosis> findInfoPatientsDosesMedicines() {
+        log.debug(CALLING_DB);
+        List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
+        for (PatientTreatment pt : infoPatientsDosesList) {
+            if (pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
+        }
+        List<MedicineDosis> result = new ArrayList<>();
+
+        Map<Medicine, Map<String, Long>> list = infoPatientsDosesList
+                .stream()
+                .collect(Collectors.groupingBy(PatientTreatment::getMedicine, Collectors.groupingBy(PatientTreatment::getRegimen, Collectors.counting())));
+        list.forEach((medicine, stringLongMap) -> {
+        		List<Map<String,String>> regimes = new ArrayList<>();
+                    stringLongMap.forEach((name, count) -> {
+						Map<String, String> values = new HashMap<>();
+						values.put("name",name);
+                    	values.put("value", String.valueOf(count));
+						regimes.add(values);
+					});
+                    MedicineDosis medicineDosis = new MedicineDosis();
+                    medicineDosis.setMedicine(medicine.getDescription());
+                    medicineDosis.setRegimes(regimes);
+                    result.add(medicineDosis);
+                }
+        );
+        return result;
+    }
 
 	@Transactional
 	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, final String medicine, final Pageable pageable) {
