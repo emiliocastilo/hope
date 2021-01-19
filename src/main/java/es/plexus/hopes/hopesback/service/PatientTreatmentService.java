@@ -1,9 +1,11 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
+import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
@@ -36,6 +38,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PatientTreatmentService {
 
 	private static final String CALLING_DB = "Calling DB...";
@@ -123,6 +126,34 @@ public class PatientTreatmentService {
 		return infoPatientsDosesList
 				.stream()
 				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
+	}
+
+	public List<MedicineDosis> findInfoPatientsDosesMedicines() {
+		log.debug(CALLING_DB);
+		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
+		for (PatientTreatment pt : infoPatientsDosesList) {
+			if (pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
+		}
+		List<MedicineDosis> result = new ArrayList<>();
+
+		Map<Medicine, Map<String, Long>> list = infoPatientsDosesList
+				.stream()
+				.collect(Collectors.groupingBy(PatientTreatment::getMedicine, Collectors.groupingBy(PatientTreatment::getRegimen, Collectors.counting())));
+		list.forEach((medicine, stringLongMap) -> {
+					List<Map<String, String>> regimes = new ArrayList<>();
+					stringLongMap.forEach((name, count) -> {
+						Map<String, String> values = new HashMap<>();
+						values.put("name", name);
+						values.put("value", String.valueOf(count));
+						regimes.add(values);
+					});
+					MedicineDosis medicineDosis = new MedicineDosis();
+					medicineDosis.setMedicine(medicine);
+					medicineDosis.setRegimes(regimes);
+					result.add(medicineDosis);
+				}
+		);
+		return result;
 	}
 
 	@Transactional
