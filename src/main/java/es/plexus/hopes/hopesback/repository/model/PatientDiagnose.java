@@ -57,4 +57,8 @@ public class PatientDiagnose {
 
     @OneToMany(mappedBy = "patientDiagnose")
     private List<PatientTreatment> treatments;
+
+    @Basic
+    @Column(name = "pdg_psoriatic_arthritis")
+    private Boolean psoriaticArthritis;
 }

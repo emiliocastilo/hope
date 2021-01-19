@@ -46,6 +46,7 @@ public class PatientDiagnosisService {
 	 * Method that it return a list with the number of patients group by indication in the Patient Diagnose Section
 	 * @return
 	 */
+	@Transactional
 	public Map<String, Map<Boolean,Integer>> findPatientsByIndication(){
 		log.debug(CALLING_DB);
 		Map<String, Map<Boolean,Integer>> patientsByIndicationMap = new HashMap<>();
@@ -201,7 +202,9 @@ public class PatientDiagnosisService {
 				).stream().collect(Collectors.toMap(PatientData::getPatient, PatientData::isPsoriatric));
 
 		patientDiagnosisList.forEach(pdg -> {
-			if(!mapPsoriasisArtriticaPatients.containsKey(pdg.getPatient())){
+			if ( pdg.getPsoriaticArthritis() ){
+				mapPsoriasisArtriticaPatients.put(pdg.getPatient(), true);
+			} else {
 				mapPsoriasisArtriticaPatients.put(pdg.getPatient(), false);
 			}
 		});
