@@ -46,7 +46,6 @@ public class PatientDiagnosisService {
 	 * Method that it return a list with the number of patients group by indication in the Patient Diagnose Section
 	 * @return
 	 */
-	@Transactional
 	public Map<String, Map<Boolean,Integer>> findPatientsByIndication(){
 		log.debug(CALLING_DB);
 		Map<String, Map<Boolean,Integer>> patientsByIndicationMap = new HashMap<>();
