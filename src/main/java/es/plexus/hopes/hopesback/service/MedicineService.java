@@ -281,12 +281,12 @@ public class MedicineService {
 		return page.map(MedicineMapper.INSTANCE::entityToDto);
 	}
 
-	public Page<MedicineDTO> findMedicinesBySearchOrSearchAndFamily(String search, String family, Pageable pageable) {
+	public Page<MedicineDTO> findMedicinesBySearchOrSearchAndTreatmentType(String search, String treatmentType, Pageable pageable) {
 		log.debug(CALLING_DB);
 		Page<Medicine> page;
 
-		if (family != null) {
-			page = medicineRepository.findMedicinesBySearchAndFamily(search, family, pageable);
+		if (treatmentType != null) {
+			page = medicineRepository.findMedicinesBySearchAndTreatmentType(search, treatmentType, pageable);
 		} else {
 			page = medicineRepository.findMedicinesBySearch(search, pageable);
 		}
