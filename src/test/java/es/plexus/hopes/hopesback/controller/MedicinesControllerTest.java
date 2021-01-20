@@ -117,6 +117,7 @@ public class MedicinesControllerTest {
 	public void callFindDispensationDetailtBySearchBeStatusOk() {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
+		// Se buscan los medicamentos.
 		given(medicineService.findMedicinesBySearchOrSearchAndTreatmentType(any(String.class), any(), any(Pageable.class)))
 				.willReturn(mockPageMedicine(pageRequest));
 
