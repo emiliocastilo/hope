@@ -94,11 +94,11 @@ public class MedicineController {
 	public Page<MedicineDTO> findBySearch(
 			@ApiParam(value = "buscador")
 			@RequestParam(value = "search", required = false, defaultValue = "") final String search,
-			@ApiParam(value = "family")
-			@RequestParam(value = "family", required = false) final String family,
+			@ApiParam(value = "treatmentType")
+			@RequestParam(value = "treatmentType", required = false) final String treatmentType,
 			@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return medicineService.findMedicinesBySearchOrSearchAndFamily(search, family, pageable);
+		return medicineService.findMedicinesBySearchOrSearchAndTreatmentType(search, treatmentType, pageable);
 	}
 
 	@ApiOperation("Filtrado de medicamentos")
