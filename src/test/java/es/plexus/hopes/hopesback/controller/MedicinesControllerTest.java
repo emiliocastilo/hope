@@ -27,7 +27,6 @@ import java.util.List;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -118,7 +117,7 @@ public class MedicinesControllerTest {
 	public void callFindDispensationDetailtBySearchBeStatusOk() {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("name"));
-		given(medicineService.findMedicinesBySearchOrSearchAndFamily(any(String.class), any(), any(Pageable.class)))
+		given(medicineService.findMedicinesBySearchOrSearchAndTreatmentType(any(String.class), any(), any(Pageable.class)))
 				.willReturn(mockPageMedicine(pageRequest));
 
 		// when
