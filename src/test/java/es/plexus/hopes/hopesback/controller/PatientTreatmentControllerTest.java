@@ -102,11 +102,11 @@ public class PatientTreatmentControllerTest {
 
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), anyString(), any(Pageable.class)))
+		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), any(Long.class), any(Pageable.class)))
 				.willReturn(getPageableGraphPatientDetail(pageRequest));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB", pageRequest);
+		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", 5L, pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);
@@ -117,11 +117,11 @@ public class PatientTreatmentControllerTest {
 	public void callGetDetailPatientsUnderTreatmentThrowException() throws Exception {
 		// given
 		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), anyString(), any(Pageable.class)))
+		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), any(Long.class), any(Pageable.class)))
 				.willThrow(new ServiceException("Error: No contled error"));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB", pageRequest);
+		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", 3L, pageRequest);
 
 		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
 		Assert.assertNull(response);
