@@ -130,7 +130,7 @@ public class PatientTreatmentService {
 
 	public List<MedicineDosis> findInfoPatientsDosesMedicines() {
 		log.debug(CALLING_DB);
-		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDoses();
+		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDosesWithMedicines();
 		for (PatientTreatment pt : infoPatientsDosesList) {
 			if (pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
 		}

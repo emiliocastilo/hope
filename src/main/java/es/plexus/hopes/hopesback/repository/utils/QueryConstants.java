@@ -6,6 +6,9 @@ public class QueryConstants {
 	public static final String SELECT_HO_FROM_HEALTHOUTCOME_HO = "select ho from HealthOutcome ho ";
 
 	public static final String WHERE_PT_ACTIVE_TRUE = "where pt.active = true ";
+	public static final String AND_PT_MEDICINE_AND_REGIME = " and pt.medicine is not null " +
+			" or pt.masterFormula is not null or pt.masterFormulaDose is not null ";
+
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					WHERE_PT_ACTIVE_TRUE +
@@ -62,10 +65,14 @@ public class QueryConstants {
 			"ho.patient, ho.indexType, max(ho.value), ho.result, max(ho.date )) from HealthOutcome ho " +
 			"where ho.indexType = :type " +
 			"group by ho.patient,  ho.indexType, ho.result";
-	
-	public static final String QUERY_FIND_INFO_PATIENTS_DOSES = 
+
+	public static final String QUERY_FIND_INFO_PATIENTS_DOSES =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					WHERE_PT_ACTIVE_TRUE;
+
+	public static final String QUERY_FIND_INFO_PATIENTS_DOSES_AND_MEDICINES =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+					WHERE_PT_ACTIVE_TRUE + AND_PT_MEDICINE_AND_REGIME;
 
 	public static final String WHERE_CLAUSULE = "where ";
 
