@@ -20,7 +20,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 	Page<Medicine> findMedicinesBySearch(@Param("search")String search, Pageable pageable);
 
     @Query("select m from Medicine m "
-            + " WHERE LOWER(m.treatmentType) = LOWER(:treatmentType) "
+            + "  WHERE translate(LOWER(m.treatmentType),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU') = translate(LOWER(:treatmentType),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU') "
             + " AND (LOWER(m.actIngredients) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(m.codeAct) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(m.acronym) like CONCAT('%',LOWER(:search),'%') "
