@@ -5,7 +5,6 @@ import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
@@ -136,10 +135,10 @@ public class PatientTreatmentService {
 		}
 		List<MedicineDosis> result = new ArrayList<>();
 
-		Map<Medicine, Map<String, Long>> list = infoPatientsDosesList
+		Map<String, Map<String, Long>> list = infoPatientsDosesList
 				.stream()
-				.collect(Collectors.groupingBy(PatientTreatment::getMedicine, Collectors.groupingBy(PatientTreatment::getRegimen, Collectors.counting())));
-		list.forEach((medicine, stringLongMap) -> {
+				.collect(Collectors.groupingBy(patientTreatment -> { return patientTreatment.getMedicine().getActIngredients();}, Collectors.groupingBy(PatientTreatment::getRegimen, Collectors.counting())));
+		list.forEach((actIngredient, stringLongMap) -> {
 					List<Map<String, String>> regimes = new ArrayList<>();
 					stringLongMap.forEach((name, count) -> {
 						Map<String, String> values = new HashMap<>();
@@ -148,7 +147,7 @@ public class PatientTreatmentService {
 						regimes.add(values);
 					});
 					MedicineDosis medicineDosis = new MedicineDosis();
-					medicineDosis.setMedicine(medicine);
+					medicineDosis.setActIngredient(actIngredient);
 					medicineDosis.setRegimes(regimes);
 					result.add(medicineDosis);
 				}

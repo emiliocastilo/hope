@@ -9,15 +9,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MedicineDosis {
 
-    Medicine medicine;
+    String actIngredient;
     List<Map<String, String>> regimes;
 
-    public Medicine getMedicine() {
-        return medicine;
+    public String getActIngredient() {
+        return actIngredient;
     }
 
-    public void setMedicine(Medicine medicine) {
-        this.medicine = medicine;
+    public void setActIngredient(String actIngredient) {
+        this.actIngredient = actIngredient;
     }
 
     public List<Map<String, String>> getRegimes() {
