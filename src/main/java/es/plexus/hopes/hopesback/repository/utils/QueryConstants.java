@@ -6,8 +6,7 @@ public class QueryConstants {
 	public static final String SELECT_HO_FROM_HEALTHOUTCOME_HO = "select ho from HealthOutcome ho ";
 
 	public static final String WHERE_PT_ACTIVE_TRUE = "where pt.active = true ";
-	public static final String AND_PT_MEDICINE_AND_REGIME = " and pt.medicine is not null " +
-			" or pt.masterFormula is not null or pt.masterFormulaDose is not null ";
+	public static final String AND_PT_MEDICINE_AND_REGIME = " and upper(pt.type) = 'BIOLOGICO' ";
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
