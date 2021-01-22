@@ -44,7 +44,7 @@ public class PatientRepositoryImpl implements PatientRepositoryCustom{
 
 
 	@Override
-	public List<Patient> getDetailPatientsUnderTreatment(String type, String indication, Long medicine) {
+	public List<Patient> getDetailPatientsUnderTreatment(String type, String indication, String medicine) {
 		List<Patient> result;
 		TypedQuery<Patient> query = getQueryDetailPatientsUnderTreatment(type, indication, medicine);
 
@@ -52,7 +52,7 @@ public class PatientRepositoryImpl implements PatientRepositoryCustom{
 		return result;
 	}
 
-	private TypedQuery<Patient> getQueryDetailPatientsUnderTreatment(String type, String indication, Long medicine){
+	private TypedQuery<Patient> getQueryDetailPatientsUnderTreatment(String type, String indication, String medicine){
 		String queryStr = getQueryStringDetailPatientsUnderTreatment(StringUtils.isNotBlank(indication), null != medicine);
 		TypedQuery<Patient> query = entityManager.createQuery(queryStr, Patient.class).setParameter("type", type);
 
