@@ -265,7 +265,7 @@ public class QueryConstants {
 	public static final String JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID = "join fetch Indication ind on ind.id = pdg.indication.id ";
 	public static final String JOIN_MEDICINES_MED_ON_MED_MED_ID_PTR_MED_ID = " join fetch Medicine med on med.id  = ptr.medicine.id ";
 	public static final String FILTER_INDICATION_DESCRIPTION = "and LOWER(ind.description) = LOWER(:indication) ";
-	public static final String FILTER_MEDICINE_ACT_INGREDIENTS = "and med.id  = :medicine ";
+	public static final String FILTER_MEDICINE_ACT_INGREDIENTS = " and translate(LOWER(med.actIngredients),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU') = translate(LOWER(:medicine),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU')";
 	public static final String FILTER_PTR_TYPE = " and LOWER(ptr.type) = LOWER(:type) ";
 	public static final String QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
