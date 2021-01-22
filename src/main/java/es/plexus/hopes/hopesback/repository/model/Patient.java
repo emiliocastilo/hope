@@ -108,4 +108,8 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient")
     private List<HealthOutcome> healthOutcomes;
+
+    @OneToMany(mappedBy = "patient")
+    private List<PatientClinicalData> patientClinicalDatas;
+
 }

@@ -22,4 +22,7 @@ public class DoseDTO {
 
     @ApiModelProperty(position = 50, example = "Estándar", value = "Régimen")
     private String recommendation;
+
+    @ApiModelProperty(position = 60, example = "Fluocinolona acetónido con antibióticos", value = "Tipo código ATC")
+    private String codeAtcType;
 }

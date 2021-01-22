@@ -6,6 +6,8 @@ public class QueryConstants {
 	public static final String SELECT_HO_FROM_HEALTHOUTCOME_HO = "select ho from HealthOutcome ho ";
 
 	public static final String WHERE_PT_ACTIVE_TRUE = "where pt.active = true ";
+	public static final String AND_PT_MEDICINE_AND_REGIME = " and upper(pt.type) = 'BIOLOGICO' ";
+
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					WHERE_PT_ACTIVE_TRUE +
@@ -62,11 +64,15 @@ public class QueryConstants {
 			"ho.patient, ho.indexType, max(ho.value), ho.result, max(ho.date )) from HealthOutcome ho " +
 			"where ho.indexType = :type " +
 			"group by ho.patient,  ho.indexType, ho.result";
-	
-	public static final String QUERY_FIND_INFO_PATIENTS_DOSES = 
+
+	public static final String QUERY_FIND_INFO_PATIENTS_DOSES =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					WHERE_PT_ACTIVE_TRUE;
-	
+
+	public static final String QUERY_FIND_INFO_PATIENTS_DOSES_AND_MEDICINES =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+					WHERE_PT_ACTIVE_TRUE + AND_PT_MEDICINE_AND_REGIME;
+
 	public static final String WHERE_CLAUSULE = "where ";
 
 
@@ -134,6 +140,9 @@ public class QueryConstants {
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
 					"join Cie10 c on c.code = pdg.cieCode";
 
+	public static final String QUERY_PATIENTS_DIAGNOSE_BY_PATIENT_ID =
+			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
+					WHERE_CLAUSULE + " pdg.patient.id = :patientId";
 
 	public static final String SELECT_PATIENT = "select pat " +
 			"from Patient pat ";
@@ -225,6 +234,8 @@ public class QueryConstants {
 			WHERE_CLAUSULE +
 					"pat.id in (:patientsIds)";
 
+	public static final String QUERY_FIND_PATIENTS_BY_IDS = SELECT_PATIENT + WHERE_CLAUSULE + "pat.id in (:patientsIds)";
+
 	public static final String FILTER_PTR_ACTIVE_TRUE = "ptr.active = true ";
 	public static final String QUERY_PATIENTS_BY_COMBINED_TREATMENTS =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
@@ -253,7 +264,7 @@ public class QueryConstants {
 	public static final String JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID = "join fetch Indication ind on ind.id = pdg.indication.id ";
 	public static final String JOIN_MEDICINES_MED_ON_MED_MED_ID_PTR_MED_ID = " join fetch Medicine med on med.id  = ptr.medicine.id ";
 	public static final String FILTER_INDICATION_DESCRIPTION = "and LOWER(ind.description) = LOWER(:indication) ";
-	public static final String FILTER_MEDICINE_ACT_INGREDIENTS = "and LOWER(med.actIngredients)  = LOWER(:medicine) ";
+	public static final String FILTER_MEDICINE_ACT_INGREDIENTS = " and translate(LOWER(med.actIngredients),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU') = translate(LOWER(:medicine),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU')";
 	public static final String FILTER_PTR_TYPE = " and LOWER(ptr.type) = LOWER(:type) ";
 	public static final String QUERY_PATIENTS_BY_TREATMENT_TYPE_AND_INDICATION =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
@@ -293,12 +304,26 @@ public class QueryConstants {
 					"and LOWER(pt.type) = 'biologico' " +
 					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
 
-	public static final String QUERY_ALL_FAME_TREATMENTS_BY_PATIENT_ID =
+	public static final String QUERY_ALL_FAME_DERMA_TREATMENTS_BY_PATIENT_ID =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+					"join Indication i on pd.indication.id = i.id " +
+					"join Pathology p on i.pathologyId = p.id " +
 					WHERE_CLAUSULE +
 					" pd.patient.id = :patId " +
 					"and LOWER(pt.type) <> 'biologico' " +
+					"and LOWER(p.name) not like CONCAT('%','vih','%')" +
+					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
+
+	public static final String QUERY_ALL_VIH_TREATMENTS_BY_PATIENT_ID =
+			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
+					"join PatientDiagnose pd on pt.patientDiagnose.id = pd.id " +
+					"join Indication i on pd.indication.id = i.id " +
+					"join Pathology p on i.pathologyId = p.id " +
+					WHERE_CLAUSULE +
+					" pd.patient.id = :patId " +
+					"and LOWER(pt.type) = LOWE(:type) " +
+					"and LOWER(p.name) like CONCAT('%','vih','%')" +
 					ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT;
 
 	public static final String QUERY_FIND_DISPENSATION_DETAILS_BY_PATIENT_ID =
@@ -310,4 +335,19 @@ public class QueryConstants {
 					"join Medicine m on m.id = pt.medicine.id and m.nationalCode = CAST(dd.nationalCode as text) " +
 					WHERE_PT_ACTIVE_TRUE +
 					"and p.id = :patId ";
+
+	public static final String QUERY_FIND_PATIENT_BY_CLINICAL_DATA =
+			" select pdc from PatientClinicalData pdc join Patient pat on pdc.patient.id = pat.id ";
+	public static final String FILTER_PCD_NAME = " upper(pdc.name) = upper(:name) ";
+	public static final String FILTER_PCD_PATIENT_ID = " pat.id = :patientId ";
+	public static final String FILTER_PCD_VALUE_LIKE = " upper(pdc.value) like upper(:value) ";
+	public static final String FILTER_PCD_VALUE_MINUS_THAN = " pdc.value < :value ";
+	public static final String FILTER_PCD_VALUE_MORE_THAN = " pdc.value > :value ";
+	public static final String FILTER_PCD_VALUE_MORE_BETWEEN = " pdc.value between  :minValue and :maxValue ";
+	
+	public static final String QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE =
+			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( dd.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount, m.unitDose, dd.botCode) " +
+					"from Medicine m " +
+					"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) ";
+
 }

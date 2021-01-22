@@ -1,0 +1,1 @@
+ALTER TABLE hopes.dispensation_details ADD COLUMN  bot_code varchar(50);

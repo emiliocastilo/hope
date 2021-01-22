@@ -24,6 +24,9 @@ public class Dose extends AbstractAudit {
     @Column(name = "dos_code_atc", nullable = false, length = 7)
     private String codeAtc;
 
+    @Column(name = "dos_code_atc_type", nullable = false, length = 100)
+    private String codeAtcType;
+
     @Basic
     @Column(name = "dos_description", length = 150)
     private String description;

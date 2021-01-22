@@ -72,5 +72,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long>,PatientR
 	@Query(QueryConstants.QUERY_PATIENTS_TREAMENT_PER_DOSES)
 	List<Patient> getDetailPatientsPerDoses(@Param("regimen")String regimen);
 
+	@Query(QueryConstants.QUERY_FIND_PATIENTS_BY_IDS)
+	List<Patient> findPatientsByPatientsId(@Param("patientsIds")Collection<Long> patientsIds);
 }
 

@@ -8,6 +8,7 @@ import es.plexus.hopes.hopesback.controller.model.TemplateDTO;
 import es.plexus.hopes.hopesback.repository.FormMongoRepository;
 import es.plexus.hopes.hopesback.repository.model.FormMongo;
 import es.plexus.hopes.hopesback.service.events.GraphsEvent;
+import es.plexus.hopes.hopesback.service.events.SaveEvent;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.FormMapper;
 import lombok.extern.log4j.Log4j2;
@@ -78,6 +79,10 @@ public class FormService {
 
 
         updateDataInDynamicForms(formDto, user, formMongo, stringDate);
+
+        if ( null != formMongo){
+            publisher.publishEvent(new SaveEvent(templateDto.getKey(), Long.valueOf(formDto.getPatientId()), formDto));
+        }
     }
 
     public FormDTO findFormByTemplateAndPatientId(String template, Integer patientId) {
@@ -226,12 +231,12 @@ public class FormService {
 
     private LocalDateTime convertStringToMongoLocalDateTime(String stringDate, boolean isFinalDay) {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
-                                            .appendPattern("yyyy[-MM][-dd['T'HH[:mm[:ss]]]][.SSSXXX]")
-                                            .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
-                                            .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
-                                            .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
-                                            .parseDefaulting(ChronoField.NANO_OF_SECOND, 0)
-                                            .toFormatter();
+                .appendPattern("yyyy[-MM][-dd['T'HH[:mm[:ss]]]][.SSSXXX]")
+                .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)
+                .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)
+                .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)
+                .parseDefaulting(ChronoField.NANO_OF_SECOND, 0)
+                .toFormatter();
 
         try{
             return ZonedDateTime
@@ -350,8 +355,8 @@ public class FormService {
         // Para los formularios dinámicos no historificables solo hay un formulario
         if(!Boolean.TRUE.equals(templateDto.getHistorify())) {
             formMongo = formMongoRepository.findFormByTemplateAndPatientId(templateDto.getKey(), patientId);
-        // Se ha de recuperar el formulario de la fecha del día ya que está opción es para
-        // formularios dinámicos historificables
+            // Se ha de recuperar el formulario de la fecha del día ya que está opción es para
+            // formularios dinámicos historificables
         } else {
             List<FormMongo> forms = formMongoRepository
                     .findFormsByTemplateAndPatientId(templateDto.getKey(), patientId);
@@ -379,9 +384,9 @@ public class FormService {
                             patientId,
                             startDate,
                             endDate);
-        // Para los formularios dinámicos no historificables solo hay un formulario
+            // Para los formularios dinámicos no historificables solo hay un formulario
         }else{
-           formMongo = formMongoRepository.findFormByTemplateAndPatientId(template, patientId);
+            formMongo = formMongoRepository.findFormByTemplateAndPatientId(template, patientId);
         }
 
         return formMongo;
@@ -415,17 +420,17 @@ public class FormService {
                     DataHistoricDinamycFormDTO dataHistoric =  new DataHistoricDinamycFormDTO();
 
                     Object dateHistoric = formDTO.getData().stream()
-                                            .filter(inputDTO -> fieldDate.equals(inputDTO.getName()))
-                                            .map(InputDTO::getValue)
-                                            .findFirst()
-                                            .orElseGet(null);
+                            .filter(inputDTO -> fieldDate.equals(inputDTO.getName()))
+                            .map(InputDTO::getValue)
+                            .findFirst()
+                            .orElseGet(null);
                     dataHistoric.setDate(null!=dateHistoric?dateHistoric.toString().concat("T00:00:00.000Z"):null);
 
                     Object valueHistoric = formDTO.getData().stream()
-                                            .filter(inputDTO -> field.equals(inputDTO.getName()))
-                                            .map(InputDTO::getValue)
-                                            .findFirst()
-                                            .orElseGet(null);
+                            .filter(inputDTO -> field.equals(inputDTO.getName()))
+                            .map(InputDTO::getValue)
+                            .findFirst()
+                            .orElseGet(null);
                     dataHistoric.setValue(null!=valueHistoric?valueHistoric.toString():null);
 
                     if(dataHistoric!= null && valueHistoric != null) {

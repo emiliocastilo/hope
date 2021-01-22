@@ -59,4 +59,8 @@ public class DispensationDetail extends AbstractAudit {
 	@JoinColumn(name = "dsd_dsp_id", referencedColumnName = "dsp_id")
 	private Dispensation dispensation;
 
+	@Basic
+	@Column(name = "bot_code", nullable = true)
+	private String botCode;
+
 }

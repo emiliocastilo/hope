@@ -53,14 +53,14 @@ public class PatientRepositoryImpl implements PatientRepositoryCustom{
 	}
 
 	private TypedQuery<Patient> getQueryDetailPatientsUnderTreatment(String type, String indication, String medicine){
-		String queryStr = getQueryStringDetailPatientsUnderTreatment(StringUtils.isNotBlank(indication), StringUtils.isNotBlank(medicine));
+		String queryStr = getQueryStringDetailPatientsUnderTreatment(StringUtils.isNotBlank(indication), null != medicine);
 		TypedQuery<Patient> query = entityManager.createQuery(queryStr, Patient.class).setParameter("type", type);
 
 		if (StringUtils.isNotBlank(indication)) {
 			query.setParameter("indication", indication);
 		}
 
-		if (StringUtils.isNotBlank(medicine)) {
+		if (null != medicine) {
 			query.setParameter("medicine", medicine);
 		}
 

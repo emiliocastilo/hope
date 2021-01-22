@@ -2988,7 +2988,7 @@
 									"key": "multipartFile",
 									"contentType": "",
 									"type": "file",
-									"src": "/C:/workspace/repos/hopes/hopes-back/src/main/resources/postman/Plantilla_BBDD_Medicamentos_v3.xlsx"
+									"src": "/C:/workspace/repos/hopes/hopes-back/src/main/resources/postman/medicamentos.xlsx"
 								},
 								{
 									"key": "",
@@ -5000,6 +5000,54 @@
 							"path": [
 								"v1",
 								"indications"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Pharmacy",
+			"item": [
+				{
+					"name": "FindAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/v1/pharmacy?page=0&size=2&sort=date,desc",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"v1",
+								"pharmacy"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "2"
+								},
+								{
+									"key": "sort",
+									"value": "date,desc"
+								}
 							]
 						}
 					},

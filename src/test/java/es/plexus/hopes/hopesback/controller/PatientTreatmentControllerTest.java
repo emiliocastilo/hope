@@ -106,7 +106,7 @@ public class PatientTreatmentControllerTest {
 				.willReturn(getPageableGraphPatientDetail(pageRequest));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB", pageRequest);
+		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0", pageRequest);
 
 		// then		
 		Assert.assertNotNull(response);

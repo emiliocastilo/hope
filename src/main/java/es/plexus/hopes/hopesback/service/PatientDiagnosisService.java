@@ -201,7 +201,9 @@ public class PatientDiagnosisService {
 				).stream().collect(Collectors.toMap(PatientData::getPatient, PatientData::isPsoriatric));
 
 		patientDiagnosisList.forEach(pdg -> {
-			if(!mapPsoriasisArtriticaPatients.containsKey(pdg.getPatient())){
+			if ( pdg.getPsoriaticArthritis() ){
+				mapPsoriasisArtriticaPatients.put(pdg.getPatient(), true);
+			} else {
 				mapPsoriasisArtriticaPatients.put(pdg.getPatient(), false);
 			}
 		});

@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
+import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +28,7 @@ public class PatientTreatmentController {
 	
 	static final String FIND_PATIENTS_UDER_TREATMENT = "/find-patients-under-treatment";
 	static final String FIND_INFO_PATIENTS_DOSES = "/find-info-patients-doses";
+	static final String FIND_INFO_PATIENTS_DOSES_MEDICINE_DOSIS = "/find-info-patients-doses-medicines";
 	static final String GET_DETAIL_PATIENTS_UDER_TREATMENT = "/get-detail-patients-under-treatment";
 	static final String GET_DETAIL_PATIENTS_UDER_TREATMENT_EXPORT= "/get-detail-patients-under-treatment-export";
 	static final String GET_DETAIL_PATIENTS_PER_DOSES = "/get-detail-patients-per-doses";
@@ -47,11 +50,19 @@ public class PatientTreatmentController {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findInfoPatientsDoses();
 	}
-	
+
+	@ApiOperation("Recuperar los relacion de dosis - paciente y Medicina")
+	@GetMapping(FIND_INFO_PATIENTS_DOSES_MEDICINE_DOSIS)
+	public List<MedicineDosis> findInfoPatientsDosesMedicine() {
+		log.debug(CALLING_SERVICE);
+		return patientTreatmentService.findInfoPatientsDosesMedicines();
+	}
+
+
 	@ApiOperation("Detalle de pacientes bajo tratamiento")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT)
 	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication,
-																	   @RequestParam(value="medicine", required = false) String medicine,@PageableDefault(size = 5) final Pageable pageable) {
+																	   @RequestParam(value="actIngredient", required = false) String medicine,@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, medicine, pageable);
 	}
@@ -59,7 +70,7 @@ public class PatientTreatmentController {
 	@ApiOperation("Detalle de pacientes bajo tratamiento para exportar")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT_EXPORT)
 	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication,
-																	   @RequestParam(value = "medicine", required = false) String medicine) {
+																	   @RequestParam(value = "actIngredient", required = false) String medicine) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, medicine);
 	}

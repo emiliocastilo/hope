@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
@@ -27,6 +28,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_BIOLOGICAL;
+import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_CHEMICAL;
 import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_FAME;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
@@ -35,6 +37,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PatientTreatmentService {
 
 	private static final String CALLING_DB = "Calling DB...";
@@ -124,19 +127,47 @@ public class PatientTreatmentService {
 				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
 	}
 
-	@Transactional
-	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, final String medicine, final Pageable pageable) {
+	public List<MedicineDosis> findInfoPatientsDosesMedicines() {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, medicine);
+		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDosesWithMedicines();
+		for (PatientTreatment pt : infoPatientsDosesList) {
+			if (pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
+		}
+		List<MedicineDosis> result = new ArrayList<>();
+
+		Map<String, Map<String, Long>> list = infoPatientsDosesList
+				.stream()
+				.collect(Collectors.groupingBy(patientTreatment -> { return patientTreatment.getMedicine().getActIngredients();}, Collectors.groupingBy(PatientTreatment::getRegimen, Collectors.counting())));
+		list.forEach((actIngredient, stringLongMap) -> {
+					List<Map<String, String>> regimes = new ArrayList<>();
+					stringLongMap.forEach((name, count) -> {
+						Map<String, String> values = new HashMap<>();
+						values.put("name", name);
+						values.put("value", String.valueOf(count));
+						regimes.add(values);
+					});
+					MedicineDosis medicineDosis = new MedicineDosis();
+					medicineDosis.setActIngredient(actIngredient);
+					medicineDosis.setRegimes(regimes);
+					result.add(medicineDosis);
+				}
+		);
+		return result;
+	}
+
+	@Transactional
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, final String actIngredient, final Pageable pageable) {
+		log.debug(CALLING_DB);
+		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, actIngredient);
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 		return page;
 	}
 
 	@Transactional
-	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, String medicine) {
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, String actIngredient) {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, medicine);
+		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, actIngredient);
 		return fillGraphPatientDetailDtoList(patients);
 	}
 
@@ -274,6 +305,16 @@ public class PatientTreatmentService {
 		List<PatientTreatment> patientFameTreatmentList = patientTreatmentRepository
 															.findFameTreatmentsByPatientId(patId);
 		map.put(TYPE_TREATMENT_FAME,patientFameTreatmentList.stream()
+				.map(Mappers.getMapper(PatientTreatmentMapper.class)::entityToTreatmentDTO)
+				.collect(Collectors.toList()));
+		return map;
+	}
+
+	public Map<String,List<TreatmentDTO>> findVIHTreatmentsByPatientId(Long patId) {
+		Map<String, List<TreatmentDTO>> map = new HashMap<>();
+		List<PatientTreatment> patientFameTreatmentList = patientTreatmentRepository
+				.findVIHTreatmentsByPatientIdAndType(patId, TYPE_TREATMENT_CHEMICAL);
+		map.put(TYPE_TREATMENT_CHEMICAL,patientFameTreatmentList.stream()
 				.map(Mappers.getMapper(PatientTreatmentMapper.class)::entityToTreatmentDTO)
 				.collect(Collectors.toList()));
 		return map;
