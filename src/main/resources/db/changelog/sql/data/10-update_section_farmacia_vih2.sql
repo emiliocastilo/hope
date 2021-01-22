@@ -4,6 +4,9 @@ SET rol_srv_id= null,
 rol_pth_id= null
 WHERE r.rol_srv_id in (select s.srv_id from hopes.services s where s.srv_name = 'Farmacia');
 
+delete from hopes.services_pathologies sph
+where srp_srv_id  = ( select s2.srv_id from hopes.services s2 where s2.srv_name = 'Farmacia');
+
 delete from hopes.services s
 where s.srv_id = ( select s2.srv_id from hopes.services s2 where s2.srv_name = 'Farmacia');
 
