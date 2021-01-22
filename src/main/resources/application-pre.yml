@@ -28,7 +28,7 @@ spring:
       password: root
   # Mail
   mail:
-    host: 192.168.210.53
+    host: "mail.tecnologiasplexus.com"
     port: 587
     username: "support-hopes@plexus.services"
     password: "2B4yrH3s9i9ZE"
