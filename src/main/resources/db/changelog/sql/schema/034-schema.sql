@@ -1,0 +1,1 @@
+ALTER TABLE hopes.patients_diagnoses ALTER COLUMN pdg_psoriatic_arthritis set DEFAULT FALSE;
