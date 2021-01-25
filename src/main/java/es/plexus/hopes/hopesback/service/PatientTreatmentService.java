@@ -46,6 +46,7 @@ public class PatientTreatmentService {
 	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO = "TÓPICO + FOTOTERAPIA + QUÍMICO";
 	public static final String TREATMENT_TYPE_BIOLOGICO_QUIMICO = "BIOLÓGICO + QUÍMICO";
 	public static final String TREATMENT_TYPE_BIOLOGICO_FOTOTERAPIA = "BIOLÓGICO + FOTOTERAPIA";
+	public static final String TREATMENT_TYPE_QUIMICO_FOTOTERAPIA = "QUÍMICO + FOTOTERAPIA";
 	public static final String TREATMENT_TYPE_TOPICO_QUIMICO = "TÓPICO + QUÍMICO";
 	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA = "TÓPICO + FOTOTERAPIA";
 	public static final String TREATMENT_TYPE_BIOLOGICO = "BIOLÓGICO";
@@ -351,7 +352,7 @@ public class PatientTreatmentService {
 		patientTreatmentList.addAll(patientWithoutTreatmentList);
 		List<PatientTreatment> patientCombinedTreatmentList =
 				patientTreatmentRepository.findPatientTreatmentByCombinedTreatment();
-		patientCombinedTreatmentList.forEach(pt -> pt.setType("Tratamiento Combinado"));
+		//patientCombinedTreatmentList.forEach(pt -> pt.setType("Tratamiento Combinado"));
 		patientTreatmentList.addAll(patientCombinedTreatmentList);
 		return patientTreatmentList;
 	}
@@ -408,6 +409,9 @@ public class PatientTreatmentService {
 		} else if(TREATMENT_TYPE_BIOLOGICO_FOTOTERAPIA.contains(typesTreatments[0].toUpperCase())
 				&& TREATMENT_TYPE_BIOLOGICO_FOTOTERAPIA.contains(typesTreatments[1].toUpperCase())){
 			combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO_FOTOTERAPIA);
+		} else if(TREATMENT_TYPE_QUIMICO_FOTOTERAPIA.contains(typesTreatments[0].toUpperCase())
+				&& TREATMENT_TYPE_QUIMICO_FOTOTERAPIA.contains(typesTreatments[1].toUpperCase())){
+			combinedTreatmentList.add(TREATMENT_TYPE_QUIMICO_FOTOTERAPIA);
 		} else if(TREATMENT_TYPE_BIOLOGICO_QUIMICO.contains(typesTreatments[0].toUpperCase())
 				&& TREATMENT_TYPE_BIOLOGICO_QUIMICO.contains(typesTreatments[1].toUpperCase())){
 			combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO_QUIMICO);
