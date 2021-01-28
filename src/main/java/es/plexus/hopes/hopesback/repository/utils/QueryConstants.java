@@ -33,7 +33,7 @@ public class QueryConstants {
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where pt.active = false " +
 			"and LOWER(pt.type) = 'biologico' " +
-			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'Otras') " +
+			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'otras') " +
 			"group by pt.id, pt.patientDiagnose " +
 			"order by pt.initDate desc";
 
@@ -204,7 +204,8 @@ public class QueryConstants {
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
 					JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
 					WHERE_CLAUSULE +
-					FILTER_PTR_ACTIVE_FALSE;
+					FILTER_PTR_ACTIVE_FALSE + " and ptr.patientDiagnose " +
+			" not in (select pt2.patientDiagnose from PatientTreatment pt2 where pt2.active =true) ";
 
 	public static final String FILTER_ACTIVE_FALSE_AND_END_CAUSE_AND_REASON =
 			FILTER_PTR_ACTIVE_FALSE +

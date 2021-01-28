@@ -6,6 +6,7 @@ import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.Patient;
+import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
@@ -41,15 +42,18 @@ import static java.util.stream.Collectors.groupingBy;
 public class PatientTreatmentService {
 
 	private static final String CALLING_DB = "Calling DB...";
-	public static final String COMBINED_TYPE_TREATMENT = "combinado";
+	public static final String COMBINED_TYPE_TREATMENT = "Tratamiento Combinado";
 	public static final String NOT_TREATMENT = "Sin Tratamiento";
-	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO = "TÓPICO + FOTOTERAPIA + QUÍMICO";
-	public static final String TREATMENT_TYPE_BIOLOGICO_QUIMICO = "BIOLÓGICO + QUÍMICO";
-	public static final String TREATMENT_TYPE_BIOLOGICO_FOTOTERAPIA = "BIOLÓGICO + FOTOTERAPIA";
-	public static final String TREATMENT_TYPE_QUIMICO_FOTOTERAPIA = "QUÍMICO + FOTOTERAPIA";
-	public static final String TREATMENT_TYPE_TOPICO_QUIMICO = "TÓPICO + QUÍMICO";
-	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA = "TÓPICO + FOTOTERAPIA";
-	public static final String TREATMENT_TYPE_BIOLOGICO = "BIOLÓGICO";
+	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO = "TOPICO + FOTOTERAPIA + QUIMICO";
+	public static final String TREATMENT_TYPE_BIOLOGICO_QUIMICO = "BIOLOGICO + QUIMICO";
+	public static final String TREATMENT_TYPE_BIOLOGICO_FOTOTERAPIA = "BIOLOGICO + FOTOTERAPIA";
+	public static final String TREATMENT_TYPE_QUIMICO_FOTOTERAPIA = "QUIMICO + FOTOTERAPIA";
+	public static final String TREATMENT_TYPE_TOPICO_QUIMICO = "TOPICO + QUIMICO";
+	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA = "TOPICO + FOTOTERAPIA";
+	public static final String TREATMENT_TYPE_TOPICO = "TOPICO";
+	public static final String TREATMENT_TYPE_QUIMICO = "QUIMICO";
+	public static final String TREATMENT_TYPE_FOTOTERAPIA = "FOTOTERAPIA";
+	public static final String TREATMENT_TYPE_BIOLOGICO = "BIOLOGICO";
 	public static final String NO_REGIMEN = "Sin régimen";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
@@ -58,8 +62,14 @@ public class PatientTreatmentService {
 	public  Map<String, Long> findPatientTreatmentByTreatment() {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientTreatmentList = fillPatientTreatmentListByTreatmentType();
-		return patientTreatmentList.stream()
-				.collect(groupingBy(PatientTreatment::getType, Collectors.counting()));
+		Map<Patient,List<PatientTreatment>> pacientes = new HashMap<>();
+		Map<PatientDiagnose,List<PatientTreatment>> pacientesPT;
+		pacientesPT = patientTreatmentList.stream().collect(groupingBy(PatientTreatment::getPatientDiagnose));
+		pacientesPT.forEach((patientDiagnose, patientTreatments) -> pacientes.put(patientDiagnose.getPatient(), patientTreatments));
+		List<String> tratamientos = new ArrayList<>();
+
+		pacientes.forEach((patient, patientTreatments) -> tratamientos.add(patientTreatments.get(0).getType()));
+		return tratamientos.stream().collect(Collectors.groupingBy(String::toUpperCase,Collectors.counting()));
 	}
 
 	public Map<String, Long> findPatientTreatmentByCombinedTreatment() {
@@ -348,7 +358,7 @@ public class PatientTreatmentService {
 		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByTreatment();
 		List<PatientTreatment> patientWithoutTreatmentList =
 				patientTreatmentRepository.findPatientTreatmentByWithoutTreatment();
-		patientWithoutTreatmentList.forEach(pt -> pt.setType(NOT_TREATMENT));
+		//patientWithoutTreatmentList.forEach(pt -> pt.setType(NOT_TREATMENT));
 		patientTreatmentList.addAll(patientWithoutTreatmentList);
 		List<PatientTreatment> patientCombinedTreatmentList =
 				patientTreatmentRepository.findPatientTreatmentByCombinedTreatment();
@@ -383,18 +393,18 @@ public class PatientTreatmentService {
 	}
 
 	private void fillCombinedTreatmentList(List<String> combinedTreatmentList, String[] typesTreatments) {
+		List<String> tratamientos = Arrays.asList(typesTreatments);
+
 		if(typesTreatments.length == 2){
 			obtainTreatmentCombined(combinedTreatmentList, typesTreatments);
 
-		} else if(typesTreatments.length > 2){
-			if((TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[0].toUpperCase())
-					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[1].toUpperCase())
-					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[2].toUpperCase()))){
-				combinedTreatmentList.add(TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO);
-			} else if(TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[0].toUpperCase())
-						|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[1].toUpperCase())
-						|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[2].toUpperCase()) ){
+		} else if ( typesTreatments.length > 2 ){
+			if (tratamientos.contains(TREATMENT_TYPE_BIOLOGICO)){
 				combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO);
+			} else if ( tratamientos.contains(TREATMENT_TYPE_TOPICO)
+					&& tratamientos.contains(TREATMENT_TYPE_QUIMICO)
+					&& tratamientos.contains(TREATMENT_TYPE_FOTOTERAPIA) ){
+				combinedTreatmentList.add(TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO);
 			}
 		}
 	}
