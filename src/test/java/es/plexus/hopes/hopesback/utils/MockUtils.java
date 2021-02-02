@@ -66,4 +66,16 @@ public class MockUtils {
         patient.setPathologies(pathologies);
         return Optional.of(patient);
     }
+
+    public static Pathology mockPathology(){
+        Pathology pathology = new Pathology();
+        pathology.setId(1L);
+        pathology.setName("Dermatología");
+        pathology.setDescription("Patologia Dermatología");
+        return pathology;
+    }
+
+    public static String mockToken(){
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIkNMQUlNX1RPS0VOIjoiUk9MRV9BRE1JTiIsImlhdCI6MTYxMjI1ODQ3NCwiaXNzIjoiaG9wZXMiLCJleHAiOjE2MTIyODcyNzR9.PoQCWVBqNImxlpnNolGrbMM_YgX4hI5cUSX5vvVw8iU";
+    }
 }

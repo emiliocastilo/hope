@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.controller;
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
+import es.plexus.hopes.hopesback.service.RoleService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -51,13 +48,16 @@ public class PatientDiagnosisController {
 
 	private final PatientDiagnosisService patientDiagnosisService;
 	private final PatientTreatmentService patientTreatmentService;
+	private final RoleService roleService;
 
 	@ApiOperation("Gráfico/Tabla de Pacientes por Indicacion - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(PATIENT_DIAGNOSE_INDICATIONS)
-	public Map<String, Map<Boolean, Integer>> findPatientsDiagnosesByIndications() {
+	public Map<String, Map<Boolean, Integer>> findPatientsDiagnosesByIndications(
+			@RequestHeader(name = "Authorization") final String token) {
+
 		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findPatientsByIndication();
+		return patientDiagnosisService.findPatientsByIndicationAndPathology(roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Gráfico/Tabla de Pacientes por diagnóstico CIE - Información Diagnóstico")
@@ -65,25 +65,26 @@ public class PatientDiagnosisController {
 	@GetMapping(PATIENT_DIAGNOSE_CIE)
 	public Map<String, Long> findPatientsDiagnosesByCie(
 			@ApiParam(value = "Identificador del hospital de la sesión", example = "1", required = true)
-			@RequestParam(value = "hospitalId") final Long hospitalId) {
+			@RequestParam(value = "hospitalId") final Long hospitalId,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientDiagnosisService.findPatientsByCie(hospitalId);
+		return patientDiagnosisService.findPatientsByCieAndPathology(hospitalId, roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Gráfico/Tabla de Pacientes por Tipo de Tratamiento - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(PATIENT_DIAGNOSE_TREATMENT)
-	public Map<String, Long> findPatientTreatmentByTreatment() {
+	public Map<String, Long> findPatientTreatmentByTreatment(@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findPatientTreatmentByTreatment();
+		return patientTreatmentService.findPatientTreatmentByTreatmentAndPathology(roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Gráfico/Tabla de Pacientes por tratamientos combinados - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(PATIENT_DIAGNOSE_COMBINED_TREATMENT)
-	public Map<String, Long> findPatientTreatmentByCombinedTreatment() {
+	public Map<String, Long> findPatientTreatmentByCombinedTreatment(@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findPatientTreatmentByCombinedTreatment();
+		return patientTreatmentService.findPatientTreatmentByCombinedTreatmentAndPathology(roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Gráfico/Tabla de motivo del último cambio/suspensión del tratamiento biológico - Información Diagnóstico")
@@ -91,9 +92,10 @@ public class PatientDiagnosisController {
 	@GetMapping(PATIENT_DIAGNOSE_END_CAUSE)
 	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatment(
 			@ApiParam(value = "Causa por la que filtrar", example = "Cambio", required = true)
-			@RequestParam(value = "endCause") String endCause) {
+			@RequestParam(value = "endCause") String endCause,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatment(endCause);
+		return patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentAndPathology(endCause,roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Gráfico/Tabla de motivo del último cambio/suspensión del tratamiento biológico de los últimos 5 años - Información Diagnóstico")
@@ -101,17 +103,19 @@ public class PatientDiagnosisController {
 	@GetMapping(PATIENT_DIAGNOSE_END_CAUSE_LAST_YEARS)
 	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(
 			@ApiParam(value = "Causa por la que filtrar", example = "Cambio", required = true)
-			@RequestParam(value = "endCause") String endCause) {
+			@RequestParam(value = "endCause") String endCause,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(endCause);
+		return patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentAndPathologyInLast5Years(endCause, roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Gráfico/Tabla de número de cambios de tratamientos biológicos - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(PATIENT_DIAGNOSE_NUMBER_CHANGES)
-	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment() {
+	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment(
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment();
+		return patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment(roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Listado de pacientes por indicación - Información Diagnóstico")
@@ -264,9 +268,10 @@ public class PatientDiagnosisController {
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(
 			@ApiParam(value = "Últimos años que consultar ", example = "3", required = true)
 			@RequestParam final int numberChanges,
-			@PageableDefault(size = 5) Pageable pageable) {
+			@PageableDefault(size = 5) Pageable pageable,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findGraphPatientsDetailsByNumberChanges(numberChanges, pageable);
+		return patientTreatmentService.findGraphPatientsDetailsByNumberChanges(numberChanges, pageable, roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Listado páginado de pacientes por número de cambios de tratamiento biológico - Información Diagnóstico")
@@ -274,8 +279,9 @@ public class PatientDiagnosisController {
 	@GetMapping(PATIENT_DIAGNOSE_PATIENTS_NUMBER_CHANGES_EXPORT)
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(
 			@ApiParam(value = "Causa de finalización del tratamiento por la que filtrar", example = "Cambio/Suspensión", required = true)
-			@RequestParam final int numberChanges){
+			@RequestParam final int numberChanges,
+			@RequestHeader(name = "Authorization") final String token){
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findGraphPatientsDetailsByNumberChanges(numberChanges);
+		return patientTreatmentService.findGraphPatientsDetailsByNumberChanges(numberChanges, roleService.getPathologyByRoleSelected(token));
 	}
 }

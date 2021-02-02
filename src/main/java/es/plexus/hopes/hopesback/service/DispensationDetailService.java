@@ -4,6 +4,7 @@ import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
 import es.plexus.hopes.hopesback.repository.DispensationDetailRepository;
 import es.plexus.hopes.hopesback.repository.model.Dispensation;
 import es.plexus.hopes.hopesback.repository.model.DispensationDetail;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.utils.CsvUtils;
 import lombok.RequiredArgsConstructor;
@@ -130,12 +131,12 @@ public class DispensationDetailService {
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 	}
 	
-	public Map<String, Map<String, BigDecimal>> findMonthlyConsume(Integer lastYears, Boolean isAvg, String code) {
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsume(Integer lastYears, Boolean isAvg, String code, Pathology pathology) {
 		log.debug(CALLING_DB);
 		
 		Map<String, Map<String, BigDecimal>> result = new HashMap<>();
 		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
-		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
+		List<Long> listPatients = healthOutcomeService.getAllPatientsIdByPathology(pathology);
 		
 		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
 			LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());			
@@ -146,13 +147,13 @@ public class DispensationDetailService {
 		return result;
 	}
 	
-	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAcumulated(Integer lastYears, Boolean isAvg, String code) {
+	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAcumulated(Integer lastYears, Boolean isAvg, String code,Pathology pathology) {
 		log.debug(CALLING_DB);
 		
 		Map<String, Map<String, BigDecimal>> result = new HashMap<>();
 		LocalDateTime dateStartPeriod = FIRST_DAY_OF_CURRENT_YEAR.minusYears(lastYears - 1);
 		LocalDateTime dateStopPeriod = dateStartPeriod.with(TemporalAdjusters.firstDayOfNextMonth());
-		List<Long> listPatients = healthOutcomeService.getAllPatientsId();
+		List<Long> listPatients = healthOutcomeService.getAllPatientsIdByPathology(pathology);
 		
 		for (int index = 0; index < (MONTHS_OF_YEAR.length -1) * lastYears; index++) {
 			fillMonthlyConsume(index, dateStartPeriod, dateStopPeriod.plusSeconds(-1), listPatients, isAvg, code, result);	
