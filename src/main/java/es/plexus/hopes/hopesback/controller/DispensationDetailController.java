@@ -3,20 +3,12 @@ package es.plexus.hopes.hopesback.controller;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import es.plexus.hopes.hopesback.service.RoleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
 import es.plexus.hopes.hopesback.service.DispensationDetailService;
@@ -45,6 +37,7 @@ public class DispensationDetailController {
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final DispensationDetailService dispensationDetailService;
+	private final RoleService roleService;
 
 	@ApiOperation("Crear un nuevo detalle para una dispensacion")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -115,9 +108,10 @@ public class DispensationDetailController {
 	@GetMapping(FIND_MONTHLY_CONSUME)
 	public Map<String, Map<String, BigDecimal>> findMonthlyConsume(
 			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
-		return dispensationDetailService.findMonthlyConsume(lastYears, false, null);
+		return dispensationDetailService.findMonthlyConsume(lastYears, false, null, roleService.getPathologyByRoleSelected(token));
 	}
 	
 	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
@@ -125,9 +119,10 @@ public class DispensationDetailController {
 	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED)
 	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAcumulated(
 			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED);
-		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, false, null);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, false, null, roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Consumo mensual medio en euros (Biolgicos)")
@@ -135,9 +130,10 @@ public class DispensationDetailController {
 	@GetMapping(FIND_MONTHLY_CONSUME_AVG)
 	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAvg(
 			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_AVG);
-		return dispensationDetailService.findMonthlyConsume(lastYears, true, null);
+		return dispensationDetailService.findMonthlyConsume(lastYears, true, null, roleService.getPathologyByRoleSelected(token));
 	}
 	
 	@ApiOperation("Consumo mensual acumulado en euros (Biolgicos)")
@@ -145,9 +141,10 @@ public class DispensationDetailController {
 	@GetMapping(FIND_MONTHLY_CONSUME_ACCUMULATED_AVG)
 	public Map<String, Map<String, BigDecimal>> findMonthlyConsumeAcumulatedAvg(
 			@ApiParam(value = "Años atrás")
-			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears) {
+			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED_AVG);
-		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, true, null);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, true, null, roleService.getPathologyByRoleSelected(token));
 	}
 	
 	@ApiOperation("Coste Total por tratamiento Biolgico")
@@ -157,9 +154,10 @@ public class DispensationDetailController {
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
-			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME);
-		return dispensationDetailService.findMonthlyConsume(lastYears, false, code);
+		return dispensationDetailService.findMonthlyConsume(lastYears, false, code, roleService.getPathologyByRoleSelected(token));
 	}
 	
 	@ApiOperation("Coste Total acumulado por tratamiento Biolgico")
@@ -169,9 +167,10 @@ public class DispensationDetailController {
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
-			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED);
-		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, false, code);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, false, code, roleService.getPathologyByRoleSelected(token));
 	}
 
 	@ApiOperation("Coste Total medio por tratamiento Biolgico")
@@ -181,9 +180,10 @@ public class DispensationDetailController {
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
-			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_AVG);
-		return dispensationDetailService.findMonthlyConsume(lastYears, true, code);
+		return dispensationDetailService.findMonthlyConsume(lastYears, true, code, roleService.getPathologyByRoleSelected(token));
 	}
 	
 	@ApiOperation("Coste Total por tratamiento Biolgico")
@@ -193,8 +193,9 @@ public class DispensationDetailController {
 			@ApiParam(value = "Años atrás")
 			@RequestParam(value = "lastYears", required = false, defaultValue = "2") final Integer lastYears,
 			@ApiParam(value = "Código ATC del medicamento")
-			@RequestParam(value = "code", required = false, defaultValue = "") final String code) {
+			@RequestParam(value = "code", required = false, defaultValue = "") final String code,
+			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE +" "+ FIND_MONTHLY_CONSUME_ACCUMULATED_AVG);
-		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, true, code);
+		return dispensationDetailService.findMonthlyConsumeAcumulated(lastYears, true, code, roleService.getPathologyByRoleSelected(token));
 	}
 }

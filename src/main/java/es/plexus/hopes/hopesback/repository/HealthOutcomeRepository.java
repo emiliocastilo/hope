@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.repository;
 
 import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
+import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.utils.QueryConstants;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +19,7 @@ public interface HealthOutcomeRepository extends JpaRepository<HealthOutcome, Lo
     List<HealthOutcome> findResultsByTypes(@Param("type") String type);
 
     @Query(QueryConstants.QUERY_ALL_PATIENTS_HEALHT_OUTCOME)
-    List<Long> getAllPatientsId();
+    List<Patient> getAllPatientsId();
 
     @Query(QueryConstants.QUERY_VALUES_HEALHT_OUTCOME_BY_INDEX_TYPE_PATIENT_ID)
     List<HealthOutcome> findEvolutionClinicalIndicesByIndexTypeAndPatient(@Param("indexType") String indexType,
