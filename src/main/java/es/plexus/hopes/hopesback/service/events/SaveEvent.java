@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class SaveEvent {
 
     private  final String name;
-    private final Long patientId;
+    private final Integer patientId;
     private final FormDTO form;
 
 }
