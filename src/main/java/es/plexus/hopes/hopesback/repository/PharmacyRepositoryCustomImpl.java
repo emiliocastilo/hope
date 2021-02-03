@@ -28,7 +28,7 @@ public class PharmacyRepositoryCustomImpl implements PharmacyRepositoryCustom {
     @Override
     public Page<PharmacyDTO> findAll(Pageable pageable) {
         List<PharmacyDTO> list;
-        int start = pageable.getPageNumber() * pageable.getPageSize();
+        int start = (pageable.getPageNumber() - 1 ) * pageable.getPageSize();
         List<PharmacyDTO> pharmacyResultList = entityManager
                 .createQuery(QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE, PharmacyDTO.class)
                 .getResultList();
@@ -75,6 +75,9 @@ public class PharmacyRepositoryCustomImpl implements PharmacyRepositoryCustom {
                     break;
                 case "totalCost":
                     pharmacyResultList.sort(obtainComparatorBigDecimal(order, PharmacyDTO::getTotalCost));
+                    break;
+                case "botCode":
+                    pharmacyResultList.sort(obtainComparatorString(order, PharmacyDTO::getBotCode));
                     break;
                 default:
                     break;
