@@ -160,7 +160,7 @@ public class MedicineService {
 							codeActPlusType[1] = codeActPlusType[1].replaceFirst("^\\\\s+", "");
 							medicine.setCodeActType(codeActPlusType[1]);
 						}
-						medicine.setCodeAct(codeActPlusType[0]);
+						medicine.setCodeAct(codeActPlusType[0].replaceAll("^\\\\s+", ""));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.AUTHORIZATION_DATE.getNumber()) {
 						if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
 							medicine.setAuthorizationDate(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
@@ -202,11 +202,16 @@ public class MedicineService {
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PVP.getNumber()) {
 						medicine.setPvp(BigDecimal.valueOf(cell.getNumericCellValue()));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PATHOLOGY.getNumber()) {
-						String[] pathologyNames = cell.getStringCellValue().toUpperCase().trim().split("/");
+						String[] pathologyNames = null;
+						if (cell.getStringCellValue().contains(",")) {
+							pathologyNames = cell.getStringCellValue().toUpperCase().trim().split(",");
+						} else {
+							pathologyNames = cell.getStringCellValue().toUpperCase().trim().split("/");
+						}
 						for (int i = 0; i < pathologyNames.length; ++i) {
-							if (pathologyNames[i].equalsIgnoreCase("DERMA")) {
+							if (pathologyNames[i].replaceFirst("\\s", "").equalsIgnoreCase("DERMA")) {
 								pathologyNames[i] = "DERMATOLOGÍA";
-							} else if (pathologyNames[i].equalsIgnoreCase("REUMA")) {
+							} else if (pathologyNames[i].replaceFirst("\\s", "").equalsIgnoreCase("REUMA")) {
 								pathologyNames[i] = "REUMATOLOGÍA";
 							}
 						}
