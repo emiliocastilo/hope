@@ -13,6 +13,7 @@ import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.FormMapper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -81,7 +83,19 @@ public class FormService {
         updateDataInDynamicForms(formDto, user, formMongo, stringDate);
 
         if ( null != formMongo){
-            publisher.publishEvent(new SaveEvent(templateDto.getKey(), Long.valueOf(formDto.getPatientId()), formDto));
+            String indication = "";
+            try {
+                if ( !formDto.getData().isEmpty() && formDto.getData().get(0) != null ){
+                    indication = ((ArrayList<LinkedHashMap<String,String>>)formDto.getData().get(0).getValue()).get(0).get("indication");
+                } else{
+                    indication = formMongo.getData().substring(formMongo.getData().indexOf("indication\":\"") + 13, formMongo.getData().indexOf("\",\"specialIndication"));
+                }
+            } catch (Exception ignored){
+
+            } finally {
+                publisher.publishEvent(new SaveEvent(templateDto.getKey(), Long.valueOf(formDto.getPatientId()), formDto,indication));
+            }
+
         }
     }
 

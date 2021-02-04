@@ -118,24 +118,26 @@ public class SaveConsumer {
         FormDTO form = saveEvent.getForm();
 
         //TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
-        indicationRepository.findByCode("");
-        PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatientIdAndIndicationId(form.getPatientId().longValue(),null).get();
-        List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnose)
-                .stream()
-                .filter(patientTreatment -> !TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
-                .collect(Collectors.toList());
-        ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) form.getData().get(0).getValue();
+
+        if (  !StringUtils.isEmpty(saveEvent.getIndication()) ){
+            PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatientIdAndIndicationId(form.getPatientId().longValue(),indicationRepository.findByDescription(saveEvent.getIndication()).get().getId()).get();
+            List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnose)
+                    .stream()
+                    .filter(patientTreatment -> !TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
+                    .collect(Collectors.toList());
+            ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) form.getData().get(0).getValue();
+            List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
+                    .stream()
+                    .map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, form))
+                    .collect(Collectors.toList());
+            // Eliminar tratamientos en Postgres que no estén en Mongo
+            deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
+            upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, form);
+        }
 
         // Mapeamos el HasMap de Mongo al modelo PatientTreatment
-        List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
-                .stream()
-                .map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, form))
-                .collect(Collectors.toList());
-        // Eliminar tratamientos en Postgres que no estén en Mongo
-        deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
 
         // Actualizamos o insertamos tratamientos en Postgres
-        upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, form);
 
         formService.updateData(form, null);
 
@@ -145,8 +147,8 @@ public class SaveConsumer {
     public void handleSaveTreatmentPhototherapy(SaveEvent saveEvent) throws ParseException {
         FormDTO form = saveEvent.getForm();
         //TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
-        PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(form.getPatientId().longValue());
-        List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis)
+        PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatientIdAndIndicationId(form.getPatientId().longValue(),indicationRepository.findByDescription(saveEvent.getIndication()).get().getId()).get();
+        List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnose)
                 .stream()
                 .filter(patientTreatment -> TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
                 .collect(Collectors.toList());

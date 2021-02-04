@@ -5,13 +5,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 
-
 @RequiredArgsConstructor
 @Data
 public class SaveEvent {
 
-    private  final String name;
+    private final String name;
     private final Long patientId;
     private final FormDTO form;
+    private final String indication;
 
 }

@@ -112,7 +112,7 @@ public class PatientDiagnosisController {
 	@ApiOperation("Gráfico/Tabla de número de cambios de tratamientos biológicos - Información Diagnóstico")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(PATIENT_DIAGNOSE_NUMBER_CHANGES)
-	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment(
+	public Map<String, Long> findPatientTreatmentByNumberChangesOfBiologicTreatment(
 			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment(roleService.getPathologyByRoleSelected(token));
