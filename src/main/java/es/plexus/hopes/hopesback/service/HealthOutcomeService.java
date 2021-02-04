@@ -6,6 +6,7 @@ import es.plexus.hopes.hopesback.controller.model.HealthOutcomeDTO;
 import es.plexus.hopes.hopesback.repository.HealthOutcomeRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.model.HealthOutcome;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.service.mapper.HealthOutcomeMapper;
 import lombok.RequiredArgsConstructor;
@@ -63,9 +64,15 @@ public class HealthOutcomeService {
 		return fillGraphPatientDetailDtoList(patients);
 	}
 	
-	public List<Long> getAllPatientsId() {
-		log.debug(CALLING_DB);		
-		return  healthOutcomeRepository.getAllPatientsId();	
+	public List<Long> getAllPatientsIdByPathology(Pathology pathology) {
+		log.debug(CALLING_DB);
+		List<Patient> patients = healthOutcomeRepository.getAllPatientsId().stream().filter(patient -> patient.getPathologies().contains(pathology)).collect(Collectors.toList());
+		List<Long> patientsId = new ArrayList<>();
+		patients.forEach(patient -> {
+			if ( !patientsId.contains(patient.getId()))
+				patientsId.add(patient.getId())
+		;});
+		return patientsId ;
 	}
 	
 	private Map<String, Long> fillResultsByTypes(String type) {

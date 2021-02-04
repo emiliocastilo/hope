@@ -6,10 +6,7 @@ import es.plexus.hopes.hopesback.repository.HospitalRepository;
 import es.plexus.hopes.hopesback.repository.PatientDataRepository;
 import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
-import es.plexus.hopes.hopesback.repository.model.Hospital;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientData;
-import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
+import es.plexus.hopes.hopesback.repository.model.*;
 import es.plexus.hopes.hopesback.service.mapper.PatientDiagnosisMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,20 +38,24 @@ public class PatientDiagnosisService {
 	private final PatientRepository patientRepository;
 	private final PatientDataRepository patientDataRepository;
 	private final HospitalRepository hospitalRepository;
+	private final PathologyService pathologyService;
+
 
 	/**
 	 * Method that it return a list with the number of patients group by indication in the Patient Diagnose Section
 	 * @return
 	 */
-	public Map<String, Map<Boolean,Integer>> findPatientsByIndication(){
+	public Map<String, Map<Boolean,Integer>> findPatientsByIndicationAndPathology(Pathology pathology){
 		log.debug(CALLING_DB);
 		Map<String, Map<Boolean,Integer>> patientsByIndicationMap = new HashMap<>();
 
 		// Lista de diagnósticos de paciente
 		List<PatientDiagnose> patientDiagnosisList = patientDiagnosisRepository.findPatientsDiagnosisGroupByIndication();
 
+
 		// Mapa de pacientes por indicación
 		Map<Patient, String> mapPatientsByIndications = patientDiagnosisList.stream()
+				.filter(patientDiagnose -> patientDiagnose.getPatient().getPathologies().contains(pathology))
 				.collect(Collectors.toMap(PatientDiagnose::getPatient, pd-> pd.getIndication().getDescription()));
 
 		// Mapa de Pacientes con/sin psoriasis artritica
@@ -70,7 +71,7 @@ public class PatientDiagnosisService {
 	 * @param hospitalId
 	 * @return
 	 */
-	public Map<String, Long> findPatientsByCie(Long hospitalId) {
+	public Map<String, Long> findPatientsByCieAndPathology(Long hospitalId, Pathology pathology) {
 		log.debug(CALLING_DB);
 		Optional<Hospital> hospital = hospitalRepository.findById(hospitalId);
 		Map<String, Long> patientDiagnosisMap = null;
@@ -83,6 +84,7 @@ public class PatientDiagnosisService {
 				patientDiagnosisList = patientDiagnosisRepository.findPatientsDiagnosisGroupByCie10();
 			}
 			patientDiagnosisMap = patientDiagnosisList.stream()
+					.filter(patientDiagnose -> patientDiagnose.getPatient().getPathologies().contains(pathology))
 					.collect(groupingBy(PatientDiagnose::getCieDescription, Collectors.counting()));
 		}
 

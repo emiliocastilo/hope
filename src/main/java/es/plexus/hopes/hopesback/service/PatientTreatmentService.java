@@ -5,6 +5,7 @@ import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
@@ -59,12 +60,12 @@ public class PatientTreatmentService {
 	private final PatientTreatmentRepository patientTreatmentRepository;
 	private final PatientRepository patientRepository;
 
-	public  Map<String, Long> findPatientTreatmentByTreatment() {
+	public  Map<String, Long> findPatientTreatmentByTreatmentAndPathology(Pathology pathology) {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientTreatmentList = fillPatientTreatmentListByTreatmentType();
 		Map<Patient,List<PatientTreatment>> pacientes = new HashMap<>();
 		Map<PatientDiagnose,List<PatientTreatment>> pacientesPT;
-		pacientesPT = patientTreatmentList.stream().collect(groupingBy(PatientTreatment::getPatientDiagnose));
+		pacientesPT = patientTreatmentList.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(groupingBy(PatientTreatment::getPatientDiagnose));
 		pacientesPT.forEach((patientDiagnose, patientTreatments) -> pacientes.put(patientDiagnose.getPatient(), patientTreatments));
 		List<String> tratamientos = new ArrayList<>();
 
@@ -72,20 +73,21 @@ public class PatientTreatmentService {
 		return tratamientos.stream().collect(Collectors.groupingBy(String::toUpperCase,Collectors.counting()));
 	}
 
-	public Map<String, Long> findPatientTreatmentByCombinedTreatment() {
+	public Map<String, Long> findPatientTreatmentByCombinedTreatmentAndPathology(Pathology pathology) {
 		log.debug(CALLING_DB);
-		List<String> patientTreatmentList = fillPatientTreamentListByCombinedTreament();
+		List<String> patientTreatmentList = fillPatientTreamentListByCombinedTreament(pathology);
 
 		return patientTreatmentList.stream()
 				.collect(groupingBy(s -> s, Collectors.counting()));
 	}
 
-	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatment(String endCause) {
+	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatmentAndPathology(String endCause, Pathology pathology) {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> removePatientTreatment = new ArrayList<>();
 		List<Long> idPatients = new ArrayList<>();
 		List<PatientTreatment> patientTreatmentList =
-				patientTreatmentRepository.findPatientTreatmentByEndCauseBiologicTreatment(endCause);
+				patientTreatmentRepository.findPatientTreatmentByEndCauseBiologicTreatment(endCause)
+						.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
 
 		for(PatientTreatment pt:patientTreatmentList){
 			if(idPatients.contains(pt.getPatientDiagnose().getPatient().getId())){
@@ -102,28 +104,29 @@ public class PatientTreatmentService {
 
 	}
 
-	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(String endCause) {
+	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatmentAndPathologyInLast5Years(String endCause, Pathology pathology) {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientTreatmentList =
 				patientTreatmentRepository
-						.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(endCause, LocalDateTime.now().plusYears(-5));
+						.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(endCause, LocalDateTime.now().plusYears(-5))
+						.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
 		return patientTreatmentList.stream()
 				.collect(groupingBy(PatientTreatment::getReason, Collectors.counting()));
 	}
 
 	@Transactional
-	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment() {
+	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment(Pathology pathology) {
 		log.debug(CALLING_DB);
-		Map<Patient, Long> patientLongMap = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment();
+		Map<Patient, Long> patientLongMap = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment(pathology);
 		return buildMapPatientsByNumberChangesOfBiologicalTreatment(patientLongMap);
 	}
 
 	@Transactional
-	public Map<String, Long> findPatientsUnderTreatment(String type, String indication) {
+	public Map<String, Long> findPatientsUnderTreatment(String type, String indication, Pathology pathology) {
 		log.debug(CALLING_DB);
 		List<PatientTreatment> patientPatientTreatmentList =StringUtils.isEmpty(indication)?
 				patientTreatmentRepository.findPatientsUnderTreatment(type):patientTreatmentRepository.findPatientsUnderTreatment(type, indication);
-		return patientPatientTreatmentList.stream().collect(groupingBy(functionDescriptionMedicineByTreatment(),
+		return patientPatientTreatmentList.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(groupingBy(functionDescriptionMedicineByTreatment(),
 				Collectors.counting()));
 	}
 
@@ -138,9 +141,9 @@ public class PatientTreatmentService {
 				.collect(groupingBy(PatientTreatment::getRegimen, Collectors.counting()));
 	}
 
-	public List<MedicineDosis> findInfoPatientsDosesMedicines() {
+	public List<MedicineDosis> findInfoPatientsDosesMedicines(Pathology pathology) {
 		log.debug(CALLING_DB);
-		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDosesWithMedicines();
+		List<PatientTreatment> infoPatientsDosesList = patientTreatmentRepository.findInfoPatientsDosesWithMedicines().stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
 		for (PatientTreatment pt : infoPatientsDosesList) {
 			if (pt.getRegimen() == null || pt.getRegimen().isEmpty()) pt.setRegimen(NO_REGIMEN);
 		}
@@ -167,25 +170,25 @@ public class PatientTreatmentService {
 	}
 
 	@Transactional
-	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, final String actIngredient, final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, final String actIngredient, final Pageable pageable, Pathology pathology) {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, actIngredient);
+		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, actIngredient).stream().filter(patient -> patient.getPathologies().contains(pathology)).collect(Collectors.toList());
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 		return page;
 	}
 
 	@Transactional
-	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, String actIngredient) {
+	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(final String type, final String indication, String actIngredient, Pathology pathology) {
 		log.debug(CALLING_DB);
 		List<Patient> patients = patientRepository.getDetailPatientsUnderTreatment(type, indication, actIngredient);
 		return fillGraphPatientDetailDtoList(patients);
 	}
 
 	@Transactional
-	public Page<GraphPatientDetailDTO> getDetailPatientsPerDoses(String regimen, final Pageable pageable) {
+	public Page<GraphPatientDetailDTO> getDetailPatientsPerDoses(String regimen, final Pageable pageable, Pathology pathology) {
 		log.debug(CALLING_DB);
-		List<Patient> patients = patientRepository.getDetailPatientsPerDoses(regimen);
+		List<Patient> patients = patientRepository.getDetailPatientsPerDoses(regimen).stream().filter(patient -> patient.getPathologies().contains(pathology)).collect(Collectors.toList());
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
 		return page;
@@ -271,9 +274,9 @@ public class PatientTreatmentService {
 
 	@Transactional
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(
-			int numberChanges, final Pageable pageable) {
+			int numberChanges, final Pageable pageable, Pathology pathology) {
 		log.debug( "INIT: Query Patients By Number Changes");
-		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChanges));
+		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChanges,pathology));
 		log.debug( "END: Query Patients By Number Changes");
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
@@ -281,9 +284,9 @@ public class PatientTreatmentService {
 	}
 
 	@Transactional
-	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(int numberChanges) {
+	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(int numberChanges, Pathology pathology) {
 		log.debug( "INIT: Query Patients By Number Changes");
-		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChanges));
+		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChanges, pathology));
 		log.debug( "END: Query Patients By Number Changes");
 		return fillGraphPatientDetailDtoList(patients);
 	}
@@ -344,8 +347,8 @@ public class PatientTreatmentService {
 		return typesTreatmentsList;
 	}
 
-	private List<Long> obtainPatientsIds(int numberChanges) {
-		Map<Patient, Long> patientsMap = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment();
+	private List<Long> obtainPatientsIds(int numberChanges, Pathology pathology) {
+		Map<Patient, Long> patientsMap = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment(pathology);
 		return patientsMap.entrySet().stream()
 				.distinct()
 				.filter(map -> map.getValue() == numberChanges)
@@ -368,10 +371,11 @@ public class PatientTreatmentService {
 	}
 
 	// Se lanza la query que obtiene los pacientes con mas de 2 tratamientos activos
-	private List<String> fillPatientTreamentListByCombinedTreament() {
+	private List<String> fillPatientTreamentListByCombinedTreament(Pathology pathology) {
 		Map<Long, String> mapCombinedTreatment = new HashMap<>();
 		List<String> combinedTreatmentList = new ArrayList<>();
-		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByCombinedTreatment();
+		List<PatientTreatment> patientTreatmentList = patientTreatmentRepository.findPatientTreatmentByCombinedTreatment()
+				.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
 
 		// Se obtiene un mapa de pacientes y tipos de tratamientos concatenados
 		for(PatientTreatment pt:patientTreatmentList){
@@ -428,13 +432,14 @@ public class PatientTreatmentService {
 		}
 	}
 
-	private Map<Patient, Long> fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment() {
+	private Map<Patient, Long> fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment(Pathology pathology) {
 		List<PatientTreatment> patientTreatmentList =
-				patientTreatmentRepository.findPatientTreatmentByNumberChangesOfBiologicTreatment();
+				patientTreatmentRepository.findPatientTreatmentByNumberChangesOfBiologicTreatment().stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
 		Map<Patient, Long> patientsMaps = patientTreatmentList.stream()
 				.collect(groupingBy(pt -> pt.getPatientDiagnose().getPatient(), Collectors.counting()));
 
-		List<PatientTreatment> patientTreatmentWithoutChangesList = patientTreatmentRepository.findPatientTreatmentByNoChangesBiologicTreatment();
+		List<PatientTreatment> patientTreatmentWithoutChangesList = patientTreatmentRepository.findPatientTreatmentByNoChangesBiologicTreatment()
+				.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
 		if(CollectionUtils.isNotEmpty(patientTreatmentWithoutChangesList)) {
 			for (PatientTreatment pt:patientTreatmentWithoutChangesList){
 				if (!patientsMaps.containsKey(pt.getPatientDiagnose().getPatient())) {
