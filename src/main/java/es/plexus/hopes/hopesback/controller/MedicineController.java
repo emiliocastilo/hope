@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.DoseDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.service.MedicineService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import io.swagger.annotations.Api;
@@ -13,17 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

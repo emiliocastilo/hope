@@ -33,7 +33,7 @@ public class QueryConstants {
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where pt.active = false " +
 			"and LOWER(pt.type) = 'biologico' " +
-			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'Otras') " +
+			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'otras') " +
 			"group by pt.id, pt.patientDiagnose " +
 			"order by pt.initDate desc";
 
@@ -102,8 +102,7 @@ public class QueryConstants {
 			"and ho.patient.id = :patient )  <=3";
 	
 	public static final String QUERY_ALL_PATIENTS_HEALHT_OUTCOME =
-			"select ho.patient.id from HealthOutcome ho " +
-			"group by ho.patient.id";
+			"select ho.patient from HealthOutcome ho ";
 	
 	public static final String QUERY_NUMBER_PATIENTS_MONTH =
 			"select dd.nhc from DispensationDetail dd " +
@@ -131,7 +130,6 @@ public class QueryConstants {
 	public static final String QUERY_PATIENTS_DIAGNOSE_BY_INDICATION =
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
 					"join Indication c on c.id = pdg.indication.id ";
-
 	public static final String QUERY_PATIENTS_DIAGNOSE_GROUP_BY_CIE9 =
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
 			"join Cie9 c on c.code = pdg.cieCode ";
@@ -204,7 +202,8 @@ public class QueryConstants {
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
 					JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
 					WHERE_CLAUSULE +
-					FILTER_PTR_ACTIVE_FALSE;
+					FILTER_PTR_ACTIVE_FALSE + " and ptr.patientDiagnose " +
+			" not in (select pt2.patientDiagnose from PatientTreatment pt2 where pt2.active =true) ";
 
 	public static final String FILTER_ACTIVE_FALSE_AND_END_CAUSE_AND_REASON =
 			FILTER_PTR_ACTIVE_FALSE +
