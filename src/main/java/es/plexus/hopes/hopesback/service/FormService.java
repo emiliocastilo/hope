@@ -1,10 +1,6 @@
 package es.plexus.hopes.hopesback.service;
 
-import es.plexus.hopes.hopesback.controller.model.DataHistoricDinamycFormDTO;
-import es.plexus.hopes.hopesback.controller.model.FormDTO;
-import es.plexus.hopes.hopesback.controller.model.GraphHistorifyDinamycFormDTO;
-import es.plexus.hopes.hopesback.controller.model.InputDTO;
-import es.plexus.hopes.hopesback.controller.model.TemplateDTO;
+import es.plexus.hopes.hopesback.controller.model.*;
 import es.plexus.hopes.hopesback.repository.FormMongoRepository;
 import es.plexus.hopes.hopesback.repository.model.FormMongo;
 import es.plexus.hopes.hopesback.service.events.GraphsEvent;
@@ -13,18 +9,12 @@ import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.FormMapper;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
@@ -35,13 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static es.plexus.hopes.hopesback.service.Constants.DYNAMIC_FORM_HISTORIC_FRONT;
-import static es.plexus.hopes.hopesback.service.Constants.DYNAMIC_FORM_HISTORIFY_BACK;
-import static es.plexus.hopes.hopesback.service.Constants.DYNAMIC_FORM_SIMPLE;
-import static es.plexus.hopes.hopesback.service.Constants.HISTORICAL_FIELD_TYPE;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.NOT_DATE_HISTORIFY_FORM_MESSAGE;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.NOT_FOUND_FORM_MESSAGE;
-import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.NOT_HISTORIFY_FORM_MESSAGE;
+import static es.plexus.hopes.hopesback.service.Constants.*;
+import static es.plexus.hopes.hopesback.service.exception.ConstantsServiceCatalog.*;
 
 @Log4j2
 @Service
@@ -50,18 +35,20 @@ public class FormService {
     private final FormMongoRepository formMongoRepository;
     private final FormMapper formMapper;
     private final TemplateService templateService;
+    private final RoleService roleService;
 
     private final ApplicationEventPublisher publisher;
 
     @Autowired
-    public FormService(FormMongoRepository formMongoRepository, FormMapper formMapper, TemplateService templateService, ApplicationEventPublisher publisher) {
+    public FormService(FormMongoRepository formMongoRepository, FormMapper formMapper, TemplateService templateService, ApplicationEventPublisher publisher, RoleService roleService) {
         this.formMongoRepository = formMongoRepository;
         this.formMapper = formMapper;
         this.templateService = templateService;
         this.publisher = publisher;
+        this.roleService = roleService;
     }
 
-    public void saveData(FormDTO formDto, String user) {
+    public void saveData(FormDTO formDto, String user, String token) {
         String keyTemplate = formDto.getTemplate();
         TemplateDTO templateDto = templateService.findByKey(keyTemplate);
         String formType = obtainFormType(templateDto);
@@ -93,7 +80,7 @@ public class FormService {
             } catch (Exception ignored){
 
             } finally {
-                publisher.publishEvent(new SaveEvent(templateDto.getKey(), Long.valueOf(formDto.getPatientId()), formDto,indication));
+                publisher.publishEvent(new SaveEvent(templateDto.getKey(), Long.valueOf(formDto.getPatientId()), formDto,indication, roleService.getPathologyByRoleSelected(token)));
             }
 
         }
@@ -131,7 +118,7 @@ public class FormService {
 
             formMongoRepository.delete(formMongo);
 
-            this.saveData(dto, user != null ? user : formMongo.getUser());
+            this.saveData(dto, user != null ? user : formMongo.getUser(),"");
         }
         else {
             throw ServiceExceptionCatalog.NOT_FOUND_ELEMENT_EXCEPTION.exception(NOT_FOUND_FORM_MESSAGE);

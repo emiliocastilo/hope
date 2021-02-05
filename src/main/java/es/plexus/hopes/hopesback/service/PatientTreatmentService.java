@@ -21,11 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -322,6 +318,10 @@ public class PatientTreatmentService {
 				.map(Mappers.getMapper(PatientTreatmentMapper.class)::entityToTreatmentDTO)
 				.collect(Collectors.toList()));
 		return map;
+	}
+
+	public List<PatientTreatment> findAllTreatmentsByPatientId(Long patId){
+		return patientTreatmentRepository.findTreatmentsByPatientId(patId);
 	}
 
 	public Map<String,List<TreatmentDTO>> findVIHTreatmentsByPatientId(Long patId) {
