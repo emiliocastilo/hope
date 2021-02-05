@@ -21,11 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -115,7 +111,7 @@ public class PatientTreatmentService {
 	}
 
 	@Transactional
-	public Map<Long, Integer> findPatientTreatmentByNumberChangesOfBiologicTreatment(Pathology pathology) {
+	public Map<String, Long> findPatientTreatmentByNumberChangesOfBiologicTreatment(Pathology pathology) {
 		log.debug(CALLING_DB);
 		Map<Patient, Long> patientLongMap = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment(pathology);
 		return buildMapPatientsByNumberChangesOfBiologicalTreatment(patientLongMap);
@@ -324,6 +320,10 @@ public class PatientTreatmentService {
 		return map;
 	}
 
+	public List<PatientTreatment> findAllTreatmentsByPatientId(Long patId){
+		return patientTreatmentRepository.findTreatmentsByPatientId(patId);
+	}
+
 	public Map<String,List<TreatmentDTO>> findVIHTreatmentsByPatientId(Long patId) {
 		Map<String, List<TreatmentDTO>> map = new HashMap<>();
 		List<PatientTreatment> patientFameTreatmentList = patientTreatmentRepository
@@ -397,18 +397,18 @@ public class PatientTreatmentService {
 	}
 
 	private void fillCombinedTreatmentList(List<String> combinedTreatmentList, String[] typesTreatments) {
-		List<String> tratamientos = Arrays.asList(typesTreatments);
-
 		if(typesTreatments.length == 2){
 			obtainTreatmentCombined(combinedTreatmentList, typesTreatments);
 
-		} else if ( typesTreatments.length > 2 ){
-			if (tratamientos.contains(TREATMENT_TYPE_BIOLOGICO)){
-				combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO);
-			} else if ( tratamientos.contains(TREATMENT_TYPE_TOPICO)
-					&& tratamientos.contains(TREATMENT_TYPE_QUIMICO)
-					&& tratamientos.contains(TREATMENT_TYPE_FOTOTERAPIA) ){
+		} else if(typesTreatments.length > 2){
+			if((TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[0].toUpperCase())
+					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[1].toUpperCase())
+					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[2].toUpperCase()))){
 				combinedTreatmentList.add(TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO);
+			} else if(TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[0].toUpperCase())
+					|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[1].toUpperCase())
+					|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[2].toUpperCase()) ){
+				combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO);
 			}
 		}
 	}
@@ -452,17 +452,15 @@ public class PatientTreatmentService {
 		return patientsMaps;
 	}
 
-	private Map<Long, Integer> buildMapPatientsByNumberChangesOfBiologicalTreatment(Map<Patient, Long> map) {
+	private Map<String, Long> buildMapPatientsByNumberChangesOfBiologicalTreatment(Map<Patient, Long> map) {
 		Map<Long, Integer> result = new HashMap<>();
+		List<String> changes = new ArrayList<>();
 		map.entrySet().forEach(m -> {
-			if(result.containsKey(m.getValue())){
-				result.replace(m.getValue(), result.get(m.getValue())+1);
-			}else{
-				result.put(m.getValue(), 1);
-			}
-
+			List<PatientTreatment> tratamientos = m.getKey().getDiagnoses().get(0).getTreatments();
+			tratamientos.forEach(patientTreatment -> changes.add( patientTreatment.getEndCause()) );
 		});
-		return result;
+		return changes.stream().collect(Collectors.groupingBy(String::toString,Collectors.counting()));
+
 	}
 
 	private Function<PatientTreatment, String> functionDescriptionMedicineByTreatment() {

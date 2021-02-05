@@ -1,18 +1,13 @@
 package es.plexus.hopes.hopesback.service.events;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import es.plexus.hopes.hopesback.controller.model.DataHistoricDinamycFormDTO;
-import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.FormDTO;
-import es.plexus.hopes.hopesback.controller.model.GraphHistorifyDinamycFormDTO;
 import es.plexus.hopes.hopesback.controller.model.InputDTO;
-import es.plexus.hopes.hopesback.controller.model.MonitoringDrugRowDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientDTO;
 import es.plexus.hopes.hopesback.repository.*;
 import es.plexus.hopes.hopesback.repository.model.*;
-import es.plexus.hopes.hopesback.service.*;
-import es.plexus.hopes.hopesback.service.mapper.PatientMapper;
+import es.plexus.hopes.hopesback.service.FormService;
+import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
+import es.plexus.hopes.hopesback.service.PatientService;
+import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,16 +16,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.time.temporal.ChronoUnit.DAYS;
 
 @Component
 @Log4j2
@@ -83,7 +74,7 @@ public class SaveConsumer {
     private final PatientTreatmentRepository patientTreatmentRepository;
 
     @EventListener(condition = "#saveEvent.name eq 'principal-diagnosis'")
-    public void handleSavePrincipalDiagnosis(SaveEvent saveEvent) throws ParseException {
+    public void handleSavePrincipalDiagnosis(SaveEvent saveEvent) {
 
         FormDTO form = saveEvent.getForm();
 
@@ -113,61 +104,86 @@ public class SaveConsumer {
     }
 
     @EventListener(condition = "#saveEvent.name eq 'farmacology-treatment'")
-    public void handleSaveTreatment(SaveEvent saveEvent) throws ParseException {
+    public void handleSaveTreatment(SaveEvent saveEvent) {
 
         FormDTO form = saveEvent.getForm();
 
-        //TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
-        indicationRepository.findByCode("");
-        PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatientIdAndIndicationId(form.getPatientId().longValue(),null).get();
-        List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnose)
-                .stream()
-                .filter(patientTreatment -> !TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
-                .collect(Collectors.toList());
-        ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) form.getData().get(0).getValue();
+        if (!StringUtils.isEmpty(saveEvent.getIndication())){
+            Optional<Indication> indicationOptional = indicationRepository.findByDescription(saveEvent.getIndication());
+            Indication indication = indicationOptional.orElse(new Indication());
+
+            Optional<PatientDiagnose> patientDiagnoseOptional = patientDiagnosisRepository.findByPatientIdAndIndicationId(form.getPatientId().longValue(),indication.getId());
+            PatientDiagnose patientDiagnose = patientDiagnoseOptional.orElseGet(PatientDiagnose::new);
+
+
+            List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnose)
+                    .stream()
+                    .filter(patientTreatment -> !TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
+                    .collect(Collectors.toList());
+            ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) form.getData().get(0).getValue();
+            List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
+                    .stream()
+                    .map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, form))
+                    .collect(Collectors.toList());
+            // Eliminar tratamientos en Postgres que no estén en Mongo
+            deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
+            upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, form);
+        } else {
+            deleteAllPatientTreatmentInPostgres(saveEvent);
+        }
 
         // Mapeamos el HasMap de Mongo al modelo PatientTreatment
-        List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
-                .stream()
-                .map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, form))
-                .collect(Collectors.toList());
-        // Eliminar tratamientos en Postgres que no estén en Mongo
-        deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
 
         // Actualizamos o insertamos tratamientos en Postgres
-        upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, form);
 
         formService.updateData(form, null);
 
     }
+
 
     @EventListener(condition = "#saveEvent.name eq 'phototherapy'")
-    public void handleSaveTreatmentPhototherapy(SaveEvent saveEvent) throws ParseException {
+    public void handleSaveTreatmentPhototherapy(SaveEvent saveEvent) {
         FormDTO form = saveEvent.getForm();
-        //TODO Cuando haya más de una patología puede haber problemas porque hay que buscar por indicación también
-        PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientId(form.getPatientId().longValue());
-        List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnosis)
-                .stream()
-                .filter(patientTreatment -> TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
-                .collect(Collectors.toList());
-        ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) form.getData().get(0).getValue();
 
-        // Mapeamos el HasMap de Mongo al modelo PatientTreatment
-        List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
-                .stream()
-                .map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, form))
-                .collect(Collectors.toList());
-        // Eliminar tratamientos en Postgres que no estén en Mongo
-        deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
+        if (!StringUtils.isEmpty(saveEvent.getIndication())) {
+            PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatientIdAndIndicationId(form.getPatientId().longValue(), indicationRepository.findByDescription(saveEvent.getIndication()).get().getId()).get();
+            List<PatientTreatment> patientTreatmentsPostgres = patientTreatmentRepository.findByPatientDiagnose(patientDiagnose)
+                    .stream()
+                    .filter(patientTreatment -> TYPE_TREATMENT_PHOTOTHERAPY.equalsIgnoreCase(patientTreatment.getType()))
+                    .collect(Collectors.toList());
+            ArrayList<LinkedHashMap<String, Object>> patientTreatmentsInMongo = (ArrayList<LinkedHashMap<String, Object>>) form.getData().get(0).getValue();
 
-        // Actualizamos o insertamos tratamientos en Postgres
-        upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, form);
+            // Mapeamos el HasMap de Mongo al modelo PatientTreatment
+            List<PatientTreatment> patientTreatmentsMongo = patientTreatmentsInMongo
+                     .stream()
+                    .map(patientTreatmentMongo -> getPatientTreatmentInMongo(patientTreatmentMongo, form))
+                    .collect(Collectors.toList());
+            // Eliminar tratamientos en Postgres que no estén en Mongo
+            deletePatientTreatmentInPostgres(patientTreatmentsPostgres, patientTreatmentsMongo);
 
-        form.setJob(false);
+            // Actualizamos o insertamos tratamientos en Postgres
+            upsertPatientTreatmentInPostgres(patientTreatmentsInMongo, form);
+        } else {
+            deleteAllPatientTreatmentInPostgres(saveEvent);
+        }
         formService.updateData(form, null);
     }
 
 
+        private void deleteAllPatientTreatmentInPostgres(SaveEvent saveEvent) {
+
+            List<PatientTreatment> pts = patientTreatmentService.findAllTreatmentsByPatientId(saveEvent.getPatientId());
+
+            if ( saveEvent.getName().equalsIgnoreCase(TEMPLATE_NO_PHARMACOLOGY_TREATMENT)){
+                pts = pts.stream().filter(patientTreatment -> patientTreatment.getType().equalsIgnoreCase("fototerapia")).collect(Collectors.toList());
+            } else {
+                pts = pts.stream().filter(patientTreatment -> !patientTreatment.getType().equalsIgnoreCase("fototerapia")).collect(Collectors.toList());
+            }
+
+            pts.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getIndication().getPathologyId().equals(saveEvent.getPathology().getId()))
+                    .forEach(patientTreatmentRepository::delete);
+
+        }
 
         private void deletePatientTreatmentInPostgres(List<PatientTreatment> patientTreatmentsPostgres, List<PatientTreatment> patientTreatmentsMongo) {
         if (org.apache.commons.collections4.CollectionUtils.isNotEmpty(patientTreatmentsPostgres)) {
@@ -258,12 +274,6 @@ public class SaveConsumer {
             Indication indication = indicationRepository.findByCode(patientTreatmentMongo.get(TAGNAME_INDICATION).toString()).orElse(null);
             PatientDiagnose patientDiagnose = indication != null ? patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), indication.getId()).orElse(null) : null;
             patientTreatment.setPatientDiagnose(patientDiagnose);
-//			List<FormDTO> formsDTO = formService.findByTemplateAndPatientId(TEMPLATE_DIAGNOSIS, formDTO.getPatientId());
-//			if (!CollectionUtils.isEmpty(formsDTO)) {
-//				Optional<Indication> indication = indicationRepository.findByCode(patientTreatmentMongo.get(TAGNAME_INDICATION).toString());
-//				PatientDiagnose patientDiagnose = indication.flatMap(value -> patientDiagnosisRepository.findByPatientIdAndIndicationId(formDTO.getPatientId().longValue(), value.getId())).orElse(null);
-//				patientTreatment.setPatientDiagnose(patientDiagnose);
-//			}
         }
 
         if (patientTreatment.getFinalDate() != null) {
