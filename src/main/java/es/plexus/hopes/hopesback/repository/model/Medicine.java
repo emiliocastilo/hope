@@ -31,11 +31,11 @@ public class Medicine extends AbstractAudit {
     private String actIngredients;
 
     @Basic
-    @Column(name = "med_code_act", nullable = false, length = 7)
-    private String codeAct;
+    @Column(name = "med_code_atc", nullable = false, length = 7)
+    private String codeAtc;
 
-    @Column(name = "med_code_act_type", nullable = false, length = 100)
-    private String codeActType;
+    @Column(name = "med_code_atc_type", nullable = false, length = 100)
+    private String codeAtcType;
 
     @Basic
     @Column(name = "med_acronym", length = 15)

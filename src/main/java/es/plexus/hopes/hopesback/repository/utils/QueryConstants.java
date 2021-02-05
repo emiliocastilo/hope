@@ -81,7 +81,7 @@ public class QueryConstants {
 			"select " +
 			"coalesce(sum(dd.amount),0) as total from Dispensation d " + 
 			"join DispensationDetail dd on d.id = dd.dispensation.id " +
-			"join Medicine me on dd.code = me.codeAct " + 
+			"join Medicine me on dd.code = me.codeAtc " +
 			"and me.biologic = true ";
 	
 	public static final String WHERE_FIND_BIO_ECONOMIC_RESULTS = 
