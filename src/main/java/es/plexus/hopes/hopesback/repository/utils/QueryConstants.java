@@ -347,6 +347,14 @@ public class QueryConstants {
 	public static final String QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE =
 			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( dd.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount, m.unitDose, dd.botCode) " +
 					"from Medicine m " +
-					"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) ";
+						"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) ";
+
+	public static final String QUERY_FIND_PHARMACY_BY_SEARCH =
+			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( dd.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount, m.unitDose, dd.botCode) " +
+					"from Medicine m " +
+						"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) " +
+							//"where m.presentation like CONCAT('%',upper(:search),'%')";
+							"where upper(m.presentation) like CONCAT('%',upper(:search),'%')" +
+							"or dd.botCode like CONCAT('%',:search,'%')";
 
 }

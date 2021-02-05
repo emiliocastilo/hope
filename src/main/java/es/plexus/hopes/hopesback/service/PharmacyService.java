@@ -21,11 +21,13 @@ public class PharmacyService {
     public Page<PharmacyDTO> findAll(final Pageable pageable) {
 
         log.debug(CALLING_DB);
-        Page<PharmacyDTO> pharmacyDTOPage = pharmacyRepositoryCustom.findAll(pageable);
-        pharmacyDTOPage.getContent().forEach(pharmacyDTO -> {
-            BigDecimal quantity = new BigDecimal(pharmacyDTO.getQuantity());
-            pharmacyDTO.setMgDispensed(pharmacyDTO.getQuantity() == null || pharmacyDTO.getUnitDose() == null ? BigDecimal.ZERO : quantity.multiply(pharmacyDTO.getUnitDose()));
-        });
-        return pharmacyDTOPage;
+
+        return pharmacyRepositoryCustom.findAll(pageable);
+    }
+    public Page<PharmacyDTO> findPharmacyBySearch(String search, final Pageable pageable) {
+
+        log.debug(CALLING_DB);
+
+        return pharmacyRepositoryCustom.findPharmacyBySearch(search, pageable);
     }
 }

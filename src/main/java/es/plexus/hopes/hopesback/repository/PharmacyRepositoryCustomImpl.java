@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static es.plexus.hopes.hopesback.repository.utils.QueryConstants.QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE;
+import static es.plexus.hopes.hopesback.repository.utils.QueryConstants.QUERY_FIND_PHARMACY_BY_SEARCH;
 
 @Repository
 public class PharmacyRepositoryCustomImpl implements PharmacyRepositoryCustom {
@@ -28,7 +29,7 @@ public class PharmacyRepositoryCustomImpl implements PharmacyRepositoryCustom {
     @Override
     public Page<PharmacyDTO> findAll(Pageable pageable) {
         List<PharmacyDTO> list;
-        int start = (pageable.getPageNumber() - 1 ) * pageable.getPageSize();
+        int start = (pageable.getPageNumber()) * pageable.getPageSize();
         List<PharmacyDTO> pharmacyResultList = entityManager
                 .createQuery(QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE, PharmacyDTO.class)
                 .getResultList();
@@ -46,6 +47,30 @@ public class PharmacyRepositoryCustomImpl implements PharmacyRepositoryCustom {
 
         return new PageImpl<>(list, pageable, pharmacyResultList.size());
     }
+
+    @Override
+    public Page<PharmacyDTO> findPharmacyBySearch(String search, Pageable pageable) {
+        List<PharmacyDTO> list;
+        int start = (pageable.getPageNumber()) * pageable.getPageSize();
+
+        List<PharmacyDTO> pharmacyResultList = entityManager
+                .createQuery(QUERY_FIND_PHARMACY_BY_SEARCH, PharmacyDTO.class)
+                .setParameter("search", search)
+                .getResultList();
+        if (pageable.getSort().get().findFirst().isPresent()) {
+            orderPharmacyResultList(pharmacyResultList, pageable.getSort());
+        }
+
+        if (pharmacyResultList.size() < start) {
+            list = Collections.emptyList();
+        } else {
+            int end = Math.min(start + pageable.getPageSize(), pharmacyResultList.size());
+            list = pharmacyResultList.subList(start, end);
+        }
+
+        return new PageImpl<>(list, pageable, pharmacyResultList.size());
+    }
+
 
     private void orderPharmacyResultList(List<PharmacyDTO> pharmacyResultList, Sort sort) {
         Optional<Sort.Order> sortOrder = sort.get().findFirst();
