@@ -49,7 +49,7 @@ public class PharmacyDTO {
     private String botCode;
 
     public PharmacyDTO(String nhc, LocalDateTime date, String nationalCode,
-                       String presentation, String quantity,  BigDecimal amount, BigDecimal unitDose, String botCode) {
+                       String presentation, String quantity, BigDecimal amount, BigDecimal unitDose, String botCode) {
         this.nhc = nhc;
         this.date = date;
         this.nationalCode = nationalCode;
