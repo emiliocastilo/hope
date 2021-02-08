@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -86,16 +87,19 @@ public class PatientController {
 		return patientService.save(patient);
 	}
 
-	//ToDo controlar la exception
 	@ApiOperation("Eliminar un paciente")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
-	public void delete(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) throws ServiceException {
+	public void delete(@ApiParam(value = "identificador", required = true) @PathVariable final Long id) throws Exception {
 		if (Objects.isNull(patientService.findById(id))) {
 			log.error("Id " + id + " no existe");
 		}
+		try {
+			patientService.deleteById(id);
+		} catch (DataIntegrityViolationException dataIntegrityViolationException){
+			throw new Exception("No se puede borrar el paciente por que tiene datos asociados.");
+		}
 
-		patientService.deleteById(id);
 	}
 
 	@ApiOperation("Filtrado de pacientes")

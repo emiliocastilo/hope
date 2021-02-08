@@ -1,3 +1,6 @@
+--update administrador a administrador dermatología
+update hopes.roles set rol_name = 'Administrador Dermatología' where rol_name = 'Administrador';
+
 -- Borrar el vínculo del servicio Farmacia
 UPDATE hopes.roles r
 SET rol_srv_id= null,

@@ -8,15 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -42,8 +34,9 @@ public class DataController {
 	@ApiOperation("Guardar los datos de los formularios")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping
-	public void saveData(@RequestBody @Valid final FormDTO dto, Authentication authentication) {
-		formService.saveData(dto, authentication.getName());
+	public void saveData(@RequestBody @Valid final FormDTO dto, Authentication authentication,
+						 @RequestHeader(name = "Authorization") final String token) {
+		formService.saveData(dto, authentication.getName(), token);
 	}
 
 	@ApiOperation("Recuperar los datos de los formularios")
@@ -57,8 +50,9 @@ public class DataController {
     @ApiOperation("Actualiza los datos de los formularios")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public void updateData(@RequestBody @Valid FormDTO dto, Authentication authentication) {
-        formService.saveData(dto, authentication.getName());
+    public void updateData(@RequestBody @Valid FormDTO dto, Authentication authentication,
+						   @RequestHeader(name = "Authorization") final String token) {
+        formService.saveData(dto, authentication.getName(), token);
     }
 
     @ApiOperation("Borra los datos de los formularios")

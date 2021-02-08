@@ -347,6 +347,19 @@ public class QueryConstants {
 	public static final String QUERY_FIND_PHARMACY_BY_DISPENSATION_AND_MEDICINE =
 			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( dd.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount, m.unitDose, dd.botCode) " +
 					"from Medicine m " +
-					"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) ";
+							"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) ";
+
+	public static final String QUERY_FIND_PHARMACY_BY_SEARCH =
+			"select NEW es.plexus.hopes.hopesback.controller.model.PharmacyDTO( dd.nhc , dd.date , m.nationalCode , m.presentation , dd.quantity , dd.amount, m.unitDose, dd.botCode) " +
+					"from Medicine m " +
+							"join DispensationDetail dd on m.nationalCode = CAST(dd.nationalCode as text) " +
+							"where upper(dd.nhc) like CONCAT('%',upper(:search),'%') " +
+							"or to_char(dd.date,'DD/MM/YY') like CONCAT('%',:search,'%') " +
+							"or upper(m.nationalCode) like CONCAT('%',upper(:search),'%') " +
+							"or upper(m.presentation) like CONCAT('%',upper(:search),'%') " +
+							"or upper(dd.quantity) like CONCAT('%',upper(:search),'%') " +
+							"or CAST(dd.amount as text) like CONCAT('%',:search,'%') " +
+							"or CAST(m.unitDose as text) like CONCAT('%',:search,'%') " +
+							"or upper(dd.botCode) like CONCAT('%',upper(:search),'%') ";
 
 }
