@@ -2,20 +2,14 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.PharmacyDTO;
 import es.plexus.hopes.hopesback.service.PharmacyService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "Controlador de farmacia", tags = "farmacia")
 @Log4j2
@@ -46,5 +40,15 @@ public class PharmacyController {
             @PageableDefault(size = 5) final Pageable pageable) {
         log.debug(CALLING_SERVICE);
         return pharmacyService.findAll(pageable);
+    }
+
+    @ApiOperation("Filtra por texto entre todos los registros de farmacia para todos los pacientes")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/searches")
+    public Page<PharmacyDTO> findBySearch(
+            @ApiParam(value = "buscador") @RequestParam(value = "search", required = false, defaultValue = "") final String search,
+            @PageableDefault(size = 5) final Pageable pageable) {
+        log.debug(CALLING_SERVICE);
+        return pharmacyService.findPharmacyBySearch(search, pageable);
     }
 }

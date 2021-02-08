@@ -55,6 +55,7 @@ public class PharmacyDTO {
         this.nationalCode = nationalCode;
         this.presentation = presentation;
         this.quantity = quantity;
+        this.mgDispensed = quantity ==null || unitDose == null ? BigDecimal.ZERO : new BigDecimal(quantity).multiply(unitDose);
         // TODO tanto coste unitario como coste total deberá venir de dispensaciones pero aún no nos han dado un archivo correcto para hacer los cambios en la tabla.
         this.unitCost = amount;
         this.totalCost = BigDecimal.ZERO;

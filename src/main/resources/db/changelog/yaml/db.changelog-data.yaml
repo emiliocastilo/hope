@@ -27,7 +27,7 @@ databaseChangeLog:
     file: ../sql/data/9-update_sections_vih.sql
     relativeToChangelogFile: true
 - include:
-    file: ../sql/data/12-update_section_farmacia_vih_fixed
+    file: ../sql/data/12-update_section_farmacia_vih_fixed.sql
     relativeToChangelogFile: true
 - include:
     file: ../sql/data/11-indications_derma_v3.sql
