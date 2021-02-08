@@ -101,6 +101,9 @@ public class PharmacyRepositoryCustomImpl implements PharmacyRepositoryCustom {
                 case "totalCost":
                     pharmacyResultList.sort(obtainComparatorBigDecimal(order, PharmacyDTO::getTotalCost));
                     break;
+                case "unitDose":
+                    pharmacyResultList.sort(obtainComparatorBigDecimal(order, PharmacyDTO::getUnitDose));
+                    break;
                 case "botCode":
                     pharmacyResultList.sort(obtainComparatorString(order, PharmacyDTO::getBotCode));
                     break;
