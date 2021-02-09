@@ -46,11 +46,13 @@ public class PatientTreatmentService {
 	public static final String TREATMENT_TYPE_BIOLOGICO_FOTOTERAPIA = "BIOLOGICO + FOTOTERAPIA";
 	public static final String TREATMENT_TYPE_QUIMICO_FOTOTERAPIA = "QUIMICO + FOTOTERAPIA";
 	public static final String TREATMENT_TYPE_TOPICO_QUIMICO = "TOPICO + QUIMICO";
+	public static final String TREATMENT_TYPE_BIOLOGICO_TOPICO = "BIOLOGICO + TOPICO";
 	public static final String TREATMENT_TYPE_TOPICO_FOTOTERAPIA = "TOPICO + FOTOTERAPIA";
 	public static final String TREATMENT_TYPE_TOPICO = "TOPICO";
 	public static final String TREATMENT_TYPE_QUIMICO = "QUIMICO";
 	public static final String TREATMENT_TYPE_FOTOTERAPIA = "FOTOTERAPIA";
 	public static final String TREATMENT_TYPE_BIOLOGICO = "BIOLOGICO";
+	public static final String TREATMENT_TYPE_BIOLOGICO_DESCRIPTION = "MÁS DE DOS TRATAMIENTOS, SIENDO UNO BIOLÓGICO";
 	public static final String NO_REGIMEN = "Sin régimen";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
@@ -65,7 +67,21 @@ public class PatientTreatmentService {
 		pacientesPT.forEach((patientDiagnose, patientTreatments) -> pacientes.put(patientDiagnose.getPatient(), patientTreatments));
 		List<String> tratamientos = new ArrayList<>();
 
-		pacientes.forEach((patient, patientTreatments) -> tratamientos.add(patientTreatments.get(0).getType()));
+		pacientes.forEach((patient, patientTreatments) -> {
+			List<String> tratPat = new ArrayList<>();
+			patientTreatments.stream().filter(PatientTreatment::isActive).forEach(
+
+					patientTreatment -> {
+
+						if (!tratPat.contains(patientTreatment.getType())) {
+							tratPat.add(patientTreatment.getType());
+						}
+					}
+			);
+			tratamientos.addAll(tratPat);
+		});
+
+
 		return tratamientos.stream().collect(Collectors.groupingBy(String::toUpperCase,Collectors.counting()));
 	}
 
@@ -270,9 +286,28 @@ public class PatientTreatmentService {
 
 	@Transactional
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(
-			int numberChanges, final Pageable pageable, Pathology pathology) {
+			String numberChanges, final Pageable pageable, Pathology pathology) {
+
+		int numberChangeInt = 0;
+		/*result.put("Naive al TB", cambiosNaive);
+		result.put("1 cambio", primerCambio);
+		result.put("2 cambios", segundoCambio);
+		result.put("3 cambios", tercerCambio);
+		result.put("Más 3 cambios", masTresCambios);
+		*/
+		if ( numberChanges.equalsIgnoreCase("Naive al TB") ){
+			numberChangeInt = 0;
+		} else if ( numberChanges.equalsIgnoreCase("1 cambio")) {
+			numberChangeInt = 1;
+		} else if ( numberChanges.equalsIgnoreCase("2 cambios")) {
+			numberChangeInt = 2;
+		} else if ( numberChanges.equalsIgnoreCase("3 cambio")) {
+			numberChangeInt = 3;
+		} else if ( numberChanges.equalsIgnoreCase("Más 3 cambios")) {
+			numberChangeInt = 4;
+		}
 		log.debug( "INIT: Query Patients By Number Changes");
-		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChanges,pathology));
+		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChangeInt,pathology));
 		log.debug( "END: Query Patients By Number Changes");
 		List<GraphPatientDetailDTO> graphPatientDetailList = fillGraphPatientDetailDtoList(patients);
 		Page<GraphPatientDetailDTO> page = doPaginationGraphPatientDetailDTO(graphPatientDetailList, pageable);
@@ -280,9 +315,22 @@ public class PatientTreatmentService {
 	}
 
 	@Transactional
-	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(int numberChanges, Pathology pathology) {
+	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(String numberChanges, Pathology pathology) {
 		log.debug( "INIT: Query Patients By Number Changes");
-		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChanges, pathology));
+		int numberChangeInt = 0;
+		if ( numberChanges.equalsIgnoreCase("Naive al TB") ){
+			numberChangeInt = 0;
+		} else if ( numberChanges.equalsIgnoreCase("1 cambio")) {
+			numberChangeInt = 1;
+		} else if ( numberChanges.equalsIgnoreCase("2 cambios")) {
+			numberChangeInt = 2;
+		} else if ( numberChanges.equalsIgnoreCase("3 cambio")) {
+			numberChangeInt = 3;
+		} else if ( numberChanges.equalsIgnoreCase("Más 3 cambios")) {
+			numberChangeInt = 4;
+		}
+
+		List<Patient> patients = patientRepository.findGraphPatientsDetailsByPatientsIds(obtainPatientsIds(numberChangeInt, pathology));
 		log.debug( "END: Query Patients By Number Changes");
 		return fillGraphPatientDetailDtoList(patients);
 	}
@@ -335,26 +383,44 @@ public class PatientTreatmentService {
 	}
 
 	private List<String> obtainTreatmentTypes(String combinedTreatment) {
+
 		List<String> typesTreatmentsList  = new ArrayList<>();
 		String[] typesTreatments = combinedTreatment.contains("+")?
 				combinedTreatment.replace(" ","").split("\\+"):
 				combinedTreatment.split(" ");
-		Arrays.asList(typesTreatments).forEach(t -> {
-			if(!StringUtils.isEmpty(t)){
-				typesTreatmentsList.add(t.toLowerCase());
-			}
-		});
+
+		if ( combinedTreatment.equalsIgnoreCase(TREATMENT_TYPE_BIOLOGICO_DESCRIPTION.replace(" ","")) ){
+			typesTreatmentsList.add(TREATMENT_TYPE_BIOLOGICO);
+		} else {
+			Arrays.asList(typesTreatments).forEach(t -> {
+				if(!StringUtils.isEmpty(t)){
+					typesTreatmentsList.add(t.toLowerCase());
+				}
+			});
+
+		}
+
 		return typesTreatmentsList;
 	}
 
 	private List<Long> obtainPatientsIds(int numberChanges, Pathology pathology) {
 		Map<Patient, Long> patientsMap = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment(pathology);
-		return patientsMap.entrySet().stream()
-				.distinct()
-				.filter(map -> map.getValue() == numberChanges)
-				.mapToLong(map -> map.getKey().getId())
-				.boxed()
-				.collect(Collectors.toList());
+		if ( numberChanges < 4 ){
+			return patientsMap.entrySet().stream()
+					.distinct()
+					.filter(map -> map.getValue() == numberChanges)
+					.mapToLong(map -> map.getKey().getId())
+					.boxed()
+					.collect(Collectors.toList());
+		} else {
+			return patientsMap.entrySet().stream()
+					.distinct()
+					.filter(map -> map.getValue() > 3)
+					.mapToLong(map -> map.getKey().getId())
+					.boxed()
+					.collect(Collectors.toList());
+		}
+
 	}
 
 	private List<PatientTreatment> fillPatientTreatmentListByTreatmentType() {
@@ -397,19 +463,19 @@ public class PatientTreatmentService {
 	}
 
 	private void fillCombinedTreatmentList(List<String> combinedTreatmentList, String[] typesTreatments) {
-		if(typesTreatments.length == 2){
+		if (typesTreatments.length == 2) {
 			obtainTreatmentCombined(combinedTreatmentList, typesTreatments);
 
-		} else if(typesTreatments.length > 2){
-			if((TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[0].toUpperCase())
+		} else if (typesTreatments.length == 3) {
+			if ((TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[0].toUpperCase())
 					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[1].toUpperCase())
-					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[2].toUpperCase()))){
+					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[2].toUpperCase()))) {
 				combinedTreatmentList.add(TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO);
-			} else if(TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[0].toUpperCase())
-					|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[1].toUpperCase())
-					|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[2].toUpperCase()) ){
-				combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO);
 			}
+		} else {
+			if (Arrays.stream(typesTreatments).filter(s -> s.equalsIgnoreCase(TREATMENT_TYPE_BIOLOGICO)).toArray().length > 0)
+				combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO_DESCRIPTION);
+
 		}
 	}
 
@@ -429,6 +495,9 @@ public class PatientTreatmentService {
 		} else if(TREATMENT_TYPE_BIOLOGICO_QUIMICO.contains(typesTreatments[0].toUpperCase())
 				&& TREATMENT_TYPE_BIOLOGICO_QUIMICO.contains(typesTreatments[1].toUpperCase())){
 			combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO_QUIMICO);
+		} else if(TREATMENT_TYPE_BIOLOGICO_TOPICO.contains(typesTreatments[0].toUpperCase())
+				&& TREATMENT_TYPE_BIOLOGICO_TOPICO.contains(typesTreatments[1].toUpperCase())){
+			combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO_TOPICO);
 		}
 	}
 
@@ -439,7 +508,8 @@ public class PatientTreatmentService {
 				.collect(groupingBy(pt -> pt.getPatientDiagnose().getPatient(), Collectors.counting()));
 
 		List<PatientTreatment> patientTreatmentWithoutChangesList = patientTreatmentRepository.findPatientTreatmentByNoChangesBiologicTreatment()
-				.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
+		.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
+
 		if(CollectionUtils.isNotEmpty(patientTreatmentWithoutChangesList)) {
 			for (PatientTreatment pt:patientTreatmentWithoutChangesList){
 				if (!patientsMaps.containsKey(pt.getPatientDiagnose().getPatient())) {
@@ -448,24 +518,31 @@ public class PatientTreatmentService {
 			}
 		}
 
-
 		return patientsMaps;
 	}
 
 	private Map<String, Long> buildMapPatientsByNumberChangesOfBiologicalTreatment(Map<Patient, Long> map) {
-		Map<Long, Integer> result = new HashMap<>();
-		List<String> changes = new ArrayList<>();
-		map.entrySet().forEach(m -> {
-			List<PatientTreatment> tratamientos = m.getKey().getDiagnoses().get(0).getTreatments();
-			tratamientos.forEach(patientTreatment -> changes.add( patientTreatment.getEndCause()) );
-		});
-		return changes.stream().collect(Collectors.groupingBy(String::toString,Collectors.counting()));
+
+		Long cambiosNaive =  map.values().stream().filter(value -> value == 0).count();
+		Long primerCambio =  map.values().stream().filter(value -> value == 1).count();
+		Long segundoCambio =  map.values().stream().filter(value -> value == 2).count();
+		Long tercerCambio =  map.values().stream().filter(value -> value == 3).count();
+		Long masTresCambios =  map.values().stream().filter(value -> value > 3).count();
+
+		Map<String, Long> result = new HashMap<>();
+		result.put("Naive al TB", cambiosNaive);
+		result.put("1 cambio", primerCambio);
+		result.put("2 cambios", segundoCambio);
+		result.put("3 cambios", tercerCambio);
+		result.put("Más 3 cambios", masTresCambios);
+
+		return result;
 
 	}
 
 	private Function<PatientTreatment, String> functionDescriptionMedicineByTreatment() {
 		return pt->{
-			return pt.getMedicine()!=null?pt.getMedicine().getActIngredients():"";
+			return pt.getMedicine()!=null?pt.getMedicine().getActIngredients():"Sin ingredientes Activos";
 		};
 	}
 
