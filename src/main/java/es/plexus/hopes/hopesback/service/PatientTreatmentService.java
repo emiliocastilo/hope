@@ -67,9 +67,21 @@ public class PatientTreatmentService {
 		pacientesPT.forEach((patientDiagnose, patientTreatments) -> pacientes.put(patientDiagnose.getPatient(), patientTreatments));
 		List<String> tratamientos = new ArrayList<>();
 
-		pacientes.forEach((patient, patientTreatments) ->
-						patientTreatments.forEach(patientTreatment -> tratamientos.add(patientTreatment.getType()))
-		);
+		pacientes.forEach((patient, patientTreatments) -> {
+			List<String> tratPat = new ArrayList<>();
+			patientTreatments.stream().filter(PatientTreatment::isActive).forEach(
+
+					patientTreatment -> {
+
+						if (!tratPat.contains(patientTreatment.getType())) {
+							tratPat.add(patientTreatment.getType());
+						}
+					}
+			);
+			tratamientos.addAll(tratPat);
+		});
+
+
 		return tratamientos.stream().collect(Collectors.groupingBy(String::toUpperCase,Collectors.counting()));
 	}
 
@@ -451,19 +463,19 @@ public class PatientTreatmentService {
 	}
 
 	private void fillCombinedTreatmentList(List<String> combinedTreatmentList, String[] typesTreatments) {
-		if(typesTreatments.length == 2){
+		if (typesTreatments.length == 2) {
 			obtainTreatmentCombined(combinedTreatmentList, typesTreatments);
 
-		} else if(typesTreatments.length > 2){
-			if((TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[0].toUpperCase())
+		} else if (typesTreatments.length == 3) {
+			if ((TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[0].toUpperCase())
 					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[1].toUpperCase())
-					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[2].toUpperCase()))){
+					&& TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO.contains(typesTreatments[2].toUpperCase()))) {
 				combinedTreatmentList.add(TREATMENT_TYPE_TOPICO_FOTOTERAPIA_QUIMICO);
-			} else if(TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[0].toUpperCase())
-					|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[1].toUpperCase())
-					|| TREATMENT_TYPE_BIOLOGICO.contains(typesTreatments[2].toUpperCase()) ){
-				combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO_DESCRIPTION);
 			}
+		} else {
+			if (Arrays.stream(typesTreatments).filter(s -> s.equalsIgnoreCase(TREATMENT_TYPE_BIOLOGICO)).toArray().length > 0)
+				combinedTreatmentList.add(TREATMENT_TYPE_BIOLOGICO_DESCRIPTION);
+
 		}
 	}
 
@@ -530,7 +542,7 @@ public class PatientTreatmentService {
 
 	private Function<PatientTreatment, String> functionDescriptionMedicineByTreatment() {
 		return pt->{
-			return pt.getMedicine()!=null?pt.getMedicine().getActIngredients():"";
+			return pt.getMedicine()!=null?pt.getMedicine().getActIngredients():"Sin ingredientes Activos";
 		};
 	}
 
