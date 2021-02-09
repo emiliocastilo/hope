@@ -439,7 +439,8 @@ public class PatientTreatmentService {
 				.collect(groupingBy(pt -> pt.getPatientDiagnose().getPatient(), Collectors.counting()));
 
 		List<PatientTreatment> patientTreatmentWithoutChangesList = patientTreatmentRepository.findPatientTreatmentByNoChangesBiologicTreatment()
-				.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
+		.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
+
 		if(CollectionUtils.isNotEmpty(patientTreatmentWithoutChangesList)) {
 			for (PatientTreatment pt:patientTreatmentWithoutChangesList){
 				if (!patientsMaps.containsKey(pt.getPatientDiagnose().getPatient())) {
@@ -448,18 +449,25 @@ public class PatientTreatmentService {
 			}
 		}
 
-
 		return patientsMaps;
 	}
 
 	private Map<String, Long> buildMapPatientsByNumberChangesOfBiologicalTreatment(Map<Patient, Long> map) {
-		Map<Long, Integer> result = new HashMap<>();
-		List<String> changes = new ArrayList<>();
-		map.entrySet().forEach(m -> {
-			List<PatientTreatment> tratamientos = m.getKey().getDiagnoses().get(0).getTreatments();
-			tratamientos.forEach(patientTreatment -> changes.add( patientTreatment.getEndCause()) );
-		});
-		return changes.stream().collect(Collectors.groupingBy(String::toString,Collectors.counting()));
+
+		Long cambiosNaive =  map.values().stream().filter(value -> value == 0).count();
+		Long primerCambio =  map.values().stream().filter(value -> value == 1).count();
+		Long segundoCambio =  map.values().stream().filter(value -> value == 2).count();
+		Long tercerCambio =  map.values().stream().filter(value -> value == 3).count();
+		Long masTresCambios =  map.values().stream().filter(value -> value > 3).count();
+
+		Map<String, Long> result = new HashMap<>();
+		result.put("Naive al TB", cambiosNaive);
+		result.put("1 cambio", primerCambio);
+		result.put("2 cambios", segundoCambio);
+		result.put("3 cambios", tercerCambio);
+		result.put("Más 3 cambios", masTresCambios);
+
+		return result;
 
 	}
 

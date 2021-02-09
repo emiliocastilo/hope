@@ -47,16 +47,15 @@ public class QueryConstants {
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_NUMBER_CHANGES_OF_BIOLOGICAL_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 			"where LOWER(pt.type) = 'biologico' " +
-			"and LOWER(pt.endCause) = 'cambio' " +
+			"and LOWER(pt.endCause) = 'cambio' and pt.reason is not null " +
 			"group by pt.id, pt.patientDiagnose";
+
+
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_NO_CHANGES_BIOLOGICAL_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					"where LOWER(pt.type) = 'biologico' " +
-					"and LOWER(pt.endCause) <> 'cambio' " +
-					"and pt.patientDiagnose.id not in (select ptr.patientDiagnose.id from PatientTreatment ptr " +
-												"where LOWER(ptr.type) = 'biologico' " +
-												"and LOWER(ptr.endCause) = 'cambio') " +
+					"and LOWER(pt.endCause) = 'cambio' and pt.reason is null " +
 					"group by pt.id, pt.patientDiagnose";
 
 	public static final String QUERY_FIND_RESULTS_BY_TYPES =
