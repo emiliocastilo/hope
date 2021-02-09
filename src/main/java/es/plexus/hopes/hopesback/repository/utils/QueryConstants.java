@@ -31,7 +31,7 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
-			"where pt.active = false " +
+			"where pt.reason is not null " +
 			"and LOWER(pt.type) = 'biologico' " +
 			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'otras') " +
 			"group by pt.id, pt.patientDiagnose " +
@@ -182,10 +182,7 @@ public class QueryConstants {
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
 					JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
 					WHERE_CLAUSULE +
-					PTR_ACTIVE_AND_PTR_TYPE +
-					AND_PTR_PATIENT_DIAGNOSE_IN +
-					SUB_SELECT_PT_DIAGNOSE_IN_PTR_ACTIVE_AND_DIAGNOSE_HAVING_COUNT +
-					" <= 1) ";
+					PTR_ACTIVE_AND_PTR_TYPE;
 
 	public static final String QUERY_PATIENTS_BY_COMBINED_TREATMENT =
 			SELECT_PATIENT_JOIN_PATIENT_DIAGNOSE +
@@ -243,7 +240,7 @@ public class QueryConstants {
 					"and LOWER(ptr.type) in (:treatments ) " +
 					AND_PTR_PATIENT_DIAGNOSE_IN +
 					SUB_SELECT_PT_DIAGNOSE_IN_PTR_ACTIVE_AND_DIAGNOSE_HAVING_COUNT +
-					" = :numberTreatments) ";
+					" > :numberTreatments) ";
 
 	public static final String JOIN_FETCH_HEALTH_OUTCOME_HOU_PAT_ID_HOU_PATIENT_ID = "join fetch HealthOutcome hou on pat.id = hou.patient.id ";
 
