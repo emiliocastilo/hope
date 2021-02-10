@@ -1,0 +1,1 @@
+ALTER TABLE hopes.pathologies ADD COLUMN pth_code VARCHAR(100);
