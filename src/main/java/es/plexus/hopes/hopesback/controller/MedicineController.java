@@ -79,6 +79,16 @@ public class MedicineController {
 		return medicineService.findAllMedicines(pageable);
 	}
 
+	@ApiOperation("Recuperar todos los medicamentos")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/groupedBy")
+	public List<String> findAllActsIngredients(@PageableDefault(size = 5) final Pageable pageable,
+							   @RequestParam(required = false) String groupby) {
+
+	return medicineService.findAllMedicines(pageable,groupby);
+
+	}
+
 	@ApiOperation("Buscador de medicamentos")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/searches")

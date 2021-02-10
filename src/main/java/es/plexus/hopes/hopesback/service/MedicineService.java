@@ -17,11 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -45,10 +41,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -279,6 +272,19 @@ public class MedicineService {
 		log.debug(CALLING_DB);
 		Page<Medicine> page = medicineRepository.findAll(pageable);
 		return page.map(MedicineMapper.INSTANCE::entityToDto);
+	}
+
+	public List<String> findAllMedicines(final Pageable pageable, String groupBy) {
+		log.debug(CALLING_DB);
+		List<Medicine> medicines = medicineRepository.findAll();
+		List<String> medicineStrings = new ArrayList<>();
+		medicines.forEach(medicine -> {
+			if ( !medicineStrings.contains(medicine.getActIngredients()) ){
+				medicineStrings.add(medicine.getActIngredients());
+			}
+		});
+
+		return medicineStrings;
 	}
 
 	public Page<MedicineDTO> findMedicinesBySearchOrSearchAndTreatmentType(String search, String treatmentType, Pageable pageable) {
