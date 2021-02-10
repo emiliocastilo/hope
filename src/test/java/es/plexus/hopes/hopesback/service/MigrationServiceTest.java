@@ -71,7 +71,7 @@ public class MigrationServiceTest {
         formDTOList.add(mockPrincipalDiagnosis());
         //given
         given(formService.findByTemplate(anyString())).willReturn(formDTOList);
-        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
+        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockOptionalPatient());
         given(patientDiagnosisRepository.findByPatient(any(Patient.class))).willReturn(mockPatientDiagnosis());
         given(indicationRepository.findByCode(anyString())).willReturn(mockIndication());
         //when
@@ -90,7 +90,7 @@ public class MigrationServiceTest {
         //given
         given(formService.findByTemplateAndJob("farmacology-treatment", true)).willReturn(formDTOList);
         given(formService.findByTemplateAndJob("phototherapy", true)).willReturn(formDTOPhototherapyList);
-        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockPatient());
+        given(patientRepository.findById(anyLong())).willReturn(MockUtils.mockOptionalPatient());
         given(indicationRepository.findByCode(anyString())).willReturn(mockIndication());
         given(patientDiagnosisRepository.findByPatientIdAndIndicationId(anyLong(), anyLong())).willReturn(Optional.of(mockPatientDiagnosis()));
         given(patientTreatmentRepository.findByPatientDiagnoseAndMasterFormulaIgnoreCaseAndMasterFormulaDoseIgnoreCaseAndTypeIgnoreCase(any(PatientDiagnose.class), anyString(), anyString(), anyString())).willReturn(mockPatientTreatment());

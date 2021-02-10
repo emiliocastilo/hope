@@ -2,189 +2,152 @@ package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
-import org.hibernate.service.spi.ServiceException;
+import es.plexus.hopes.hopesback.service.RoleService;
+import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
+import es.plexus.hopes.hopesback.service.exception.ServiceException;
+import es.plexus.hopes.hopesback.utils.MockUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 // TODO: Refactorizar y descomentar estos test
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientTreatmentControllerTest {
 
-    @Test
-    public void fixMe(){
-        Assert.assertTrue(true);
-    }
-    /*
-	@Mock
+    @Autowired
+    @Mock
+    private RoleService roleService;
+
+    @Mock
 	private PatientTreatmentService patientTreatmentService;
 
 	@InjectMocks
 	private PatientTreatmentController patientTreatmentController;
 
+	private final PageRequest mockPageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+
+	@Test
+	public void fixMe(){
+		Assert.assertTrue(true);
+	}
+
 	@Test
 	public void callFindPatientsUnderTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findPatientsUnderTreatment(anyString(),anyString()))
-				.willReturn(mockMapStringLong());
+        String token = MockUtils.mockToken();
+        given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientsUnderTreatment("BIOLOGICO","psoriasis", MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString(),anyString());
+		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment("BIOLOGICO","psoriasis", token);
 
 		// then		
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test(expected = ServiceException.class)
-	public void callFindPatientsUnderTreatmentThrowException() throws Exception {
+	public void callFindPatientsUnderTreatmentThrowException() throws ServiceException {
 		// given
-		given(patientTreatmentService.findPatientsUnderTreatment(anyString(), anyString()))
-				.willThrow(new ServiceException("Error: No contled error"));
+		String token = MockUtils.mockToken();
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientsUnderTreatment("BIOLOGICO","psoriasis", MockUtils.mockPathology()))
+				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		Map<String, Long> response = patientTreatmentController.findPatientsUnderTreatment(anyString(),anyString());
-
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
-		Assert.assertNull(response);
+		patientTreatmentController.findPatientsUnderTreatment("BIOLOGICO","psoriasis", token);
 	}
 	
 	@Test
 	public void callFindInfoPatientsDosesShouldBeStatusOk() {
-
 		// given
 		given(patientTreatmentService.findInfoPatientsDoses())
-				.willReturn(mockMapStringLong());
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
 		Map<String, Long> response = patientTreatmentController.findInfoPatientsDoses();
 
 		// then		
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
-		
-	@Test(expected = ServiceException.class)
-	public void callFindInfoPatientsDosesThrowException() throws Exception {
+
+   @Test(expected = ServiceException.class)
+   public void callFindInfoPatientsDosesThrowException() throws ServiceException {
+	   // given
+	   given(patientTreatmentService.findInfoPatientsDoses())
+			   .willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
+
+	   // when
+	   patientTreatmentController.findInfoPatientsDoses();
+   }
+
+   @Test
+   public void callGetDetailPatientsUnderTreatmentShouldBeStatusOk() {
+	   // given
+	   String token = MockUtils.mockToken();
+	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+	   given(patientTreatmentService.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0",MockUtils.mockPageable(), MockUtils.mockPathology()))
+			   .willReturn(MockUtils.getPageableGraphPatientDetail(mockPageRequest));
+
+	   // when
+	   Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0", MockUtils.mockPageable(), token);
+
+	   // then
+	   Assert.assertNotNull(response);
+	   Assert.assertFalse(response.isEmpty());
+   }
+
+   @Test(expected = ServiceException.class)
+   public void callGetDetailPatientsUnderTreatmentThrowException()  throws ServiceException {
 		// given
-		given(patientTreatmentService.findInfoPatientsDoses())
-				.willThrow(new ServiceException("Error: No contled error"));
+		String token = MockUtils.mockToken();
+	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+	   given(patientTreatmentService.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0", MockUtils.mockPageable(), MockUtils.mockPathology()))
+			   .willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
-		// when
-		Map<String, Long> response = patientTreatmentController.findInfoPatientsDoses();
+	   // when
+	   patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0", MockUtils.mockPageable(), token);
+   }
 
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
-		Assert.assertNull(response);
-	}
+   @Test
+   public void callGetDetailPatientsPerDosesShouldBeStatusOk() {
+	   // given
+	   String token = MockUtils.mockToken();
+	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+	   given(patientTreatmentService.getDetailPatientsPerDoses("reg",MockUtils.mockPageable(), MockUtils.mockPathology()))
+			   .willReturn(MockUtils.getPageableGraphPatientDetail(mockPageRequest));
 
-	//Mocks
-	private Map<String, Long> mockMapStringLong() {
-		Map<String, Long> map = new HashMap<>();
-		map.put("Type", 3L);
-		return map;
-	}
-	
-	@Test
-	public void callGetDetailPatientsUnderTreatmentShouldBeStatusOk() {
+	   // when
+	   Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses("reg",MockUtils.mockPageable(), token);
 
-		// given
-		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), anyString(), any(Pageable.class)))
-				.willReturn(getPageableGraphPatientDetail(pageRequest));
+	   // then
+	   Assert.assertNotNull(response);
+	   Assert.assertFalse(response.isEmpty());
+   }
 
-		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0", pageRequest);
+   @Test(expected = ServiceException.class)
+   public void callGetDetailPatientsPerDosesThrowException() throws ServiceException {
+	   // given
+	   String token = MockUtils.mockToken();
+	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+	   given(patientTreatmentService.getDetailPatientsPerDoses("regimen", MockUtils.mockPageable(), MockUtils.mockPathology()))
+			   .willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
-		// then		
-		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
-	}
-	
-	@Test(expected = ServiceException.class)
-	public void callGetDetailPatientsUnderTreatmentThrowException() throws Exception {
-		// given
-		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsUnderTreatment(anyString(), anyString(), anyString(), any(Pageable.class)))
-				.willThrow(new ServiceException("Error: No contled error"));
+	   // when
+	   patientTreatmentController.getDetailPatientsPerDoses("regimen", MockUtils.mockPageable(), token);
+   }
 
-		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB", pageRequest);
-
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
-		Assert.assertNull(response);
-	}
-	
-	@Test
-	public void callGetDetailPatientsPerDosesShouldBeStatusOk() {
-
-		// given
-		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsPerDoses(anyString(),any(Pageable.class)))
-				.willReturn(getPageableGraphPatientDetail(pageRequest));
-
-		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses("reg",pageRequest);
-
-		// then		
-		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
-	}
-	
-	@Test(expected = ServiceException.class)
-	public void callGetDetailPatientsPerDosesThrowException() throws Exception {
-		// given
-		final PageRequest pageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-		given(patientTreatmentService.getDetailPatientsPerDoses(anyString(), any(Pageable.class)))
-				.willThrow(new ServiceException("Error: No contled error"));
-
-		// when
-		Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses("regimen", pageRequest);
-
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
-		Assert.assertNull(response);
-	}
-	
-	private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
-		GraphPatientDetailDTO graphPatientDetailDTO =
-				new GraphPatientDetailDTO();
-
-		graphPatientDetailDTO.setId(1L);
-		graphPatientDetailDTO.setNhc("NOHC0001");
-		graphPatientDetailDTO.setHealthCard("HC0001");
-		graphPatientDetailDTO.setFullName("Nombre completo");
-		graphPatientDetailDTO.setPrincipalIndication("Indication");
-		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE");
-		graphPatientDetailDTO.setTreatment("Treatment");
-		graphPatientDetailDTO.setPasi("PASI Result");
-		graphPatientDetailDTO.setPasiDate(LocalDateTime.now());
-		graphPatientDetailDTO.setDlqi("DLQI Result");
-		graphPatientDetailDTO.setDlqiDate(LocalDateTime.now());
-
-		return graphPatientDetailDTO;
-	}
-
-	private PageImpl<GraphPatientDetailDTO> getPageableGraphPatientDetail(PageRequest pageRequest) {
-		return new PageImpl<>(Collections.singletonList(mockGraphPatientDetailsDTO()), pageRequest, 1);
-	}
-
- */
 }
 
