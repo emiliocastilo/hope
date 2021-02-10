@@ -274,17 +274,17 @@ public class MedicineService {
 		return page.map(MedicineMapper.INSTANCE::entityToDto);
 	}
 
-	public List<String> findAllMedicines(final Pageable pageable, String groupBy) {
+	public Map<String,String> findAllMedicines(final Pageable pageable, String groupBy) {
 		log.debug(CALLING_DB);
 		List<Medicine> medicines = medicineRepository.findAll();
-		List<String> medicineStrings = new ArrayList<>();
-		medicines.forEach(medicine -> {
-			if ( !medicineStrings.contains(medicine.getActIngredients()) ){
-				medicineStrings.add(medicine.getActIngredients());
+		Map<String, String> map = new HashMap<>();
+		medicines.stream().forEach(medicine -> {
+			if ( !map.containsKey(medicine.getActIngredients()) ){
+				map.put(medicine.getActIngredients(), medicine.getCodeAct());
 			}
 		});
+		return map;
 
-		return medicineStrings;
 	}
 
 	public Page<MedicineDTO> findMedicinesBySearchOrSearchAndTreatmentType(String search, String treatmentType, Pageable pageable) {
