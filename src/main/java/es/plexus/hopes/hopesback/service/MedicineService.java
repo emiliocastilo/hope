@@ -288,7 +288,7 @@ public class MedicineService {
 		Map<String, String> map = new HashMap<>();
 		medicines.stream().forEach(medicine -> {
 			if ( !map.containsKey(medicine.getActIngredients()) ){
-				map.put(medicine.getActIngredients(), medicine.getCodeAct());
+				map.put(medicine.getActIngredients(), medicine.getCodeAtc());
 			}
 		});
 		return map;
