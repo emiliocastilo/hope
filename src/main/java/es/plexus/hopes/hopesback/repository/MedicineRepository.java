@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 	@Query("select m from Medicine m "
 			+ " WHERE LOWER(m.actIngredients) like CONCAT('%',LOWER(:search),'%') "
-			+ " OR LOWER(m.codeAct) like CONCAT('%',LOWER(:search),'%') "
+			+ " OR LOWER(m.codeAtc) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(m.acronym) like CONCAT('%',LOWER(:search),'%') "
 			+ " OR LOWER(m.presentation) like CONCAT('%',LOWER(:search),'%') ")
 	Page<Medicine> findMedicinesBySearch(@Param("search")String search, Pageable pageable);
@@ -24,7 +24,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
     @Query("select m from Medicine m "
             + "  WHERE translate(LOWER(m.treatmentType),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU') = translate(LOWER(:treatmentType),'áéíóúÁÉÍÓÚäëïöüÄËÏÖÜ','aeiouAEIOUaeiouAEIOU') "
             + " AND (LOWER(m.actIngredients) like CONCAT('%',LOWER(:search),'%') "
-            + " OR LOWER(m.codeAct) like CONCAT('%',LOWER(:search),'%') "
+            + " OR LOWER(m.codeAtc) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(m.acronym) like CONCAT('%',LOWER(:search),'%') "
             + " OR LOWER(m.presentation) like CONCAT('%',LOWER(:search),'%')) ")
     Page<Medicine> findMedicinesBySearchAndTreatmentType(@Param("search") String search, @Param("treatmentType") String treatmentType, Pageable pageable);
