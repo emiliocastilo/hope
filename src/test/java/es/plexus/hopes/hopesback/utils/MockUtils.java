@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static es.plexus.hopes.hopesback.configuration.security.Constants.SECOND_TOKEN_EXPIRATION_TIME;
+import static es.plexus.hopes.hopesback.configuration.security.Constants.FIRST_TOKEN_EXPIRATION_TIME;
 
 public class MockUtils {
 
@@ -94,30 +94,6 @@ public class MockUtils {
         return pathology;
     }
 
-    public static String mockToken(){
-        return TokenProvider.generateToken("admin","ROLE_ADMIN" , SECOND_TOKEN_EXPIRATION_TIME);
-    }
-
-
-    public static HealthOutcome mockHealthOutcome(){
-        HealthOutcome healthOutcome = new HealthOutcome();
-        healthOutcome.setPatient(new Patient());
-        healthOutcome.setDate(LocalDateTime.now());
-        healthOutcome.setId(1L);
-        healthOutcome.setIndexType("PASI");
-        healthOutcome.setResult("Result");
-        healthOutcome.setValue(new BigDecimal(0.0));
-        return healthOutcome;
-    }
-
-    public static Map<String, Map<String, BigDecimal>> mockMapMapStringString() {
-        Map<String, Map<String, BigDecimal>> map = new HashMap<>();
-        Map<String, BigDecimal> subMap = new HashMap<>();
-        subMap.put("Type", BigDecimal.ONE);
-        map.put("key", subMap);
-        return map;
-    }
-
     public static DispensationDetailDTO mockDispensationDetailDTO() {
         DispensationDetailDTO dispensationDTO = new DispensationDetailDTO();
         dispensationDTO.setId(1L);
@@ -137,19 +113,7 @@ public class MockUtils {
     }
 
     public static String mockJsonDispensationDetail() {
-        String json = "{\"code\":\"" + mockDispensationDetailDTO().getCode() + "\"}";
-        return json;
-    }
-
-    public static PageRequest mockPageRequest() {
-        return PageRequest.of(0, 5, Sort.by("test"));
-    }
-    //private final PageRequest mockPageRequest() {
-    //	return PageRequest.of(1, 5, Sort.by("id"));
-    //}
-
-    public static Pageable mockPageable(){
-        return PageRequest.of(1, 5);
+        return "{\"code\":\"" + mockDispensationDetailDTO().getCode() + "\"}";
     }
 
     public static  GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
@@ -175,9 +139,49 @@ public class MockUtils {
         return new PageImpl<>(Collections.singletonList(mockGraphPatientDetailsDTO()), pageRequest, 1);
     }
 
+    public static HealthOutcome mockHealthOutcome(){
+        HealthOutcome healthOutcome = new HealthOutcome();
+        healthOutcome.setPatient(new Patient());
+        healthOutcome.setDate(LocalDateTime.now());
+        healthOutcome.setId(1L);
+        healthOutcome.setIndexType("PASI");
+        healthOutcome.setResult("Result");
+        healthOutcome.setValue(new BigDecimal("0.0"));
+        return healthOutcome;
+    }
+
+    public static PageRequest mockPageRequest() {
+        return PageRequest.of(0, 5, Sort.by("test"));
+    }
+
+    public static Pageable mockPageable(){
+        return PageRequest.of(1, 5);
+    }
+
+    public static Map<String, Map<String, BigDecimal>> mockMapMapStringString() {
+        Map<String, Map<String, BigDecimal>> map = new HashMap<>();
+        Map<String, BigDecimal> subMap = new HashMap<>();
+        subMap.put("Type", BigDecimal.ONE);
+        map.put("key", subMap);
+        return map;
+    }
+
     public static Map<String, Long> mockMapStringLong() {
-        Map<String, Long> map = new HashMap();
+        Map<String, Long> map = new HashMap<>();
         map.put("Type", 3L);
         return map;
     }
+
+    public static Map<String, Map<Boolean,Integer>> mockMapStringBooleanInteger() {
+        Map<String, Map<Boolean,Integer>> map = new HashMap<>();
+        Map<Boolean, Integer> mapBooleanInteger = new HashMap<>();
+        mapBooleanInteger.put(true, 3);
+        map.put("Type", mapBooleanInteger);
+        return map;
+    }
+
+    public static String mockToken(){
+        return TokenProvider.generateToken("admin","ROLE_ADMIN" , FIRST_TOKEN_EXPIRATION_TIME);
+    }
+
 }

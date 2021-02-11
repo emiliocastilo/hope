@@ -7,7 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Map;
 
 import es.plexus.hopes.hopesback.service.RoleService;
@@ -22,12 +21,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 import es.plexus.hopes.hopesback.controller.model.DispensationDetailDTO;
 import es.plexus.hopes.hopesback.service.DispensationDetailService;
-// TODO: Refactorizar y descomentar estos test
+
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class DispensationDetailControllerTest {
 
@@ -41,10 +38,7 @@ public class DispensationDetailControllerTest {
 	@Mock
 	private RoleService roleService;
 
-	@Test
-	public void fixMe(){
-		Assert.assertTrue(true);
-	}
+	private final String token =  MockUtils.mockToken();
 
 	@Test
 	public void callCreateShouldBeStatusOk() {
@@ -140,7 +134,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(MockUtils.mockPageDispensation(MockUtils.mockPageRequest()));
 
 		// when
-		Page response = dispensationDetailController
+		Page<DispensationDetailDTO> response = dispensationDetailController
 				.findDispensationDetailBySearch(MockUtils.mockDispensationDetailDTO().getCode(), MockUtils.mockPageRequest());
 
 		// then
@@ -154,7 +148,7 @@ public class DispensationDetailControllerTest {
 				.willReturn(MockUtils.mockPageDispensation(MockUtils.mockPageRequest()));
 
 		// when
-		Page response = dispensationDetailController
+		Page<DispensationDetailDTO> response = dispensationDetailController
 				.filterDispensations(MockUtils.mockJsonDispensationDetail(), MockUtils.mockPageRequest());
 
 		// then
@@ -164,7 +158,6 @@ public class DispensationDetailControllerTest {
 	@Test
 	public void callFindMonthlyConsumeShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsume(2, false, null, MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -174,13 +167,12 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void callFindMonthlyConsumeAcumulatedShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, false, null, MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -190,13 +182,12 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void callFindMonthlyConsumeAvgShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsume(2, true, null, MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -206,13 +197,12 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void callFindMonthlyConsumeAccumulatedAvgShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, true, null, MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -222,13 +212,12 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void callFindTotalCostTreatmentShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsume(2, false, "D11AH05", MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -238,13 +227,12 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void callFindTotalCostTreatmentAcumulatedShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, false, "D11AH05", MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -254,13 +242,12 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void callFindTotalCostTreatmentAvgShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsume(2, true, "D11AH05", MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -270,13 +257,12 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 	@Test
 	public void callFindTotalCostTreatmentAccumulatedAvgShouldBeStatusOk() {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(dispensationDetailService.findMonthlyConsumeAcumulated(2, true, "D11AH05", MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapMapStringString());
@@ -286,7 +272,7 @@ public class DispensationDetailControllerTest {
 
 		// then
 		Assert.assertNotNull(response);
-		Assert.assertTrue(!response.isEmpty());
+		Assert.assertFalse(response.isEmpty());
 	}
 
 }

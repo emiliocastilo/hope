@@ -16,13 +16,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 
 import java.util.*;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-// TODO: Refactorizar y descomentar estos test
+
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class HealthOutcomeServiceTest {
 
@@ -34,8 +33,6 @@ public class HealthOutcomeServiceTest {
 
 	@InjectMocks
 	private HealthOutcomeService healthOutcomeService;
-
-
 
 	@Test
 	public void callFindResultsByTypesShouldBeStatusOk() {
@@ -72,10 +69,7 @@ public class HealthOutcomeServiceTest {
                 .willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
         // when
-        Page<GraphPatientDetailDTO> response = healthOutcomeService.getDetailsResultsByType("PASI", "", MockUtils.mockPageRequest());
-
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
-        Assert.assertNull(response);
+        healthOutcomeService.getDetailsResultsByType("PASI", "", MockUtils.mockPageRequest());
     }
 
 
@@ -86,10 +80,7 @@ public class HealthOutcomeServiceTest {
                 .willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
         // when
-        List<GraphPatientDetailDTO> response = healthOutcomeService.getDetailsResultsByType("PASI", "");
-
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, response);
-        Assert.assertNull(response);
+        healthOutcomeService.getDetailsResultsByType("PASI", "");
     }
 
     @Test
@@ -104,49 +95,6 @@ public class HealthOutcomeServiceTest {
         // then
         Assert.assertNotNull(response);
         Assert.assertFalse(response.isEmpty());
-    }
-
-    //Mocks
-
-
-
-/*
-    private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
-        GraphPatientDetailDTO graphPatientDetailDTO =
-                new GraphPatientDetailDTO();
-
-        graphPatientDetailDTO.setId(1L);
-        graphPatientDetailDTO.setNhc("NOHC0001");
-        graphPatientDetailDTO.setHealthCard("HC0001");
-        graphPatientDetailDTO.setFullName("Nombre completo");
-        graphPatientDetailDTO.setPrincipalIndication("Indication");
-        graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE");
-        graphPatientDetailDTO.setTreatment("Treatment");
-        graphPatientDetailDTO.setPasi("PASI Result");
-        graphPatientDetailDTO.setPasiDate(LocalDateTime.now());
-        graphPatientDetailDTO.setDlqi("DLQI Result");
-        graphPatientDetailDTO.setDlqiDate(LocalDateTime.now());
-
-        return graphPatientDetailDTO;
-    }
-    private PageImpl<GraphPatientDetailDTO> getPageableGraphPatientDetail(PageRequest pageRequest) {
-        return new PageImpl<>(Collections.singletonList(mockGraphPatientDetailsDTO()), pageRequest, 1);
-    }
-
-    private PageImpl<Patient> mockPagePatient_(PageRequest pageRequest) {
-        return new PageImpl<>(Collections.singletonList(MockUtils.mockPatient()), pageRequest, 1);
-    }
-*/
-    //private final PageRequest mockPageRequest_() {
-    //    return PageRequest.of(0, 5, Sort.by("patient"));
-    //}
-
-
-
-
-    @Test
-    public void fixMe(){
-        Assert.assertTrue(true);
     }
 }
 

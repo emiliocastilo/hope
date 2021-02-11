@@ -7,20 +7,20 @@ import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.utils.MockUtils;
 import org.junit.Assert;
+
 import org.junit.Test;
+
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import java.util.Map;
 
 import static org.mockito.BDDMockito.given;
-// TODO: Refactorizar y descomentar estos test
+
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientTreatmentControllerTest {
 
@@ -34,17 +34,11 @@ public class PatientTreatmentControllerTest {
 	@InjectMocks
 	private PatientTreatmentController patientTreatmentController;
 
-	private final PageRequest mockPageRequest = PageRequest.of(1, 5, Sort.by("patient"));
-
-	@Test
-	public void fixMe(){
-		Assert.assertTrue(true);
-	}
+	private final String token =  MockUtils.mockToken();
 
 	@Test
 	public void callFindPatientsUnderTreatmentShouldBeStatusOk() {
 		// given
-        String token = MockUtils.mockToken();
         given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(patientTreatmentService.findPatientsUnderTreatment("BIOLOGICO","psoriasis", MockUtils.mockPathology()))
 				.willReturn(MockUtils.mockMapStringLong());
@@ -60,7 +54,6 @@ public class PatientTreatmentControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientsUnderTreatmentThrowException() throws ServiceException {
 		// given
-		String token = MockUtils.mockToken();
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 		given(patientTreatmentService.findPatientsUnderTreatment("BIOLOGICO","psoriasis", MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
@@ -96,10 +89,9 @@ public class PatientTreatmentControllerTest {
    @Test
    public void callGetDetailPatientsUnderTreatmentShouldBeStatusOk() {
 	   // given
-	   String token = MockUtils.mockToken();
 	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 	   given(patientTreatmentService.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0",MockUtils.mockPageable(), MockUtils.mockPathology()))
-			   .willReturn(MockUtils.getPageableGraphPatientDetail(mockPageRequest));
+			   .willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 	   // when
 	   Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0", MockUtils.mockPageable(), token);
@@ -112,7 +104,6 @@ public class PatientTreatmentControllerTest {
    @Test(expected = ServiceException.class)
    public void callGetDetailPatientsUnderTreatmentThrowException()  throws ServiceException {
 		// given
-		String token = MockUtils.mockToken();
 	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 	   given(patientTreatmentService.getDetailPatientsUnderTreatment("BIOLOGICO", "psoriasis", "SECUKINUMAB0", MockUtils.mockPageable(), MockUtils.mockPathology()))
 			   .willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
@@ -124,10 +115,9 @@ public class PatientTreatmentControllerTest {
    @Test
    public void callGetDetailPatientsPerDosesShouldBeStatusOk() {
 	   // given
-	   String token = MockUtils.mockToken();
 	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 	   given(patientTreatmentService.getDetailPatientsPerDoses("reg",MockUtils.mockPageable(), MockUtils.mockPathology()))
-			   .willReturn(MockUtils.getPageableGraphPatientDetail(mockPageRequest));
+			   .willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 	   // when
 	   Page<GraphPatientDetailDTO> response = patientTreatmentController.getDetailPatientsPerDoses("reg",MockUtils.mockPageable(), token);
@@ -140,7 +130,6 @@ public class PatientTreatmentControllerTest {
    @Test(expected = ServiceException.class)
    public void callGetDetailPatientsPerDosesThrowException() throws ServiceException {
 	   // given
-	   String token = MockUtils.mockToken();
 	   given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
 	   given(patientTreatmentService.getDetailPatientsPerDoses("regimen", MockUtils.mockPageable(), MockUtils.mockPathology()))
 			   .willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
