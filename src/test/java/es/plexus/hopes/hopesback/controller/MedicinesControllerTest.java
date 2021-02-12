@@ -181,7 +181,7 @@ public class MedicinesControllerTest {
 		medicineDTO.setId(1L);
 		medicineDTO.setAcronym("A");
 		medicineDTO.setActIngredients("ActIngredients");
-		medicineDTO.setCodeAct("Code Act");
+		medicineDTO.setCodeAtc("Code Atc");
 		medicineDTO.setDescription("Description");
 		medicineDTO.setNationalCode("NationalCode");
 		medicineDTO.setPresentation("Presentation");
@@ -194,8 +194,7 @@ public class MedicinesControllerTest {
 	}
 
 	private String mockJsonMedicine() {
-		String json = "{\"acronym\":\"" + mockMedicineDTO().getAcronym() + "\"}";
-		return json;
+			return "{\"acronym\":\"" + mockMedicineDTO().getAcronym() + "\"}";
 	}
 
 	private DoseDTO mockDoseDTO() {

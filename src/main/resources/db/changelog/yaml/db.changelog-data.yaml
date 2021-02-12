@@ -33,5 +33,8 @@ databaseChangeLog:
       file: ../sql/data/11-indications_derma_v3.sql
       relativeToChangelogFile: true
 - include:
+      file: ../sql/data/13-alter_table_medicines_column_name.sql
+      relativeToChangelogFile: true
+- include:
       file: ../sql/data/14-update_sections_url.sql
       relativeToChangelogFile: true

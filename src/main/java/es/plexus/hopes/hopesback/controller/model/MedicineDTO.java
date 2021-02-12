@@ -25,7 +25,7 @@ public class MedicineDTO extends AbstractAudit {
 
     @ApiModelProperty(position = 30, example = "J05A", value = "Código ATC del medicamento")
     @NotNull
-    private String codeAct;
+    private String codeAtc;
 
     @ApiModelProperty(position = 40, example = "AAS", value = "Acrónimo por el que es conocido el medicamento")
     @Pattern(regexp = "^[A-Z]$")
@@ -97,7 +97,7 @@ public class MedicineDTO extends AbstractAudit {
     private String brand;
 
     @ApiModelProperty(position = 250, example = "Fluocinolona acetónido con antibióticos", value = "Tipo Código ATC del medicamento")
-    private String codeActType;
+    private String codeAtcType;
 
     @ApiModelProperty(position = 260, example = "1", value = "MG de las unidades del medicamneto")
     private BigDecimal unitDose;

@@ -3,62 +3,57 @@ package es.plexus.hopes.hopesback.controller;
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
+import es.plexus.hopes.hopesback.service.RoleService;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
+import es.plexus.hopes.hopesback.utils.MockUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-// TODO: Refactorizar y descomentar estos test
+
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class PatientDiagnosisControllerTest {
 
-    @Test
-    public void fixMe(){
-        Assert.assertTrue(true);
-    }
-/*
 	@Mock
 	private PatientDiagnosisService patientDiagnosisService;
 
 	@Mock
 	private PatientTreatmentService patientTreatmentService;
 
+	@Autowired
+	@Mock
+	private RoleService roleService;
+
 	@InjectMocks
 	private PatientDiagnosisController patientDiagnosisController;
 
-	private final PageRequest mockPageRequest = PageRequest.of(1, 5, Sort.by("patient"));
+	private final String token =  MockUtils.mockToken();
 
 	@Test
 	public void callFindPatientsDiagnosesByIndicationsShouldBeStatusOk() throws ServiceException {
-
 		// given
-		given(patientDiagnosisService.findPatientsByIndication())
-				.willReturn(mockMapStringBooleanInteger());
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientDiagnosisService.findPatientsByIndicationAndPathology(MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringBooleanInteger());
 
 		// when
-		Map<String, Map<Boolean,Integer>> response = patientDiagnosisController.findPatientsDiagnosesByIndications();
+		Map<String, Map<Boolean,Integer>> response = patientDiagnosisController.findPatientsDiagnosesByIndications(token);
 
-		// then		
+		// then
 		Assert.assertNotNull(response);
 		Assert.assertFalse(response.isEmpty());
 	}
@@ -66,23 +61,23 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientsDiagnosesByIndicationsThrowException() throws ServiceException {
 		// given
-		given(patientDiagnosisService.findPatientsByIndication())
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientDiagnosisService.findPatientsByIndicationAndPathology(MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientsDiagnosesByIndications();
-
+		patientDiagnosisController.findPatientsDiagnosesByIndications(token);
 	}
 
 	@Test
 	public void callFindPatientsByCieShouldBeStatusOk() throws ServiceException {
-
 		// given
-		given(patientDiagnosisService.findPatientsByCie(1L))
-				.willReturn(mockMapStringLong());
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientDiagnosisService.findPatientsByCieAndPathology(1L,MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie(1L);
+		Map<String, Long> response = patientDiagnosisController.findPatientsDiagnosesByCie(1L, token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -92,23 +87,23 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientsByCieThrowException() {
 		// given
-		given(patientDiagnosisService.findPatientsByCie(1L))
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientDiagnosisService.findPatientsByCieAndPathology(1L, MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientsDiagnosesByCie(1L);
-
+		patientDiagnosisController.findPatientsDiagnosesByCie(1L,token);
 	}
 
 	@Test
 	public void callFindPatientTreatmentByTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findPatientTreatmentByTreatment())
-				.willReturn(mockMapStringLong());
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByTreatmentAndPathology(MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByTreatment();
+		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByTreatment(token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -118,23 +113,23 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientTreatmentByTreatmentThrowException() throws ServiceException {
 		// given
-		given(patientTreatmentService.findPatientTreatmentByTreatment())
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByTreatmentAndPathology(MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientTreatmentByTreatment();
-
+		patientDiagnosisController.findPatientTreatmentByTreatment(token);
 	}
 
 	@Test
 	public void callFindPatientTreatmentByCombinedTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findPatientTreatmentByCombinedTreatment())
-				.willReturn(mockMapStringLong());
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByCombinedTreatmentAndPathology(MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByCombinedTreatment();
+		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByCombinedTreatment(token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -144,23 +139,23 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientTreatmentByCombinedTreatmentThrowException() throws ServiceException {
 		// given
-		given(patientTreatmentService.findPatientTreatmentByCombinedTreatment())
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByCombinedTreatmentAndPathology(MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientTreatmentByCombinedTreatment();
-
+		patientDiagnosisController.findPatientTreatmentByCombinedTreatment(token);
 	}
 
 	@Test
 	public void callFindPatientTreatmentByEndCauseBiologicTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatment("CHANGE"))
-				.willReturn(mockMapStringLong());
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentAndPathology("CHANGE",MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
-		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatment("CHANGE");
+		Map<String, Long> response = patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatment("CHANGE", token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -170,23 +165,24 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientTreatmentByEndCauseBiologicTreatmentThrowException() throws ServiceException {
 		// given
-		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatment("SUSPENSION"))
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentAndPathology("SUSPENSION", MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatment("SUSPENSION");
+		patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatment("SUSPENSION", token);
 	}
 
 	@Test
 	public void callFindPatientTreatmentByEndCauseBiologicTreatmentInLast5YearsShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("CHANGE"))
-				.willReturn(mockMapStringLong());
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentAndPathologyInLast5Years("CHANGE",MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
 		Map<String, Long> response =
-				patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("CHANGE");
+				patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("CHANGE", token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -196,23 +192,24 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientTreatmentByEndCauseBiologicTreatmentInLast5YearsThrowException() throws ServiceException {
 		// given
-		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("SUSPENSION"))
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByEndCauseBiologicTreatmentAndPathologyInLast5Years("SUSPENSION",MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("SUSPENSION");
+		patientDiagnosisController.findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years("SUSPENSION", token);
 	}
 
 	@Test
 	public void callFindPatientTreatmentByNumberChangesOfBiologicTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment())
-				.willReturn(mockMapLongInteger());
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment(MockUtils.mockPathology()))
+				.willReturn(MockUtils.mockMapStringLong());
 
 		// when
-		Map<Long, Integer> response =
-				patientDiagnosisController.findPatientTreatmentByNumberChangesOfBiologicTreatment();
+		Map<String, Long> response =
+				patientDiagnosisController.findPatientTreatmentByNumberChangesOfBiologicTreatment(token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -222,25 +219,22 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindPatientTreatmentByNumberChangesOfBiologicTreatmentThrowException() throws ServiceException {
 		// given
-		given(patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment())
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findPatientTreatmentByNumberChangesOfBiologicTreatment(MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findPatientTreatmentByNumberChangesOfBiologicTreatment();
-
+		patientDiagnosisController.findPatientTreatmentByNumberChangesOfBiologicTreatment(token);
 	}
 
 	@Test
 	public void callFindGraphPatientsDetailsByIndicationShouldBeStatusOk() {
-
-		final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("id"));
-
 		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByIndication("Psoriasis pustulosa", pageRequest))
-				.willReturn(getPageableGraphPatientDetail(pageRequest));
+		given(patientDiagnosisService.findGraphPatientsDetailsByIndication("Psoriasis pustulosa", MockUtils.mockPageRequest()))
+				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByIndication("Psoriasis pustulosa", pageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByIndication("Psoriasis pustulosa", MockUtils.mockPageRequest());
 
 		// then
 		Assert.assertNotNull(response);
@@ -249,22 +243,19 @@ public class PatientDiagnosisControllerTest {
 
 	@Test(expected = ServiceException.class)
 	public void callFindGraphPatientsDetailsByIndicationThrowException() throws ServiceException {
-		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
 		// given
 		given(patientDiagnosisService.findGraphPatientsDetailsByIndication(anyString(), any(Pageable.class)))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findGraphPatientsDetailsByIndication("Psoriasis pustulosa", pageRequest);
-
+		patientDiagnosisController.findGraphPatientsDetailsByIndication("Psoriasis pustulosa", MockUtils.mockPageRequest());
 	}
 
 	@Test
 	public void callFindGraphPatientsDetailsListByIndicationShouldBeStatusOk() {
-
 		// given
 		given(patientDiagnosisService.findGraphPatientsDetailsByIndication("Psoriasis pustulosa"))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByIndication("Psoriasis pustulosa");
@@ -286,15 +277,12 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsByCieShouldBeStatusOk() {
-
-		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
-
 		// given
-		given(patientDiagnosisService.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, pageRequest))
-				.willReturn(getPageableGraphPatientDetail(pageRequest));
+		given(patientDiagnosisService.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, MockUtils.mockPageRequest()))
+				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, pageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, MockUtils.mockPageRequest());
 
 		// then
 		Assert.assertNotNull(response);
@@ -303,22 +291,19 @@ public class PatientDiagnosisControllerTest {
 
 	@Test(expected = ServiceException.class)
 	public void callFindGraphPatientsDetailsByByCieThrowException() throws ServiceException {
-		final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by("id"));
 		// given
 		given(patientDiagnosisService.findGraphPatientsDetailsByCie(anyString(), anyLong(), any(Pageable.class)))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, pageRequest);
-
+		patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L, MockUtils.mockPageRequest());
 	}
 
 	@Test
 	public void callFindGraphPatientsDetailsListByByCieShouldBeStatusOk() {
-
 		// given
 		given(patientDiagnosisService.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCie("Psoriasis pustulosa", 1L);
@@ -340,10 +325,9 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsByTypeTreatmentShouldBeStatusOk() {
-
 		// given
 		given(patientTreatmentService.findGraphPatientsDetailsByTypeTreatment("Psoriasis pustulosa"))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByTypeTreatment("Psoriasis pustulosa");
@@ -355,13 +339,12 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsPageByTypeTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findGraphPatientsDetailsByTypeTreatment("Psoriasis", mockPageRequest))
-				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+		given(patientTreatmentService.findGraphPatientsDetailsByTypeTreatment("Psoriasis", MockUtils.mockPageRequest()))
+				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByTypeTreatment("Psoriasis", mockPageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByTypeTreatment("Psoriasis", MockUtils.mockPageRequest());
 
 		// then
 		Assert.assertNotNull(response);
@@ -380,10 +363,9 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsByEndCauseBiologicTreatmentShouldBeStatusOk() {
-
 		// given
 		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis pustulosa", "reason"))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis pustulosa", "reason");
@@ -395,13 +377,12 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsPageByEndCauseBiologicTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis", "reason", mockPageRequest))
-				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis", "reason", MockUtils.mockPageRequest()))
+				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis", "reason", mockPageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatment("Psoriasis", "reason", MockUtils.mockPageRequest());
 
 		// then
 		Assert.assertNotNull(response);
@@ -420,10 +401,9 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYearsShouldBeStatusOk() {
-
 		// given
 		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis pustulosa", "reason", 2))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis pustulosa", "reason", 2);
@@ -435,13 +415,12 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsPageByEndCauseBiologicTreatmentInLastYearsShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis", "reason", 5, mockPageRequest))
-				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+		given(patientTreatmentService.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis", "reason", 5, MockUtils.mockPageRequest()))
+				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis", "reason", 5, mockPageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByEndCauseBiologicTreatmentInLastYears("Psoriasis", "reason", 5, MockUtils.mockPageRequest());
 
 		// then
 		Assert.assertNotNull(response);
@@ -460,13 +439,13 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsByNumberChangesShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(2))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges("2",  MockUtils.mockPathology()))
+				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
-		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( 2);
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( "2", token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -475,13 +454,13 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsPageByNumberChangesShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(2, mockPageRequest))
-				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges("2", MockUtils.mockPageable(), MockUtils.mockPathology()))
+				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges(2, mockPageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges("2", MockUtils.mockPageable(),  token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -491,19 +470,19 @@ public class PatientDiagnosisControllerTest {
 	@Test(expected = ServiceException.class)
 	public void callFindGraphPatientsDetailsByNumberChangesThrowException() throws ServiceException {
 		// given
-		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(anyInt()))
+		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges("2", MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( 2);
+		patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( "2", token);
 	}
 
 	@Test
 	public void callFindGraphPatientsDetailsByCombinedTreatmentShouldBeStatusOk() {
-
 		// given
 		given(patientTreatmentService.findGraphPatientsDetailsByCombiendTreatment("Combined"))
-				.willReturn(Collections.singletonList(mockGraphPatientDetailsDTO()));
+				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
 		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCombinedTreatment("Combined");
@@ -515,13 +494,12 @@ public class PatientDiagnosisControllerTest {
 
 	@Test
 	public void callFindGraphPatientsDetailsPageByCombinedTreatmentShouldBeStatusOk() {
-
 		// given
-		given(patientTreatmentService.findGraphPatientsDetailsByCombiendTreatment("Combined", mockPageRequest))
-				.willReturn(getPageableGraphPatientDetail(mockPageRequest));
+		given(patientTreatmentService.findGraphPatientsDetailsByCombiendTreatment("Combined", MockUtils.mockPageRequest()))
+				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCombinedTreatment("Combined", mockPageRequest);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByCombinedTreatment("Combined", MockUtils.mockPageRequest());
 
 		// then
 		Assert.assertNotNull(response);
@@ -538,52 +516,5 @@ public class PatientDiagnosisControllerTest {
 		patientDiagnosisController.findGraphPatientsDetailsByCombinedTreatment("Combined");
 	}
 
-	//Mocks mockMap
-	private Map<String, Long> mockMapStringLong() {
-		Map<String, Long> map = new HashMap();
-		map.put("Type", 3L);
-		return map;
-	}
-
-	//Mocks mockMap
-	private Map<String, Map<Boolean,Integer>> mockMapStringBooleanInteger() {
-		Map<String, Map<Boolean,Integer>> map = new HashMap<>();
-		Map<Boolean, Integer> mapBooleanInteger = new HashMap<>();
-		mapBooleanInteger.put(true, 3);
-		map.put("Type", mapBooleanInteger);
-		return map;
-	}
-
-	//Mocks mockMap
-	private Map<Long, Integer> mockMapLongInteger() {
-		Map<Long, Integer> map = new HashMap<>();
-		map.put(3L, 1);
-		return map;
-	}
-
-	private GraphPatientDetailDTO mockGraphPatientDetailsDTO() {
-		GraphPatientDetailDTO graphPatientDetailDTO =
-				new GraphPatientDetailDTO();
-
-		graphPatientDetailDTO.setId(1L);
-		graphPatientDetailDTO.setNhc("NOHC0001");
-		graphPatientDetailDTO.setHealthCard("HC0001");
-		graphPatientDetailDTO.setFullName("Nombre completo");
-		graphPatientDetailDTO.setPrincipalIndication("Indication");
-		graphPatientDetailDTO.setPrincipalDiagnose("Diagnose CIE");
-		graphPatientDetailDTO.setTreatment("Treatment");
-		graphPatientDetailDTO.setPasi("PASI Result");
-		graphPatientDetailDTO.setPasiDate(LocalDateTime.now());
-		graphPatientDetailDTO.setDlqi("DLQI Result");
-		graphPatientDetailDTO.setDlqiDate(LocalDateTime.now());
-
-		return graphPatientDetailDTO;
-
-	}
-
-	private PageImpl<GraphPatientDetailDTO> getPageableGraphPatientDetail(PageRequest pageRequest) {
-		return new PageImpl<>(Collections.singletonList(mockGraphPatientDetailsDTO()), pageRequest, 1);
-	}
-*/
 }
 

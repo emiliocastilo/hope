@@ -267,7 +267,7 @@ public class PatientDiagnosisController {
 	@GetMapping(PATIENT_DIAGNOSE_PATIENTS_NUMBER_CHANGES)
 	public Page<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(
 			@ApiParam(value = "Últimos años que consultar ", example = "3", required = true)
-			@RequestParam final int numberChanges,
+			@RequestParam final String numberChanges,
 			@PageableDefault(size = 5) Pageable pageable,
 			@RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
@@ -279,7 +279,7 @@ public class PatientDiagnosisController {
 	@GetMapping(PATIENT_DIAGNOSE_PATIENTS_NUMBER_CHANGES_EXPORT)
 	public List<GraphPatientDetailDTO> findGraphPatientsDetailsByNumberChanges(
 			@ApiParam(value = "Causa de finalización del tratamiento por la que filtrar", example = "Cambio/Suspensión", required = true)
-			@RequestParam final int numberChanges,
+			@RequestParam final String numberChanges,
 			@RequestHeader(name = "Authorization") final String token){
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findGraphPatientsDetailsByNumberChanges(numberChanges, roleService.getPathologyByRoleSelected(token));

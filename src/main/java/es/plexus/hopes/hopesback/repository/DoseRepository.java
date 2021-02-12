@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface DoseRepository extends JpaRepository<Dose, Long> {
 
-    List<Dose> findByCodeAtc(String codeAct);
+    List<Dose> findByCodeAtc(String codeAtc);
 
     Optional<Dose> findByCodeAtcAndDescriptionAndDoseIndicated(String codeAtc, String description, String doseIndicated);
 }

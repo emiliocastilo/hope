@@ -59,7 +59,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long>,PatientR
 	@Query(QueryConstants.QUERY_PATIENTS_BY_NO_TREATMENT)
 	List<Patient> findPatientGraphDetailsByNoTreatment();
 
-	@Query(QueryConstants.QUERY_PATIENTS_BY_PATIENTS_ID)
+	@Query(QueryConstants.QUERY_FIND_PATIENTS_BY_IDS)
 	List<Patient> findGraphPatientsDetailsByPatientsIds(@Param("patientsIds")Collection<Long> patientsIds);
 
 	@Query(QueryConstants.QUERY_PATIENTS_BY_COMBINED_TREATMENTS)

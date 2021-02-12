@@ -62,7 +62,7 @@ public class PatientTreatmentController {
 	@ApiOperation("Detalle de pacientes bajo tratamiento")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT)
 	public Page<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication,
-																	   @RequestParam(value="actIngredient", required = false) String medicine,@PageableDefault(size = 5) final Pageable pageable,
+																	   @RequestParam(value="medicine", required = false) String medicine,@PageableDefault(size = 5) final Pageable pageable,
 																	   @RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, medicine, pageable, roleService.getPathologyByRoleSelected(token));
@@ -71,7 +71,7 @@ public class PatientTreatmentController {
 	@ApiOperation("Detalle de pacientes bajo tratamiento para exportar")
 	@GetMapping(GET_DETAIL_PATIENTS_UDER_TREATMENT_EXPORT)
 	public List<GraphPatientDetailDTO> getDetailPatientsUnderTreatment(@RequestParam(value = "type") String type, @RequestParam(value = "indication", required = false) String indication,
-																	   @RequestParam(value = "actIngredient", required = false) String medicine,
+																	   @RequestParam(value = "medicine", required = false) String medicine,
 																	   @RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsUnderTreatment(type, indication, medicine, roleService.getPathologyByRoleSelected(token));

@@ -17,11 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -45,10 +41,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -106,13 +99,13 @@ public class MedicineService {
 			for (Cell cell : row) {
 				if (row.getRowNum() != 0) {
 					if (cell.getColumnIndex() == DoseExcelColumns.CODE_ACT.getNumber()) {
-						String[] codeActPlusType = cell.getStringCellValue().toUpperCase().split("-");
-						codeActPlusType[0] = codeActPlusType[0].trim();
-						if (codeActPlusType.length > 1) {
-							codeActPlusType[1] = codeActPlusType[1].replaceFirst("^\\\\s+", "");
-							dose.setCodeAtcType(codeActPlusType[1]);
+						String[] codeAtcPlusType = cell.getStringCellValue().toUpperCase().split("-");
+						codeAtcPlusType[0] = codeAtcPlusType[0].trim();
+						if (codeAtcPlusType.length > 1) {
+							codeAtcPlusType[1] = codeAtcPlusType[1].replaceFirst("^\\\\s+", "");
+							dose.setCodeAtcType(codeAtcPlusType[1]);
 						}
-						dose.setCodeAtc(codeActPlusType[0]);
+						dose.setCodeAtc(codeAtcPlusType[0]);
 					} else if (cell.getColumnIndex() == DoseExcelColumns.DESCRIPTION.getNumber()) {
 						dose.setDescription(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == DoseExcelColumns.DOSE_INDICATED.getNumber()) {
@@ -154,13 +147,13 @@ public class MedicineService {
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PRESENTATION.getNumber()) {
 						medicine.setPresentation(cell.getStringCellValue());
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.CODE_ACT.getNumber()) {
-						String[] codeActPlusType = cell.getStringCellValue().toUpperCase().split("-");
-						codeActPlusType[0] = codeActPlusType[0].trim();
-						if (codeActPlusType.length > 1) {
-							codeActPlusType[1] = codeActPlusType[1].replaceFirst("^\\\\s+", "");
-							medicine.setCodeActType(codeActPlusType[1]);
+						String[] codeAtcPlusType = cell.getStringCellValue().toUpperCase().split("-");
+						codeAtcPlusType[0] = codeAtcPlusType[0].trim();
+						if (codeAtcPlusType.length > 1) {
+							codeAtcPlusType[1] = codeAtcPlusType[1].replaceFirst("^\\\\s+", "");
+							medicine.setCodeAtcType(codeAtcPlusType[1]);
 						}
-						medicine.setCodeAct(codeActPlusType[0]);
+						medicine.setCodeAtc(codeAtcPlusType[0].replaceAll("^\\\\s+", ""));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.AUTHORIZATION_DATE.getNumber()) {
 						if (cell.getCellType() == CellType.STRING || cell.getCellType() == CellType.BLANK) {
 							medicine.setAuthorizationDate(cell.getStringCellValue().isEmpty() ? null : LocalDate.parse(cell.getStringCellValue(), formatter));
@@ -202,12 +195,21 @@ public class MedicineService {
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PVP.getNumber()) {
 						medicine.setPvp(BigDecimal.valueOf(cell.getNumericCellValue()));
 					} else if (cell.getColumnIndex() == MedicineExcelColumns.PATHOLOGY.getNumber()) {
-						String[] pathologyNames = cell.getStringCellValue().toUpperCase().trim().split("/");
+						String[] pathologyNames;
+						if (cell.getStringCellValue().contains(",")) {
+							pathologyNames = cell.getStringCellValue().toUpperCase().trim().split(",");
+						} else {
+							pathologyNames = cell.getStringCellValue().toUpperCase().trim().split("/");
+						}
 						for (int i = 0; i < pathologyNames.length; ++i) {
-							if (pathologyNames[i].equalsIgnoreCase("DERMA")) {
+							if (pathologyNames[i].replaceFirst("\\s", "").equalsIgnoreCase("DERMA")) {
 								pathologyNames[i] = "DERMATOLOGÍA";
-							} else if (pathologyNames[i].equalsIgnoreCase("REUMA")) {
+							} else if (pathologyNames[i].replaceFirst("\\s", "").equalsIgnoreCase("REUMA")) {
 								pathologyNames[i] = "REUMATOLOGÍA";
+							}
+							else if (pathologyNames[i].replaceFirst("\\s", "").equalsIgnoreCase("EII")) {
+								//TODO pone el nombre completo asociado a EII (otras patologias vistas: CIRUGIA, VIH)
+								pathologyNames[i] = "EII";
 							}
 						}
 						Set<Pathology> pathologies = pathologyRepository.findByNameInIgnoreCase(pathologyNames);
@@ -241,7 +243,6 @@ public class MedicineService {
 	 *
 	 * @param multipartFile file
 	 * @return workbook
-	 * @throws IOException exception
 	 */
 	private Workbook validWorkbook(MultipartFile multipartFile) {
 		try {
@@ -279,6 +280,19 @@ public class MedicineService {
 		log.debug(CALLING_DB);
 		Page<Medicine> page = medicineRepository.findAll(pageable);
 		return page.map(MedicineMapper.INSTANCE::entityToDto);
+	}
+
+	public Map<String,String> findAllMedicines(final Pageable pageable, String groupBy) {
+		log.debug(CALLING_DB);
+		List<Medicine> medicines = medicineRepository.findAll();
+		Map<String, String> map = new HashMap<>();
+		medicines.stream().forEach(medicine -> {
+			if ( !map.containsKey(medicine.getActIngredients()) ){
+				map.put(medicine.getActIngredients(), medicine.getCodeAtc());
+			}
+		});
+		return map;
+
 	}
 
 	public Page<MedicineDTO> findMedicinesBySearchOrSearchAndTreatmentType(String search, String treatmentType, Pageable pageable) {
@@ -320,7 +334,7 @@ public class MedicineService {
 		Medicine medicine = medicineRepository.findById(medicineId).orElse(null);
 
 		if (Objects.nonNull(medicine)) {
-			List<Dose> doses = doseRepository.findByCodeAtc(medicine.getCodeAct());
+			List<Dose> doses = doseRepository.findByCodeAtc(medicine.getCodeAtc());
 			doseDTOPage = doses.stream().map(DoseMapper.INSTANCE::entityToDto).collect(Collectors.toList());
 		}
 
