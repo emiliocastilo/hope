@@ -441,11 +441,11 @@ public class PatientDiagnosisControllerTest {
 	public void callFindGraphPatientsDetailsByNumberChangesShouldBeStatusOk() {
 		// given
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
-		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(2,  MockUtils.mockPathology()))
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges("2",  MockUtils.mockPathology()))
 				.willReturn(Collections.singletonList(MockUtils.mockGraphPatientDetailsDTO()));
 
 		// when
-		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( 2, token);
+		List<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( "2", token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -456,11 +456,11 @@ public class PatientDiagnosisControllerTest {
 	public void callFindGraphPatientsDetailsPageByNumberChangesShouldBeStatusOk() {
 		// given
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
-		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(2, MockUtils.mockPageable(), MockUtils.mockPathology()))
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges("2", MockUtils.mockPageable(), MockUtils.mockPathology()))
 				.willReturn(MockUtils.getPageableGraphPatientDetail(MockUtils.mockPageRequest()));
 
 		// when
-		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges(2, MockUtils.mockPageable(),  token);
+		Page<GraphPatientDetailDTO> response = patientDiagnosisController.findGraphPatientsDetailsByNumberChanges("2", MockUtils.mockPageable(),  token);
 
 		// then
 		Assert.assertNotNull(response);
@@ -471,11 +471,11 @@ public class PatientDiagnosisControllerTest {
 	public void callFindGraphPatientsDetailsByNumberChangesThrowException() throws ServiceException {
 		// given
 		given(roleService.getPathologyByRoleSelected(token)).willReturn(MockUtils.mockPathology());
-		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges(2, MockUtils.mockPathology()))
+		given(patientTreatmentService.findGraphPatientsDetailsByNumberChanges("2", MockUtils.mockPathology()))
 				.willThrow(ServiceExceptionCatalog.UNKNOWN_EXCEPTION.exception());
 
 		// when
-		patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( 2, token);
+		patientDiagnosisController.findGraphPatientsDetailsByNumberChanges( "2", token);
 	}
 
 	@Test
