@@ -6,6 +6,8 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Data
 @ApiModel
@@ -51,5 +53,12 @@ public class PatientTreatmentDTO {
 
     @ApiModelProperty(position = 130, example = "Ineficacia", value = "Razón del cambio o la suspensión del tratamiento")
     private String reason;
+
+    @ApiModelProperty(position = 140, example = "Ineficacia", value = "Lineas con detalles del tratamiento")
+    private List<PatientTreatmentLineDTO> lines;
+
+    public PatientTreatmentLineDTO getActivePatientTreatmentLine(){
+        return this.lines.stream().filter(patientTreatmentLineDTO -> isActive()).findFirst().orElse(null);
+    }
 
 }

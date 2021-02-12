@@ -2,6 +2,7 @@ package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
+import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
@@ -9,6 +10,7 @@ import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.repository.model.Patient;
 import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,6 +33,7 @@ import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_FAME;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Log4j2
 @Service
@@ -56,6 +59,7 @@ public class PatientTreatmentService {
 	public static final String NO_REGIMEN = "Sin régimen";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
+
 	private final PatientRepository patientRepository;
 
 	public  Map<String, Long> findPatientTreatmentByTreatmentAndPathology(Pathology pathology) {
@@ -544,6 +548,26 @@ public class PatientTreatmentService {
 		return pt->{
 			return pt.getMedicine()!=null?pt.getMedicine().getActIngredients():"Sin ingredientes Activos";
 		};
+	}
+
+	public List<PatientTreatmentDTO> findAll() {
+		return this.patientTreatmentRepository.findAll()
+				.stream().filter(PatientTreatment::isActive).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.collect(toList());
+	}
+
+	public List<PatientTreatmentDTO> findByPatient(Long patientId) {
+		return this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
+				.stream().filter(PatientTreatment::isActive).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.collect(toList());
+	}
+
+	public void suspend(PatientTreatmentDTO patientTreatmentDTO){
+		patientTreatmentDTO.getActivePatientTreatmentLine().setActive(false);
+	}
+
+	public void delete(PatientTreatmentDTO patientTreatmentDTO){
+		patientTreatmentDTO.getActivePatientTreatmentLine().setDeleted(true);
 	}
 
 	public void save(PatientTreatment patientTreatment) {
