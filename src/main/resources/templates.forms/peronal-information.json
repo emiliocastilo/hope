@@ -1,0 +1,9 @@
+{
+    "key": "personal-information",
+    "form": "[{'name':'Datos personales','type':'title','max':'','min':''},{'name':'name','type':'input','disabled':true,'label':'Nombre','value':'Antonia Vallejo Soriano','max':'','min':''},{'name':'nhc','type':'input','disabled':true,'label':'Nhc','value':'PCM002','max':'','min':''},{'name':'healthCard','type':'input','disabled':true,'label':'Tarjeta sanitaria','value':'PCMTARJ2','max':'','min':''},{'name':'dni','type':'input','disabled':true,'label':'Dni','value':'05347584D','max':'','min':''},{'name':'address','type':'input','disabled':true,'label':'Dirección','value':null,'max':'','min':''},{'name':'phone','type':'input','disabled':true,'label':'Teléfono','value':null,'max':'','min':''},{'name':'email','type':'input','disabled':true,'label':'Email','value':null,'max':'','min':''},{'name':'genderCode','type':'input','disabled':true,'label':'Género','value':'♀','max':'','min':''},{'name':'birthDate','type':'input','disabled':true,'label':'Fecha de nacimiento','value':'02/07/1978','max':'','min':''},{'name':'age','type':'input','disabled':true,'label':'Edad','value':42,'max':'','min':''}]",
+    "buttons": "[]",
+    "historify": false,
+    "isTable": null,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}
