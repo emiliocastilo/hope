@@ -1,16 +1,12 @@
 package es.plexus.hopes.hopesback.service;
 
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
-import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
+import es.plexus.hopes.hopesback.controller.model.*;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
+import es.plexus.hopes.hopesback.repository.PatientTreatmentLineRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.Pathology;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
-import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import es.plexus.hopes.hopesback.repository.model.*;
 import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
+import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentLineMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -59,6 +55,7 @@ public class PatientTreatmentService {
 	public static final String NO_REGIMEN = "Sin régimen";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
+	private final PatientTreatmentLineRepository patientTreatmentLineRepository;
 
 	private final PatientRepository patientRepository;
 
@@ -558,19 +555,53 @@ public class PatientTreatmentService {
 
 	public List<PatientTreatmentDTO> findByPatient(Long patientId) {
 		return this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
-				.stream().filter(PatientTreatment::isActive).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.stream().filter(patientTreatment -> !patientTreatment.getEndCause().equalsIgnoreCase("DELETED")).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
 				.collect(toList());
 	}
 
-	public void suspend(PatientTreatmentDTO patientTreatmentDTO){
-		patientTreatmentDTO.getActivePatientTreatmentLine().setActive(false);
+	public PatientTreatment findById(Long treatmentId) {
+		return this.patientTreatmentRepository.findById(treatmentId).orElse(null);
 	}
 
-	public void delete(PatientTreatmentDTO patientTreatmentDTO){
-		patientTreatmentDTO.getActivePatientTreatmentLine().setDeleted(true);
+	public void suspend(Long treatmentid){
+		PatientTreatment patientTreatment = findById(treatmentid);
+		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive() == true).collect(toList());
+		if ( !patientTreatmentLines.isEmpty() ){
+			patientTreatmentLines.get(0).setActive(false);
+		}
+	}
+
+	public void delete(Long treatmentId){
+		PatientTreatment patientTreatment = findById(treatmentId);
+
+		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive() == true).collect(toList());
+		if ( !patientTreatmentLines.isEmpty() ){
+			patientTreatmentLines.get(0).setActive(false);
+		}
+		patientTreatment.setActive(false);
+		patientTreatment.setEndCause("DELETED");
 	}
 
 	public void save(PatientTreatment patientTreatment) {
 		patientTreatmentRepository.saveAndFlush(patientTreatment);
+	}
+
+	public void update(PatientTreatmentLineDTO patientTreatmentLineDTO) {
+		// Obtener la última linea activa del tratamiento para suspenderla.
+		PatientTreatmentLine patientTreatmentLine = getTreatmentLinebyPatientTreatment(patientTreatmentLineDTO.getPatientTreatment());
+		// Sí la linea no es null, suspenderla
+		if ( null != patientTreatmentLine){
+			patientTreatmentLine.setActive(false);
+		}
+		// guardar la nueva linea
+		patientTreatmentLineRepository.save(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
+	}
+
+	private PatientTreatmentLine getTreatmentLinebyPatientTreatment(PatientTreatment patientTreatment){
+	List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive() == true).collect(toList());
+		if ( !patientTreatmentLines.isEmpty() ){
+			return patientTreatmentLines.get(0);
+	}
+		return null;
 	}
 }

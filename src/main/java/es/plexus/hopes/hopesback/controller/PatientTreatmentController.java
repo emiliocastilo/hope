@@ -4,9 +4,12 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientTreatmentLineDTO;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
+import es.plexus.hopes.hopesback.repository.model.PatientTreatmentLine;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import es.plexus.hopes.hopesback.service.RoleService;
+import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -117,28 +120,28 @@ public class PatientTreatmentController {
 		return patientTreatmentService.findByPatient(patientId);
 	}
 
-	@ApiOperation("Obtener todos los tratamientos")
+	@ApiOperation("Borrar un tratamiento")
 	@DeleteMapping(DELETE)
-	public void delete(@RequestBody(required = true) Long treatmentId) {
-		// TODO: Borrar de forma lógica el tratamiento y sus lineas. ( No borrar en base de datos )
+	public void delete(@RequestParam(required = true) Long treatmentId) {
+		patientTreatmentService.delete(treatmentId);
 	}
 
 	@ApiOperation("Suspende un tratamiento")
 	@PostMapping(SUSPEND)
 	public void suspend(@RequestBody(required = true) Long treatmentId) {
-		// TODO: Suspender la linea activa del tratamiento
+		patientTreatmentService.suspend(treatmentId);
 	}
 
 	@ApiOperation("Crea un nuevo tratamiento")
 	@PostMapping(CREATE)
 	public void create(@RequestBody(required = true) PatientTreatmentDTO patientTreatmentDTO) {
-		// TODO: Crear en base de datos el nuevo tratamiento.
+		patientTreatmentService.save(PatientTreatmentMapper.INSTANCE.dtoToEntity(patientTreatmentDTO));
 	}
 
 	@ApiOperation("Actualizar un tratamiento")
 	@PostMapping(UPDATE)
-	public void update(@RequestBody(required = true) PatientTreatmentDTO patientTreatmentDTO) {
-		// TODO: Persistir el objeto con los cambios realizados ( Hay que suspender la linea activa y crear una nueva ).
+	public void update(@RequestBody(required = true) PatientTreatmentLineDTO patientTreatmentLineDTO) {
+		patientTreatmentService.update(patientTreatmentLineDTO);
 	}
 
 }

@@ -42,9 +42,9 @@ public class PatientTreatmentLine {
     @Basic
     @Column(name = "ptl_master_formula_dose", nullable = false, length = 50)
     private String masterFormulaDose;
-    
+
     @Basic
-    @Column(name = "ptr_regimen", nullable = false, length = 50)
+    @Column(name = "ptl_regimen", nullable = false, length = 50)
     private String regimen;
     
     @Basic

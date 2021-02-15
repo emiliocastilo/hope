@@ -1,6 +1,8 @@
 package es.plexus.hopes.hopesback.repository.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -65,6 +67,7 @@ public class PatientTreatment {
 
 
     @OneToMany(mappedBy = "id")
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     private List<PatientTreatmentLine> treatmentLines;
 
 }

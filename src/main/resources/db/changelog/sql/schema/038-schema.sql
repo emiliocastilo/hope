@@ -6,6 +6,7 @@ CREATE TABLE hopes.patients_treatments_lines (
 	ptl_dose varchar(500) null,
 	ptl_master_formula varchar(500) null,
 	ptl_master_formula_dose varchar(500) null,
+	ptl_regimen varchar(200) null,
 	ptl_reason varchar(200) NULL,
 	ptl_type varchar(50) not NULL,
 	ptl_med_changed boolean null,
