@@ -1,6 +1,6 @@
 {
     "key": "tracing",
-    "form": "[{'type':'title','name':'Seguimiento'},{'type':'table','label':'Histórico del seguimiento','name':'tracingHistoryTable','actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}],'button':'add','placeholder':'','columns':2,'fields':[{'type':'datepicker','label':'Fecha','name':'date','disabled':false, 'validation':'Validators.required'},{'type':'input','label':'Observaciones', 'name':'observations','placeholder':''}]}]",
+    "form": "[{'type':'title','name':'Seguimiento'},{'type':'table','label':'Histórico del seguimiento','name':'tracingHistoryTable','actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}],'button':'add','placeholder':'','columns':2,'fields':[{'type':'datepicker','label':'Fecha','defaultValue':'today','required':true,'name':'date','disabled':false,'validation':'Validators.required'},{'type':'input','label':'Observaciones','name':'observations','placeholder':''}]}]",
     "buttons": "['save']",
     "historify": false,
     "nameHistoricalDate": null,
