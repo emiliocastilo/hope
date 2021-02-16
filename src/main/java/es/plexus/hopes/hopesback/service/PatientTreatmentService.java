@@ -569,7 +569,7 @@ public class PatientTreatmentService {
 		if ( !patientTreatmentLines.isEmpty() ){
 			patientTreatmentLines.get(0).setActive(false);
 			//TODO: Falta Guardar la fecha de suspensión.
-			patientTreatmentLines.get(0).setReason(suspendTreatmentDTO.ge);
+			patientTreatmentLines.get(0).setReason(suspendTreatmentDTO.getReason());
 		}
 	}
 
