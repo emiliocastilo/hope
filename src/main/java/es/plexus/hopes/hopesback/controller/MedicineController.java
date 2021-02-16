@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(value = "Controlador de medicamentos", tags = "medicine")
 @Log4j2
@@ -77,6 +78,16 @@ public class MedicineController {
 	public Page<MedicineDTO> findAll(@PageableDefault(size = 5) final Pageable pageable) {
 		log.debug(CALLING_SERVICE);
 		return medicineService.findAllMedicines(pageable);
+	}
+
+	@ApiOperation("Recuperar todos los medicamentos")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/groupedBy")
+	public Map<String, String> findAllActsIngredients(@PageableDefault(size = 5) final Pageable pageable,
+													  @RequestParam(required = false) String groupby) {
+
+	return medicineService.findAllMedicines(pageable,groupby);
+
 	}
 
 	@ApiOperation("Buscador de medicamentos")
