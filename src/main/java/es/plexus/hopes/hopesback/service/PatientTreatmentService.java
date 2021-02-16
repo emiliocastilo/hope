@@ -563,11 +563,13 @@ public class PatientTreatmentService {
 		return this.patientTreatmentRepository.findById(treatmentId).orElse(null);
 	}
 
-	public void suspend(Long treatmentid){
-		PatientTreatment patientTreatment = findById(treatmentid);
+	public void suspend(SuspendTreatmentDTO suspendTreatmentDTO){
+		PatientTreatment patientTreatment = findById(suspendTreatmentDTO.getTreatmentId());
 		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive() == true).collect(toList());
 		if ( !patientTreatmentLines.isEmpty() ){
 			patientTreatmentLines.get(0).setActive(false);
+			//TODO: Falta Guardar la fecha de suspensión.
+			patientTreatmentLines.get(0).setReason(suspendTreatmentDTO.ge);
 		}
 	}
 

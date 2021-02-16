@@ -5,6 +5,7 @@ import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
 import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
 import es.plexus.hopes.hopesback.controller.model.PatientTreatmentLineDTO;
+import es.plexus.hopes.hopesback.controller.model.SuspendTreatmentDTO;
 import es.plexus.hopes.hopesback.repository.model.Medicine;
 import es.plexus.hopes.hopesback.repository.model.PatientTreatmentLine;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
@@ -128,8 +129,8 @@ public class PatientTreatmentController {
 
 	@ApiOperation("Suspende un tratamiento")
 	@PostMapping(SUSPEND)
-	public void suspend(@RequestBody(required = true) Long treatmentId) {
-		patientTreatmentService.suspend(treatmentId);
+	public void suspend(@RequestParam(required = true) SuspendTreatmentDTO suspendTreatmentDTO) {
+		patientTreatmentService.suspend(suspendTreatmentDTO);
 	}
 
 	@ApiOperation("Crea un nuevo tratamiento")
