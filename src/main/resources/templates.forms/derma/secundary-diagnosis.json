@@ -1,9 +1,9 @@
 {
     "key": "secundary-diagnosis",
-    "form": "[{'type':'title','name':'DIAGNÓSTICO SECUNDARIO'},{'type':'table','label':'Diagnósticos secundarios','name':'secondaryDiagnosis','actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}],'button':'add','columns':4,'fields':[{'type':'datepicker','label':'Fecha','name':'dateCie','disabled':false},{'type':'search','label':'Código {{currentCIE}}','header':'{{currentCIE}}','name':'cieCode','disabled':false,'placeholder':'cie','endpoint':'/cies/searches?hospitalId=${0}&search=${1}','params':['hospitalId','cie']},{'type':'input','label':'Descripción del diagnóstico {{currentCIE}}','header':'Descripción {{currentCIE}}','name':'cieDescription','readonly':true,'disabled':false},{'type':'input','label':'Otros datos','name':'anotherData','disabled':false,'placeholder':'otros datos'}]}]",
+    "form": "[{'type':'title','name':'DIAGNÓSTICO SECUNDARIO'},{'type':'table','label':'Diagnósticos secundarios','name':'secondaryDiagnosis','actions':[{'name':'edit','icon':'edit-2'},{'name':'delete','icon':'trash'},{'name':'detail','icon':'eye'}],'button':'add','columns':4,'fields':[{'type':'datepicker','label':'Fecha','defaultValue':'today','required':true,'name':'dateCie','disabled':false},{'type':'search','label':'Código {{currentCIE}}','header':'{{currentCIE}}','name':'cieCode','disabled':false,'placeholder':'cie','endpoint':'/cies/searches?hospitalId=${0}&search=${1}','params':['hospitalId','cie']},{'type':'input','label':'Descripción del diagnóstico {{currentCIE}}','header':'Descripción {{currentCIE}}','name':'cieDescription','readonly':true,'disabled':false},{'type':'input','label':'Otros datos','name':'anotherData','disabled':false,'placeholder':'otros datos'}]}]",
     "buttons": "['save']",
     "historify": false,
     "isTable": null,
     "nameHistoricalDate": null,
     "fieldsToGraph": null
-}
+}º
