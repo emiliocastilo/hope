@@ -79,7 +79,7 @@ public class PatientTreatment {
 
 	@Basic
 	@Column(name = "ptr_psychological_impact", nullable = false)
-	private boolean psychologicalImpact;
+	private Boolean psychologicalImpact;
 
 	@Basic
 	@Column(name = "ptr_date_prescription", columnDefinition = "TIMESTAMP")
@@ -99,15 +99,15 @@ public class PatientTreatment {
 
 	@Basic
 	@Column(name = "ptr_treatment_continue", nullable = false)
-	private boolean treatmentContinue;
+	private Boolean treatmentContinue;
 
 	@Basic
 	@Column(name = "ptr_visible_injury", nullable = false)
-	private boolean visibleInjury;
+	private Boolean visibleInjury;
 
 	@Basic
 	@Column(name = "ptr_pulsatile_treatment", nullable = false)
-	private boolean pulsatileTreatment;
+	private Boolean pulsatileTreatment;
 
 	@Basic
 	@Column(name = "ptr_other", nullable = false, length = 50)

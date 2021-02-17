@@ -54,8 +54,13 @@ public class PatientTreatmentDTO {
 	@ApiModelProperty(position = 130, example = "Ineficacia", value = "Razón del cambio o la suspensión del tratamiento")
 	private String reason;
 
+
 	@ApiModelProperty(position = 140, example = "Ineficacia", value = "Lineas con detalles del tratamiento")
 	private List<PatientTreatmentLineDTO> lines;
+
+	public PatientTreatmentLineDTO getActivePatientTreatmentLine() {
+		return this.lines.stream().filter(patientTreatmentLineDTO -> isActive()).findFirst().orElse(null);
+	}
 
 	@ApiModelProperty(position = 150, example = "true", value = "impacto psicológico")
 	private boolean psychologicalImpact;
@@ -90,7 +95,4 @@ public class PatientTreatmentDTO {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime suspensionDate;
 
-	public PatientTreatmentLineDTO getActivePatientTreatmentLine() {
-		return this.lines.stream().filter(patientTreatmentLineDTO -> isActive()).findFirst().orElse(null);
-	}
 }
