@@ -99,7 +99,7 @@ public class PatientTreatmentController {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsPerDoses(regimen, pageable, roleService.getPathologyByRoleSelected(token));
 	}
-	
+
 	@ApiOperation("Detalle de pacientes/dosis para exportar")
 	@GetMapping(GET_DETAIL_PATIENTS_PER_DOSES_EXPORT)
 	public List<GraphPatientDetailDTO> getDetailPatientsPerDoses(@RequestParam(value = "regimen")String regimen) {
@@ -107,12 +107,12 @@ public class PatientTreatmentController {
 		return patientTreatmentService.getDetailPatientsPerDoses(regimen);
 	}
 
-	@ApiOperation("Obtener todos los tratamientos")
+	/*@ApiOperation("Obtener todos los tratamientos")
 	@GetMapping(FIND_ALL_TREATMENTS)
 	public List<PatientTreatmentDTO> findAll() {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findAll();
-	}
+	}*/
 
 	@ApiOperation("Obtener todos los tratamientos")
 	@GetMapping(FIND_BY_PATIENT)
@@ -143,6 +143,14 @@ public class PatientTreatmentController {
 	@PostMapping(UPDATE)
 	public void update(@RequestBody(required = true) PatientTreatmentLineDTO patientTreatmentLineDTO) {
 		patientTreatmentService.update(patientTreatmentLineDTO);
+	}
+
+	@ApiOperation("Obtener todos los tratamientos paginados")
+	@GetMapping(FIND_ALL_TREATMENTS)
+	public Page<PatientTreatmentDTO> findAllPage(@PageableDefault(size = 5) Pageable pageable) {
+		log.debug(CALLING_SERVICE);
+		return patientTreatmentService.findAll(pageable);
+
 	}
 
 }

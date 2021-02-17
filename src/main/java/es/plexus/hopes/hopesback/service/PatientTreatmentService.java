@@ -8,12 +8,15 @@ import es.plexus.hopes.hopesback.repository.model.*;
 import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentLineMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
+import es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -606,4 +609,50 @@ public class PatientTreatmentService {
 	}
 		return null;
 	}
+
+	public Page<PatientTreatmentDTO> findAll(final Pageable pageable) {
+		List<PatientTreatmentDTO> patientTreatmentDTOs = this.patientTreatmentRepository.findAll()
+				.stream().filter(PatientTreatment::isActive).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.collect(toList());
+
+		int start = Long.valueOf(pageable.getOffset()).intValue();
+		int end = Math.min((start + pageable.getPageSize()), patientTreatmentDTOs.size());
+
+		if (pageable.getSort().get().findFirst().isPresent()) {
+			orderGraphPatientDetailList(patientTreatmentDTOs, pageable.getSort());
+		}
+
+		List<PatientTreatmentDTO> resultList = patientTreatmentDTOs.subList(start, end);
+
+
+		return new PageImpl<>(resultList, pageable, patientTreatmentDTOs.size());
+	}
+
+	private  void orderGraphPatientDetailList(List<PatientTreatmentDTO> patientTreatmentDTOS, Sort sort){
+		// TODO JGL: Ver aquí las ordenaciones que hay que hacer.
+		Optional<Sort.Order> sortOrder = sort.get().findFirst();
+		if (sortOrder.isPresent()){
+			Sort.Order order = sortOrder.get();
+			switch (order.getProperty()){
+				case "type":
+					patientTreatmentDTOS
+							.sort(obtainComparatorString(order, PatientTreatmentDTO::getType));
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private Comparator<PatientTreatmentDTO> obtainComparatorString(Sort.Order order, Function<PatientTreatmentDTO, String> sortBy) {
+		return order.isAscending()?
+				Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy)).reversed();
+	}
+
+	private static Comparator<PatientTreatmentLineDTO> obtainComparatorDate(Sort.Order order, Function<PatientTreatmentLineDTO, LocalDateTime> sortBy) {
+		return order.isAscending()?
+				Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy).reversed());
+	}
+
+
 }
