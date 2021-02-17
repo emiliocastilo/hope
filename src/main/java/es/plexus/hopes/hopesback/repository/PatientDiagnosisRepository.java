@@ -30,6 +30,9 @@ public interface PatientDiagnosisRepository extends JpaRepository<PatientDiagnos
 
     Optional<PatientDiagnose> findByPatientIdAndIndicationId(Long patient, Long indication);
 
+	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSE_BY_PATIENT_ID_AND_PATHOLOGY_ID)
+    Optional<PatientDiagnose> findByPatientIdAndPathologyId(@Param("patientId") Long patientId,@Param("pathologyId") Long pathologyId);
+
     PatientDiagnose findByPatientId(long patientId);
 }
 

@@ -183,9 +183,9 @@ public class PatientDiagnosisService {
 		return patientDiagnosisRepository.saveAndFlush(patientDiagnose);
 	}
 
-	public PatientDiagnosisDTO findByPatient(Patient patient) {
+	public PatientDiagnosisDTO findByPatientAndPathology(Long patientId, Pathology pathology) {
 		log.debug(CALLING_DB);
-		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatient(patient);
+		PatientDiagnose patientDiagnosis = patientDiagnosisRepository.findByPatientIdAndPathologyId(patientId, pathology.getId()).orElse(null);
 		return PatientDiagnosisMapper.INSTANCE.entityToDto(patientDiagnosis);
 	}
 
