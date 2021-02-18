@@ -5,10 +5,8 @@ import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentLineRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
 import es.plexus.hopes.hopesback.repository.model.*;
-import es.plexus.hopes.hopesback.service.mapper.DispensationDetailMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentLineMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
-import es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
@@ -26,9 +24,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_BIOLOGICAL;
-import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_CHEMICAL;
-import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_FAME;
+import static es.plexus.hopes.hopesback.service.Constants.*;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
 import static java.util.stream.Collectors.groupingBy;
@@ -557,8 +553,9 @@ public class PatientTreatmentService {
 	}
 
 	public List<PatientTreatmentDTO> findByPatient(Long patientId) {
+		// TODO JGL: Revisar que al borrar el tratamiento se ponga DELETE en la causa de finalización para no filtrar aquí.
 		return this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
-				.stream().filter(patientTreatment -> !patientTreatment.getEndCause().equalsIgnoreCase("DELETED")).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.stream().filter(patientTreatment -> !"DELETED".equalsIgnoreCase(patientTreatment.getEndCause())).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
 				.collect(toList());
 	}
 
