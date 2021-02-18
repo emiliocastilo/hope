@@ -1,13 +1,6 @@
 package es.plexus.hopes.hopesback.controller;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentLineDTO;
-import es.plexus.hopes.hopesback.controller.model.SuspendTreatmentDTO;
-import es.plexus.hopes.hopesback.repository.model.Medicine;
-import es.plexus.hopes.hopesback.repository.model.PatientTreatmentLine;
+import es.plexus.hopes.hopesback.controller.model.*;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import es.plexus.hopes.hopesback.service.RoleService;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
