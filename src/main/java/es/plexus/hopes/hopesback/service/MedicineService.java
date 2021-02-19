@@ -3,11 +3,13 @@ package es.plexus.hopes.hopesback.service;
 import com.google.common.base.Throwables;
 import es.plexus.hopes.hopesback.controller.model.DoseDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
-import es.plexus.hopes.hopesback.controller.model.PatientTreatmentDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientTreatmentLineInformationDTO;
 import es.plexus.hopes.hopesback.repository.DoseRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
 import es.plexus.hopes.hopesback.repository.PathologyRepository;
-import es.plexus.hopes.hopesback.repository.model.*;
+import es.plexus.hopes.hopesback.repository.model.Dose;
+import es.plexus.hopes.hopesback.repository.model.Medicine;
+import es.plexus.hopes.hopesback.repository.model.Pathology;
 import es.plexus.hopes.hopesback.service.exception.ServiceException;
 import es.plexus.hopes.hopesback.service.exception.ServiceExceptionCatalog;
 import es.plexus.hopes.hopesback.service.mapper.DoseMapper;
@@ -356,10 +358,10 @@ public class MedicineService {
 	public Boolean hasMedicineAssigned(Long patientId, Long medicineId, String token){
 		Pathology pathology = roleService.getPathologyByRoleSelected(token);
 
-		List<PatientTreatmentDTO> patientTreatments = patientTreatmentService.findByPatient(patientId);
+		List<PatientTreatmentLineInformationDTO> patientTreatments = patientTreatmentService.findByPatient(patientId);
 		return patientTreatments.stream().anyMatch(
-				patientTreatmentDTO -> patientTreatmentDTO.getMedicine().getId().equals(medicineId) &&
-									   patientTreatmentDTO.getMedicine().getPathologies().contains(pathology)
+				patientTreatmentDTO -> patientTreatmentDTO.getMedicineId().equals(medicineId) &&
+									   patientTreatmentDTO.getPathologies().contains(pathology)
 		);
 	}
 }

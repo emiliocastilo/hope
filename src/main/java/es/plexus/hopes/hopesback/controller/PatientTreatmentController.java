@@ -109,7 +109,7 @@ public class PatientTreatmentController {
 
 	@ApiOperation("Obtener todos los tratamientos")
 	@GetMapping(FIND_BY_PATIENT)
-	public List<PatientTreatmentDTO> findByPatientId(@RequestParam(value = "patientId") Long patientId) {
+	public List<PatientTreatmentLineInformationDTO> findByPatientId(@RequestParam(value = "patientId") Long patientId) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findByPatient(patientId);
 	}

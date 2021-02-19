@@ -34,6 +34,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 @RequiredArgsConstructor
 @Transactional
+
 public class PatientTreatmentService {
 
 	private static final String CALLING_DB = "Calling DB...";
@@ -552,11 +553,40 @@ public class PatientTreatmentService {
 				.collect(toList());
 	}
 
-	public List<PatientTreatmentDTO> findByPatient(Long patientId) {
+	@Transactional
+	public List<PatientTreatmentLineInformationDTO> findByPatient(Long patientId) {
 		// TODO JGL: Revisar que al borrar el tratamiento se ponga DELETE en la causa de finalización para no filtrar aquí.
 		return this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
-				.stream().filter(patientTreatment -> !"DELETED".equalsIgnoreCase(patientTreatment.getEndCause())).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.stream().filter(patientTreatment -> !"DELETED".equalsIgnoreCase(patientTreatment.getEndCause())).map((this::convert))
 				.collect(toList());
+	}
+
+	private PatientTreatmentLineInformationDTO convert(PatientTreatment patientTreatment) {
+		PatientTreatmentLineInformationDTO ptr = new PatientTreatmentLineInformationDTO();
+
+		PatientTreatmentLine lineDTO = patientTreatment.getTreatmentLines().stream().filter(Objects::nonNull).reduce((a, b) -> b).orElse(null);
+
+		if ( lineDTO != null ) {
+			ptr.setId(patientTreatment.getId());
+			ptr.setActive(lineDTO.getActive());
+			ptr.setPatientTreatmentId(patientTreatment.getId());
+			ptr.setMedicineId(lineDTO.getMedicine().getId());
+			ptr.setMedicineName(lineDTO.getMedicine().getDescription());
+			ptr.setDeleted(lineDTO.getDeleted());
+			ptr.setType(lineDTO.getType());
+			ptr.setMasterFormula(lineDTO.getMasterFormula());
+			ptr.setMasterFormulaDose(lineDTO.getMasterFormulaDose());
+			ptr.setModificationCount(lineDTO.getModificationCount());
+			ptr.setReason(lineDTO.getReason());
+			ptr.setRegimen(lineDTO.getRegimen());
+			ptr.setDose(lineDTO.getDose());
+			ptr.setHadMedicineChange(lineDTO.getHadMedicineChange());
+			if ( patientTreatment.getMedicine() != null ){
+				ptr.setPathologies(new ArrayList<>(lineDTO.getMedicine().getPathologies()));
+			}
+		}
+		return ptr;
+
 	}
 
 	public PatientTreatment findById(Long treatmentId) {

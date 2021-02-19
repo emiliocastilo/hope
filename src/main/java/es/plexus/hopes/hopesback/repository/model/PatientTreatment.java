@@ -1,10 +1,8 @@
 package es.plexus.hopes.hopesback.repository.model;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -67,7 +65,7 @@ public class PatientTreatment {
 	@Column(name = "ptr_reason", nullable = false, length = 50)
 	private String reason;
 
-	@OneToMany(mappedBy = "id")
+	@OneToMany(mappedBy = "patientTreatment")
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private List<PatientTreatmentLine> treatmentLines;
