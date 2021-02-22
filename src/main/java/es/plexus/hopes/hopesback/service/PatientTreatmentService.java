@@ -672,15 +672,15 @@ public class PatientTreatmentService {
 
 	}
 
-	public void delete(Long treatmentId){
-		PatientTreatment patientTreatment = findById(treatmentId);
+	public void delete(Long lineId){
+		PatientTreatmentLine ptl = patientTreatmentLineRepository.findById(lineId).orElse(null);
 
-		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList());
-		if ( !patientTreatmentLines.isEmpty() ){
-			patientTreatmentLines.get(0).setActive(false);
+		if ( ptl != null ){
+			ptl.setDeletionDate(LocalDateTime.now());
+			ptl.setDeleted(true);
+			patientTreatmentLineRepository.saveAndFlush(ptl);
 		}
-		patientTreatment.setActive(false);
-		patientTreatment.setEndCause("DELETED");
+
 	}
 
 	public void save(PatientTreatment patientTreatment) {
