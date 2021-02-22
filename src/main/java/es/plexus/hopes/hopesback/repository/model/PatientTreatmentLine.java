@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.repository.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -60,4 +61,13 @@ public class PatientTreatmentLine {
     @Basic
     @Column(name = "ptl_deleted", nullable = false)
     private Boolean deleted;
+
+    @Basic
+    @Column(name = "ptl_deletion_date", nullable = true)
+    private LocalDateTime deletionDate;
+
+    @Basic
+    @Column(name = "ptl_suspension_date", nullable = true)
+    private LocalDateTime suspensionDate;
+
 }

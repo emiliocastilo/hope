@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.service;
 
 import es.plexus.hopes.hopesback.controller.model.*;
+import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentLineRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
@@ -55,6 +56,7 @@ public class PatientTreatmentService {
 	public static final String NO_REGIMEN = "Sin régimen";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
+	private final PatientDiagnosisRepository patientDiagnosisRepository;
 	private final PatientTreatmentLineRepository patientTreatmentLineRepository;
 
 	private final PatientRepository patientRepository;
@@ -575,10 +577,12 @@ public class PatientTreatmentService {
 			orderPatientTreatmentLineInformation(patientTreatmentDTOs, pageable.getSort());
 		}
 
-		List<PatientTreatmentLineInformationDTO> resultList = patientTreatmentDTOs.subList(start, end);
+		if ( patientTreatmentDTOs.size() > start ){
+			List<PatientTreatmentLineInformationDTO> resultList = patientTreatmentDTOs.subList(start, end);
+			return new PageImpl<>(resultList, pageable, patientTreatmentDTOs.size());
+		}
 
-
-		return new PageImpl<>(resultList, pageable, patientTreatmentDTOs.size());
+		return null;
 
 	}
 
@@ -597,6 +601,12 @@ public class PatientTreatmentService {
 			Medicine medicineLine = new Medicine();
 			medicineLine.setId(patientTreatmentLine.getMedicine().getId());
 			medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
+			medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
+			medicineLine.setTreatmentType(patientTreatmentLine.getMedicine().getTreatmentType());
+			medicineLine.setCodeAtc(patientTreatmentLine.getMedicine().getCodeAtc());
+			medicineLine.setNationalCode(patientTreatmentLine.getMedicine().getNationalCode());
+			medicineLine.setViaAdministration(patientTreatmentLine.getMedicine().getViaAdministration());
+			medicineLine.setUnitDose(patientTreatmentLine.getMedicine().getUnitDose());
 
 			line.setMedicine(medicineLine);
 			line.setModificationCount(patientTreatmentLine.getModificationCount());
@@ -673,7 +683,27 @@ public class PatientTreatmentService {
 	}
 
 	public void save(PatientTreatment patientTreatment) {
-		patientTreatmentRepository.saveAndFlush(patientTreatment);
+		PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatientIdAndIndicationId(patientTreatment.getPatientDiagnose().getPatient().getId(), patientTreatment.getPatientDiagnose().getIndication().getId()).orElse(null);
+		patientTreatment.setPatientDiagnose(patientDiagnose);
+		PatientTreatment ptr = patientTreatmentRepository.saveAndFlush(patientTreatment);
+
+		PatientTreatmentLine ptl = new PatientTreatmentLine();
+		ptl.setActive(true);
+		ptl.setMedicine(patientTreatment.getMedicine());
+		ptl.setHadMedicineChange(false);
+		ptl.setReason(ptr.getReason());
+		ptl.setDose(ptr.getDose());
+		ptl.setMasterFormula(ptr.getMasterFormula());
+		ptl.setMasterFormulaDose(ptr.getMasterFormulaDose());
+		ptl.setModificationCount(0L);
+		ptl.setPatientTreatment(ptr.getId());
+		ptl.setRegimen(ptr.getRegimen());
+		ptl.setDeleted(false);
+		ptl.setType(ptr.getType());
+		ptl.setSuspensionDate(null);
+		ptl.setDeletionDate(null);
+
+		patientTreatmentLineRepository.saveAndFlush(ptl);
 	}
 
 	public void update(PatientTreatmentLineDTO patientTreatmentLineDTO) {
