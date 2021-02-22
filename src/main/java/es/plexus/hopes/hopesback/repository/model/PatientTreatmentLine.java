@@ -13,8 +13,8 @@ public class PatientTreatmentLine {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-	@JoinColumn(name = "ptl_ptr_id", referencedColumnName = "ptr_id")
+    @Basic
+    @Column(name = "ptl_ptr_id", nullable = false)
 	private Long patientTreatment;
 
     @Basic
