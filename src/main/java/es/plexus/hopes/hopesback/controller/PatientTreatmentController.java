@@ -117,7 +117,7 @@ public class PatientTreatmentController {
 
 	@ApiOperation("Borrar un tratamiento")
 	@DeleteMapping(DELETE)
-	public void delete(@RequestBody(required = true) Long lineId) {
+	public void delete(@RequestParam(required = true, name = "lineId") Long lineId) {
 		patientTreatmentService.delete(lineId);
 	}
 

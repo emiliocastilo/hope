@@ -593,7 +593,7 @@ public class PatientTreatmentService {
 		MedicineDTO medicine = new MedicineDTO();
 		List<PatientTreatmentLineDTO> lines = new ArrayList<>();
 
-		patientTreatment.getTreatmentLines().forEach(patientTreatmentLine -> {
+		patientTreatment.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getDeleted().equals(Boolean.FALSE) && patientTreatmentLine.getDeleted() == null).forEach(patientTreatmentLine -> {
 			PatientTreatmentLineDTO line = new PatientTreatmentLineDTO();
 			line.setId(patientTreatmentLine.getId());
 			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment());
@@ -620,6 +620,7 @@ public class PatientTreatmentService {
 			line.setActive(patientTreatmentLine.getActive());
 			line.setSuspensionDate(patientTreatmentLine.getSuspensionDate());
 			line.setDeleted(patientTreatmentLine.getDeleted());
+			line.setDeletionDate(patientTreatmentLine.getDeletionDate());
 			lines.add(line);
 
 		});
