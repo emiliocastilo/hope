@@ -618,7 +618,7 @@ public class PatientTreatmentService {
 			line.setRegimen(patientTreatmentLine.getRegimen());
 			line.setHadMedicineChange(patientTreatmentLine.getHadMedicineChange());
 			line.setActive(patientTreatmentLine.getActive());
-			//line.setSuspensionDate(patientTreatmentLine.getSus);
+			line.setSuspensionDate(patientTreatmentLine.getSuspensionDate());
 			line.setDeleted(patientTreatmentLine.getDeleted());
 			lines.add(line);
 
