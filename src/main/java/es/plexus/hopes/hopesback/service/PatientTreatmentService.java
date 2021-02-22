@@ -662,13 +662,14 @@ public class PatientTreatmentService {
 	}
 
 	public void suspend(SuspendTreatmentDTO suspendTreatmentDTO){
-		PatientTreatment patientTreatment = findById(suspendTreatmentDTO.getTreatmentId());
-		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList());
-		if ( !patientTreatmentLines.isEmpty() ){
-			patientTreatmentLines.get(0).setActive(false);
-			//TODO: Falta Guardar la fecha de suspensión.
-			patientTreatmentLines.get(0).setReason(suspendTreatmentDTO.getReason());
-		}
+	PatientTreatmentLine line = patientTreatmentLineRepository.findById(suspendTreatmentDTO.getLineId()).orElse(null);
+	if ( line != null ){
+		line.setActive(false);
+		line.setReason(suspendTreatmentDTO.getReason());
+		line.setSuspensionDate(suspendTreatmentDTO.getSuspensionDate());
+		patientTreatmentLineRepository.saveAndFlush(line);
+	}
+
 	}
 
 	public void delete(Long treatmentId){
@@ -714,7 +715,7 @@ public class PatientTreatmentService {
 			patientTreatmentLine.setActive(false);
 		}
 		// guardar la nueva linea
-		patientTreatmentLineRepository.save(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
+		patientTreatmentLineRepository.saveAndFlush(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
 	}
 
 	private PatientTreatmentLine getTreatmentLinebyPatientTreatment(Long patientTreatmentId){
