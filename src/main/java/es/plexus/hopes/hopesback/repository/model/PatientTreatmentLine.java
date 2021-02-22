@@ -3,8 +3,6 @@ package es.plexus.hopes.hopesback.repository.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity
@@ -17,7 +15,7 @@ public class PatientTreatmentLine {
 
     @ManyToOne
 	@JoinColumn(name = "ptl_ptr_id", referencedColumnName = "ptr_id")
-	private PatientTreatment patientTreatment;
+	private Long patientTreatment;
 
     @Basic
 	@Column(name = "ptl_modification_count", nullable = false)

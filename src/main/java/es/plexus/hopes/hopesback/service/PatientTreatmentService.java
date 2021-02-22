@@ -592,7 +592,7 @@ public class PatientTreatmentService {
 		patientTreatment.getTreatmentLines().forEach(patientTreatmentLine -> {
 			PatientTreatmentLineDTO line = new PatientTreatmentLineDTO();
 			line.setId(patientTreatmentLine.getId());
-			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment().getId());
+			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment());
 
 			Medicine medicineLine = new Medicine();
 			medicineLine.setId(patientTreatmentLine.getMedicine().getId());
@@ -608,7 +608,7 @@ public class PatientTreatmentService {
 			line.setRegimen(patientTreatmentLine.getRegimen());
 			line.setHadMedicineChange(patientTreatmentLine.getHadMedicineChange());
 			line.setActive(patientTreatmentLine.getActive());
-			line.setSuspensionDate(patientTreatmentLine.getPatientTreatment().getSuspensionDate());
+			//line.setSuspensionDate(patientTreatmentLine.getSus);
 			line.setDeleted(patientTreatmentLine.getDeleted());
 			lines.add(line);
 
