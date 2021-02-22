@@ -561,31 +561,89 @@ public class PatientTreatmentService {
 				.collect(toList());
 	}
 
-	private PatientTreatmentLineInformationDTO convert(PatientTreatment patientTreatment) {
-		PatientTreatmentLineInformationDTO ptr = new PatientTreatmentLineInformationDTO();
+	@Transactional
+	public Page<PatientTreatmentLineInformationDTO> findByPatientAndPage(Long patientId, Pageable pageable) {
 
-		PatientTreatmentLine lineDTO = patientTreatment.getTreatmentLines().stream().filter(Objects::nonNull).reduce((a, b) -> b).orElse(null);
+		List<PatientTreatmentLineInformationDTO> patientTreatmentDTOs =  this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
+				.stream().filter(patientTreatment -> !"DELETED".equalsIgnoreCase(patientTreatment.getEndCause())).map((this::convert))
+				.collect(toList());
 
-		if ( lineDTO != null ) {
-			ptr.setId(patientTreatment.getId());
-			ptr.setActive(lineDTO.getActive());
-			ptr.setPatientTreatmentId(patientTreatment.getId());
-			ptr.setMedicineId(lineDTO.getMedicine().getId());
-			ptr.setMedicineName(lineDTO.getMedicine().getDescription());
-			ptr.setDeleted(lineDTO.getDeleted());
-			ptr.setType(lineDTO.getType());
-			ptr.setMasterFormula(lineDTO.getMasterFormula());
-			ptr.setMasterFormulaDose(lineDTO.getMasterFormulaDose());
-			ptr.setModificationCount(lineDTO.getModificationCount());
-			ptr.setReason(lineDTO.getReason());
-			ptr.setRegimen(lineDTO.getRegimen());
-			ptr.setDose(lineDTO.getDose());
-			ptr.setHadMedicineChange(lineDTO.getHadMedicineChange());
-			if ( patientTreatment.getMedicine() != null ){
-				ptr.setPathologies(new ArrayList<>(lineDTO.getMedicine().getPathologies()));
-			}
+		int start = Long.valueOf(pageable.getOffset()).intValue();
+		int end = Math.min((start + pageable.getPageSize()), patientTreatmentDTOs.size());
+
+		if (pageable.getSort().get().findFirst().isPresent()) {
+			orderPatientTreatmentLineInformation(patientTreatmentDTOs, pageable.getSort());
 		}
-		return ptr;
+
+		List<PatientTreatmentLineInformationDTO> resultList = patientTreatmentDTOs.subList(start, end);
+
+
+		return new PageImpl<>(resultList, pageable, patientTreatmentDTOs.size());
+
+	}
+
+	private PatientTreatmentLineInformationDTO convert(PatientTreatment patientTreatment) {
+
+		PatientTreatmentLineInformationDTO dto = new PatientTreatmentLineInformationDTO();
+
+		MedicineDTO medicine = new MedicineDTO();
+		List<PatientTreatmentLineDTO> lines = new ArrayList<>();
+
+		patientTreatment.getTreatmentLines().forEach(patientTreatmentLine -> {
+			PatientTreatmentLineDTO line = new PatientTreatmentLineDTO();
+			line.setId(patientTreatmentLine.getId());
+			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment().getId());
+
+			Medicine medicineLine = new Medicine();
+			medicineLine.setId(patientTreatmentLine.getMedicine().getId());
+			medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
+
+			line.setMedicine(medicineLine);
+			line.setModificationCount(patientTreatmentLine.getModificationCount());
+			line.setType(patientTreatmentLine.getType());
+			line.setDose(patientTreatmentLine.getDose());
+			line.setMasterFormula(patientTreatmentLine.getMasterFormula());
+			line.setMasterFormulaDose(patientTreatmentLine.getMasterFormulaDose());
+			line.setReason(patientTreatmentLine.getReason());
+			line.setRegimen(patientTreatmentLine.getRegimen());
+			line.setHadMedicineChange(patientTreatmentLine.getHadMedicineChange());
+			line.setActive(patientTreatmentLine.getActive());
+			line.setSuspensionDate(patientTreatmentLine.getPatientTreatment().getSuspensionDate());
+			line.setDeleted(patientTreatmentLine.getDeleted());
+			lines.add(line);
+
+		});
+
+		medicine.setId(patientTreatment.getMedicine().getId());
+		medicine.setDescription(patientTreatment.getMedicine().getDescription());
+		dto.setLines(lines);
+		dto.setId(patientTreatment.getId());
+		dto.setPatientDiagnoseId(patientTreatment.getPatientDiagnose().getId());
+
+		dto.setType(patientTreatment.getType());
+		dto.setMedicine(medicine);
+
+		dto.setDose(patientTreatment.getDose());
+		dto.setMasterFormula(patientTreatment.getMasterFormula());
+		dto.setMasterFormulaDose(patientTreatment.getMasterFormulaDose());
+		dto.setRegimen(patientTreatment.getRegimen());
+		dto.setInitDate(patientTreatment.getInitDate());
+		dto.setFinalDate(patientTreatment.getFinalDate());
+		dto.setEndCause(patientTreatment.getEndCause());
+		dto.setReason(patientTreatment.getReason());
+
+		dto.setPsychologicalImpact(patientTreatment.getPsychologicalImpact());
+		dto.setDatePrescription(patientTreatment.getDatePrescription());
+		dto.setExpectedEndDate(patientTreatment.getExpectedEndDate());
+		dto.setObservations(patientTreatment.getObservations());
+		dto.setOther(patientTreatment.getOther());
+		dto.setOtherDose(patientTreatment.getOtherDose());
+		dto.setTreatmentContinue(patientTreatment.getTreatmentContinue());
+		dto.setVisibleInjury(patientTreatment.getVisibleInjury());
+		dto.setPulsatileTreatment(patientTreatment.getPulsatileTreatment());
+		dto.setSuspensionDate(patientTreatment.getSuspensionDate());
+
+		return dto;
 
 	}
 
@@ -595,7 +653,7 @@ public class PatientTreatmentService {
 
 	public void suspend(SuspendTreatmentDTO suspendTreatmentDTO){
 		PatientTreatment patientTreatment = findById(suspendTreatmentDTO.getTreatmentId());
-		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive() == true).collect(toList());
+		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList());
 		if ( !patientTreatmentLines.isEmpty() ){
 			patientTreatmentLines.get(0).setActive(false);
 			//TODO: Falta Guardar la fecha de suspensión.
@@ -606,7 +664,7 @@ public class PatientTreatmentService {
 	public void delete(Long treatmentId){
 		PatientTreatment patientTreatment = findById(treatmentId);
 
-		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive() == true).collect(toList());
+		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList());
 		if ( !patientTreatmentLines.isEmpty() ){
 			patientTreatmentLines.get(0).setActive(false);
 		}
@@ -629,11 +687,12 @@ public class PatientTreatmentService {
 		patientTreatmentLineRepository.save(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
 	}
 
-	private PatientTreatmentLine getTreatmentLinebyPatientTreatment(PatientTreatment patientTreatment){
-	List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive() == true).collect(toList());
-		if ( !patientTreatmentLines.isEmpty() ){
+	private PatientTreatmentLine getTreatmentLinebyPatientTreatment(Long patientTreatmentId){
+		PatientTreatment patientTreatment = patientTreatmentRepository.findById(patientTreatmentId).orElse(null);
+		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList());
+		if (!patientTreatmentLines.isEmpty()) {
 			return patientTreatmentLines.get(0);
-	}
+		}
 		return null;
 	}
 
@@ -645,9 +704,9 @@ public class PatientTreatmentService {
 		int start = Long.valueOf(pageable.getOffset()).intValue();
 		int end = Math.min((start + pageable.getPageSize()), patientTreatmentDTOs.size());
 
-		if (pageable.getSort().get().findFirst().isPresent()) {
-			orderGraphPatientDetailList(patientTreatmentDTOs, pageable.getSort());
-		}
+//		if (pageable.getSort().get().findFirst().isPresent()) {
+//			orderGraphPatientDetailList(patientTreatmentDTOs, pageable.getSort());
+//		}
 
 		List<PatientTreatmentDTO> resultList = patientTreatmentDTOs.subList(start, end);
 
@@ -655,7 +714,8 @@ public class PatientTreatmentService {
 		return new PageImpl<>(resultList, pageable, patientTreatmentDTOs.size());
 	}
 
-	private  void orderGraphPatientDetailList(List<PatientTreatmentDTO> patientTreatmentDTOS, Sort sort){
+
+	private void orderPatientTreatmentLineInformation(List<PatientTreatmentLineInformationDTO> patientTreatmentDTOS, Sort sort){
 		// TODO JGL: Ver aquí las ordenaciones que hay que hacer.
 		Optional<Sort.Order> sortOrder = sort.get().findFirst();
 		if (sortOrder.isPresent()){
@@ -663,7 +723,7 @@ public class PatientTreatmentService {
 			switch (order.getProperty()){
 				case "type":
 					patientTreatmentDTOS
-							.sort(obtainComparatorString(order, PatientTreatmentDTO::getType));
+							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getType));
 					break;
 				default:
 					break;
@@ -671,12 +731,12 @@ public class PatientTreatmentService {
 		}
 	}
 
-	private Comparator<PatientTreatmentDTO> obtainComparatorString(Sort.Order order, Function<PatientTreatmentDTO, String> sortBy) {
+	private Comparator<PatientTreatmentLineInformationDTO> obtainComparatorString(Sort.Order order, Function<PatientTreatmentLineInformationDTO, String> sortBy) {
 		return order.isAscending()?
 				Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy)).reversed();
 	}
 
-	private static Comparator<PatientTreatmentLineDTO> obtainComparatorDate(Sort.Order order, Function<PatientTreatmentLineDTO, LocalDateTime> sortBy) {
+	private static Comparator<PatientTreatmentLineInformationDTO> obtainComparatorDate(Sort.Order order, Function<PatientTreatmentLineInformationDTO, LocalDateTime> sortBy) {
 		return order.isAscending()?
 				Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy).reversed());
 	}

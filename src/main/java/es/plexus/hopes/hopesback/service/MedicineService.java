@@ -360,8 +360,8 @@ public class MedicineService {
 
 		List<PatientTreatmentLineInformationDTO> patientTreatments = patientTreatmentService.findByPatient(patientId);
 		return patientTreatments.stream().anyMatch(
-				patientTreatmentDTO -> patientTreatmentDTO.getMedicineId().equals(medicineId) &&
-									   patientTreatmentDTO.getPathologies().contains(pathology)
+				patientTreatmentDTO -> patientTreatmentDTO.getMedicine().getId().equals(medicineId) &&
+									   patientTreatmentDTO.getMedicine().getPathologies().contains(pathology)
 		);
 	}
 }

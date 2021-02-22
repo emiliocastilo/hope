@@ -109,9 +109,10 @@ public class PatientTreatmentController {
 
 	@ApiOperation("Obtener todos los tratamientos")
 	@GetMapping(FIND_BY_PATIENT)
-	public List<PatientTreatmentLineInformationDTO> findByPatientId(@RequestParam(value = "patientId") Long patientId) {
+	public Page<PatientTreatmentLineInformationDTO> findByPatientId(@RequestParam(value = "patientId") Long patientId,
+																	@PageableDefault(size = 5) Pageable pageable) {
 		log.debug(CALLING_SERVICE);
-		return patientTreatmentService.findByPatient(patientId);
+		return patientTreatmentService.findByPatientAndPage(patientId,pageable);
 	}
 
 	@ApiOperation("Borrar un tratamiento")

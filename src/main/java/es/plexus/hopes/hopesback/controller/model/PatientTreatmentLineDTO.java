@@ -1,7 +1,6 @@
 package es.plexus.hopes.hopesback.controller.model;
 
 import es.plexus.hopes.hopesback.repository.model.Medicine;
-import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -17,7 +16,7 @@ public class PatientTreatmentLineDTO {
     private Long id;
 
     @ApiModelProperty(position = 20, example = "1", value = "Identificador en la BD")
-    private PatientTreatment patientTreatment;
+    private Long patientTreatment;
 
     @ApiModelProperty(position = 30, example = "1", value = "Identificador en la BD")
     private Long modificationCount;
