@@ -593,9 +593,9 @@ public class PatientTreatmentService {
 		MedicineDTO medicine = new MedicineDTO();
 		List<PatientTreatmentLineDTO> lines = new ArrayList<>();
 
-		patientTreatment.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getDeleted().equals(Boolean.FALSE) && patientTreatmentLine.getDeleted() == null).forEach(patientTreatmentLine -> {
+		patientTreatment.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getDeleted().equals(Boolean.FALSE) || patientTreatmentLine.getDeleted() == null).forEach(patientTreatmentLine -> {
 			PatientTreatmentLineDTO line = new PatientTreatmentLineDTO();
-			line.setId(patientTreatmentLine.getId());
+			line.setLineId(patientTreatmentLine.getId());
 			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment());
 
 			Medicine medicineLine = new Medicine();
@@ -709,13 +709,9 @@ public class PatientTreatmentService {
 	}
 
 	public void update(PatientTreatmentLineDTO patientTreatmentLineDTO) {
-		// Obtener la última linea activa del tratamiento para suspenderla.
-		PatientTreatmentLine patientTreatmentLine = getTreatmentLinebyPatientTreatment(patientTreatmentLineDTO.getPatientTreatment());
-		// Sí la linea no es null, suspenderla
-		if ( null != patientTreatmentLine){
-			patientTreatmentLine.setActive(false);
+		if ( patientTreatmentLineDTO.getReason().equalsIgnoreCase("") ){
+
 		}
-		// guardar la nueva linea
 		patientTreatmentLineRepository.saveAndFlush(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
 	}
 
