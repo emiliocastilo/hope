@@ -123,7 +123,7 @@ public class PatientTreatmentController {
 
 	@ApiOperation("Suspende un tratamiento")
 	@PostMapping(SUSPEND)
-	public void suspend(@RequestParam(required = true) SuspendTreatmentDTO suspendTreatmentDTO) {
+	public void suspend(@RequestBody(required = true) SuspendTreatmentDTO suspendTreatmentDTO) {
 		patientTreatmentService.suspend(suspendTreatmentDTO);
 	}
 
