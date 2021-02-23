@@ -628,7 +628,7 @@ public class PatientTreatmentService {
 		medicine.setId(patientTreatment.getMedicine().getId());
 		medicine.setDescription(patientTreatment.getMedicine().getDescription());
 		dto.setLines(lines);
-		dto.setId(patientTreatment.getId());
+		dto.setTreatmentId(patientTreatment.getId());
 		dto.setPatientDiagnoseId(patientTreatment.getPatientDiagnose().getId());
 
 		dto.setType(patientTreatment.getType());
@@ -663,7 +663,7 @@ public class PatientTreatmentService {
 	}
 
 	public void suspend(SuspendTreatmentDTO suspendTreatmentDTO){
-	PatientTreatmentLine line = patientTreatmentLineRepository.findById(suspendTreatmentDTO.getLineId()).orElse(null);
+	PatientTreatmentLine line = patientTreatmentLineRepository.findById(suspendTreatmentDTO.getLineId() ).orElse(null);
 	if ( line != null ){
 		line.setActive(false);
 		line.setReason(suspendTreatmentDTO.getReason());
@@ -709,10 +709,11 @@ public class PatientTreatmentService {
 	}
 
 	public void update(PatientTreatmentLineDTO patientTreatmentLineDTO) {
-		if ( patientTreatmentLineDTO.getReason().equalsIgnoreCase("") ){
-
+		if ( !StringUtils.isEmpty(patientTreatmentLineDTO.getReason()) ){
+			// TODO JGL: Cambiar aquí los atributos.
+			patientTreatmentLineRepository.saveAndFlush(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
 		}
-		patientTreatmentLineRepository.saveAndFlush(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
+
 	}
 
 	private PatientTreatmentLine getTreatmentLinebyPatientTreatment(Long patientTreatmentId){

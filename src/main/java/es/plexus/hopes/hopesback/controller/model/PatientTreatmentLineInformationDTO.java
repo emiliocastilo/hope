@@ -12,7 +12,7 @@ import java.util.List;
 @ApiModel
 public class PatientTreatmentLineInformationDTO {
     @ApiModelProperty(position = 10, example = "1", value = "Identificador en la BD")
-    private Long id;
+    private Long treatmentId;
 
     @ApiModelProperty(position = 20, example = "diagnostico 1", value = "Diagnóstico asociado al tratamiento")
     private Long patientDiagnoseId;
