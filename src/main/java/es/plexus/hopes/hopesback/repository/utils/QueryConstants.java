@@ -141,6 +141,11 @@ public class QueryConstants {
 			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
 					WHERE_CLAUSULE + " pdg.patient.id = :patientId";
 
+	public static final String QUERY_PATIENTS_DIAGNOSE_BY_PATIENT_ID_AND_PATHOLOGY_ID =
+			SELECT_PDG_FROM_PATIENT_DIAGNOSE_PDG +
+					WHERE_CLAUSULE + " pdg.patient.id = :patientId"
+			+ " and pdg.indication.pathologyId = :pathologyId";
+
 	public static final String SELECT_PATIENT = "select pat " +
 			"from Patient pat ";
 

@@ -1,21 +1,21 @@
 package es.plexus.hopes.hopesback.service;
 
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
-import es.plexus.hopes.hopesback.controller.model.TreatmentDTO;
+import es.plexus.hopes.hopesback.controller.model.*;
+import es.plexus.hopes.hopesback.repository.PatientDiagnosisRepository;
 import es.plexus.hopes.hopesback.repository.PatientRepository;
+import es.plexus.hopes.hopesback.repository.PatientTreatmentLineRepository;
 import es.plexus.hopes.hopesback.repository.PatientTreatmentRepository;
-import es.plexus.hopes.hopesback.repository.model.Pathology;
-import es.plexus.hopes.hopesback.repository.model.Patient;
-import es.plexus.hopes.hopesback.repository.model.PatientDiagnose;
-import es.plexus.hopes.hopesback.repository.model.PatientTreatment;
+import es.plexus.hopes.hopesback.repository.model.*;
+import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentLineMapper;
 import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.collections.CollectionUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -25,17 +25,17 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_BIOLOGICAL;
-import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_CHEMICAL;
-import static es.plexus.hopes.hopesback.service.Constants.TYPE_TREATMENT_FAME;
+import static es.plexus.hopes.hopesback.service.Constants.*;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.doPaginationGraphPatientDetailDTO;
 import static es.plexus.hopes.hopesback.service.utils.GraphPatientDetailUtils.fillGraphPatientDetailDtoList;
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 @Transactional
+
 public class PatientTreatmentService {
 
 	private static final String CALLING_DB = "Calling DB...";
@@ -56,6 +56,9 @@ public class PatientTreatmentService {
 	public static final String NO_REGIMEN = "Sin régimen";
 
 	private final PatientTreatmentRepository patientTreatmentRepository;
+	private final PatientDiagnosisRepository patientDiagnosisRepository;
+	private final PatientTreatmentLineRepository patientTreatmentLineRepository;
+
 	private final PatientRepository patientRepository;
 
 	public  Map<String, Long> findPatientTreatmentByTreatmentAndPathology(Pathology pathology) {
@@ -546,7 +549,317 @@ public class PatientTreatmentService {
 		};
 	}
 
-	public void save(PatientTreatment patientTreatment) {
-		patientTreatmentRepository.saveAndFlush(patientTreatment);
+	public List<PatientTreatmentDTO> findAll() {
+		return this.patientTreatmentRepository.findAll()
+				.stream().filter(PatientTreatment::isActive).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.collect(toList());
 	}
+
+	@Transactional
+	public List<PatientTreatmentLineInformationDTO> findByPatient(Long patientId) {
+		// TODO JGL: Revisar que al borrar el tratamiento se ponga DELETE en la causa de finalización para no filtrar aquí.
+		return this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
+				.stream().filter(patientTreatment -> !"DELETED".equalsIgnoreCase(patientTreatment.getEndCause())).map((this::convert))
+				.collect(toList());
+	}
+
+	@Transactional
+	public Page<PatientTreatmentLineInformationDTO> findByPatientAndPage(Long patientId, Pageable pageable) {
+
+		List<PatientTreatmentLineInformationDTO> patientTreatmentDTOs =  this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
+				.stream().filter(patientTreatment -> !"DELETED".equalsIgnoreCase(patientTreatment.getEndCause())).map((this::convert))
+				.filter(patientTreatmentLineInformationDTO -> patientTreatmentLineInformationDTO.getLines().size() > 0)
+				.collect(toList());
+
+		int start = Long.valueOf(pageable.getOffset()).intValue();
+		int end = Math.min((start + pageable.getPageSize()), patientTreatmentDTOs.size());
+
+		if (pageable.getSort().get().findFirst().isPresent()) {
+			orderPatientTreatmentLineInformation(patientTreatmentDTOs, pageable.getSort());
+		}
+
+		if ( patientTreatmentDTOs.size() > start ){
+			List<PatientTreatmentLineInformationDTO> resultList = patientTreatmentDTOs.subList(start, end);
+			return new PageImpl<>(resultList, pageable, patientTreatmentDTOs.size());
+		}
+
+		return null;
+
+	}
+
+	private PatientTreatmentLineInformationDTO convert(PatientTreatment patientTreatment) {
+
+		PatientTreatmentLineInformationDTO dto = new PatientTreatmentLineInformationDTO();
+
+		MedicineDTO medicine = new MedicineDTO();
+		List<PatientTreatmentLineDTO> lines = new ArrayList<>();
+
+		patientTreatment.getTreatmentLines().stream().filter(patientTreatmentLine ->
+				patientTreatmentLine.getDeleted() == null || patientTreatmentLine.getDeleted().equals(Boolean.FALSE)).forEach(patientTreatmentLine -> {
+			PatientTreatmentLineDTO line = new PatientTreatmentLineDTO();
+			line.setLineId(patientTreatmentLine.getId());
+			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment());
+
+			if ( null !=  patientTreatmentLine.getMedicine() ) {
+				Medicine medicineLine = new Medicine();
+				medicineLine.setId(patientTreatmentLine.getMedicine().getId());
+				medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
+				medicineLine.setActIngredients(patientTreatmentLine.getMedicine().getActIngredients());
+				medicineLine.setBrand(patientTreatmentLine.getMedicine().getBrand());
+				medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
+				medicineLine.setTreatmentType(patientTreatmentLine.getMedicine().getTreatmentType());
+				medicineLine.setCodeAtc(patientTreatmentLine.getMedicine().getCodeAtc());
+				medicineLine.setNationalCode(patientTreatmentLine.getMedicine().getNationalCode());
+				medicineLine.setViaAdministration(patientTreatmentLine.getMedicine().getViaAdministration());
+				medicineLine.setUnitDose(patientTreatmentLine.getMedicine().getUnitDose());
+				line.setMedicine(medicineLine);
+			}
+
+			line.setModificationCount(patientTreatmentLine.getModificationCount());
+			line.setType(patientTreatmentLine.getType());
+			line.setDose(patientTreatmentLine.getDose());
+			line.setMasterFormula(patientTreatmentLine.getMasterFormula());
+			line.setMasterFormulaDose(patientTreatmentLine.getMasterFormulaDose());
+			line.setReason(patientTreatmentLine.getReason());
+			line.setRegimen(patientTreatmentLine.getRegimen());
+			line.setHadMedicineChange(patientTreatmentLine.getHadMedicineChange());
+			line.setActive(patientTreatmentLine.getActive());
+			line.setSuspensionDate(patientTreatmentLine.getSuspensionDate());
+			line.setDeleted(patientTreatmentLine.getDeleted());
+			line.setDeletionDate(patientTreatmentLine.getDeletionDate());
+			line.setVisibleInjury(patientTreatmentLine.getVisibleInjury());
+			line.setPulsatileTreatment(patientTreatmentLine.getPulsatileTreatment());
+			line.setPsychologicalImpact(patientTreatmentLine.getPsychologicalImpact());
+			line.setTreatmentContinue(patientTreatmentLine.getTreatmentContinue());
+			line.setSpecialIndication(patientTreatmentLine.getSpecialIndication());
+			line.setInitDate(patientTreatmentLine.getInitDate());
+			line.setExpectedEndDate(patientTreatmentLine.getExpectedEndDate());
+			line.setDatePrescription(patientTreatmentLine.getDatePrescription());
+			line.setFinalDate(patientTreatmentLine.getFinalDate());
+			line.setObservations(patientTreatmentLine.getObservations());
+			line.setOther(patientTreatmentLine.getOther());
+			line.setOtherDose(patientTreatmentLine.getOtherDose());
+
+			lines.add(line);
+
+		});
+
+		if ( null != patientTreatment.getMedicine() ){
+			medicine.setId(patientTreatment.getMedicine().getId());
+			medicine.setDescription(patientTreatment.getMedicine().getDescription());
+			dto.setMedicine(medicine);
+		}
+
+		dto.setLines(lines);
+		dto.setTreatmentId(patientTreatment.getId());
+		dto.setPatientDiagnoseId(patientTreatment.getPatientDiagnose().getId());
+
+		dto.setType(patientTreatment.getType());
+
+
+		dto.setDose(patientTreatment.getDose());
+		dto.setMasterFormula(patientTreatment.getMasterFormula());
+		dto.setMasterFormulaDose(patientTreatment.getMasterFormulaDose());
+		dto.setRegimen(patientTreatment.getRegimen());
+		dto.setInitDate(patientTreatment.getInitDate());
+		dto.setFinalDate(patientTreatment.getFinalDate());
+		dto.setEndCause(patientTreatment.getEndCause());
+		dto.setReason(patientTreatment.getReason());
+
+		dto.setPsychologicalImpact(patientTreatment.getPsychologicalImpact());
+		dto.setDatePrescription(patientTreatment.getDatePrescription());
+		dto.setExpectedEndDate(patientTreatment.getExpectedEndDate());
+		dto.setObservations(patientTreatment.getObservations());
+		dto.setOther(patientTreatment.getOther());
+		dto.setOtherDose(patientTreatment.getOtherDose());
+		dto.setTreatmentContinue(patientTreatment.getTreatmentContinue());
+		dto.setVisibleInjury(patientTreatment.getVisibleInjury());
+		dto.setPulsatileTreatment(patientTreatment.getPulsatileTreatment());
+		dto.setSuspensionDate(patientTreatment.getSuspensionDate());
+
+
+		return dto;
+
+	}
+
+	public PatientTreatment findById(Long treatmentId) {
+		return this.patientTreatmentRepository.findById(treatmentId).orElse(null);
+	}
+
+	public void suspend(SuspendTreatmentDTO suspendTreatmentDTO){
+	PatientTreatmentLine line = patientTreatmentLineRepository.findById(suspendTreatmentDTO.getLineId() ).orElse(null);
+	if ( line != null ){
+		line.setActive(false);
+		line.setReason(suspendTreatmentDTO.getReason());
+		line.setSuspensionDate(suspendTreatmentDTO.getSuspensionDate());
+		patientTreatmentLineRepository.saveAndFlush(line);
+	}
+
+	}
+
+	public void delete(Long lineId) {
+		PatientTreatmentLine ptl = patientTreatmentLineRepository.findById(lineId).orElse(null);
+
+		if (ptl != null) {
+			ptl.setDeletionDate(LocalDateTime.now());
+			ptl.setDeleted(true);
+			patientTreatmentLineRepository.saveAndFlush(ptl);
+
+			// Sí el tratamiento no tiene lineas activas, se desactiva el tratamiento.
+			PatientTreatment ptr = patientTreatmentRepository.findById(ptl.getPatientTreatment()).orElse(null);
+			if (ptr != null
+					&& ptr.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList()).size() == 0) {
+				ptr.setActive(false);
+			}
+		}
+
+	}
+
+	public void save(PatientTreatment patientTreatment) {
+		PatientDiagnose patientDiagnose = patientDiagnosisRepository.findByPatientIdAndIndicationId(patientTreatment.getPatientDiagnose().getPatient().getId(), patientTreatment.getPatientDiagnose().getIndication().getId()).orElse(null);
+		patientTreatment.setPatientDiagnose(patientDiagnose);
+		PatientTreatment ptr = patientTreatmentRepository.saveAndFlush(patientTreatment);
+
+		PatientTreatmentLine ptl = new PatientTreatmentLine();
+		ptl.setActive(true);
+		ptl.setMedicine(patientTreatment.getMedicine());
+		ptl.setHadMedicineChange(false);
+		ptl.setReason(ptr.getReason());
+		ptl.setDose(ptr.getDose());
+		ptl.setMasterFormula(ptr.getMasterFormula());
+		ptl.setMasterFormulaDose(ptr.getMasterFormulaDose());
+		ptl.setModificationCount(0L);
+		ptl.setPatientTreatment(ptr.getId());
+		ptl.setRegimen(ptr.getRegimen());
+		ptl.setDeleted(false);
+		ptl.setType(ptr.getType());
+		ptl.setSuspensionDate(null);
+		ptl.setDeletionDate(null);
+		ptl.setPsychologicalImpact(ptr.getPsychologicalImpact());
+		ptl.setPulsatileTreatment(ptr.getPulsatileTreatment());
+		ptl.setVisibleInjury(ptr.getVisibleInjury());
+		ptl.setTreatmentContinue(ptr.getTreatmentContinue());
+		ptl.setSpecialIndication(ptr.getSpecialIndication());
+		ptl.setDatePrescription(ptr.getDatePrescription());
+		ptl.setFinalDate(ptr.getFinalDate());
+		ptl.setInitDate(ptr.getInitDate());
+		ptl.setExpectedEndDate(ptr.getExpectedEndDate());
+		ptl.setObservations(ptr.getObservations());
+		ptl.setOther(ptr.getOther());
+		ptl.setOtherDose(ptr.getOtherDose());
+
+		patientTreatmentLineRepository.saveAndFlush(ptl);
+	}
+
+	public void update(PatientTreatmentLineDTO patientTreatmentLineDTO) {
+
+		if ( !StringUtils.isEmpty(patientTreatmentLineDTO.getReason()) ){
+			PatientTreatmentLine ptl = patientTreatmentLineRepository.findById(patientTreatmentLineDTO.getLineId()).orElse(null);
+			if ( ptl != null ){
+				ptl.setActive(false);
+				ptl.setSuspensionDate(LocalDateTime.now());
+			}
+
+			if ( null == patientTreatmentLineDTO.getModificationCount() ){
+				patientTreatmentLineDTO.setModificationCount(0L);
+			}
+			patientTreatmentLineDTO.setActive(true);
+			patientTreatmentLineDTO.setModificationCount(patientTreatmentLineDTO.getModificationCount() + 1);
+			patientTreatmentLineRepository.saveAndFlush(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
+		} else {
+			PatientTreatmentLine ptl = PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO);
+			ptl.setId(patientTreatmentLineDTO.getLineId());
+			if ( null == patientTreatmentLineDTO.getModificationCount() ){
+				patientTreatmentLineDTO.setModificationCount(0L);
+			}
+
+			patientTreatmentLineRepository.saveAndFlush(ptl);
+		}
+
+	}
+
+	private PatientTreatmentLine getTreatmentLinebyPatientTreatment(Long patientTreatmentId){
+		PatientTreatment patientTreatment = patientTreatmentRepository.findById(patientTreatmentId).orElse(null);
+		List<PatientTreatmentLine> patientTreatmentLines = patientTreatmentLineRepository.findByPatientTreatment(patientTreatment).stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList());
+		if (!patientTreatmentLines.isEmpty()) {
+			return patientTreatmentLines.get(0);
+		}
+		return null;
+	}
+
+	public Page<PatientTreatmentDTO> findAll(final Pageable pageable) {
+		List<PatientTreatmentDTO> patientTreatmentDTOs = this.patientTreatmentRepository.findAll()
+				.stream().filter(PatientTreatment::isActive).map((Mappers.getMapper(PatientTreatmentMapper.class)::entityToDto))
+				.collect(toList());
+
+		int start = Long.valueOf(pageable.getOffset()).intValue();
+		int end = Math.min((start + pageable.getPageSize()), patientTreatmentDTOs.size());
+
+//		if (pageable.getSort().get().findFirst().isPresent()) {
+//			orderGraphPatientDetailList(patientTreatmentDTOs, pageable.getSort());
+//		}
+
+		List<PatientTreatmentDTO> resultList = patientTreatmentDTOs.subList(start, end);
+
+
+		return new PageImpl<>(resultList, pageable, patientTreatmentDTOs.size());
+	}
+
+
+	private void orderPatientTreatmentLineInformation(List<PatientTreatmentLineInformationDTO> patientTreatmentDTOS, Sort sort){
+		// TODO JGL: Ver aquí las ordenaciones que hay que hacer.
+		//'indication', 'principle', 'brand', 'dose', 'dateStart', 'datePrescription', 'dateSuspension', 'treatmentType'
+		Optional<Sort.Order> sortOrder = sort.get().findFirst();
+		if (sortOrder.isPresent()){
+			Sort.Order order = sortOrder.get();
+			switch (order.getProperty()){
+				case "type":
+					patientTreatmentDTOS
+							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getType));
+					break;
+//				case "principle":
+//					patientTreatmentDTOS
+//							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getMedicine));
+//					break;
+//				case "brand":
+//					patientTreatmentDTOS
+//							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getMedicine));
+//					break;
+				case "dose":
+					patientTreatmentDTOS
+							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getDose));
+					break;
+				case "dateStart":
+					patientTreatmentDTOS
+							.sort(obtainComparatorDate(order, PatientTreatmentLineInformationDTO::getInitDate));
+					break;
+				case "datePrescription":
+					patientTreatmentDTOS
+							.sort(obtainComparatorDate(order, PatientTreatmentLineInformationDTO::getDatePrescription));
+					break;
+				case "dateSuspension":
+					patientTreatmentDTOS
+							.sort(obtainComparatorDate(order, PatientTreatmentLineInformationDTO::getSuspensionDate));
+					break;
+				case "treatmentType":
+					patientTreatmentDTOS
+							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getType));
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private Comparator<PatientTreatmentLineInformationDTO> obtainComparatorString(Sort.Order order, Function<PatientTreatmentLineInformationDTO, String> sortBy) {
+		return order.isAscending()?
+				Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy)).reversed();
+	}
+
+	private static Comparator<PatientTreatmentLineInformationDTO> obtainComparatorDate(Sort.Order order, Function<PatientTreatmentLineInformationDTO, LocalDateTime> sortBy) {
+		return order.isAscending()?
+				Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy).reversed());
+	}
+
+
 }
