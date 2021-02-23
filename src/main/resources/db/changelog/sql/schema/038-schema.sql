@@ -1,4 +1,4 @@
-DROP TABLE hopes.patients_treatments_lines;
+DROP TABLE  IF NOT exists hopes.patients_treatments_lines;
 CREATE TABLE hopes.patients_treatments_lines (
 	ptl_id serial NOT NULL,
 	ptl_ptr_id int8 not null REFERENCES hopes.patients_treatments(ptr_id),
