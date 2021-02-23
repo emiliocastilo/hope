@@ -2,7 +2,7 @@ CREATE TABLE hopes.patients_treatments_lines (
 	ptl_id serial NOT NULL,
 	ptl_ptr_id int8 not null REFERENCES hopes.patients_treatments(ptr_id),
 	ptl_modification_count int8 not NULL,
-	ptl_med_id int8 not null references hopes.medicines(med_id),
+	ptl_med_id int8 null references hopes.medicines(med_id),
 	ptl_dose varchar(500) null,
 	ptl_master_formula varchar(500) null,
 	ptl_master_formula_dose varchar(500) null,

@@ -568,6 +568,7 @@ public class PatientTreatmentService {
 
 		List<PatientTreatmentLineInformationDTO> patientTreatmentDTOs =  this.patientTreatmentRepository.findTreatmentsByPatientId(patientId)
 				.stream().filter(patientTreatment -> !"DELETED".equalsIgnoreCase(patientTreatment.getEndCause())).map((this::convert))
+				.filter(patientTreatmentLineInformationDTO -> patientTreatmentLineInformationDTO.getLines().size() > 0)
 				.collect(toList());
 
 		int start = Long.valueOf(pageable.getOffset()).intValue();
@@ -599,15 +600,16 @@ public class PatientTreatmentService {
 			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment());
 
 			Medicine medicineLine = new Medicine();
-			medicineLine.setId(patientTreatmentLine.getMedicine().getId());
-			medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
-			medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
-			medicineLine.setTreatmentType(patientTreatmentLine.getMedicine().getTreatmentType());
-			medicineLine.setCodeAtc(patientTreatmentLine.getMedicine().getCodeAtc());
-			medicineLine.setNationalCode(patientTreatmentLine.getMedicine().getNationalCode());
-			medicineLine.setViaAdministration(patientTreatmentLine.getMedicine().getViaAdministration());
-			medicineLine.setUnitDose(patientTreatmentLine.getMedicine().getUnitDose());
-
+			if ( null ==  patientTreatmentLine.getMedicine() ) {
+				medicineLine.setId(patientTreatmentLine.getMedicine().getId());
+				medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
+				medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
+				medicineLine.setTreatmentType(patientTreatmentLine.getMedicine().getTreatmentType());
+				medicineLine.setCodeAtc(patientTreatmentLine.getMedicine().getCodeAtc());
+				medicineLine.setNationalCode(patientTreatmentLine.getMedicine().getNationalCode());
+				medicineLine.setViaAdministration(patientTreatmentLine.getMedicine().getViaAdministration());
+				medicineLine.setUnitDose(patientTreatmentLine.getMedicine().getUnitDose());
+			}
 			line.setMedicine(medicineLine);
 			line.setModificationCount(patientTreatmentLine.getModificationCount());
 			line.setType(patientTreatmentLine.getType());
@@ -624,15 +626,18 @@ public class PatientTreatmentService {
 			lines.add(line);
 
 		});
+		if ( null != patientTreatment.getMedicine() ){
+			medicine.setId(patientTreatment.getMedicine().getId());
+			medicine.setDescription(patientTreatment.getMedicine().getDescription());
+			dto.setMedicine(medicine);
+		}
 
-		medicine.setId(patientTreatment.getMedicine().getId());
-		medicine.setDescription(patientTreatment.getMedicine().getDescription());
 		dto.setLines(lines);
 		dto.setTreatmentId(patientTreatment.getId());
 		dto.setPatientDiagnoseId(patientTreatment.getPatientDiagnose().getId());
 
 		dto.setType(patientTreatment.getType());
-		dto.setMedicine(medicine);
+
 
 		dto.setDose(patientTreatment.getDose());
 		dto.setMasterFormula(patientTreatment.getMasterFormula());
