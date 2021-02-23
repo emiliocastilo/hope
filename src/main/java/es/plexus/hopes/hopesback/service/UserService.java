@@ -364,4 +364,11 @@ public class UserService {
 		log.debug(String.format("Llamando a la BD para borrar el registro de usuarios con id=%d...", id));
 		userRepository.deleteById(id);
 	}
+
+	public UserDTO findUserByUsername(UserDTO userDTO) {
+		Optional<User> userOri = userRepository.findByUsername(userDTO.getUsername());
+		userDTO.setId(userOri.get().getId());
+		userDTO.setEmail(userOri.get().getEmail());
+		return userDTO;
+	}
 }
