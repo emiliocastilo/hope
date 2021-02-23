@@ -92,4 +92,11 @@ public class PatientTreatmentLineDTO {
     @ApiModelProperty(position = 250, example = "true", value = "Tratamiento pulsátil")
     private Boolean pulsatileTreatment;
 
+    @ApiModelProperty(position = 260, example = "true", value = "Indicación especial")
+    private Boolean specialIndication;
+
+    @ApiModelProperty(position = 270, example = "1981-01-01T00:00:00Z", value = "Fecha de fin")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime finalDate;
+
 }

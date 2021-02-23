@@ -100,6 +100,10 @@ public class PatientTreatment {
 	private Boolean treatmentContinue;
 
 	@Basic
+	@Column(name = "ptr_special_indication", nullable = false)
+	private Boolean specialIndication;
+
+	@Basic
 	@Column(name = "ptr_visible_injury", nullable = false)
 	private Boolean visibleInjury;
 

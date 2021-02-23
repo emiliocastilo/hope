@@ -594,13 +594,14 @@ public class PatientTreatmentService {
 		MedicineDTO medicine = new MedicineDTO();
 		List<PatientTreatmentLineDTO> lines = new ArrayList<>();
 
-		patientTreatment.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getDeleted().equals(Boolean.FALSE) || patientTreatmentLine.getDeleted() == null).forEach(patientTreatmentLine -> {
+		patientTreatment.getTreatmentLines().stream().filter(patientTreatmentLine ->
+				patientTreatmentLine.getDeleted() == null || patientTreatmentLine.getDeleted().equals(Boolean.FALSE)).forEach(patientTreatmentLine -> {
 			PatientTreatmentLineDTO line = new PatientTreatmentLineDTO();
 			line.setLineId(patientTreatmentLine.getId());
 			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment());
 
-			Medicine medicineLine = new Medicine();
 			if ( null !=  patientTreatmentLine.getMedicine() ) {
+				Medicine medicineLine = new Medicine();
 				medicineLine.setId(patientTreatmentLine.getMedicine().getId());
 				medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
 				medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
@@ -609,8 +610,9 @@ public class PatientTreatmentService {
 				medicineLine.setNationalCode(patientTreatmentLine.getMedicine().getNationalCode());
 				medicineLine.setViaAdministration(patientTreatmentLine.getMedicine().getViaAdministration());
 				medicineLine.setUnitDose(patientTreatmentLine.getMedicine().getUnitDose());
+				line.setMedicine(medicineLine);
 			}
-			line.setMedicine(medicineLine);
+
 			line.setModificationCount(patientTreatmentLine.getModificationCount());
 			line.setType(patientTreatmentLine.getType());
 			line.setDose(patientTreatmentLine.getDose());
@@ -623,9 +625,22 @@ public class PatientTreatmentService {
 			line.setSuspensionDate(patientTreatmentLine.getSuspensionDate());
 			line.setDeleted(patientTreatmentLine.getDeleted());
 			line.setDeletionDate(patientTreatmentLine.getDeletionDate());
+			line.setVisibleInjury(patientTreatmentLine.getVisibleInjury());
+			line.setPulsatileTreatment(patientTreatmentLine.getPulsatileTreatment());
+			line.setPsychologicalImpact(patientTreatmentLine.getPsychologicalImpact());
+			line.setTreatmentContinue(patientTreatmentLine.getTreatmentContinue());
+			line.setSpecialIndication(patientTreatmentLine.getSpecialIndication());
+			line.setInitDate(patientTreatmentLine.getInitDate());
+			line.setExpectedEndDate(patientTreatmentLine.getExpectedEndDate());
+			line.setDatePrescription(patientTreatmentLine.getDatePrescription());
+			line.setFinalDate(patientTreatmentLine.getFinalDate());
+			line.setObservations(patientTreatmentLine.getObservations());
+			line.setOther(patientTreatmentLine.getOther());
+
 			lines.add(line);
 
 		});
+
 		if ( null != patientTreatment.getMedicine() ){
 			medicine.setId(patientTreatment.getMedicine().getId());
 			medicine.setDescription(patientTreatment.getMedicine().getDescription());
@@ -659,6 +674,7 @@ public class PatientTreatmentService {
 		dto.setPulsatileTreatment(patientTreatment.getPulsatileTreatment());
 		dto.setSuspensionDate(patientTreatment.getSuspensionDate());
 
+
 		return dto;
 
 	}
@@ -678,13 +694,20 @@ public class PatientTreatmentService {
 
 	}
 
-	public void delete(Long lineId){
+	public void delete(Long lineId) {
 		PatientTreatmentLine ptl = patientTreatmentLineRepository.findById(lineId).orElse(null);
 
-		if ( ptl != null ){
+		if (ptl != null) {
 			ptl.setDeletionDate(LocalDateTime.now());
 			ptl.setDeleted(true);
 			patientTreatmentLineRepository.saveAndFlush(ptl);
+
+			// Sí el tratamiento no tiene lineas activas, se desactiva el tratamiento.
+			PatientTreatment ptr = patientTreatmentRepository.findById(ptl.getPatientTreatment()).orElse(null);
+			if (ptr != null
+					&& ptr.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList()).size() == 0) {
+				ptr.setActive(false);
+			}
 		}
 
 	}
@@ -709,14 +732,44 @@ public class PatientTreatmentService {
 		ptl.setType(ptr.getType());
 		ptl.setSuspensionDate(null);
 		ptl.setDeletionDate(null);
+		ptl.setPsychologicalImpact(ptr.getPsychologicalImpact());
+		ptl.setPulsatileTreatment(ptr.getPulsatileTreatment());
+		ptl.setVisibleInjury(ptr.getVisibleInjury());
+		ptl.setTreatmentContinue(ptr.getTreatmentContinue());
+		ptl.setSpecialIndication(ptr.getSpecialIndication());
+		ptl.setDatePrescription(ptr.getDatePrescription());
+		ptl.setFinalDate(ptr.getFinalDate());
+		ptl.setInitDate(ptr.getInitDate());
+		ptl.setExpectedEndDate(ptr.getExpectedEndDate());
+		ptl.setObservations(ptr.getObservations());
+		ptl.setOther(ptr.getOther());
 
 		patientTreatmentLineRepository.saveAndFlush(ptl);
 	}
 
 	public void update(PatientTreatmentLineDTO patientTreatmentLineDTO) {
+
 		if ( !StringUtils.isEmpty(patientTreatmentLineDTO.getReason()) ){
-			// TODO JGL: Cambiar aquí los atributos.
+			PatientTreatmentLine ptl = patientTreatmentLineRepository.findById(patientTreatmentLineDTO.getLineId()).orElse(null);
+			if ( ptl != null ){
+				ptl.setActive(false);
+				ptl.setSuspensionDate(LocalDateTime.now());
+			}
+
+			if ( null == patientTreatmentLineDTO.getModificationCount() ){
+				patientTreatmentLineDTO.setModificationCount(0L);
+			}
+			patientTreatmentLineDTO.setActive(true);
+			patientTreatmentLineDTO.setModificationCount(patientTreatmentLineDTO.getModificationCount() + 1);
 			patientTreatmentLineRepository.saveAndFlush(PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO));
+		} else {
+			PatientTreatmentLine ptl = PatientTreatmentLineMapper.INSTANCE.dtoToEntity(patientTreatmentLineDTO);
+			ptl.setId(patientTreatmentLineDTO.getLineId());
+			if ( null == patientTreatmentLineDTO.getModificationCount() ){
+				patientTreatmentLineDTO.setModificationCount(0L);
+			}
+
+			patientTreatmentLineRepository.saveAndFlush(ptl);
 		}
 
 	}

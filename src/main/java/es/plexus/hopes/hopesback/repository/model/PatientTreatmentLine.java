@@ -70,4 +70,49 @@ public class PatientTreatmentLine {
     @Column(name = "ptl_suspension_date", nullable = true)
     private LocalDateTime suspensionDate;
 
+
+    @Basic
+    @Column(name = "ptl_psychological_impact", nullable = true)
+    private Boolean psychologicalImpact;
+
+    @Basic
+    @Column(name = "ptl_treatment_continue", nullable = true)
+    private Boolean treatmentContinue;
+
+    @Basic
+    @Column(name = "ptl_visible_injury", nullable = true)
+    private Boolean visibleInjury;
+
+    @Basic
+    @Column(name = "ptl_pulsatile_tratment", nullable = true)
+    private Boolean pulsatileTreatment;
+
+    @Basic
+    @Column(name = "ptl_special_indication", nullable = true)
+    private Boolean specialIndication;
+
+    @Basic
+    @Column(name = "ptl_init_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime initDate;
+
+    @Basic
+    @Column(name = "ptl_final_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime finalDate;
+
+    @Basic
+    @Column(name = "ptl_expected_end_date", columnDefinition = "TIMESTAMP")
+    private LocalDateTime expectedEndDate;
+
+    @Basic
+    @Column(name = "ptl_date_prescription", columnDefinition = "TIMESTAMP")
+    private LocalDateTime datePrescription;
+
+    @Basic
+    @Column(name = "ptl_observations", nullable = false, length = 255)
+    private String observations;
+
+    @Basic
+    @Column(name = "ptl_other", nullable = false, length = 50)
+    private String other;
+
 }

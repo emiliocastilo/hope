@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 @ApiModel
@@ -88,10 +87,13 @@ public class PatientTreatmentDTO {
 	@ApiModelProperty(position = 210, example = "true", value = "Tratamiento pulsátil")
 	private boolean pulsatileTreatment;
 
-	@ApiModelProperty(position = 220, example = "otras observaciones", value = "otras observaciones")
+	@ApiModelProperty(position = 220, example = "true", value = "Indicación especial")
+	private boolean specialIndication;
+
+	@ApiModelProperty(position = 230, example = "otras observaciones", value = "otras observaciones")
 	private String other;
 
-	@ApiModelProperty(position = 230, example = "1981-01-01T00:00:00Z", value = "Fecha de inicio del tratamiento")
+	@ApiModelProperty(position = 240, example = "1981-01-01T00:00:00Z", value = "Fecha de inicio del tratamiento")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime suspensionDate;
 

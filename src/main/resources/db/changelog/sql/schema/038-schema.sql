@@ -13,5 +13,10 @@ CREATE TABLE hopes.patients_treatments_lines (
 	ptl_active boolean null,
 	ptl_suspension_date timestamp null,
 	ptl_deleted boolean null,
-	ptl_deletion_date timestamp null
+	ptl_deletion_date timestamp null,
+	ptl_psychological_impact boolean null,
+    ptl_treatment_continue boolean null,
+    ptl_visible_injury boolean null,
+    ptl_pulsatile_tratment boolean null,
+    ptl_special_indication boolean null
 );
