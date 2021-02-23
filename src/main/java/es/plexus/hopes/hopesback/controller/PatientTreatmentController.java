@@ -1,10 +1,9 @@
 package es.plexus.hopes.hopesback.controller;
 
-import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
-import es.plexus.hopes.hopesback.controller.model.MedicineDosis;
-import es.plexus.hopes.hopesback.repository.model.Medicine;
+import es.plexus.hopes.hopesback.controller.model.*;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import es.plexus.hopes.hopesback.service.RoleService;
+import es.plexus.hopes.hopesback.service.mapper.PatientTreatmentMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +30,13 @@ public class PatientTreatmentController {
 	static final String GET_DETAIL_PATIENTS_UDER_TREATMENT_EXPORT= "/get-detail-patients-under-treatment-export";
 	static final String GET_DETAIL_PATIENTS_PER_DOSES = "/get-detail-patients-per-doses";
 	static final String GET_DETAIL_PATIENTS_PER_DOSES_EXPORT = "/get-detail-patients-per-doses-export";
+	static final String FIND_ALL_TREATMENTS = "/find-all-treatments";
+	static final String FIND_BY_PATIENT = "/find-by-patient";
+	static final String DELETE = "/delete";
+	static final String SUSPEND = "/suspend";
+	static final String CREATE = "/new";
+	static final String UPDATE = "/update";
+
 	private static final String CALLING_SERVICE = "Calling service...";
 
 	private final PatientTreatmentService patientTreatmentService;
@@ -86,11 +92,59 @@ public class PatientTreatmentController {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsPerDoses(regimen, pageable, roleService.getPathologyByRoleSelected(token));
 	}
-	
+
 	@ApiOperation("Detalle de pacientes/dosis para exportar")
 	@GetMapping(GET_DETAIL_PATIENTS_PER_DOSES_EXPORT)
 	public List<GraphPatientDetailDTO> getDetailPatientsPerDoses(@RequestParam(value = "regimen")String regimen) {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.getDetailPatientsPerDoses(regimen);
 	}
+
+	/*@ApiOperation("Obtener todos los tratamientos")
+	@GetMapping(FIND_ALL_TREATMENTS)
+	public List<PatientTreatmentDTO> findAll() {
+		log.debug(CALLING_SERVICE);
+		return patientTreatmentService.findAll();
+	}*/
+
+	@ApiOperation("Obtener todos los tratamientos")
+	@GetMapping(FIND_BY_PATIENT)
+	public Page<PatientTreatmentLineInformationDTO> findByPatientId(@RequestParam(value = "patientId") Long patientId,
+																	@PageableDefault(size = 5) Pageable pageable) {
+		log.debug(CALLING_SERVICE);
+		return patientTreatmentService.findByPatientAndPage(patientId,pageable);
+	}
+
+	@ApiOperation("Borrar un tratamiento")
+	@DeleteMapping(DELETE)
+	public void delete(@RequestParam(required = true, name = "lineId") Long lineId) {
+		patientTreatmentService.delete(lineId);
+	}
+
+	@ApiOperation("Suspende un tratamiento")
+	@PostMapping(SUSPEND)
+	public void suspend(@RequestBody(required = true) SuspendTreatmentDTO suspendTreatmentDTO) {
+		patientTreatmentService.suspend(suspendTreatmentDTO);
+	}
+
+	@ApiOperation("Crea un nuevo tratamiento")
+	@PostMapping(CREATE)
+	public void create(@RequestBody(required = true) PatientTreatmentDTO patientTreatmentDTO) {
+		patientTreatmentService.save(PatientTreatmentMapper.INSTANCE.dtoToEntity(patientTreatmentDTO));
+	}
+
+	@ApiOperation("Actualizar un tratamiento")
+	@PostMapping(UPDATE)
+	public void update(@RequestBody(required = true) PatientTreatmentLineDTO patientTreatmentLineDTO) {
+		patientTreatmentService.update(patientTreatmentLineDTO);
+	}
+
+	@ApiOperation("Obtener todos los tratamientos paginados")
+	@GetMapping(FIND_ALL_TREATMENTS)
+	public Page<PatientTreatmentDTO> findAllPage(@PageableDefault(size = 5) Pageable pageable) {
+		log.debug(CALLING_SERVICE);
+		return patientTreatmentService.findAll(pageable);
+
+	}
+
 }

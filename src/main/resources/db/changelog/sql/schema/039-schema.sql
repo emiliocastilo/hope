@@ -1,0 +1,10 @@
+ALTER TABLE hopes.patients_treatments ADD ptr_psychological_impact bool NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_date_prescription timestamp NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_expected_end_date timestamp NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_observations varchar(255) NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_other_dose varchar(255) NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_treatment_continue bool NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_visible_injury bool NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_pulsatile_treatment bool NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_other varchar(255) NULL;
+ALTER TABLE hopes.patients_treatments ADD ptr_suspension_date timestamp NULL;

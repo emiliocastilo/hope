@@ -61,6 +61,7 @@
                 <configuration.port.back>9080</configuration.port.back>
                 <configuration.port.ldap>9389</configuration.port.ldap>
                 <configuration.port.back-image>9081</configuration.port.back-image>
+                <configuration.port.pro>8082</configuration.port.pro>
             </properties>
             <build>
                 <resources>
@@ -81,6 +82,7 @@
                 <configuration.port.back>8080</configuration.port.back>
                 <configuration.port.ldap>8389</configuration.port.ldap>
                 <configuration.port.back-image>8081</configuration.port.back-image>
+                <configuration.port.pro>8082</configuration.port.pro>
             </properties>
             <build>
                 <resources>
@@ -101,6 +103,7 @@
                 <configuration.port.back>8080</configuration.port.back>
                 <configuration.port.ldap>8389</configuration.port.ldap>
                 <configuration.port.back-image>8081</configuration.port.back-image>
+                <configuration.port.pro>8082</configuration.port.pro>
             </properties>
             <build>
                 <resources>

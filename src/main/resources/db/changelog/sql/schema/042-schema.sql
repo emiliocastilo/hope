@@ -1,0 +1,1 @@
+alter table hopes.patients_treatments_lines  add column ptl_other_dose varchar(255) null;

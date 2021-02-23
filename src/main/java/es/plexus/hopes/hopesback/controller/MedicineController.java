@@ -109,17 +109,28 @@ public class MedicineController {
 	public Page<MedicineDTO> filters(
 			@ApiParam(value = "filtrado")
 			@RequestParam(value = "medicines", required = false, defaultValue = "{}") final String medicines,
-			@PageableDefault(size = 5) final Pageable pageable) {
+			@PageableDefault(size = 5) final Pageable pageable, @RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return medicineService.filterMedicines(medicines, pageable);
+		return medicineService.filterMedicines(medicines, pageable, token);
 	}
 
 	@ApiOperation("Buscar dosis a partir de un identificador de medicamento")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/doses")
-	public List<DoseDTO> findDosesByMedicineId(@ApiParam(value = "identificador", required = true) @RequestParam(value = "medicineId", defaultValue = "1") final Long medicineId) {
+	public List<DoseDTO> findDosesByMedicineId(@ApiParam(value = "identificador", required = true) @RequestParam(value = "medicineId", defaultValue = "1") final Long medicineId,
+											   @RequestHeader(name = "Authorization") final String token) {
 		log.debug(CALLING_SERVICE);
-		return medicineService.findDosesByMedicineId(medicineId);
+		return medicineService.findDosesByMedicineId(medicineId, token);
+	}
+
+	@ApiOperation("Buscar dosis a partir de un identificador de medicamento")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping("/is-assigned")
+	public Boolean hasPatientMedicine(@ApiParam(value = "identificador del paciente", required = true) @RequestParam(value = "patientId", defaultValue = "1") final Long patientId,
+									  @ApiParam(value = "identificador del medicamento", required = true) @RequestParam(value = "medicineId", defaultValue = "1") final Long medicineId,
+									  @RequestHeader(name = "Authorization") final String token){
+		log.debug(CALLING_SERVICE);
+		return medicineService.hasMedicineAssigned(patientId,medicineId, token);
 	}
 
 }

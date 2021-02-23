@@ -1,6 +1,7 @@
 package es.plexus.hopes.hopesback.controller;
 
 import es.plexus.hopes.hopesback.controller.model.GraphPatientDetailDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientDiagnosisDTO;
 import es.plexus.hopes.hopesback.service.PatientDiagnosisService;
 import es.plexus.hopes.hopesback.service.PatientTreatmentService;
 import es.plexus.hopes.hopesback.service.RoleService;
@@ -26,6 +27,7 @@ public class PatientDiagnosisController {
 	static final String PATIENT_DIAGNOSE_INDICATIONS = "/indications";
 	static final String PATIENT_DIAGNOSE_CIE = "/cie";
 	static final String PATIENT_DIAGNOSE_TREATMENT = "/treatments";
+	static final String PATIENT_DIAGNOSE_PRINCIPAL = "/principal";
 	static final String PATIENT_DIAGNOSE_COMBINED_TREATMENT = "/combined-treatments";
 	static final String PATIENT_DIAGNOSE_END_CAUSE = "/end-causes";
 	static final String PATIENT_DIAGNOSE_END_CAUSE_LAST_YEARS = "/end-causes-last-years";
@@ -284,4 +286,16 @@ public class PatientDiagnosisController {
 		log.debug(CALLING_SERVICE);
 		return patientTreatmentService.findGraphPatientsDetailsByNumberChanges(numberChanges, roleService.getPathologyByRoleSelected(token));
 	}
+
+	@ApiOperation("Obtener diagnístico principal a partir del identicicador del paciente")
+	@ResponseStatus(HttpStatus.OK)
+	@GetMapping(PATIENT_DIAGNOSE_PRINCIPAL)
+	public PatientDiagnosisDTO findPrincipalDiagnosisByPatientId(
+			@ApiParam(value = "Identificador del paciente para el cual se quiere obtener diagnóstico principal", example = "2312", required = true)
+			@RequestParam final Long patientId,
+			@RequestHeader(name = "Authorization") final String token){
+		log.debug(CALLING_SERVICE);
+		return patientDiagnosisService.findByPatientAndPathology(patientId, roleService.getPathologyByRole(token));
+	}
+
 }

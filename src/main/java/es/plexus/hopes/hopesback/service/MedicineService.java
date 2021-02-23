@@ -3,6 +3,7 @@ package es.plexus.hopes.hopesback.service;
 import com.google.common.base.Throwables;
 import es.plexus.hopes.hopesback.controller.model.DoseDTO;
 import es.plexus.hopes.hopesback.controller.model.MedicineDTO;
+import es.plexus.hopes.hopesback.controller.model.PatientTreatmentLineInformationDTO;
 import es.plexus.hopes.hopesback.repository.DoseRepository;
 import es.plexus.hopes.hopesback.repository.MedicineRepository;
 import es.plexus.hopes.hopesback.repository.PathologyRepository;
@@ -57,6 +58,8 @@ public class MedicineService {
 	private final MedicineRepository medicineRepository;
 	private final DoseRepository doseRepository;
 	private final PathologyRepository pathologyRepository;
+	private final RoleService roleService;
+	private final PatientTreatmentService patientTreatmentService;
 
 	public MedicineDTO save(MedicineDTO medicineDto) throws ServiceException {
 		Medicine medicine = MedicineMapper.INSTANCE.dtoToEntity(medicineDto);
@@ -308,7 +311,7 @@ public class MedicineService {
 		return page.map(MedicineMapper.INSTANCE::entityToDto);
 	}
 
-	public Page<MedicineDTO> filterMedicines(String json, Pageable pageable) {
+	public Page<MedicineDTO> filterMedicines(String json, Pageable pageable, String token) {
 
 		Medicine medicine = MedicineMapper.INSTANCE.jsonToEntity(json);
 
@@ -329,11 +332,11 @@ public class MedicineService {
 				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 	}
 
-	public List<DoseDTO> findDosesByMedicineId(Long medicineId) {
+	public List<DoseDTO> findDosesByMedicineId(Long medicineId, String token) {
+		Pathology pathology = roleService.getPathologyByRoleSelected(token);
 		List<DoseDTO> doseDTOPage = null;
 		Medicine medicine = medicineRepository.findById(medicineId).orElse(null);
-
-		if (Objects.nonNull(medicine)) {
+		if (Objects.nonNull(medicine) && medicine.getPathologies().contains(pathology)) {
 			List<Dose> doses = doseRepository.findByCodeAtc(medicine.getCodeAtc());
 			doseDTOPage = doses.stream().map(DoseMapper.INSTANCE::entityToDto).collect(Collectors.toList());
 		}
@@ -350,5 +353,15 @@ public class MedicineService {
 		}
 
 		return medicineDTO;
+	}
+
+	public Boolean hasMedicineAssigned(Long patientId, Long medicineId, String token){
+		Pathology pathology = roleService.getPathologyByRoleSelected(token);
+
+		List<PatientTreatmentLineInformationDTO> patientTreatmentsList = patientTreatmentService.findByPatient(patientId);
+		return patientTreatmentsList.stream().anyMatch(
+				patientTreatmentLineDTO -> (patientTreatmentLineDTO.getType() != "TOPICO" || patientTreatmentLineDTO.getMasterFormula() == null)  && patientTreatmentLineDTO.getMedicine() != null && patientTreatmentLineDTO.getMedicine().getId().equals(medicineId) &&
+						patientTreatmentLineDTO.getMedicine().getPathologies().contains(pathology)
+		);
 	}
 }
