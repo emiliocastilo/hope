@@ -636,6 +636,7 @@ public class PatientTreatmentService {
 			line.setFinalDate(patientTreatmentLine.getFinalDate());
 			line.setObservations(patientTreatmentLine.getObservations());
 			line.setOther(patientTreatmentLine.getOther());
+			line.setOtherDose(patientTreatmentLine.getOtherDose());
 
 			lines.add(line);
 
@@ -743,6 +744,7 @@ public class PatientTreatmentService {
 		ptl.setExpectedEndDate(ptr.getExpectedEndDate());
 		ptl.setObservations(ptr.getObservations());
 		ptl.setOther(ptr.getOther());
+		ptl.setOtherDose(ptr.getOtherDose());
 
 		patientTreatmentLineRepository.saveAndFlush(ptl);
 	}

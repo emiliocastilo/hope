@@ -358,10 +358,10 @@ public class MedicineService {
 	public Boolean hasMedicineAssigned(Long patientId, Long medicineId, String token){
 		Pathology pathology = roleService.getPathologyByRoleSelected(token);
 
-		List<PatientTreatmentLineInformationDTO> patientTreatments = patientTreatmentService.findByPatient(patientId);
-		return patientTreatments.stream().anyMatch(
-				patientTreatmentDTO -> patientTreatmentDTO.getMedicine().getId().equals(medicineId) &&
-									   patientTreatmentDTO.getMedicine().getPathologies().contains(pathology)
+		List<PatientTreatmentLineInformationDTO> patientTreatmentsList = patientTreatmentService.findByPatient(patientId);
+		return patientTreatmentsList.stream().anyMatch(
+				patientTreatmentLineDTO -> (patientTreatmentLineDTO.getType() != "TOPICO" || patientTreatmentLineDTO.getMasterFormula() == null)  && patientTreatmentLineDTO.getMedicine() != null && patientTreatmentLineDTO.getMedicine().getId().equals(medicineId) &&
+						patientTreatmentLineDTO.getMedicine().getPathologies().contains(pathology)
 		);
 	}
 }
