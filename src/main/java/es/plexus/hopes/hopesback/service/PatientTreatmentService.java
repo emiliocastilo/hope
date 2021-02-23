@@ -604,6 +604,8 @@ public class PatientTreatmentService {
 				Medicine medicineLine = new Medicine();
 				medicineLine.setId(patientTreatmentLine.getMedicine().getId());
 				medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
+				medicineLine.setActIngredients(patientTreatmentLine.getMedicine().getActIngredients());
+				medicineLine.setBrand(patientTreatmentLine.getMedicine().getBrand());
 				medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
 				medicineLine.setTreatmentType(patientTreatmentLine.getMedicine().getTreatmentType());
 				medicineLine.setCodeAtc(patientTreatmentLine.getMedicine().getCodeAtc());
@@ -636,6 +638,7 @@ public class PatientTreatmentService {
 			line.setFinalDate(patientTreatmentLine.getFinalDate());
 			line.setObservations(patientTreatmentLine.getObservations());
 			line.setOther(patientTreatmentLine.getOther());
+			line.setOtherDose(patientTreatmentLine.getOtherDose());
 
 			lines.add(line);
 
@@ -743,6 +746,7 @@ public class PatientTreatmentService {
 		ptl.setExpectedEndDate(ptr.getExpectedEndDate());
 		ptl.setObservations(ptr.getObservations());
 		ptl.setOther(ptr.getOther());
+		ptl.setOtherDose(ptr.getOtherDose());
 
 		patientTreatmentLineRepository.saveAndFlush(ptl);
 	}

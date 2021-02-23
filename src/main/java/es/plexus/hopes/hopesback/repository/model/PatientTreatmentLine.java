@@ -114,5 +114,9 @@ public class PatientTreatmentLine {
     @Basic
     @Column(name = "ptl_other", nullable = false, length = 50)
     private String other;
+    
+    @Basic
+    @Column(name = "ptl_other_dose", nullable = false, length = 50)
+    private String otherDose;
 
 }
