@@ -604,6 +604,8 @@ public class PatientTreatmentService {
 				Medicine medicineLine = new Medicine();
 				medicineLine.setId(patientTreatmentLine.getMedicine().getId());
 				medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
+				medicineLine.setActIngredients(patientTreatmentLine.getMedicine().getActIngredients());
+				medicineLine.setBrand(patientTreatmentLine.getMedicine().getBrand());
 				medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
 				medicineLine.setTreatmentType(patientTreatmentLine.getMedicine().getTreatmentType());
 				medicineLine.setCodeAtc(patientTreatmentLine.getMedicine().getCodeAtc());
