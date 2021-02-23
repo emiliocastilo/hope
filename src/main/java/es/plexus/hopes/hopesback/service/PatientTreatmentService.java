@@ -600,7 +600,7 @@ public class PatientTreatmentService {
 			line.setPatientTreatment(patientTreatmentLine.getPatientTreatment());
 
 			Medicine medicineLine = new Medicine();
-			if ( null ==  patientTreatmentLine.getMedicine() ) {
+			if ( null !=  patientTreatmentLine.getMedicine() ) {
 				medicineLine.setId(patientTreatmentLine.getMedicine().getId());
 				medicineLine.setDescription(patientTreatmentLine.getMedicine().getDescription());
 				medicineLine.setFamily(patientTreatmentLine.getMedicine().getFamily());
