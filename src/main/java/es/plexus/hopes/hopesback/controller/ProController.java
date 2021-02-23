@@ -25,13 +25,13 @@ import java.util.List;
 
 import static es.plexus.hopes.hopesback.configuration.security.Constants.*;
 
-@Api(value = "Controlador de pros", tags = "photo")
+@Api(value = "Controlador de pros", tags = "pro")
 @Log4j2
 @RestController
 @RequestMapping(ProController.PRO_MAPPING)
 public class ProController extends ResponseEntityExceptionHandler {
 
-	static final String PRO_MAPPING = "/pros";
+	static final String PRO_MAPPING = "/pro";
 	private final ProService proService;
 
 	@Autowired
@@ -43,7 +43,7 @@ public class ProController extends ResponseEntityExceptionHandler {
 	@ResponseStatus(HttpStatus.PARTIAL_CONTENT)
 	@PostMapping("/choose-profiles")
 	public UserSimpleDTO chooseProfile(@RequestBody final String role, final Authentication authentication, final HttpServletResponse response) {
-		log.info("ProController.pros/choose-profiles");
+		log.info("ProController.pro/choose-profiles");
 		String token = TokenProvider.generateToken(authentication.getName(), role, SECOND_TOKEN_EXPIRATION_TIME);
 		response.addHeader(HEADER_AUTHORIZACION_KEY, TOKEN_BEARER_PREFIX + token);
 		String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -53,48 +53,25 @@ public class ProController extends ResponseEntityExceptionHandler {
 
 	@ApiOperation("Recuperar datos de pagina de pros del paciente")
 	@ResponseStatus(HttpStatus.OK)
-	@PostMapping("/index_")
-	public ResponseEntity<String> getIndexPage_(@RequestBody final String user) throws ServiceException {
-		log.info("--------------------------------------------------------getIndexPage");
-		String response = "index";
-		return new ResponseEntity<String>(response,HttpStatus.OK);
-	}
-	@ApiOperation("Recuperar datos de pagina de pros del paciente")
-	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/index")
 	public ResponseEntity<String> getIndexPage() throws ServiceException {
-		log.info("ProController.pros/index");
+		log.info("ProController.pro/index");
 		String response =  proService.getIndexPage();
 		return new ResponseEntity<String>(response,HttpStatus.OK);
 	}
 
-	@ApiOperation("Cambiar la contraseña de un paciente")
-	@ResponseStatus(HttpStatus.OK)
-	@PostMapping("/updatePassword_")
-	public String updateUserPassword(@RequestBody final String user) throws ServiceException {
-		log.info("--------------------------------------------------------updateUserPassword");
-		return proService.updatePassword_(user);
-	}
 	@ApiOperation("Actualizar contraseña de un paciente de pros")
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/updatePassword")
 	public String updatePassword(@Valid @RequestBody final PasswordDTO passwordDTO) throws ServiceException {
-		log.info("ProController.pros/updatePassword");
+		log.info("ProController.pro/updatePassword");
 		return proService.updatePassword(passwordDTO);
 	}
 
-
-	@ApiOperation("Cambiar la contraseña de un paciente")
-	@ResponseStatus(HttpStatus.OK)
-	@PostMapping("/updateEmail_")
-	public String updateEmail_(@RequestBody final String user) throws ServiceException {
-		log.info("--------------------------------------------------------updateUserMail");
-		return proService.updateEmail_(user);
-	}
 	@ApiOperation("Cambiar el mail de un paciente de pros")
 	@PostMapping("/updateEmail")
 	public ResponseEntity updateEmail(@RequestBody final UserDTO userDto) {
-		log.info("ProController.pros/updateEmail");
+		log.info("ProController.pro/updateEmail");
 		return proService.updateEmail(userDto);
 	}
 
@@ -102,7 +79,7 @@ public class ProController extends ResponseEntityExceptionHandler {
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/pro")
 	public List getPatientPro(@RequestBody final UserDTO userDto) throws ServiceException {
-		log.info("ProController.pros/pro");
+		log.info("ProController.pro/pro");
 		return proService.getPatientPro(userDto);
 	}
 
@@ -110,7 +87,7 @@ public class ProController extends ResponseEntityExceptionHandler {
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/pros")
 	public List getPatientPros(@RequestBody final UserDTO userDto) throws ServiceException {
-		log.info("ProController.pros/pros");
+		log.info("ProController.pro/pros");
 		return proService.getPatientPros(userDto);
 	}
 
