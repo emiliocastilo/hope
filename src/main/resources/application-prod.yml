@@ -35,3 +35,6 @@ spring:
 # Image gallery
 imagegallery:
   url: http://localhost:8081/v1
+
+pros:
+  url: http://192.168.110.45:${configuration.port.pro}/v1
