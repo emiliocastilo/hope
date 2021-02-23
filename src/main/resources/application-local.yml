@@ -38,3 +38,6 @@ spring:
 # Image gallery
 imagegallery:
   url: http://localhost:8081/v1
+
+pros:
+  url: http://localhost:8082/v1

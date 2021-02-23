@@ -23,4 +23,5 @@ public class ServiceException extends CustomExceptionHandler {
 	public ServiceException(final String errorCode, final HttpStatus httpStatus, final String developerMessage) {
 		super(errorCode, httpStatus, developerMessage);
 	}
+
 }
