@@ -804,11 +804,40 @@ public class PatientTreatmentService {
 
 	private void orderPatientTreatmentLineInformation(List<PatientTreatmentLineInformationDTO> patientTreatmentDTOS, Sort sort){
 		// TODO JGL: Ver aquí las ordenaciones que hay que hacer.
+		//'indication', 'principle', 'brand', 'dose', 'dateStart', 'datePrescription', 'dateSuspension', 'treatmentType'
 		Optional<Sort.Order> sortOrder = sort.get().findFirst();
 		if (sortOrder.isPresent()){
 			Sort.Order order = sortOrder.get();
 			switch (order.getProperty()){
 				case "type":
+					patientTreatmentDTOS
+							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getType));
+					break;
+//				case "principle":
+//					patientTreatmentDTOS
+//							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getMedicine));
+//					break;
+//				case "brand":
+//					patientTreatmentDTOS
+//							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getMedicine));
+//					break;
+				case "dose":
+					patientTreatmentDTOS
+							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getDose));
+					break;
+				case "dateStart":
+					patientTreatmentDTOS
+							.sort(obtainComparatorDate(order, PatientTreatmentLineInformationDTO::getInitDate));
+					break;
+				case "datePrescription":
+					patientTreatmentDTOS
+							.sort(obtainComparatorDate(order, PatientTreatmentLineInformationDTO::getDatePrescription));
+					break;
+				case "dateSuspension":
+					patientTreatmentDTOS
+							.sort(obtainComparatorDate(order, PatientTreatmentLineInformationDTO::getSuspensionDate));
+					break;
+				case "treatmentType":
 					patientTreatmentDTOS
 							.sort(obtainComparatorString(order, PatientTreatmentLineInformationDTO::getType));
 					break;
