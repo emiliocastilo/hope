@@ -44,10 +44,10 @@ public class ProService {
 
 	}
 
-	public String updatePassword(PasswordDTO passwordDto) throws ServiceException {
+	public ResponseEntity updatePassword(PasswordDTO passwordDto) throws ServiceException {
 		log.info("ProService.updatePassword");
 		userService.updatePassword(passwordDto);
-		return "OK";
+		return ResponseEntity.status(HttpStatus.OK).body("Password updated");
 
 	}
 
@@ -59,6 +59,7 @@ public class ProService {
 			return ResponseEntity.status(ServiceExceptionCatalog.EMAIL_VIOLATION_CONSTRAINT_EXCEPTION.getHttpStatus())
 					.body(EMAIL_VIOLATION_CONSTRAINT_MESSAGE);
 		}
+		userDto.setEmail(newEmail);
 		userService.updateUser(userDto);
 
 		return ResponseEntity.status(HttpStatus.OK).body("EMail updated");

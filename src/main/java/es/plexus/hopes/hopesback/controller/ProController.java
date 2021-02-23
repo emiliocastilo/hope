@@ -28,7 +28,7 @@ import static es.plexus.hopes.hopesback.configuration.security.Constants.*;
 @Api(value = "Controlador de pros", tags = "pro")
 @Log4j2
 @RestController
-@RequestMapping(ProController.PRO_MAPPING)
+	@RequestMapping(ProController.PRO_MAPPING)
 public class ProController extends ResponseEntityExceptionHandler {
 
 	static final String PRO_MAPPING = "/pro";
@@ -63,7 +63,7 @@ public class ProController extends ResponseEntityExceptionHandler {
 	@ApiOperation("Actualizar contraseña de un paciente de pros")
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping("/updatePassword")
-	public String updatePassword(@Valid @RequestBody final PasswordDTO passwordDTO) throws ServiceException {
+	public ResponseEntity updatePassword(@Valid @RequestBody final PasswordDTO passwordDTO) throws ServiceException {
 		log.info("ProController.pro/updatePassword");
 		return proService.updatePassword(passwordDTO);
 	}
