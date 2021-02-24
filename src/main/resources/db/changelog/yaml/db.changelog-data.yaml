@@ -38,3 +38,9 @@ databaseChangeLog:
 - include:
       file: ../sql/data/14-update_sections_url.sql
       relativeToChangelogFile: true
+- include:
+      file: ../sql/data/15-update_section_vih_url.sql
+      relativeToChangelogFile: true
+- include:
+      file: ../sql/data/16-update_icons.sql
+      relativeToChangelogFile: true
