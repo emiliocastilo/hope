@@ -708,7 +708,7 @@ public class PatientTreatmentService {
 			// Sí el tratamiento no tiene lineas activas, se desactiva el tratamiento.
 			PatientTreatment ptr = patientTreatmentRepository.findById(ptl.getPatientTreatment()).orElse(null);
 			if (ptr != null
-					&& ptr.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()).collect(toList()).size() == 0) {
+					&& ptr.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive()==true).collect(Collectors.toList()).size() > 0) {
 				ptr.setActive(false);
 			}
 		}
