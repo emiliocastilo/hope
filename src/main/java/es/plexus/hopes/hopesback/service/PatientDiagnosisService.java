@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -203,7 +204,7 @@ public class PatientDiagnosisService {
 				).stream().collect(Collectors.toMap(PatientData::getPatient, PatientData::isPsoriatric));
 
 		patientDiagnosisList.forEach(pdg -> {
-			if ( pdg.getPsoriaticArthritis() ){
+			if (!ObjectUtils.isEmpty(pdg.getPsoriaticArthritis()) && pdg.getPsoriaticArthritis() ){
 				mapPsoriasisArtriticaPatients.put(pdg.getPatient(), true);
 			} else {
 				mapPsoriasisArtriticaPatients.put(pdg.getPatient(), false);
