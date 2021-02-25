@@ -1,0 +1,17 @@
+update hopes.sections set sec_url = '/hopes/dashboard/derma/health-outcomes' where sec_title = 'Información Resultados en Salud';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/pharmacoeconomic/consumption-biological-treatment' where sec_title = 'Consumo de tratamientos biológicos';
+update hopes.sections set sec_url = '/hopes/dashboard/vih/clinic-info/patients' where sec_title = 'Pacientes';
+update hopes.sections set sec_url = '/hopes/dashboard/vih/clinic-info/patient-treatments' where sec_title = 'Tratamientos de paciente';
+update hopes.sections set sec_url = '/hopes/dashboard/vih/treatments' where sec_title = 'Información tratamiento';
+update hopes.sections set sec_url = '/hopes/dashboard/vih/pharmaeconomic/patient-expenses' where sec_title = 'Coste total/medio del paciente';
+update hopes.sections set sec_url = '/hopes/dashboard/vih/pharmaeconomic/guidelines-expenses' where sec_title = 'Coste por pautas';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/diagnosis/patients-indication' where sec_title = 'Pacientes por indicación';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/diagnosis/cie' where sec_title = 'Pacientes por diagnóstico CIE';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/diagnosis/patients-treatment' where sec_title = 'Pacientes por tipo de tratamiento';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/diagnosis/patients-combined-treatments' where sec_title = 'Pacientes por tratamientos combinados';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/diagnosis/reasons' where sec_title = 'Motivo del cambio/suspensión de tratamiento biológico';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/diagnosis/number-changes-biological-treatment' where sec_title = 'Número de cambios de tratamiento biológico';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/treatments/treatments-agents' where sec_title = 'Pacientes en tratamiento según agentes';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/treatments/treatments-patients' where sec_title = 'Tratamiento biológico en pacientes';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/patient-dose/biological-treatment-frequency' where sec_title = 'Pacientes según dosis/frecuencia del tratamiento biológico';
+update hopes.sections set sec_url = '/hopes/dashboard/derma/pharmacoeconomic/total-expenses-biological-treatment' where sec_title = 'Coste por tratamientos biológicos';
