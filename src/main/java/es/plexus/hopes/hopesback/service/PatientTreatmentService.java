@@ -22,7 +22,9 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static es.plexus.hopes.hopesback.service.Constants.*;
@@ -75,9 +77,10 @@ public class PatientTreatmentService {
 			patientTreatments.stream().filter(PatientTreatment::isActive).forEach(
 
 					patientTreatment -> {
+						PatientTreatmentLine line = patientTreatment.getActiveLine();
 
-						if (!tratPat.contains(patientTreatment.getType())) {
-							tratPat.add(patientTreatment.getType());
+						if (!tratPat.contains(line.getType())) {
+							tratPat.add(line.getType());
 						}
 					}
 			);
@@ -114,8 +117,13 @@ public class PatientTreatmentService {
 
 		patientTreatmentList.removeAll(removePatientTreatment);
 
-		return patientTreatmentList.stream()
-				.collect(groupingBy(PatientTreatment::getReason, Collectors.counting()));
+		List<PatientTreatmentLine> patientTreatmentLines = new ArrayList<>();
+		patientTreatmentList.forEach(patientTreatment -> {
+			patientTreatmentLines.add(patientTreatment.getActiveLine());
+		});
+
+		return patientTreatmentLines.stream()
+				.collect(groupingBy(PatientTreatmentLine::getReason, Collectors.counting()));
 
 	}
 
@@ -132,8 +140,7 @@ public class PatientTreatmentService {
 	@Transactional
 	public Map<String, Long> findPatientTreatmentByNumberChangesOfBiologicTreatment(Pathology pathology) {
 		log.debug(CALLING_DB);
-		Map<Patient, Long> patientLongMap = fillPatientTreatmentMapByNumberChangesOfBiologicalTreatment(pathology);
-		return buildMapPatientsByNumberChangesOfBiologicalTreatment(patientLongMap);
+		return fillPatientTreatmentLineMapByNumberChangesOfBiologicalTreatment(pathology);
 	}
 
 	@Transactional
@@ -292,21 +299,16 @@ public class PatientTreatmentService {
 			String numberChanges, final Pageable pageable, Pathology pathology) {
 
 		int numberChangeInt = 0;
-		/*result.put("Naive al TB", cambiosNaive);
-		result.put("1 cambio", primerCambio);
-		result.put("2 cambios", segundoCambio);
-		result.put("3 cambios", tercerCambio);
-		result.put("Más 3 cambios", masTresCambios);
-		*/
-		if ( numberChanges.equalsIgnoreCase("Naive al TB") ){
+
+		if ( numberChanges.equalsIgnoreCase("naive") ){
 			numberChangeInt = 0;
-		} else if ( numberChanges.equalsIgnoreCase("1 cambio")) {
+		} else if ( numberChanges.equalsIgnoreCase("oneChange")) {
 			numberChangeInt = 1;
-		} else if ( numberChanges.equalsIgnoreCase("2 cambios")) {
+		} else if ( numberChanges.equalsIgnoreCase("twoChanges")) {
 			numberChangeInt = 2;
-		} else if ( numberChanges.equalsIgnoreCase("3 cambio")) {
+		} else if ( numberChanges.equalsIgnoreCase("threeChanges")) {
 			numberChangeInt = 3;
-		} else if ( numberChanges.equalsIgnoreCase("Más 3 cambios")) {
+		} else if ( numberChanges.equalsIgnoreCase("moreThanThreeChanges")) {
 			numberChangeInt = 4;
 		}
 		log.debug( "INIT: Query Patients By Number Changes");
@@ -448,11 +450,12 @@ public class PatientTreatmentService {
 
 		// Se obtiene un mapa de pacientes y tipos de tratamientos concatenados
 		for(PatientTreatment pt:patientTreatmentList){
+			PatientTreatmentLine line = pt.getActiveLine();
 			if(mapCombinedTreatment.containsKey(pt.getPatientDiagnose().getPatient().getId())){
-				String lbl = mapCombinedTreatment.get(pt.getPatientDiagnose().getPatient().getId()) + " + " + pt.getType();
+				String lbl = mapCombinedTreatment.get(pt.getPatientDiagnose().getPatient().getId()) + " + " + line.getType();
 				mapCombinedTreatment.replace(pt.getPatientDiagnose().getPatient().getId(), lbl);
 			}else{
-				mapCombinedTreatment.put(pt.getPatientDiagnose().getPatient().getId(), pt.getType());
+				mapCombinedTreatment.put(pt.getPatientDiagnose().getPatient().getId(), line.getType());
 			}
 		}
 
@@ -523,6 +526,46 @@ public class PatientTreatmentService {
 
 		return patientsMaps;
 	}
+
+	private Map<String, Long> fillPatientTreatmentLineMapByNumberChangesOfBiologicalTreatment(Pathology pathology) {
+		List<PatientTreatment> patientTreatmentList =
+ 				patientTreatmentRepository.findPatientTreatmentByNumberChangesOfBiologicTreatment().stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
+		// Me quedo con la última linea activa de cada tratamiento
+		patientTreatmentList.forEach(patientTreatment -> {
+			patientTreatment.setTreatmentLines(patientTreatment.getTreatmentLines().stream().filter(patientTreatmentLine -> Boolean.TRUE.equals(patientTreatmentLine.getActive())).collect(toList()));
+		});
+		List<Long> patientListNaive = new ArrayList<>();
+		List<Long> patientListOneChange = new ArrayList<>();
+		List<Long> patientListTwoChanges = new ArrayList<>();
+		List<Long> patientListThreeChanges = new ArrayList<>();
+		List<Long> patientListMoreChanges = new ArrayList<>();
+
+		for (PatientTreatment patientTreatment : patientTreatmentList){
+			Long numeroCambio = patientTreatment.getTreatmentLines().get(0).getModificationCount();
+			Patient patient = patientTreatment.getPatientDiagnose().getPatient();
+			if ( numeroCambio == 0) patientListNaive.add(patient.getId());
+			if ( numeroCambio == 1) patientListOneChange.add(patient.getId());
+			if ( numeroCambio == 2) patientListTwoChanges.add(patient.getId());
+			if ( numeroCambio == 3) patientListThreeChanges.add(patient.getId());
+			if ( numeroCambio > 3) patientListMoreChanges.add(patient.getId());
+		}
+
+		Long cambiosNaive =  patientListNaive.stream().distinct().count();
+		Long primerCambio =  patientListOneChange.stream().distinct().count();
+		Long segundoCambio =  patientListTwoChanges.stream().distinct().count();
+		Long tercerCambio =  patientListThreeChanges.stream().distinct().count();
+		Long masTresCambios =  patientListMoreChanges.stream().distinct().count();
+
+		Map<String, Long> result = new HashMap<>();
+		result.put("Naive al TB", cambiosNaive);
+		result.put("1 cambio", primerCambio);
+		result.put("2 cambios", segundoCambio);
+		result.put("3 cambios", tercerCambio);
+		result.put("Más 3 cambios", masTresCambios);
+
+		return result;
+	}
+
 
 	private Map<String, Long> buildMapPatientsByNumberChangesOfBiologicalTreatment(Map<Patient, Long> map) {
 
@@ -859,6 +902,11 @@ public class PatientTreatmentService {
 	private static Comparator<PatientTreatmentLineInformationDTO> obtainComparatorDate(Sort.Order order, Function<PatientTreatmentLineInformationDTO, LocalDateTime> sortBy) {
 		return order.isAscending()?
 				Comparator.nullsFirst(Comparator.comparing(sortBy)):Comparator.nullsLast(Comparator.comparing(sortBy).reversed());
+	}
+
+	public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+		Set<Object> seen = ConcurrentHashMap.newKeySet();
+		return t -> seen.add(keyExtractor.apply(t));
 	}
 
 
