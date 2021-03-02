@@ -1,12 +1,15 @@
 package es.plexus.hopes.hopesback.repository.model;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -122,4 +125,17 @@ public class PatientTreatment {
 	public PatientTreatmentLine getActiveLine(){
 		return this.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive().equals(true)).findFirst().orElse(null);
 	}
+
+	public List<PatientTreatmentLine> getLinesChanges(){
+		List<PatientTreatmentLine> linesWithChange = new ArrayList<>();
+		if ( null != getActiveLine() ){
+			linesWithChange = this.getTreatmentLines().stream().filter(patientTreatmentLine -> StringUtils.isNotBlank(patientTreatmentLine.getReason())).collect(Collectors.toList());
+		}
+		return linesWithChange;
+	}
+
+	public PatientTreatmentLine getSuspendedLine(){
+		return this.getTreatmentLines().stream().skip(this.getTreatmentLines().stream().count() - 1).findFirst().orElseGet(null);
+	}
+
 }
