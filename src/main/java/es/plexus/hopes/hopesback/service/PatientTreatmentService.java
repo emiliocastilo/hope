@@ -588,7 +588,7 @@ public class PatientTreatmentService {
 
 	private Function<PatientTreatment, String> functionDescriptionMedicineByTreatment() {
 		return pt->{
-			return pt.getMedicine()!=null?pt.getMedicine().getActIngredients():"Sin ingredientes Activos";
+			return pt.getActiveLine().getMedicine()!=null?pt.getActiveLine().getMedicine().getActIngredients():"Sin ingredientes Activos";
 		};
 	}
 
