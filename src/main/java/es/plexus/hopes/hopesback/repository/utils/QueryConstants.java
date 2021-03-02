@@ -8,6 +8,9 @@ public class QueryConstants {
 	public static final String WHERE_PT_ACTIVE_TRUE = "where pt.active = true ";
 	public static final String AND_PT_MEDICINE_AND_REGIME = " and upper(pt.type) = 'BIOLOGICO' ";
 
+	public static final String FILTER_PTL_ACTIVE_TRUE = " and ptl.active = true ";
+	public static final String FILTER_PTL_TYPE = "and LOWER(ptl.type) = LOWER(:type) ";
+
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_TREATMENT =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
 					WHERE_PT_ACTIVE_TRUE +
@@ -31,11 +34,12 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
-			"where pt.reason is not null " +
-			"and LOWER(pt.type) = 'biologico' " +
-			"and LOWER(pt.endCause) = coalesce(LOWER(:endCause), 'otras') " +
+			" join PatientTreatmentLine ptl on  ptl.patientTreatment = pt.id and ptl.active = true " +
+			" and LOWER(ptl.reason) = coalesce(LOWER(:endCause), 'otras') " +
+			" where pt.reason is not null " +
+		//	"and LOWER(pt.type) = 'biologico' " +
 			"group by pt.id, pt.patientDiagnose " +
-			"order by pt.initDate desc";
+			"order by pt.initDate desc ";
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE_IN_LAST_5_YEARS =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
@@ -45,10 +49,12 @@ public class QueryConstants {
 			"and pt.initDate > :initDate ";
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_NUMBER_CHANGES_OF_BIOLOGICAL_TREATMENT =
-			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
-			"where LOWER(pt.type) = 'biologico' " +
-			"and LOWER(pt.endCause) = 'cambio' and pt.reason is not null " +
-			"group by pt.id, pt.patientDiagnose";
+			"select ptr from  PatientDiagnose pdg " +
+					" join PatientTreatment ptr " +
+					" on pdg.id = ptr.patientDiagnose.id " +
+					"  join PatientTreatmentLine ptl " +
+					" on ptr.id = ptl.patientTreatment" +
+					" where ptl.active = true and (ptl.deleted = false or ptl.deleted is null)";
 
 
 
@@ -174,6 +180,8 @@ public class QueryConstants {
 
 	public static final String JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE =
 			"join fetch PatientTreatment ptr on ptr.patientDiagnose.id = pdg.id ";
+	public static final String JOIN_FETCH_PATIENT_TREATMENT_PATIENT_TREATMENT_LINES =
+			" join fetch PatientTreatmentLine ptl on ptl.patientTreatment = ptr.id ";
 
 	public static final String PTR_ACTIVE_AND_PTR_TYPE = " ptr.active = true and " +
 			" lower(ptr.type) = lower(:treatmentType) ";
@@ -273,18 +281,24 @@ public class QueryConstants {
 	public static final String QUERY_PATIENTS_TREATMENTS_BY_TREATMENT_TYPE_AND_INDICATION =
 			SELECT_PATIENT_TREATMENT_JOIN_PATIENT_DIAGNOSE +
 			JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
-			JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID +
+					JOIN_FETCH_PATIENT_TREATMENT_PATIENT_TREATMENT_LINES +
+
+					JOIN_FETCH_INDICATION_IND_ON_IND_ID_PDG_INDICATION_ID +
 			WHERE_CLAUSULE +
 			FILTER_PTR_ACTIVE_TRUE +
-			"and LOWER(ptr.type) = LOWER(:type) " +
-			"and LOWER(ind.description) = LOWER(:indication) ";
+			FILTER_PTL_TYPE +
+			FILTER_PTL_ACTIVE_TRUE +
+			" and LOWER(ind.description) = LOWER(:indication) ";
+
 
 	public static final String QUERY_PATIENTS_TREATMENTS_BY_TREATMENT_TYPE =
 			SELECT_PATIENT_TREATMENT_JOIN_PATIENT_DIAGNOSE +
 					JOIN_FETCH_PATIENT_TREATMENT_PATIENT_DIAGNOSE +
+					JOIN_FETCH_PATIENT_TREATMENT_PATIENT_TREATMENT_LINES +
 					WHERE_CLAUSULE +
 					FILTER_PTR_ACTIVE_TRUE +
-					"and LOWER(ptr.type) = LOWER(:type) ";
+					FILTER_PTL_ACTIVE_TRUE +
+					FILTER_PTL_TYPE;
 
 	public static final String ORDER_BY_INIT_DATE_IN_PATIENT_TREATMENT = "order by pt.initDate ";
 

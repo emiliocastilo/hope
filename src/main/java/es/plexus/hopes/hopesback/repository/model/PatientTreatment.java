@@ -118,4 +118,8 @@ public class PatientTreatment {
 	@Basic
 	@Column(name = "ptr_suspension_date", columnDefinition = "TIMESTAMP")
 	private LocalDateTime suspensionDate;
+
+	public PatientTreatmentLine getActiveLine(){
+		return this.getTreatmentLines().stream().filter(patientTreatmentLine -> patientTreatmentLine.getActive().equals(true)).findFirst().orElse(null);
+	}
 }
