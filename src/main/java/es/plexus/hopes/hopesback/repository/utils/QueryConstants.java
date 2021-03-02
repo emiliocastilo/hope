@@ -250,7 +250,7 @@ public class QueryConstants {
 					"and LOWER(ptr.type) in (:treatments ) " +
 					AND_PTR_PATIENT_DIAGNOSE_IN +
 					SUB_SELECT_PT_DIAGNOSE_IN_PTR_ACTIVE_AND_DIAGNOSE_HAVING_COUNT +
-					" > :numberTreatments) ";
+					" >= :numberTreatments) ";
 
 	public static final String JOIN_FETCH_HEALTH_OUTCOME_HOU_PAT_ID_HOU_PATIENT_ID = "join fetch HealthOutcome hou on pat.id = hou.patient.id ";
 
