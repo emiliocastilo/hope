@@ -1,0 +1,8 @@
+{
+    "key": "consent-vih",
+    "form": "[{'type':'title','name':'CONSENTIMIENTO'},{'type':'checkbox','name':'patientConsent','css':'col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6','label':'Consentimiento del paciente','disabled':false,'placeholder':''},{'type':'checkbox','name':'representativeConsent','css':'col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6','label':'Consentimiento del representante','disabled':false,'placeholder':''},{'type':'section','name':'Conformidad'},{'type':'checkbox','name':'ordinarityConformity','css':'col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6','label':'Conformidad de carácter ordinario','disabled':false,'placeholder':''},{'type':'checkbox','name':'specialConformity','css':'col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6','label':'Conformidad de carácter especial','disabled':false,'placeholder':''}]",
+    "buttons": "['save']",
+    "historify": false,
+    "nameHistoricalDate": null,
+    "fieldsToGraph": null
+}
