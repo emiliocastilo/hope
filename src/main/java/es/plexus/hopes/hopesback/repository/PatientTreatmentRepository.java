@@ -26,7 +26,7 @@ public interface PatientTreatmentRepository extends JpaRepository<PatientTreatme
 	List<PatientTreatment> findPatientTreatmentByCombinedTreatment();
 
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE)
-	List<PatientTreatment> findPatientTreatmentByEndCauseBiologicTreatment(@Param("endCause")String endCause);
+	List<PatientTreatment> findPatientTreatmentByEndCauseBiologicTreatment();
 
 	@Query(QueryConstants.QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE_IN_LAST_5_YEARS)
 	List<PatientTreatment> findPatientTreatmentByEndCauseBiologicTreatmentInLast5Years(

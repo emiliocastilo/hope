@@ -34,10 +34,7 @@ public class QueryConstants {
 
 	public static final String QUERY_PATIENTS_DIAGNOSES_BY_BIOLOGICAL_TREATMENT_END_CAUSE =
 			SELECT_PT_FROM_PATIENT_TREATMENT_PT +
-			" join PatientTreatmentLine ptl on  ptl.patientTreatment = pt.id and ptl.active = true " +
-			" and LOWER(ptl.reason) = coalesce(LOWER(:endCause), 'otras') " +
-			" where pt.reason is not null " +
-		//	"and LOWER(pt.type) = 'biologico' " +
+			" join PatientTreatmentLine ptl on  ptl.patientTreatment = pt.id " +
 			"group by pt.id, pt.patientDiagnose " +
 			"order by pt.initDate desc ";
 

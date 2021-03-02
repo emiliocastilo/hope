@@ -101,26 +101,24 @@ public class PatientTreatmentService {
 
 	public Map<String, Long> findPatientTreatmentByEndCauseBiologicTreatmentAndPathology(String endCause, Pathology pathology) {
 		log.debug(CALLING_DB);
-		List<PatientTreatment> removePatientTreatment = new ArrayList<>();
-		List<Long> idPatients = new ArrayList<>();
 		List<PatientTreatment> patientTreatmentList =
-				patientTreatmentRepository.findPatientTreatmentByEndCauseBiologicTreatment(endCause)
+				patientTreatmentRepository.findPatientTreatmentByEndCauseBiologicTreatment()
 						.stream().filter(patientTreatment -> patientTreatment.getPatientDiagnose().getPatient().getPathologies().contains(pathology)).collect(Collectors.toList());
 
-		for(PatientTreatment pt:patientTreatmentList){
-			if(idPatients.contains(pt.getPatientDiagnose().getPatient().getId())){
-				removePatientTreatment.add(pt);
-			}else{
-				idPatients.add(pt.getPatientDiagnose().getPatient().getId());
-			}
-		}
-
-		patientTreatmentList.removeAll(removePatientTreatment);
-
 		List<PatientTreatmentLine> patientTreatmentLines = new ArrayList<>();
-		patientTreatmentList.forEach(patientTreatment -> {
-			patientTreatmentLines.add(patientTreatment.getActiveLine());
-		});
+
+
+		if ( endCause.equalsIgnoreCase("cambio") ){
+			patientTreatmentList.forEach(patientTreatment -> {
+				patientTreatmentLines.addAll(patientTreatment.getLinesChanges());
+			});
+		} else if ( endCause.equalsIgnoreCase("suspension")){
+			patientTreatmentList.forEach(patientTreatment -> {
+				if ( patientTreatment.getActiveLine() == null){
+					patientTreatmentLines.add(patientTreatment.getSuspendedLine());
+				}
+			});
+		}
 
 		return patientTreatmentLines.stream()
 				.collect(groupingBy(PatientTreatmentLine::getReason, Collectors.counting()));
